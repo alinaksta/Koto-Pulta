@@ -1,13 +1,12 @@
 using Game.Input.Generated;
-using TMPro;
+using Game.Lifecycle;
+using Game.Services;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Game.Input
 {
-    //TODO: Remove DefaultExecutionOrder if there is a bootstrap sequence
-    [RequireComponent(typeof(PlayerInput)), DefaultExecutionOrder(-204)]
-    public class InputService : MonoBehaviour, IInputService
+    public class InputService : MonoBehaviour, IInputService, IBootstrapable
     {
         private InputActions _actions;
 
@@ -35,6 +34,11 @@ namespace Game.Input
                 action.WasPressedThisFrame(),
                 action.IsPressed(),
                 action.WasReleasedThisFrame());
+        }
+
+        public void Bootstrap()
+        {
+            ServiceLocator.Register<IInputService>(this);
         }
     }
 }
