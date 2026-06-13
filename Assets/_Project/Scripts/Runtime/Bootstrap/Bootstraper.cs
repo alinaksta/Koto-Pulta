@@ -4,14 +4,9 @@ using UnityEngine;
 
 namespace Game.Lifecycle
 {
-    public interface IBootstrapService 
+    public interface IBootstrapService : IBootstrapable
     {
 
-    }
-
-    public sealed class BootstrapService : MonoBehaviour, IBootstrapService
-    {
-        
     }
 
     public static class Bootstraper
@@ -30,15 +25,15 @@ namespace Game.Lifecycle
                 return;
             }
 
+            if (prefab.GetComponent<IBootstrapService>() == null)
+            {
+                Debug.LogError("The ServiceRoot prefab must have an IBootstrapService on it.");
+                return;
+            }
 
             var instance = Object.Instantiate(prefab);
             instance.name = "[Services]";
             Object.DontDestroyOnLoad(instance);
-
-            var bootstrapService = prefab.GetOrAddComponent<BootstrapService>();
-
-            // Bootstrap service is a marker for identifying if bootstrap was succesful
-            ServiceLocator.Register<IBootstrapService>(bootstrapService);
 
             BootstrapChildren(instance);
         }
