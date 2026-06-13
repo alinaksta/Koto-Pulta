@@ -29,5 +29,7 @@ namespace Game.Input
         public ButtonState InteractRight { get; }
         public ButtonState DropLeft { get; }
         public ButtonState DropRight { get; }
+
+        public ButtonState Cancel { get; }
     }
 }

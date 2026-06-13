@@ -28,6 +28,8 @@ namespace Game.Input
         public ButtonState DropLeft => GetButtonState(_actions.Gameplay.DropLeft);
         public ButtonState DropRight => GetButtonState(_actions.Gameplay.DropRight);
 
+        public ButtonState Cancel => GetButtonState(_actions.Gameplay.Cancel);
+
         public ButtonState GetButtonState(InputAction action)
         {
             return new ButtonState(

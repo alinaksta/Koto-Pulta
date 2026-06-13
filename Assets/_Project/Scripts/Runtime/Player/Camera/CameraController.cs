@@ -5,11 +5,13 @@ using UnityEngine;
 
 namespace Game.Player
 {
+
     public class CameraController : MonoBehaviour, IOrientation
     {
         [Header("References")]
-        [SerializeField] private Transform _followTarget;
-        [SerializeField] private Transform _targetTransform;
+        [SerializeField] private Camera _camera;
+        [SerializeField] private CameraTarget _headCameraTarget;
+        [SerializeField] private Transform _target;
 
         [Header("Look")]
         [SerializeField] private Vector2 _lookSensitivity = new Vector2(1f, 1f);
@@ -19,6 +21,9 @@ namespace Game.Player
 
         [Header("Cursor")]
         [SerializeField] private bool _lockMouseOnAwake = true;
+
+        private CameraTarget _cameraTarget;
+        private CameraTransiton? _cameraTransition;
 
         private IInputService _input;
 
@@ -59,16 +64,18 @@ namespace Game.Player
         {
             _input = ServiceLocator.Get<IInputService>();
 
-            if (_targetTransform == null)
-                _targetTransform = transform;
+            if (_target == null)
+                _target = transform;
 
             InitializeRotation();
             SetMouseLocked(_lockMouseOnAwake);
+
+            _cameraTarget = _headCameraTarget;
         }
 
         private void LateUpdate()
         {
-            if (_input == null || _targetTransform == null)
+            if (_input == null || _target == null)
                 return;
 
             Vector2 mouseDelta = _input.MouseDelta;
@@ -76,15 +83,38 @@ namespace Game.Player
 
             float minPitch = Mathf.Min(_angleLimits.x, _angleLimits.y);
             float maxPitch = Mathf.Max(_angleLimits.x, _angleLimits.y);
+            
+            if (!_cameraTransition.HasValue && ReferenceEquals(_cameraTarget, _headCameraTarget))
+            {
+                _yaw += lookDelta.x * _lookSensitivity.x;
+                _pitch += lookDelta.y * _lookSensitivity.y * (_invertY ? 1f : -1f);
+                _pitch = Mathf.Clamp(_pitch, minPitch, maxPitch);
+            }
+            
+            if (_cameraTransition.HasValue && Time.time >= _cameraTransition.Value.EndTime)
+                _cameraTransition = null;
 
-            _yaw += lookDelta.x * _lookSensitivity.x;
-            _pitch += lookDelta.y * _lookSensitivity.y * (_invertY ? 1f : -1f);
-            _pitch = Mathf.Clamp(_pitch, minPitch, maxPitch);
+            if (!_cameraTransition.HasValue)
+            {
+                _target.position = Vector3.Lerp(_target.position, _cameraTarget.Position, _cameraTarget.PositionLerp * Time.deltaTime);
 
-            if (_followTarget != null)
-                _targetTransform.position = _followTarget.position;
+                if (_cameraTarget.ApplyRotation)
+                    _target.rotation = Quaternion.Slerp(_target.rotation, _cameraTarget.Rotation, _cameraTarget.RotationLerp * Time.deltaTime);
+                else
+                    _target.rotation = RotationFull;
 
-            _targetTransform.rotation = RotationFull;
+                _camera.fieldOfView = Mathf.Lerp(_camera.fieldOfView, _cameraTarget.Fov, _cameraTarget.FovLerp * Time.deltaTime);
+            } 
+            else
+            {
+                var transition = _cameraTransition.Value;
+                float t = Mathf.InverseLerp(transition.StartTime, transition.StartTime + transition.Duration, Time.time);
+                t = Mathf.Clamp01(t);
+
+                _target.position = Vector3.Lerp(transition.Position, _cameraTarget.Position, t);
+                _target.rotation = Quaternion.Slerp(transition.Rotation, RotationFull, t);
+                _camera.fieldOfView = Mathf.Lerp(transition.Fov, _cameraTarget.Fov, t);
+            }
         }
 
         public void ResetRotation()
@@ -95,8 +125,8 @@ namespace Game.Player
             _smoothedMouseDelta = Vector2.zero;
             _mouseDeltaVelocity = Vector2.zero;
 
-            if (_targetTransform != null)
-                _targetTransform.rotation = RotationFull;
+            if (_target != null)
+                _target.rotation = RotationFull;
         }
 
         public Vector3 GetRelativeVelocity(Vector3 worldVelocity)
@@ -116,12 +146,28 @@ namespace Game.Player
             SetMouseLocked(!_mouseLocked);
         }
 
+        public void SetCameraTarget(CameraTarget target)
+        {
+            _cameraTarget = target;
+        }
+
+        public void ResetCameraTarget()
+        {
+            _cameraTarget = _headCameraTarget;
+        }
+
+        public void TransitionToDefaultTarget(CameraTransiton transition)
+        {
+            _cameraTransition = transition;
+            _cameraTarget = _headCameraTarget;
+        }
+
         private void InitializeRotation()
         {
-            if (_targetTransform == null)
+            if (_target == null)
                 return;
 
-            Vector3 euler = _targetTransform.rotation.eulerAngles;
+            Vector3 euler = _target.rotation.eulerAngles;
 
             _yaw = NormalizeSignedAngle(euler.y);
             _pitch = NormalizeSignedAngle(euler.x);

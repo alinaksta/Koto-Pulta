@@ -165,6 +165,15 @@ namespace Game.Input.Generated
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""ba70ba7e-ede3-40a9-b36c-fd673d299916"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -321,6 +330,17 @@ namespace Game.Input.Generated
                     ""action"": ""DropRight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2df01f58-f018-40f4-bdaf-c64a4d965d33"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -354,6 +374,7 @@ namespace Game.Input.Generated
             m_Gameplay_InteractRight = m_Gameplay.FindAction("InteractRight", throwIfNotFound: true);
             m_Gameplay_DropLeft = m_Gameplay.FindAction("DropLeft", throwIfNotFound: true);
             m_Gameplay_DropRight = m_Gameplay.FindAction("DropRight", throwIfNotFound: true);
+            m_Gameplay_Cancel = m_Gameplay.FindAction("Cancel", throwIfNotFound: true);
         }
 
         ~@InputActions()
@@ -442,6 +463,7 @@ namespace Game.Input.Generated
         private readonly InputAction m_Gameplay_InteractRight;
         private readonly InputAction m_Gameplay_DropLeft;
         private readonly InputAction m_Gameplay_DropRight;
+        private readonly InputAction m_Gameplay_Cancel;
         /// <summary>
         /// Provides access to input actions defined in input action map "Gameplay".
         /// </summary>
@@ -485,6 +507,10 @@ namespace Game.Input.Generated
             /// Provides access to the underlying input action "Gameplay/DropRight".
             /// </summary>
             public InputAction @DropRight => m_Wrapper.m_Gameplay_DropRight;
+            /// <summary>
+            /// Provides access to the underlying input action "Gameplay/Cancel".
+            /// </summary>
+            public InputAction @Cancel => m_Wrapper.m_Gameplay_Cancel;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -535,6 +561,9 @@ namespace Game.Input.Generated
                 @DropRight.started += instance.OnDropRight;
                 @DropRight.performed += instance.OnDropRight;
                 @DropRight.canceled += instance.OnDropRight;
+                @Cancel.started += instance.OnCancel;
+                @Cancel.performed += instance.OnCancel;
+                @Cancel.canceled += instance.OnCancel;
             }
 
             /// <summary>
@@ -570,6 +599,9 @@ namespace Game.Input.Generated
                 @DropRight.started -= instance.OnDropRight;
                 @DropRight.performed -= instance.OnDropRight;
                 @DropRight.canceled -= instance.OnDropRight;
+                @Cancel.started -= instance.OnCancel;
+                @Cancel.performed -= instance.OnCancel;
+                @Cancel.canceled -= instance.OnCancel;
             }
 
             /// <summary>
@@ -679,6 +711,13 @@ namespace Game.Input.Generated
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnDropRight(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "Cancel" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnCancel(InputAction.CallbackContext context);
         }
     }
 }
