@@ -29,6 +29,7 @@ namespace Game.Player
 
         private float _yaw;
         private float _pitch;
+        private Vector2 _angularVelocity;
 
         private Vector2 _smoothedMouseDelta;
         private Vector2 _mouseDeltaVelocity;
@@ -60,6 +61,11 @@ namespace Game.Player
         public Vector3 ViewForward => Forward;
         public Vector3 ViewRight => Right;
 
+        /// <summary>
+        /// x is yaw velocity, y is pitch velocity
+        /// </summary>
+        public Vector2 AngularVelocity => _angularVelocity;
+
         private void Awake()
         {
             _input = ServiceLocator.Get<IInputService>();
@@ -83,6 +89,9 @@ namespace Game.Player
 
             float minPitch = Mathf.Min(_angleLimits.x, _angleLimits.y);
             float maxPitch = Mathf.Max(_angleLimits.x, _angleLimits.y);
+
+            float previousYaw = _yaw;
+            float previousPitch = _pitch;
             
             if (!_cameraTransition.HasValue && ReferenceEquals(_cameraTarget, _headCameraTarget))
             {
@@ -115,6 +124,10 @@ namespace Game.Player
                 _target.rotation = Quaternion.Slerp(transition.Rotation, RotationFull, t);
                 _camera.fieldOfView = Mathf.Lerp(transition.Fov, _cameraTarget.Fov, t);
             }
+
+            float yawVelocity = Mathf.DeltaAngle(_yaw, previousYaw) / Time.deltaTime;
+            float pitchVelocity = Mathf.DeltaAngle(_pitch, previousPitch) / Time.deltaTime;
+            _angularVelocity = new Vector2(yawVelocity, pitchVelocity);
         }
 
         public void ResetRotation()
