@@ -122,6 +122,15 @@ namespace Game.Input.Generated
                     ""initialStateCheck"": true
                 },
                 {
+                    ""name"": ""MousePosition"",
+                    ""type"": ""Value"",
+                    ""id"": ""549259cc-59bc-4092-9f69-b25b3e98fcf4"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
                     ""name"": ""Jump"",
                     ""type"": ""Button"",
                     ""id"": ""dbd69e77-d3ce-4316-993b-79935c2e18d4"",
@@ -341,6 +350,17 @@ namespace Game.Input.Generated
                     ""action"": ""Cancel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""992b8f34-5b58-475d-accf-33004b956241"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MousePosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -369,6 +389,7 @@ namespace Game.Input.Generated
             m_Gameplay_Move = m_Gameplay.FindAction("Move", throwIfNotFound: true);
             m_Gameplay_MouseDelta = m_Gameplay.FindAction("MouseDelta", throwIfNotFound: true);
             m_Gameplay_MouseScroll = m_Gameplay.FindAction("MouseScroll", throwIfNotFound: true);
+            m_Gameplay_MousePosition = m_Gameplay.FindAction("MousePosition", throwIfNotFound: true);
             m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
             m_Gameplay_InteractLeft = m_Gameplay.FindAction("InteractLeft", throwIfNotFound: true);
             m_Gameplay_InteractRight = m_Gameplay.FindAction("InteractRight", throwIfNotFound: true);
@@ -458,6 +479,7 @@ namespace Game.Input.Generated
         private readonly InputAction m_Gameplay_Move;
         private readonly InputAction m_Gameplay_MouseDelta;
         private readonly InputAction m_Gameplay_MouseScroll;
+        private readonly InputAction m_Gameplay_MousePosition;
         private readonly InputAction m_Gameplay_Jump;
         private readonly InputAction m_Gameplay_InteractLeft;
         private readonly InputAction m_Gameplay_InteractRight;
@@ -487,6 +509,10 @@ namespace Game.Input.Generated
             /// Provides access to the underlying input action "Gameplay/MouseScroll".
             /// </summary>
             public InputAction @MouseScroll => m_Wrapper.m_Gameplay_MouseScroll;
+            /// <summary>
+            /// Provides access to the underlying input action "Gameplay/MousePosition".
+            /// </summary>
+            public InputAction @MousePosition => m_Wrapper.m_Gameplay_MousePosition;
             /// <summary>
             /// Provides access to the underlying input action "Gameplay/Jump".
             /// </summary>
@@ -546,6 +572,9 @@ namespace Game.Input.Generated
                 @MouseScroll.started += instance.OnMouseScroll;
                 @MouseScroll.performed += instance.OnMouseScroll;
                 @MouseScroll.canceled += instance.OnMouseScroll;
+                @MousePosition.started += instance.OnMousePosition;
+                @MousePosition.performed += instance.OnMousePosition;
+                @MousePosition.canceled += instance.OnMousePosition;
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
@@ -584,6 +613,9 @@ namespace Game.Input.Generated
                 @MouseScroll.started -= instance.OnMouseScroll;
                 @MouseScroll.performed -= instance.OnMouseScroll;
                 @MouseScroll.canceled -= instance.OnMouseScroll;
+                @MousePosition.started -= instance.OnMousePosition;
+                @MousePosition.performed -= instance.OnMousePosition;
+                @MousePosition.canceled -= instance.OnMousePosition;
                 @Jump.started -= instance.OnJump;
                 @Jump.performed -= instance.OnJump;
                 @Jump.canceled -= instance.OnJump;
@@ -676,6 +708,13 @@ namespace Game.Input.Generated
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnMouseScroll(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "MousePosition" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnMousePosition(InputAction.CallbackContext context);
             /// <summary>
             /// Method invoked when associated input action "Jump" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
             /// </summary>

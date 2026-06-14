@@ -22,6 +22,7 @@ namespace Game.Input
 
         public Vector2 MouseDelta { get; }
         public Vector2 MouseScroll { get; }
+        public Vector2 MousePosition { get; }
 
         public ButtonState Jump { get; }
 

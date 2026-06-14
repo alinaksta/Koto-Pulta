@@ -20,6 +20,7 @@ namespace Game.Input
 
         public Vector2 MouseDelta => _actions.Gameplay.MouseDelta.ReadValue<Vector2>();
         public Vector2 MouseScroll => _actions.Gameplay.MouseScroll.ReadValue<Vector2>();
+        public Vector2 MousePosition => _actions.Gameplay.MousePosition.ReadValue<Vector2>();
 
         public ButtonState Jump => GetButtonState(_actions.Gameplay.Jump);
 
