@@ -1,17 +1,17 @@
 using Game.Input;
+using Game.Interaction;
 using Game.Movement;
 using Game.Services;
 using UnityEngine;
 
 namespace Game.Player
 {
-
-    public class CameraController : MonoBehaviour, IOrientation
+    public class CameraController : MonoBehaviour, IOrientation, IFocusHandler
     {
         [Header("References")]
         [SerializeField] private Camera _camera;
-        [SerializeField] private CameraTarget _headCameraTarget;
         [SerializeField] private Transform _target;
+        [SerializeField] private Transform _head;
 
         [Header("Look")]
         [SerializeField] private Vector2 _lookSensitivity = new Vector2(1f, 1f);
@@ -19,13 +19,16 @@ namespace Game.Player
         [SerializeField] private Vector2 _angleLimits = new Vector2(-90f, 90f);
         [SerializeField] private bool _invertY;
 
+        [Header("Position")]
+        [SerializeField] private float _headPositionLerp = 20f;
+
         [Header("Cursor")]
         [SerializeField] private bool _lockMouseOnAwake = true;
 
-        private CameraTarget _cameraTarget;
-        private CameraTransiton? _cameraTransition;
-
         private IInputService _input;
+
+        private IFocusable _focusedObject;
+        private FocusTransition? _focusTransition;
 
         private float _yaw;
         private float _pitch;
@@ -36,7 +39,6 @@ namespace Game.Player
 
         private bool _mouseLocked;
 
-        public Quaternion Rotation => RotationFull;
         public Quaternion RotationFlat => Quaternion.Euler(0f, _yaw, 0f);
         public Quaternion RotationFull => Quaternion.Euler(_pitch, _yaw, 0f);
         public Vector3 Euler => new Vector3(_pitch, _yaw, 0f);
@@ -49,22 +51,24 @@ namespace Game.Player
         public Vector3 Forward => RotationFull * Vector3.forward;
         public Vector3 Right => RotationFull * Vector3.right;
 
-        public Quaternion ViewRotationFlat => RotationFlat;
-        public Quaternion ViewRotationFull => RotationFull;
-        public Vector3 ViewEuler => Euler;
-        public float ViewYaw => Yaw;
-        public float ViewPitch => Pitch;
-
-        public Vector3 ViewForwardFlat => ForwardFlat;
-        public Vector3 ViewRightFlat => RightFlat;
-
-        public Vector3 ViewForward => Forward;
-        public Vector3 ViewRight => Right;
-
         /// <summary>
         /// x is yaw velocity, y is pitch velocity
         /// </summary>
         public Vector2 AngularVelocity => _angularVelocity;
+
+        public FocusStatus FocusStatus
+        {
+            get
+            {
+                if (_focusTransition.HasValue)
+                    return FocusStatus.InTransition;
+                else if (_focusedObject != null)
+                    return FocusStatus.Focused;
+                else
+                    return FocusStatus.Unfocused;
+            }
+        }
+        public IFocusable FocusedObject => _focusedObject;
 
         private void Awake()
         {
@@ -75,8 +79,6 @@ namespace Game.Player
 
             InitializeRotation();
             SetMouseLocked(_lockMouseOnAwake);
-
-            _cameraTarget = _headCameraTarget;
         }
 
         private void LateUpdate()
@@ -92,42 +94,76 @@ namespace Game.Player
 
             float previousYaw = _yaw;
             float previousPitch = _pitch;
-            
-            if (!_cameraTransition.HasValue && ReferenceEquals(_cameraTarget, _headCameraTarget))
+
+            HandleFocusTransitionTime();
+
+            if (FocusStatus == FocusStatus.Unfocused)
             {
-                _yaw += lookDelta.x * _lookSensitivity.x;
-                _pitch += lookDelta.y * _lookSensitivity.y * (_invertY ? 1f : -1f);
-                _pitch = Mathf.Clamp(_pitch, minPitch, maxPitch);
+                UpdateLookRotation(lookDelta, minPitch, maxPitch);
             }
-            
-            if (_cameraTransition.HasValue && Time.time >= _cameraTransition.Value.EndTime)
-                _cameraTransition = null;
-
-            if (!_cameraTransition.HasValue)
+            else if (FocusStatus == FocusStatus.Focused)
             {
-                _target.position = Vector3.Lerp(_target.position, _cameraTarget.Position, _cameraTarget.PositionLerp * Time.deltaTime);
-
-                if (_cameraTarget.ApplyRotation)
-                    _target.rotation = Quaternion.Slerp(_target.rotation, _cameraTarget.Rotation, _cameraTarget.RotationLerp * Time.deltaTime);
-                else
-                    _target.rotation = RotationFull;
-
-                _camera.fieldOfView = Mathf.Lerp(_camera.fieldOfView, _cameraTarget.Fov, _cameraTarget.FovLerp * Time.deltaTime);
-            } 
+                UpdateFocusedRotation();
+            }
             else
             {
-                var transition = _cameraTransition.Value;
-                float t = Mathf.InverseLerp(transition.StartTime, transition.StartTime + transition.Duration, Time.time);
-                t = Mathf.Clamp01(t);
-
-                _target.position = Vector3.Lerp(transition.Position, _cameraTarget.Position, t);
-                _target.rotation = Quaternion.Slerp(transition.Rotation, RotationFull, t);
-                _camera.fieldOfView = Mathf.Lerp(transition.Fov, _cameraTarget.Fov, t);
+                UpdateTransitionRotation();
             }
 
+            if (FocusStatus == FocusStatus.Focused)
+            {
+                _focusedObject.OnFocusHeld(Time.deltaTime);
+            }
+
+            UpdateAngularVelocity(previousYaw, previousPitch);
+        }
+
+        private void UpdateAngularVelocity(float previousYaw, float previousPitch)
+        {
             float yawVelocity = Mathf.DeltaAngle(_yaw, previousYaw) / Time.deltaTime;
             float pitchVelocity = Mathf.DeltaAngle(_pitch, previousPitch) / Time.deltaTime;
             _angularVelocity = new Vector2(yawVelocity, pitchVelocity);
+        }
+
+        private void UpdateTransitionRotation()
+        {
+            var transition = _focusTransition.Value;
+            float t = Mathf.InverseLerp(transition.StartTime, transition.StartTime + transition.Duration, Time.time);
+            t = Mathf.Clamp01(t);
+
+            _target.position = Vector3.Lerp(transition.From.Position, transition.To.Position, t);
+            _target.rotation = Quaternion.Slerp(transition.From.Rotation, transition.To.Rotation, t);
+            _camera.fieldOfView = Mathf.Lerp(transition.From.Fov, transition.To.Fov, t);
+        }
+
+        private void UpdateFocusedRotation()
+        {
+            FocusTarget target = _focusedObject.Target;
+
+            _target.position = Vector3.Lerp(_target.position, target.Position, target.PositionLerp * Time.deltaTime);
+
+            if (target.ApplyRotation)
+                _target.rotation = Quaternion.Slerp(_target.rotation, target.Rotation, target.RotationLerp * Time.deltaTime);
+            else
+                _target.rotation = RotationFull;
+
+            _camera.fieldOfView = Mathf.Lerp(_camera.fieldOfView, target.Fov, target.FovLerp * Time.deltaTime);
+        }
+
+        private void UpdateLookRotation(Vector2 lookDelta, float minPitch, float maxPitch)
+        {
+            _yaw += lookDelta.x * _lookSensitivity.x;
+            _pitch += lookDelta.y * _lookSensitivity.y * (_invertY ? 1f : -1f);
+            _pitch = Mathf.Clamp(_pitch, minPitch, maxPitch);
+
+            _target.position = Vector3.Lerp(_target.position, _head.position, _headPositionLerp * Time.deltaTime);
+            _target.rotation = RotationFull;
+        }
+
+        private void HandleFocusTransitionTime()
+        {
+            if (_focusTransition.HasValue && Time.time >= _focusTransition.Value.EndTime)
+                _focusTransition = null;
         }
 
         public void ResetRotation()
@@ -154,25 +190,57 @@ namespace Game.Player
             _mouseLocked = locked;
         }
 
+        public void ClearMouseLocked()
+        {
+            SetMouseLocked(true);
+        }
+
         public void ToggleMouseLocked()
         {
             SetMouseLocked(!_mouseLocked);
         }
 
-        public void SetCameraTarget(CameraTarget target)
+        public bool TryBeginFocus(IFocusable focusable)
         {
-            _cameraTarget = target;
+            if (FocusStatus == FocusStatus.Unfocused)
+            {
+                _focusedObject = focusable;
+                focusable.OnFocusStarted();
+
+                var transition = new FocusTransition(
+                    GetCurrentCameraSnapshot(),
+                    focusable.Target.ToSnapshot(),
+                    focusable.StartFocusTransitionDuration,
+                    Time.time);
+
+                _focusTransition = transition;
+
+                return true;
+            }
+            return false;
         }
 
-        public void ResetCameraTarget()
+        public void EndFocus()
         {
-            _cameraTarget = _headCameraTarget;
+            if (_focusedObject == null)
+                return;
+
+            IFocusable focusable = _focusedObject;
+            focusable.OnFocusEnded();
+            _focusedObject = null;
+
+            var transition = new FocusTransition(
+                    focusable.Target.ToSnapshot(),
+                    GetCurrentCameraSnapshot(),
+                    focusable.EndFocusTransitionDuration,
+                    Time.time);
+
+            _focusTransition = transition;
         }
 
-        public void TransitionToDefaultTarget(CameraTransiton transition)
+        private CameraSnapshot GetCurrentCameraSnapshot()
         {
-            _cameraTransition = transition;
-            _cameraTarget = _headCameraTarget;
+            return new CameraSnapshot(_head.position, RotationFull, 90f);
         }
 
         private void InitializeRotation()

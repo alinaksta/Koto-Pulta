@@ -11,7 +11,7 @@ namespace Game.Interaction
         Right
     }
 
-    public class HandsInteractor : MonoBehaviour
+    public class HandsInteractor : MonoBehaviour, IFocusHandler
     {
         [SerializeField] private CameraController _cameraController;
         [SerializeField] private Transform _lookDirection;
@@ -25,7 +25,8 @@ namespace Game.Interaction
         public Hand LeftHand => _leftHand;
         public Hand RightHand => _rightHand;
 
-        private IFocusInteractable _currentFocus;
+        public FocusStatus FocusStatus => _cameraController.FocusStatus;
+        public IFocusable FocusedObject => _cameraController.FocusedObject;
 
         private void Awake()
         {
@@ -36,21 +37,15 @@ namespace Game.Interaction
 
         private void Update()
         {
-            if (_inputService.Cancel.Pressed && _currentFocus != null)
+            if (_inputService.Cancel.Pressed && FocusStatus != FocusStatus.Unfocused)
             {
-                _currentFocus.EndInteraction();
-                _cameraController.TransitionToDefaultTarget(
-                    new CameraTransiton(
-                        _currentFocus.CameraTarget.Position,
-                        _currentFocus.CameraTarget.Rotation,
-                        _currentFocus.CameraTarget.Fov,
-                        _currentFocus.ResetTransitionDuration, 
-                        Time.time));
-                _currentFocus = null;
-                _rightHand.SetVisible(true);
-                _leftHand.SetVisible(true);
+                EndFocus();
                 _cameraController.SetMouseLocked(true);
             }
+
+            bool visible = FocusStatus == FocusStatus.Unfocused;
+            _rightHand.SetVisible(visible);
+            _leftHand.SetVisible(visible);
 
             if (_inputService.InteractLeft.Pressed)
                 CauseInteraction(_leftHand);
@@ -60,30 +55,30 @@ namespace Game.Interaction
 
         private void CauseInteraction(Hand hand)
         {
-            if (_currentFocus != null)
+            if (FocusStatus != FocusStatus.Unfocused)
                 return;
 
-            hand.Interact();
+            var context = new InteractionContext(_lookDirection.position, _lookDirection.forward, this);
+
+            hand.OnInteractionStarted(in context);
             if (Physics.Raycast(_lookDirection.position, _lookDirection.forward, out var hit, _interactionDistance, _interactionLayer))
             {
                 if (hit.transform.TryGetComponent<IInteractable>(out var interactable))
                 {
-                    interactable.Interact();
-                }
-
-                if (hit.transform.TryGetComponent<IFocusInteractable>(out var focusable))
-                {
-                    focusable.BeginInteraction();
-                    _cameraController.SetCameraTarget(focusable.CameraTarget);
-                    _currentFocus = focusable;
-                    _rightHand.SetVisible(false);
-                    _leftHand.SetVisible(false);
-                    _cameraController.SetMouseLocked(false);
+                    var contextWithHit = context.WithHitInfo(in hit);
+                    if (interactable.CanInteract(in contextWithHit))
+                        interactable.OnInteractionStarted(in contextWithHit);
                 }
             }
         }
 
         public Hand GetHand(HandType handType)
             => handType == HandType.Left ? _leftHand : _rightHand;
+
+        public bool TryBeginFocus(IFocusable focusable) => _cameraController.TryBeginFocus(focusable);
+        public void EndFocus() => _cameraController.EndFocus();
+
+        public void SetMouseLocked(bool locked) => _cameraController.SetMouseLocked(locked);
+        public void ClearMouseLocked() => _cameraController.ClearMouseLocked();
     }
 }

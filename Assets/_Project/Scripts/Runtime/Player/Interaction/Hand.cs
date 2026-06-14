@@ -4,17 +4,12 @@ namespace Game.Interaction
 {
     public class Hand : IInteractable
     {
-        public event Action OnInteracted = delegate { };
-        public event Action<bool> OnSetVisible = delegate { };
-
         private bool _visible = true;
 
         public bool Visible => _visible;
 
-        public void Interact()
-        {
-            OnInteracted.Invoke();
-        }
+        public event Action OnInteracted = delegate { };
+        public event Action<bool> OnSetVisible = delegate { };
 
         public void SetVisible(bool visible)
         {
@@ -24,5 +19,16 @@ namespace Game.Interaction
                 OnSetVisible.Invoke(visible);
             }
         }
+
+        public bool CanInteract(in InteractionContext context) => true;
+
+        public void OnInteractionStarted(in InteractionContext context)
+        {
+            OnInteracted.Invoke();
+        }
+
+        public void OnInteractionHeld(in InteractionContext context, float delta) { }
+
+        public void OnInteractionStopped(in InteractionContext context) { }
     }
 }

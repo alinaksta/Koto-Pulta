@@ -42,7 +42,7 @@ namespace Game.Interaction
         [Tooltip("Player speed at which the bob reaches full amplitude.")]
         [SerializeField, Min(0.01f)] private float _speedForFullBob = 5f;
 
-        [Header("Interaction")]
+        [Header("OnInteractionHeld")]
         [SerializeField, Min(0f)] private float _clickDistance = 320f;
         [SerializeField, Min(0f)] private float _clickDuration = 0.2f;
 
@@ -190,7 +190,7 @@ namespace Game.Interaction
             // The event remains subscribed in case additional effects are added.
         }
 
-        [ContextMenu("Play Interact animation")]
+        [ContextMenu("Play OnInteractionStarted animation")]
         private void OnHandInteracted()
         {
             if (_clickMotion.IsActive())

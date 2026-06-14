@@ -1,18 +1,16 @@
-using Game.Player;
-
 namespace Game.Interaction
 {
     public interface IInteractable
     {
-        void Interact();
+        void OnInteractionStarted(in InteractionContext context);
+        void OnInteractionHeld(in InteractionContext context, float delta);
+        void OnInteractionStopped(in InteractionContext context);
+
+        bool CanInteract(in InteractionContext context);
     }
 
-    public interface IFocusInteractable
+    public readonly struct InteractionResult
     {
-        CameraTarget CameraTarget { get; }
-        float ResetTransitionDuration { get; }
-
-        void BeginInteraction();
-        void EndInteraction();
+        public readonly bool WasAccepted;
     }
 }

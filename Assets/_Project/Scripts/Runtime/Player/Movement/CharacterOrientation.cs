@@ -9,7 +9,6 @@ namespace Game.Movement
         private float _yaw;
         private float _pitch;
 
-        public Quaternion Rotation => RotationFull;
         public Quaternion RotationFlat => Quaternion.Euler(0f, _yaw, 0f);
         public Quaternion RotationFull => Quaternion.Euler(_pitch, _yaw, 0f);
         public Vector3 Euler => new Vector3(_pitch, _yaw, 0f);
@@ -21,18 +20,6 @@ namespace Game.Movement
 
         public Vector3 Forward => RotationFull * Vector3.forward;
         public Vector3 Right => RotationFull * Vector3.right;
-
-        public Quaternion ViewRotationFlat => RotationFlat;
-        public Quaternion ViewRotationFull => RotationFull;
-        public Vector3 ViewEuler => Euler;
-        public float ViewYaw => Yaw;
-        public float ViewPitch => Pitch;
-
-        public Vector3 ViewForwardFlat => ForwardFlat;
-        public Vector3 ViewRightFlat => RightFlat;
-
-        public Vector3 ViewForward => Forward;
-        public Vector3 ViewRight => Right;
 
         private void Update()
         {
