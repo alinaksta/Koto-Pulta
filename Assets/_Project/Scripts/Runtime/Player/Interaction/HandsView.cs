@@ -1,6 +1,11 @@
 using UnityEngine;
 using LitMotion;
 using Game.Movement;
+using Game.Items;
+using System;
+using UnityEngine.UI;
+using Game.Items.Properties;
+using System.Threading.Tasks;
 
 namespace Game.Interaction
 {
@@ -14,7 +19,8 @@ namespace Game.Interaction
         [SerializeField] private PlayerController _playerController;
         [SerializeField] private Animator _handAnimator;
         [SerializeField] private RectTransform _handTransform;
-
+        [SerializeField] private Image _itemImage;
+        [SerializeField] private Image _handImage;
         [Header("Hand Settings")]
         [SerializeField] private HandType _handType;
         [SerializeField, Min(0f)] private float _hiddenDistance = 480f;
@@ -46,6 +52,9 @@ namespace Game.Interaction
         [SerializeField, Min(0f)] private float _clickDistance = 320f;
         [SerializeField, Min(0f)] private float _clickDuration = 0.2f;
 
+        [Header("OnItemChanged")]
+        [SerializeField, Min(0f)] private float _itemChangeDuration = 0.4f;
+
         private float HandSign =>
             _handType == HandType.Left ? 1f : -1f;
 
@@ -70,11 +79,14 @@ namespace Game.Interaction
 
             _hand.OnInteracted += OnHandInteracted;
             _hand.OnSetVisible += OnHandSetVisible;
+            _hand.OnItemChanged += OnHandItemChanged;
 
             _originalPosition = _handTransform.anchoredPosition;
             _basePosition = _originalPosition;
 
             _previousPlayerPosition = _playerController.transform.position;
+
+            OnHandItemChanged(null);
         }
 
         private void OnEnable()
@@ -87,6 +99,8 @@ namespace Game.Interaction
         {
             _hand.OnInteracted -= OnHandInteracted;
             _hand.OnSetVisible -= OnHandSetVisible;
+            _hand.OnItemChanged -= OnHandItemChanged;
+
 
             if (_clickMotion.IsActive())
             {
@@ -190,9 +204,46 @@ namespace Game.Interaction
             // The event remains subscribed in case additional effects are added.
         }
 
+        private async void OnHandItemChanged(Item? item)
+        {
+            if (!item.HasValue)
+            {
+                _itemImage.enabled = false;
+                _itemImage.sprite = null;
+                PlayItemChangedAnimation(null, true);
+            }
+            else
+            {
+                _itemImage.enabled = true;
+                var definition = item.Value.Definition;
+
+                if (definition.TryGetProperty<HandSpriteProperty>(out var handProperty))
+                {
+                    _itemImage.sprite = null;
+                    _itemImage.enabled = false;
+                    PlayItemChangedAnimation(handProperty.HandSprite, false);
+                }
+                else
+                {
+                    if (definition.TryGetProperty<SpriteProperty>(out var spriteProperty))
+                    {
+                        _itemImage.sprite = spriteProperty.Sprite;
+                        _itemImage.enabled = true;
+                        _handAnimator.enabled = true;
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"The item {definition.Id} does not have a SpriteProperty!");
+                    }
+                }
+            }
+        }
+
         [ContextMenu("Play OnInteractionStarted animation")]
         private void OnHandInteracted()
         {
+            return;
+
             if (_clickMotion.IsActive())
             {
                 _clickMotion.Cancel();
@@ -210,6 +261,34 @@ namespace Game.Interaction
                 .Bind(value => _clickOffset = value);
 
             _handAnimator.SetTrigger(ClickTriggerHash);
+        }
+
+        private async void PlayItemChangedAnimation(Sprite sprite, bool animator)
+        {
+            if (_clickMotion.IsActive())
+            {
+                _clickMotion.Cancel();
+            }
+
+            _clickOffset = Vector2.zero;
+            _handAnimator.enabled = animator;
+
+            Vector2 clickTarget =
+                Vector2.up * -_hiddenDistance;
+
+            _clickMotion = LMotion
+                .Create(Vector2.zero, clickTarget, _itemChangeDuration/2f)
+                .WithOnComplete(() => _clickOffset = clickTarget)
+                .Bind(value => _clickOffset = value);
+
+            await _clickMotion;
+
+            _handImage.sprite = sprite;
+
+            _clickMotion = LMotion
+                .Create(clickTarget, Vector2.zero, _itemChangeDuration/2f)
+                .WithOnComplete(() => _clickOffset = Vector2.zero)
+                .Bind(value => _clickOffset = value);
         }
     }
 }

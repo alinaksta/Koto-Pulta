@@ -58,14 +58,14 @@ namespace Game.Interaction
             if (FocusStatus != FocusStatus.Unfocused)
                 return;
 
-            var context = new InteractionContext(_lookDirection.position, _lookDirection.forward, this);
+            var context = new InteractionContext(_lookDirection.position, _lookDirection.forward, this, hand);
 
-            hand.OnInteractionStarted(in context);
             if (Physics.Raycast(_lookDirection.position, _lookDirection.forward, out var hit, _interactionDistance, _interactionLayer))
             {
+                var contextWithHit = context.WithHitInfo(in hit);
+                hand.OnInteractionStarted(in contextWithHit);
                 if (hit.transform.TryGetComponent<IInteractable>(out var interactable))
                 {
-                    var contextWithHit = context.WithHitInfo(in hit);
                     if (interactable.CanInteract(in contextWithHit))
                         interactable.OnInteractionStarted(in contextWithHit);
                 }
