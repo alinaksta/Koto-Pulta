@@ -13,7 +13,7 @@ namespace Game.Items
         bool CanInsert(in TransferRequest request);
 
         void Insert(Item item);
-        void Remove(Item item);
+        Item? Remove();
     }
 
     public interface IContainerHolder

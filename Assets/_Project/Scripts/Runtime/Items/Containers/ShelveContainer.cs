@@ -4,11 +4,10 @@ using Game.Items.Properties;
 using Itemworks.UnityEngine;
 using UnityEngine;
 
-public class InteractableContainer : MonoBehaviour, IInteractable, IContainerHolder
+public class ShelveContainer : MonoBehaviour, IInteractable, IContainerHolder
 {
     [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] private ItemDefinitionAsset _initialItem;
-    [SerializeField] private bool _destroyOnEmpty = false;
 
     private ItemContainer _container = new();
     public IContainer Container => _container;
@@ -22,7 +21,7 @@ public class InteractableContainer : MonoBehaviour, IInteractable, IContainerHol
             var item = Item.FromId(_initialItem.Id);
             if (item.HasValue)
             {
-                _container.Remove(item.Value);
+                _container.Remove();
                 _container.Insert(item.Value);
             }
         }

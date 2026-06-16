@@ -32,8 +32,8 @@ namespace Game.Items
             if (!destination.CanInsert(request))
                 return TransferResult.DestinationRejected;
 
-            source.Remove(item);
-            destination.Insert(item);
+            var removed = source.Remove();
+            destination.Insert(removed.Value);
             return TransferResult.Success;
         }
     }

@@ -20,10 +20,12 @@ namespace Game.Items
             OnItemChanged.Invoke(_item);
         }
 
-        public void Remove(Item item)
+        public Item? Remove()
         {
+            var removed = _item;
             _item = null;
             OnItemChanged.Invoke(_item);
+            return removed;
         }
     }
 }

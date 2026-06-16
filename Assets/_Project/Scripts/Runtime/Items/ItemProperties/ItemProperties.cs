@@ -15,4 +15,11 @@ namespace Game.Items.Properties
     {
         public Sprite HandSprite;
     }
+
+    [Serializable]
+    public class ThrowableProperty : ItemProperty
+    {
+        public float HoldTime = 0.8f;
+        public float ForwardForce = 6f;
+    }
 }

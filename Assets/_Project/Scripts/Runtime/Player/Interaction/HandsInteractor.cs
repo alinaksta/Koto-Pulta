@@ -1,6 +1,8 @@
 using Game.Input;
+using Game.Items;
 using Game.Player;
 using Game.Services;
+using System;
 using UnityEngine;
 
 namespace Game.Interaction
@@ -17,7 +19,11 @@ namespace Game.Interaction
         [SerializeField] private Transform _lookDirection;
         [SerializeField] private float _interactionDistance = 1.4f;
         [SerializeField] private LayerMask _interactionLayer;
+        [SerializeField] private Transform _leftSpawnPosition;
+        [SerializeField] private Transform _rightSpawnPosition;
+
         private IInputService _inputService;
+        private PhysicsItemService _physicsItemService;
 
         private Hand _leftHand;
         private Hand _rightHand;
@@ -25,12 +31,14 @@ namespace Game.Interaction
         public Hand LeftHand => _leftHand;
         public Hand RightHand => _rightHand;
 
+
         public FocusStatus FocusStatus => _cameraController.FocusStatus;
         public IFocusable FocusedObject => _cameraController.FocusedObject;
 
         private void Awake()
         {
             _inputService = ServiceLocator.Get<IInputService>();
+            _physicsItemService = ServiceLocator.Get<PhysicsItemService>();
             _leftHand = new();
             _rightHand = new();
         }
@@ -47,10 +55,24 @@ namespace Game.Interaction
             _rightHand.SetVisible(visible);
             _leftHand.SetVisible(visible);
 
+            if (_inputService.DropLeft.Pressed)
+                _leftHand.TryDropItem(_leftSpawnPosition.position, Vector3.zero);
+            if (_inputService.DropRight.Pressed)
+                _rightHand.TryDropItem(_rightSpawnPosition.position, Vector3.zero);
+
             if (_inputService.InteractLeft.Pressed)
                 CauseInteraction(_leftHand);
+            else if (_inputService.InteractLeft.Held)
+                HoldInteraction(_leftHand, Time.deltaTime);
+            else if (_inputService.InteractLeft.Released)
+                EndInteraction(_leftHand);
+
             if (_inputService.InteractRight.Pressed)
                 CauseInteraction(_rightHand);
+            else if (_inputService.InteractRight.Held)
+                HoldInteraction(_rightHand, Time.deltaTime);
+            else if (_inputService.InteractRight.Released)
+                EndInteraction(_rightHand);
         }
 
         private void CauseInteraction(Hand hand)
@@ -59,6 +81,9 @@ namespace Game.Interaction
                 return;
 
             var context = new InteractionContext(_lookDirection.position, _lookDirection.forward, this, hand);
+
+            if (hand.TryStartInteractionWithItemInHand(in context))
+                return;
 
             if (Physics.Raycast(_lookDirection.position, _lookDirection.forward, out var hit, _interactionDistance, _interactionLayer))
             {
@@ -70,6 +95,28 @@ namespace Game.Interaction
                         interactable.OnInteractionStarted(in contextWithHit);
                 }
             }
+        }
+
+        private void HoldInteraction(Hand hand, float delta)
+        {
+            if (FocusStatus != FocusStatus.Unfocused)
+                return;
+
+            var context = new InteractionContext(_lookDirection.position, _lookDirection.forward, this, hand);
+
+            if (hand.TryHoldInteractionWithItemInHand(in context, delta))
+                return;
+        }
+
+        private void EndInteraction(Hand hand)
+        {
+            if (FocusStatus != FocusStatus.Unfocused)
+                return;
+
+            var context = new InteractionContext(_lookDirection.position, _lookDirection.forward, this, hand);
+
+            if (hand.TryEndInteractionWithItemInHand(in context))
+                return;
         }
 
         public Hand GetHand(HandType handType)

@@ -204,7 +204,7 @@ namespace Game.Interaction
             // The event remains subscribed in case additional effects are added.
         }
 
-        private async void OnHandItemChanged(Item? item)
+        private void OnHandItemChanged(Item? item)
         {
             if (!item.HasValue)
             {
@@ -242,7 +242,7 @@ namespace Game.Interaction
         [ContextMenu("Play OnInteractionStarted animation")]
         private void OnHandInteracted()
         {
-            return;
+            return; // I'll figure something out later, how to hanle interaction better... Maybe I should not rely on interaction callback at all
 
             if (_clickMotion.IsActive())
             {
