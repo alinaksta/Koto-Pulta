@@ -1,3 +1,4 @@
+using Game.Items.Components;
 using Itemworks.Core;
 using System;
 using UnityEngine;
@@ -22,4 +23,13 @@ namespace Game.Items.Properties
         public float HoldTime = 0.8f;
         public float ForwardForce = 6f;
     }
-}
+
+    [Serializable]
+    public class WaiterProperty : ItemProperty, IItemInitializer
+    {
+        public void OnInstanceCreated(ItemInstance instance)
+        {
+            instance.AddComponent(new WaiterComponent());
+        }
+    }
+} 

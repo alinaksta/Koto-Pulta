@@ -87,9 +87,10 @@ namespace Game.Interaction
 
             if (Physics.Raycast(_lookDirection.position, _lookDirection.forward, out var hit, _interactionDistance, _interactionLayer))
             {
+                Debug.Log($"Has hit object named {hit.collider.gameObject.name}");
                 var contextWithHit = context.WithHitInfo(in hit);
                 hand.OnInteractionStarted(in contextWithHit);
-                if (hit.transform.TryGetComponent<IInteractable>(out var interactable))
+                if (hit.collider.TryGetComponent<IInteractable>(out var interactable))
                 {
                     if (interactable.CanInteract(in contextWithHit))
                         interactable.OnInteractionStarted(in contextWithHit);

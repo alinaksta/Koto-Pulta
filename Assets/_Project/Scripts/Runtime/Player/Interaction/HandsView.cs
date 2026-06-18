@@ -6,6 +6,8 @@ using System;
 using UnityEngine.UI;
 using Game.Items.Properties;
 using System.Threading.Tasks;
+using TMPro;
+using Game.Items.Components;
 
 namespace Game.Interaction
 {
@@ -19,8 +21,10 @@ namespace Game.Interaction
         [SerializeField] private PlayerController _playerController;
         [SerializeField] private Animator _handAnimator;
         [SerializeField] private RectTransform _handTransform;
-        [SerializeField] private Image _itemImage;
+        [SerializeField] private Image _heldItemImage;
         [SerializeField] private Image _handImage;
+        [SerializeField] private Image _waiterItemImage;
+        [SerializeField] private TextMeshProUGUI _waiterTableNumber;
         [Header("Hand Settings")]
         [SerializeField] private HandType _handType;
         [SerializeField, Min(0f)] private float _hiddenDistance = 480f;
@@ -206,34 +210,56 @@ namespace Game.Interaction
 
         private void OnHandItemChanged(Item? item)
         {
+            _waiterItemImage.sprite = null;
+            _waiterItemImage.enabled = false;
+            _waiterTableNumber.text = string.Empty;
             if (!item.HasValue)
             {
-                _itemImage.enabled = false;
-                _itemImage.sprite = null;
+                _heldItemImage.enabled = false;
+                _heldItemImage.sprite = null;
                 PlayItemChangedAnimation(null, true);
             }
             else
             {
-                _itemImage.enabled = true;
+                _heldItemImage.enabled = true;
                 var definition = item.Value.Definition;
 
                 if (definition.TryGetProperty<HandSpriteProperty>(out var handProperty))
                 {
-                    _itemImage.sprite = null;
-                    _itemImage.enabled = false;
+                    _heldItemImage.sprite = null;
+                    _heldItemImage.enabled = false;
                     PlayItemChangedAnimation(handProperty.HandSprite, false);
                 }
                 else
                 {
                     if (definition.TryGetProperty<SpriteProperty>(out var spriteProperty))
                     {
-                        _itemImage.sprite = spriteProperty.Sprite;
-                        _itemImage.enabled = true;
+                        _heldItemImage.sprite = spriteProperty.Sprite;
+                        _heldItemImage.enabled = true;
                         _handAnimator.enabled = true;
                     }
                     else
                     {
                         Debug.LogWarning($"The item {definition.Id} does not have a SpriteProperty!");
+                    }
+                }
+
+                if (item.Value.IsInstance)
+                {
+                    var instance = item.Value.Instance;
+
+                    if (instance.TryGetComponent<WaiterComponent>(out var waiterComponent))
+                    {
+                        Item? waiterItem = waiterComponent.Waiter.CarryContainer.Item;
+                        if (waiterItem.HasValue && waiterItem.Value.Definition.TryGetProperty<SpriteProperty>(out var waiterItemSpriteProp))
+                        {
+                            _waiterItemImage.enabled = true;
+                            _waiterItemImage.sprite = waiterItemSpriteProp.Sprite;
+                        }
+                        if (waiterComponent.Waiter.AssignedTable.HasValue)
+                        {
+                            _waiterTableNumber.text = waiterComponent.Waiter.AssignedTable.Value.ToString();
+                        }
                     }
                 }
             }

@@ -1,4 +1,5 @@
 using Game.Items;
+using Game.Items.Components;
 using Game.Items.Properties;
 using Game.Services;
 using System;
@@ -45,7 +46,7 @@ namespace Game.Interaction
 
             // TODO: Add some interaction logic
 
-            return true;
+            return false;
         }
 
         public bool TryHoldInteractionWithItemInHand(in InteractionContext context, float delta)
@@ -77,10 +78,9 @@ namespace Game.Interaction
 
         public void OnInteractionStarted(in InteractionContext context)
         {
-            Debug.Log($"HandInteraction with hit? {context.Hit.HasValue}");
             if (context.Hit.HasValue)
             {
-                var hitObject = context.Hit.Value.transform.gameObject;
+                var hitObject = context.Hit.Value.collider.gameObject;
                 IContainer container = null;
                 bool isContainer = hitObject.TryGetComponent<IContainer>(out container);
                 if (!isContainer)
@@ -88,8 +88,6 @@ namespace Game.Interaction
                     isContainer = hitObject.TryGetComponent<IContainerHolder>(out var holder);
                     container = isContainer ? holder.Container : null;
                 }
-
-                Debug.Log($"IsContainer: {isContainer}");
                 
                 if (isContainer)
                 {
@@ -125,6 +123,19 @@ namespace Game.Interaction
         {
             if (IsEmpty)
                 return false;
+
+            var item = _item.Value;
+            if (item.TryGetComponent<WaiterComponent>(out var waiterComponent))
+            {
+                var removed = Remove();
+
+                if (velocity.sqrMagnitude > 0f)
+                    waiterComponent.Waiter.ThrowFromHand(removed.Value, point, velocity);
+                else
+                    waiterComponent.Waiter.DropFromHand(removed.Value, point);
+
+                return true;
+            }
 
             return _physicsItemService.TrySpawnFromContainer(point, velocity, this);
         }
