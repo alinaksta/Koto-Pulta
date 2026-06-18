@@ -5,7 +5,7 @@ namespace Game.Characters
 {
     public class DebugWaiterTableAssigner : MonoBehaviour
     {
-        [SerializeField] private CatWaiter _waiter;
+        [SerializeField] private Waiter _waiter;
         [SerializeField] private TMP_InputField _inputField;
 
         public void Submit()
@@ -16,7 +16,7 @@ namespace Game.Characters
             if (!int.TryParse(_inputField.text, out var table))
                 return;
 
-            _waiter.AssignTable(table);
+            // TODO: connect to spawn customer at table <number> and assign him to waiter
         }
     }
 }

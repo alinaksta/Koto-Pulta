@@ -29,7 +29,7 @@ namespace Game.Computer
             float y = Mathf.Lerp(-_rotationOfssetVertical, _rotationOfssetVertical, normalized.y);
             Quaternion targetLerp = Quaternion.Euler(-y, x, 0f);
 
-            _origin.rotation = Quaternion.Slerp(_origin.rotation, targetLerp, _lerpCoefficient * Time.deltaTime);
+            _origin.localRotation = Quaternion.Slerp(_origin.localRotation, targetLerp, _lerpCoefficient * Time.deltaTime);
         }
     }
 }

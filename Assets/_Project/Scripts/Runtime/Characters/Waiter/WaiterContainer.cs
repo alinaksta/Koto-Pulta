@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Game.Characters
 {
-    public class CatWaiterContainer : MonoBehaviour, IContainerHolder
+    public class WaiterContainer : MonoBehaviour, IContainerHolder
     {
         [SerializeField] private SpriteRenderer _spriteRenderer;
 

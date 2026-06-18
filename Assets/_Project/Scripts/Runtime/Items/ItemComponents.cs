@@ -7,6 +7,6 @@ namespace Game.Items.Components
     [Serializable]
     public class WaiterComponent : ItemComponent
     {
-        public CatWaiter Waiter;
+        public Waiter Waiter;
     }
 }

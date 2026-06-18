@@ -256,9 +256,9 @@ namespace Game.Interaction
                             _waiterItemImage.enabled = true;
                             _waiterItemImage.sprite = waiterItemSpriteProp.Sprite;
                         }
-                        if (waiterComponent.Waiter.AssignedTable.HasValue)
+                        if (waiterComponent.Waiter.TableNumber.HasValue)
                         {
-                            _waiterTableNumber.text = waiterComponent.Waiter.AssignedTable.Value.ToString();
+                            _waiterTableNumber.text = waiterComponent.Waiter.TableNumber.Value.ToString();
                         }
                     }
                 }
