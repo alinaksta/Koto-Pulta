@@ -1,8 +1,9 @@
 using TMPro;
+using Game.Characters;
 using Game.Items.Properties;
 using UnityEngine;
 
-namespace Game.Characters
+namespace Game.Diagnostics
 {
     public class DebugWaiterView : MonoBehaviour
     {

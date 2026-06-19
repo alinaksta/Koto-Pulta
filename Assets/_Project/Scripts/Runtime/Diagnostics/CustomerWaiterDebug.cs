@@ -1,8 +1,9 @@
+using Game.Characters;
 using Game.Items;
 using Game.Services;
 using UnityEngine;
 
-namespace Game.Characters
+namespace Game.Diagnostics
 {
     public class CustomerWaiterDebug : MonoBehaviour
     {
@@ -44,37 +45,37 @@ namespace Game.Characters
 
         private void OnCustomerSpawned(Customer customer)
         {
-            Debug.Log($"Customer spawned: {customer.name} at table {customer.Table.TableNumber}, order {customer.Order.Id}");
+            UnityEngine.Debug.Log($"Customer spawned: {customer.name} at table {customer.Table.TableNumber}, order {customer.Order.Id}");
         }
 
         private void OnCustomerServed(Customer customer)
         {
-            Debug.Log($"Customer served: {customer.name} at table {customer.Table.TableNumber}");
+            UnityEngine.Debug.Log($"Customer served: {customer.name} at table {customer.Table.TableNumber}");
         }
 
         private void OnCustomerTimedOut(Customer customer)
         {
-            Debug.Log($"Customer timed out: {customer.name} at table {customer.Table.TableNumber}");
+            UnityEngine.Debug.Log($"Customer timed out: {customer.name} at table {customer.Table.TableNumber}");
         }
 
         private void OnCustomerWrongItem(Customer customer, Item item)
         {
-            Debug.Log($"Customer got wrong item: {customer.name} at table {customer.Table.TableNumber}, item {item.Definition.Id}");
+            UnityEngine.Debug.Log($"Customer got wrong item: {customer.name} at table {customer.Table.TableNumber}, item {item.Definition.Id}");
         }
 
         private void OnCustomerAssignedToWaiter(Waiter waiter, Customer customer)
         {
-            Debug.Log($"Waiter assigned: {waiter.name} -> {customer.name} at table {customer.Table.TableNumber}");
+            UnityEngine.Debug.Log($"Waiter assigned: {waiter.name} -> {customer.name} at table {customer.Table.TableNumber}");
         }
 
         private void OnCustomerUnassignedFromWaiter(Waiter waiter, Customer customer)
         {
-            Debug.Log($"Waiter unassigned: {waiter.name} from {customer.name}");
+            UnityEngine.Debug.Log($"Waiter unassigned: {waiter.name} from {customer.name}");
         }
 
         private void OnWaiterSentToMealPoint(Waiter waiter)
         {
-            Debug.Log($"Waiter sent to meal point: {waiter.name}");
+            UnityEngine.Debug.Log($"Waiter sent to meal point: {waiter.name}");
         }
     }
 }

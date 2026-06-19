@@ -1553,7 +1553,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2e6f18d5d5aa2fd489c6378aad0db5c2, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Game.Characters.DebugWaiterTableAssigner
+  m_EditorClassIdentifier: Assembly-CSharp::Game.Diagnostics.DebugWaiterTableAssigner
   _waiter: {fileID: 0}
   _inputField: {fileID: 1704050271}
 --- !u!1 &282610102
@@ -3394,7 +3394,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 282415845}
-        m_TargetAssemblyTypeName: Game.Characters.DebugWaiterTableAssigner, Assembly-CSharp
+        m_TargetAssemblyTypeName: Game.Diagnostics.DebugWaiterTableAssigner, Assembly-CSharp
         m_MethodName: Submit
         m_Mode: 1
         m_Arguments:
@@ -8345,7 +8345,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 16734cada8e34af4e8b71c760e57e3cd, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Game.Characters.DebugWaiterProperties
+  m_EditorClassIdentifier: Assembly-CSharp::Game.Diagnostics.DebugWaiterProperties
   _waiter: {fileID: 931545446}
   _text: {fileID: 502211698}
 --- !u!114 &931545448
@@ -8359,7 +8359,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5addb163f7a950841bae8e029fcdf37a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Game.Characters.DebugWaiterView
+  m_EditorClassIdentifier: Assembly-CSharp::Game.Diagnostics.DebugWaiterView
   _waiter: {fileID: 931545446}
   _text: {fileID: 1063809377}
   _mealSpriteRenderer: {fileID: 1797222355}
@@ -10438,7 +10438,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2118073195}
-        m_TargetAssemblyTypeName: Game.Characters.DebugCustomerSpawner, Assembly-CSharp
+        m_TargetAssemblyTypeName: Game.Diagnostics.DebugCustomerSpawner, Assembly-CSharp
         m_MethodName: Spawn
         m_Mode: 1
         m_Arguments:
@@ -11697,7 +11697,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2e6f18d5d5aa2fd489c6378aad0db5c2, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Game.Characters.DebugWaiterTableAssigner
+  m_EditorClassIdentifier: Assembly-CSharp::Game.Diagnostics.DebugWaiterTableAssigner
   _waiter: {fileID: 0}
   _inputField: {fileID: 0}
 --- !u!114 &2118073192
@@ -11769,7 +11769,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c7698384181d5d347a7065c0e9a6536e, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Game.Characters.DebugCustomerSpawner
+  m_EditorClassIdentifier: Assembly-CSharp::Game.Diagnostics.DebugCustomerSpawner
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

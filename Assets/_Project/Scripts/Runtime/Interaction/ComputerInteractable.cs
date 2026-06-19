@@ -14,6 +14,8 @@ namespace Game.Interaction
         public event Action FocusEnded = delegate { };
 
         public FocusTarget Target => _focusTarget;
+        public IDualHandInteractor CurrentInteractor { get; private set; }
+        public bool HasInteractor => CurrentInteractor != null;
 
         public float StartFocusTransitionDuration => _startFocusDuration;
         public float EndFocusTransitionDuration => _endFocusDuration;
@@ -29,6 +31,7 @@ namespace Game.Interaction
         {
             _focusHandler.ClearMouseLocked();
             FocusEnded.Invoke();
+            CurrentInteractor = null;
             _focusHandler = null;
             Debug.Log("Exited computer");
         }
@@ -53,9 +56,13 @@ namespace Game.Interaction
         public void OnInteractionStarted(in InteractionContext context)
         {
             _focusHandler = context.FocusHandler;
+            CurrentInteractor = context.DualHandInteractor;
             bool success = context.FocusHandler.TryBeginFocus(this);
             if (!success)
+            {
+                CurrentInteractor = null;
                 _focusHandler = null;
+            }
         }
 
         public void OnInteractionHeld(in InteractionContext context, float delta) { }

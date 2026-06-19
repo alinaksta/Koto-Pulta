@@ -1,7 +1,8 @@
 using TMPro;
+using Game.Characters;
 using UnityEngine;
 
-namespace Game.Characters
+namespace Game.Diagnostics
 {
     public class DebugWaiterProperties : MonoBehaviour
     {
