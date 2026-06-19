@@ -2,7 +2,6 @@ using Game.Items.Properties;
 using System;
 using UnityEngine;
 using UnityEngine.Pool;
-using static UnityEditor.Progress;
 
 namespace Game.Items
 {
