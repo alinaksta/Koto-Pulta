@@ -1,4 +1,5 @@
 using Game.Player;
+using System;
 using UnityEngine;
 
 namespace Game.Interaction
@@ -8,6 +9,9 @@ namespace Game.Interaction
         [SerializeField] private FocusTarget _focusTarget;
         [SerializeField] private float _startFocusDuration = 2f;
         [SerializeField] private float _endFocusDuration = 2f;
+
+        public event Action FocusStarted = delegate { };
+        public event Action FocusEnded = delegate { };
 
         public FocusTarget Target => _focusTarget;
 
@@ -24,6 +28,7 @@ namespace Game.Interaction
         public void OnFocusEnded()
         {
             _focusHandler.ClearMouseLocked();
+            FocusEnded.Invoke();
             _focusHandler = null;
             Debug.Log("Exited computer");
         }
@@ -36,6 +41,7 @@ namespace Game.Interaction
         public void OnFocusStarted()
         {
             _focusHandler.SetMouseLocked(false);
+            FocusStarted.Invoke();
             Debug.Log("Entered computer");
         }
 
