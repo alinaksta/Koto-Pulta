@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Game.Interaction
 {
+    /// <summary>
+    /// Applies camera-driven sway to the hand UI root.
+    /// </summary>
     public class HandsSway : MonoBehaviour
     {
         [SerializeField] private CameraController _camera;

@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Game.Player.CameraLayers
 {
+    /// <summary>
+    /// Base class for components that register and drive a player camera layer.
+    /// </summary>
     public abstract class PlayerCameraLayerBase : MonoBehaviour
     {
         [Header("Dependencies")]

@@ -6,12 +6,18 @@ using UnityEngine;
 
 namespace Game.Interaction
 {
+    /// <summary>
+    /// Identifies one of the player's hands.
+    /// </summary>
     public enum HandType
     {
         Left,
         Right
     }
 
+    /// <summary>
+    /// Routes player input into hand interactions and focus requests.
+    /// </summary>
     public class DualHandInteractor : MonoBehaviour, IFocusHandler, IDualHandInteractor
     {
         [SerializeField] private CameraController _cameraController;
@@ -26,11 +32,21 @@ namespace Game.Interaction
         private Hand _leftHand;
         private Hand _rightHand;
 
+        /// <summary>
+        /// Gets the left hand controller.
+        /// </summary>
         public Hand LeftHand => _leftHand;
+
+        /// <summary>
+        /// Gets the right hand controller.
+        /// </summary>
         public Hand RightHand => _rightHand;
 
 
+        /// <inheritdoc/>
         public FocusStatus FocusStatus => _cameraController.FocusStatus;
+
+        /// <inheritdoc/>
         public IFocusable FocusedObject => _cameraController.FocusedObject;
 
         private void Awake()
@@ -132,15 +148,26 @@ namespace Game.Interaction
                 return;
         }
 
+        /// <inheritdoc/>
         public Hand GetHand(HandType handType)
             => handType == HandType.Left ? _leftHand : _rightHand;
 
+        /// <inheritdoc/>
         public bool TryBeginFocus(IFocusable focusable) => _cameraController.TryBeginFocus(focusable);
+
+        /// <inheritdoc/>
         public void EndFocus() => _cameraController.EndFocus();
 
+        /// <inheritdoc/>
         public void SetMouseLocked(bool locked) => _cameraController.SetMouseLocked(locked);
+
+        /// <inheritdoc/>
         public void ClearMouseLocked() => _cameraController.ClearMouseLocked();
 
+        /// <inheritdoc/>
+        /// <remarks>
+        /// The left hand is preferred when both hands are empty.
+        /// </remarks>
         public bool TryGetFreeHand(out IContainer freeHand)
         {
             freeHand = _leftHand.IsEmpty ? _leftHand : _rightHand; // Set to left hand if free, right hand otherwise

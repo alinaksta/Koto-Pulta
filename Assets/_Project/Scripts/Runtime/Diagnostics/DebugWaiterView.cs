@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace Game.Diagnostics
 {
+    /// <summary>
+    /// Shows simple waiter debug state and requested meal visuals.
+    /// </summary>
     public class DebugWaiterView : MonoBehaviour
     {
         [SerializeField] private Waiter _waiter;

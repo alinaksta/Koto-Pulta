@@ -12,6 +12,9 @@ using UnityEngine.AI;
 
 namespace Game.Characters
 {
+    /// <summary>
+    /// Describes the waiter's current service task.
+    /// </summary>
     public enum WaiterServiceState
     {
         Unassigned,
@@ -21,6 +24,9 @@ namespace Game.Characters
         Delivering
     }
 
+    /// <summary>
+    /// Describes the waiter's current locomotion mode.
+    /// </summary>
     public enum WaiterLocomotionState
     {
         Idle,
@@ -30,6 +36,9 @@ namespace Game.Characters
         Walking
     }
 
+    /// <summary>
+    /// Describes the result of recovering after being thrown or dropped.
+    /// </summary>
     public enum WaiterLandingResult
     {
         NoItem,
@@ -37,6 +46,9 @@ namespace Game.Characters
         Failed
     }
 
+    /// <summary>
+    /// Represents a waiter that can be picked up, assigned, and deliver meals.
+    /// </summary>
     public class Waiter : MonoBehaviour, IInteractable
     {
         [Header("Item Identification")]
@@ -80,28 +92,104 @@ namespace Game.Characters
         private Vector3 _defaultWanderOrigin;
         private bool _mealPointEntered;
 
+        /// <summary>
+        /// Gets the container holding the waiter's carried item.
+        /// </summary>
         public IContainer CarryContainer => _carryContainer.Container;
+
+        /// <summary>
+        /// Gets the customer currently assigned to this waiter.
+        /// </summary>
         public Customer AssignedCustomer => _assignedCustomer;
+
+        /// <summary>
+        /// Gets the table zone the waiter is currently inside, when any.
+        /// </summary>
         public Table CurrentTable => _currentTable;
+
+        /// <summary>
+        /// Gets the waiter's current service state.
+        /// </summary>
         public WaiterServiceState ServiceState => _serviceState;
+
+        /// <summary>
+        /// Gets the waiter's current locomotion state.
+        /// </summary>
         public WaiterLocomotionState LocomotionState => _locomotionState;
+
+        /// <summary>
+        /// Gets the assigned table number, when the waiter has a customer.
+        /// </summary>
         public int? TableNumber => IsAssigned ? AssignedCustomer.Table.TableNumber : null;
+
+        /// <summary>
+        /// Gets whether the waiter currently has an assigned customer.
+        /// </summary>
         public bool IsAssigned => _assignedCustomer != null;
+
+        /// <summary>
+        /// Gets whether this waiter is currently eligible for a new assignment.
+        /// </summary>
         public bool CanAcceptAssignment => gameObject.activeInHierarchy && _locomotionState != WaiterLocomotionState.InHand && _locomotionState != WaiterLocomotionState.Ragdoll && _locomotionState != WaiterLocomotionState.Recovering && !IsAssigned;
+
+        /// <summary>
+        /// Gets whether the waiter is currently idle.
+        /// </summary>
         public bool IsIdle => _locomotionState == WaiterLocomotionState.Idle;
+
+        /// <summary>
+        /// Gets whether the waiter is currently at the active meal point.
+        /// </summary>
         public bool AtMealPoint => _waiterService.HasMealPoint && Vector3.Distance(transform.position, _waiterService.MealPointTransform.position) <= GetArrivalDistance();
+
+        /// <summary>
+        /// Gets the remaining recovery time after ragdolling.
+        /// </summary>
         public float RecoveryTimer => _recoveryTimer;
+
+        /// <summary>
+        /// Gets whether the waiter is in its recovery state.
+        /// </summary>
         public bool IsRecovering => _locomotionState == WaiterLocomotionState.Recovering;
+
+        /// <summary>
+        /// Gets whether the waiter is currently ragdolled.
+        /// </summary>
         public bool IsRagdolled => _locomotionState == WaiterLocomotionState.Ragdoll;
 
+        /// <summary>
+        /// Raised after a customer is assigned to this waiter.
+        /// </summary>
         public event Action<Customer> OnCustomerAssigned = delegate { };
+
+        /// <summary>
+        /// Raised after the current customer assignment is cleared.
+        /// </summary>
         public event Action OnCustomerUnassigned = delegate { };
+
+        /// <summary>
+        /// Raised after the waiter finishes asking its assigned customer.
+        /// </summary>
         public event Action<Customer> OnCustomerWasAsked = delegate { };
 
+        /// <summary>
+        /// Raised when the waiter reaches the meal point.
+        /// </summary>
         public event Action OnMealPointEntered = delegate { };
+
+        /// <summary>
+        /// Raised when the waiter leaves the meal point.
+        /// </summary>
         public event Action OnMealPointExited = delegate { };
 
+        /// <summary>
+        /// Raised after the service state changes.
+        /// </summary>
         public event Action<WaiterServiceState, WaiterServiceState> OnServiceStateChanged = delegate { };
+
+        /// <summary>
+        /// Raised after the locomotion state changes.
+        /// </summary>
         public event Action<WaiterLocomotionState, WaiterLocomotionState> OnLocomotionStateChanged = delegate { };
 
         private void Awake()
@@ -277,8 +365,13 @@ namespace Game.Characters
         }
 
         #region Interaction Logic
+        /// <inheritdoc/>
         public bool CanInteract(in InteractionContext context) => true;
 
+        /// <inheritdoc/>
+        /// <remarks>
+        /// An empty hand picks up the waiter itself; a filled hand tries to give its item to the waiter.
+        /// </remarks>
         public void OnInteractionStarted(in InteractionContext context)
         {
             if (context.ActiveHand.IsEmpty)
@@ -293,11 +386,18 @@ namespace Game.Characters
             ItemTransferUtility.TryTransfer(context.ActiveHand, _carryContainer.Container);
         }
 
+        /// <inheritdoc/>
         public void OnInteractionHeld(in InteractionContext context, float delta) { }
+
+        /// <inheritdoc/>
         public void OnInteractionStopped(in InteractionContext context) { }
         #endregion
 
         #region Serving Logic
+        /// <summary>
+        /// Assigns a customer and begins the service flow.
+        /// </summary>
+        /// <param name="customer">Customer to serve.</param>
         public void AssignCustomer(Customer customer)
         {
             if (customer == null || _assignedCustomer == customer)
@@ -308,12 +408,18 @@ namespace Game.Characters
             OnCustomerAssigned.Invoke(customer);
         }
 
+        /// <summary>
+        /// Clears the current customer assignment.
+        /// </summary>
         public void ClearCustomer()
         {
             _assignedCustomer = null;
             EnterUnassignedState();
         }
 
+        /// <summary>
+        /// Removes the item currently carried by the waiter, if any.
+        /// </summary>
         public void ClearCarriedItem()
         {
             if (CarryContainer.IsEmpty)
@@ -397,12 +503,23 @@ namespace Game.Characters
         #endregion
 
         #region Item to World Logic
+        /// <summary>
+        /// Drops the waiter into the world without added velocity.
+        /// </summary>
+        /// <param name="selfItem">Item representation of this waiter.</param>
+        /// <param name="position">Drop position.</param>
         public void DropFromHand(Item selfItem, Vector3 position)
         {
             ReleaseToWorld(selfItem, position, Vector3.zero);
             EnterRagdollState();
         }
 
+        /// <summary>
+        /// Throws the waiter into the world with velocity.
+        /// </summary>
+        /// <param name="selfItem">Item representation of this waiter.</param>
+        /// <param name="position">Spawn position.</param>
+        /// <param name="velocity">Initial throw velocity.</param>
         public void ThrowFromHand(Item selfItem, Vector3 position, Vector3 velocity)
         {
             ReleaseToWorld(selfItem, position, velocity);
@@ -539,6 +656,10 @@ namespace Game.Characters
             return WaiterLandingResult.Failed;
         }
 
+        /// <summary>
+        /// Starts navigating toward a world position.
+        /// </summary>
+        /// <param name="destination">Destination to move toward.</param>
         public void NavigateTo(Vector3 destination)
         {
             if (_waiterService.HasMealPoint && Vector3.Distance(destination, _waiterService.MealPointTransform.position) > GetArrivalDistance())
@@ -553,6 +674,9 @@ namespace Game.Characters
             SetLocomotionState(WaiterLocomotionState.Walking);
         }
 
+        /// <summary>
+        /// Starts navigating toward the currently assigned customer.
+        /// </summary>
         public void NavigateToAssignedCustomer()
         {
             if (!IsAssigned)
@@ -561,6 +685,9 @@ namespace Game.Characters
             NavigateTo(_assignedCustomer.transform.position);
         }
 
+        /// <summary>
+        /// Stops pathing and switches the waiter to its idle locomotion state.
+        /// </summary>
         public void EnterIdleState()
         {
             if (_agent.enabled && gameObject.activeInHierarchy)

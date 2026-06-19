@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace Game.Diagnostics
 {
+    /// <summary>
+    /// Debug helper that spawns a customer at a random free table.
+    /// </summary>
     public class DebugCustomerSpawner : MonoBehaviour
     {
         private CustomerService _customerService;
@@ -14,6 +17,9 @@ namespace Game.Diagnostics
             _customerService = ServiceLocator.Get<CustomerService>();
         }
 
+        /// <summary>
+        /// Attempts to spawn a customer using the registered customer service.
+        /// </summary>
         public void Spawn()
         {
             _customerService.TrySpawnCustomerAtRandomFreeTable();

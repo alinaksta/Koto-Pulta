@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace Game.Diagnostics
 {
+    /// <summary>
+    /// Logs customer and waiter service events to the Unity console.
+    /// </summary>
     public class CustomerWaiterDebug : MonoBehaviour
     {
         private CustomerService _customerService;

@@ -11,6 +11,9 @@ using Game.Items.Components;
 
 namespace Game.Interaction
 {
+    /// <summary>
+    /// Drives the UI presentation for one player hand.
+    /// </summary>
     public class HandView : MonoBehaviour
     {
         private static readonly int ClickTriggerHash =

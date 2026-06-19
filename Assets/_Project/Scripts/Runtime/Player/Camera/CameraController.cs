@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace Game.Player
 {
+    /// <summary>
+    /// Drives free look and camera focus transitions.
+    /// </summary>
     public class CameraController : MonoBehaviour, IOrientation, IFocusHandler
     {
         [Header("References")]
@@ -39,23 +42,42 @@ namespace Game.Player
 
         private bool _mouseLocked;
 
+        /// <inheritdoc/>
         public Quaternion RotationFlat => Quaternion.Euler(0f, _yaw, 0f);
+
+        /// <inheritdoc/>
         public Quaternion RotationFull => Quaternion.Euler(_pitch, _yaw, 0f);
+
+        /// <inheritdoc/>
         public Vector3 Euler => new Vector3(_pitch, _yaw, 0f);
+
+        /// <inheritdoc/>
         public float Yaw => _yaw;
+
+        /// <inheritdoc/>
         public float Pitch => _pitch;
 
+        /// <inheritdoc/>
         public Vector3 ForwardFlat => RotationFlat * Vector3.forward;
+
+        /// <inheritdoc/>
         public Vector3 RightFlat => RotationFlat * Vector3.right;
 
+        /// <inheritdoc/>
         public Vector3 Forward => RotationFull * Vector3.forward;
+
+        /// <inheritdoc/>
         public Vector3 Right => RotationFull * Vector3.right;
 
         /// <summary>
-        /// x is yaw velocity, y is pitch velocity
+        /// Gets the current angular velocity in degrees per second.
         /// </summary>
+        /// <remarks>
+        /// X stores yaw velocity and Y stores pitch velocity.
+        /// </remarks>
         public Vector2 AngularVelocity => _angularVelocity;
 
+        /// <inheritdoc/>
         public FocusStatus FocusStatus
         {
             get
@@ -68,6 +90,8 @@ namespace Game.Player
                     return FocusStatus.Unfocused;
             }
         }
+
+        /// <inheritdoc/>
         public IFocusable FocusedObject => _focusedObject;
 
         private void Awake()
@@ -166,6 +190,7 @@ namespace Game.Player
                 _focusTransition = null;
         }
 
+        /// <inheritdoc/>
         public void ResetRotation()
         {
             _yaw = 0f;
@@ -178,11 +203,13 @@ namespace Game.Player
                 _target.rotation = RotationFull;
         }
 
+        /// <inheritdoc/>
         public Vector3 GetRelativeVelocity(Vector3 worldVelocity)
         {
             return Quaternion.Inverse(RotationFlat) * worldVelocity;
         }
 
+        /// <inheritdoc/>
         public void SetMouseLocked(bool locked = true)
         {
             Cursor.lockState = locked ? CursorLockMode.Locked : CursorLockMode.None;
@@ -190,16 +217,27 @@ namespace Game.Player
             _mouseLocked = locked;
         }
 
+        /// <inheritdoc/>
+        /// <remarks>
+        /// This implementation always restores the cursor to the locked state.
+        /// </remarks>
         public void ClearMouseLocked()
         {
             SetMouseLocked(true);
         }
 
+        /// <summary>
+        /// Toggles between locked and unlocked cursor states.
+        /// </summary>
         public void ToggleMouseLocked()
         {
             SetMouseLocked(!_mouseLocked);
         }
 
+        /// <inheritdoc/>
+        /// <remarks>
+        /// Focus can only begin while the camera is fully unfocused.
+        /// </remarks>
         public bool TryBeginFocus(IFocusable focusable)
         {
             if (FocusStatus == FocusStatus.Unfocused)
@@ -220,6 +258,7 @@ namespace Game.Player
             return false;
         }
 
+        /// <inheritdoc/>
         public void EndFocus()
         {
             if (_focusedObject == null)

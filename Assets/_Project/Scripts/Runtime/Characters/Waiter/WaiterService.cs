@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace Game.Characters
 {
+    /// <summary>
+    /// Tracks waiter registration, customer assignments, and the meal point.
+    /// </summary>
     public class WaiterService : MonoBehaviour, IBootstrapable
     {
         private readonly HashSet<Waiter> _waiters = new();
@@ -15,24 +18,51 @@ namespace Game.Characters
 
         private WaiterMealPoint _mealPoint;
 
+        /// <summary>
+        /// Raised after a customer is assigned to a waiter.
+        /// </summary>
         public event Action<Waiter, Customer> OnCustomerAssignedToWaiter = delegate { };
+
+        /// <summary>
+        /// Raised after a waiter/customer assignment is cleared.
+        /// </summary>
         public event Action<Waiter, Customer> OnCustomerUnassignedFromWaiter = delegate { };
+
+        /// <summary>
+        /// Raised when a waiter is directed to the active meal point.
+        /// </summary>
         public event Action<Waiter> OnWaiterSentToMealPoint = delegate { };
 
+        /// <summary>
+        /// Gets whether a meal point is currently registered.
+        /// </summary>
         public bool HasMealPoint => _mealPoint != null;
+
+        /// <summary>
+        /// Gets the transform used as the current meal point destination.
+        /// </summary>
         public Transform MealPointTransform => _mealPoint.Point;
 
+        /// <inheritdoc/>
         public void Bootstrap()
         {
             ServiceLocator.Register(this);
         }
 
+        /// <summary>
+        /// Registers a waiter so it can receive assignments.
+        /// </summary>
+        /// <param name="waiter">Waiter to register.</param>
         public void RegisterWaiter(Waiter waiter)
         {
             if (waiter != null)
                 _waiters.Add(waiter);
         }
 
+        /// <summary>
+        /// Unregisters a waiter and clears any active assignment.
+        /// </summary>
+        /// <param name="waiter">Waiter to remove.</param>
         public void UnregisterWaiter(Waiter waiter)
         {
             if (waiter == null)
@@ -42,17 +72,30 @@ namespace Game.Characters
             _waiters.Remove(waiter);
         }
 
+        /// <summary>
+        /// Sets the active meal point used by waiters awaiting meals.
+        /// </summary>
+        /// <param name="mealPoint">Meal point to use.</param>
         public void SetMealPoint(WaiterMealPoint mealPoint)
         {
             _mealPoint = mealPoint;
         }
 
+        /// <summary>
+        /// Clears the active meal point when it matches the supplied instance.
+        /// </summary>
+        /// <param name="mealPoint">Meal point to clear.</param>
         public void ClearMealPoint(WaiterMealPoint mealPoint)
         {
             if (_mealPoint == mealPoint)
                 _mealPoint = null;
         }
 
+        /// <summary>
+        /// Tries to find a waiter that can take a new customer.
+        /// </summary>
+        /// <param name="waiter">Receives the available waiter when found.</param>
+        /// <returns><see langword="true"/> when an unassigned waiter is available.</returns>
         public bool TryGetUnassignedWaiter(out Waiter waiter)
         {
             foreach (var candidate in _waiters)
@@ -71,6 +114,12 @@ namespace Game.Characters
             return false;
         }
 
+        /// <summary>
+        /// Tries to assign a customer to an available waiter.
+        /// </summary>
+        /// <param name="customer">Customer that needs service.</param>
+        /// <param name="waiter">Receives the assigned waiter when successful.</param>
+        /// <returns><see langword="true"/> when the customer was assigned.</returns>
         public bool TryAssignCustomerToUnassignedWaiter(Customer customer, out Waiter waiter)
         {
             waiter = null;
@@ -97,15 +146,33 @@ namespace Game.Characters
             return true;
         }
 
+        /// <summary>
+        /// Tries to assign a customer to an available waiter.
+        /// </summary>
+        /// <param name="customer">Customer that needs service.</param>
+        /// <returns><see langword="true"/> when the customer was assigned.</returns>
         public bool TryAssignCustomerToUnassignedWaiter(Customer customer)
             => TryAssignCustomerToUnassignedWaiter(customer, out _);
 
+        /// <summary>
+        /// Checks whether any registered waiter can accept a new assignment.
+        /// </summary>
+        /// <returns><see langword="true"/> when a waiter is available.</returns>
         public bool HasUnassignedWaiter()
             => TryGetUnassignedWaiter(out _);
 
+        /// <summary>
+        /// Checks whether the supplied waiter is currently registered.
+        /// </summary>
+        /// <param name="waiter">Waiter to check.</param>
+        /// <returns><see langword="true"/> when the waiter is registered.</returns>
         public bool IsWaiterRegistered(Waiter waiter)
             => waiter != null && _waiters.Contains(waiter);
 
+        /// <summary>
+        /// Sends a waiter to the active meal point, or idles it if none is available.
+        /// </summary>
+        /// <param name="waiter">Waiter to redirect.</param>
         public void SendWaiterToMealPoint(Waiter waiter)
         {
             if (waiter == null)
@@ -127,9 +194,17 @@ namespace Game.Characters
             OnWaiterSentToMealPoint.Invoke(waiter);
         }
 
+        /// <summary>
+        /// Gets the number of currently registered waiters.
+        /// </summary>
+        /// <returns>Registered waiter count.</returns>
         public int GetRegisteredWaiterCount()
             => _waiters.Count;
 
+        /// <summary>
+        /// Gets the number of registered waiters without a customer assignment.
+        /// </summary>
+        /// <returns>Unassigned waiter count.</returns>
         public int GetUnassignedWaiterCount()
         {
             int count = 0;

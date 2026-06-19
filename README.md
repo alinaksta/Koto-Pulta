@@ -35,6 +35,10 @@ Folder structure, file name rules are documented here:
 
 [Project Structure](STRUCTURE.md)
 
+Programming systems, runtime architecture, and gameplay code overview are documented here:
+
+[Project Documentation](DOCUMENTATION.md)
+
 ---
 
 ## Installation

@@ -5,10 +5,17 @@ using Itemworks.UnityEngine;
 using System;
 using UnityEngine;
 
+/// <summary>
+/// Loads item definitions from an asset list into the runtime registry.
+/// </summary>
 public class ItemRegistryBootstrap : MonoBehaviour, IBootstrapable
 {
     [SerializeField] private ItemListAsset _itemListAsset;
 
+    /// <inheritdoc/>
+    /// <remarks>
+    /// Registers every definition asset listed in the configured item list.
+    /// </remarks>
     public void Bootstrap()
     {
         var serializer = new ItemDefinitionAssetSerializer();

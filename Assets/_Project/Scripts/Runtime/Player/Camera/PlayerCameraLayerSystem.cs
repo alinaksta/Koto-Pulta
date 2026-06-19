@@ -2,6 +2,9 @@ using Game.CameraLayerSystem;
 
 namespace Game.Player.CameraLayers
 {
+    /// <summary>
+    /// Identifies built-in player camera layers.
+    /// </summary>
     public enum PlayerCameraLayer
     {
         Viewroll,
@@ -9,6 +12,9 @@ namespace Game.Player.CameraLayers
         DEBUG2
     }
 
+    /// <summary>
+    /// Specializes the generic camera layer system for player camera effects.
+    /// </summary>
     public class PlayerCameraLayerSystem : CameraLayerSystem<PlayerCameraLayer>
     {
         protected override void SetupLayers()
