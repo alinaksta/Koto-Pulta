@@ -122,6 +122,15 @@ namespace Game.Input.Generated
                     ""initialStateCheck"": true
                 },
                 {
+                    ""name"": ""MousePosition"",
+                    ""type"": ""Value"",
+                    ""id"": ""549259cc-59bc-4092-9f69-b25b3e98fcf4"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
                     ""name"": ""Jump"",
                     ""type"": ""Button"",
                     ""id"": ""dbd69e77-d3ce-4316-993b-79935c2e18d4"",
@@ -161,6 +170,15 @@ namespace Game.Input.Generated
                     ""name"": ""DropRight"",
                     ""type"": ""Button"",
                     ""id"": ""5d7c617b-baea-480d-98b1-67643c522802"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""ba70ba7e-ede3-40a9-b36c-fd673d299916"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -321,6 +339,28 @@ namespace Game.Input.Generated
                     ""action"": ""DropRight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2df01f58-f018-40f4-bdaf-c64a4d965d33"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""992b8f34-5b58-475d-accf-33004b956241"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MousePosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -349,11 +389,13 @@ namespace Game.Input.Generated
             m_Gameplay_Move = m_Gameplay.FindAction("Move", throwIfNotFound: true);
             m_Gameplay_MouseDelta = m_Gameplay.FindAction("MouseDelta", throwIfNotFound: true);
             m_Gameplay_MouseScroll = m_Gameplay.FindAction("MouseScroll", throwIfNotFound: true);
+            m_Gameplay_MousePosition = m_Gameplay.FindAction("MousePosition", throwIfNotFound: true);
             m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
             m_Gameplay_InteractLeft = m_Gameplay.FindAction("InteractLeft", throwIfNotFound: true);
             m_Gameplay_InteractRight = m_Gameplay.FindAction("InteractRight", throwIfNotFound: true);
             m_Gameplay_DropLeft = m_Gameplay.FindAction("DropLeft", throwIfNotFound: true);
             m_Gameplay_DropRight = m_Gameplay.FindAction("DropRight", throwIfNotFound: true);
+            m_Gameplay_Cancel = m_Gameplay.FindAction("Cancel", throwIfNotFound: true);
         }
 
         ~@InputActions()
@@ -437,11 +479,13 @@ namespace Game.Input.Generated
         private readonly InputAction m_Gameplay_Move;
         private readonly InputAction m_Gameplay_MouseDelta;
         private readonly InputAction m_Gameplay_MouseScroll;
+        private readonly InputAction m_Gameplay_MousePosition;
         private readonly InputAction m_Gameplay_Jump;
         private readonly InputAction m_Gameplay_InteractLeft;
         private readonly InputAction m_Gameplay_InteractRight;
         private readonly InputAction m_Gameplay_DropLeft;
         private readonly InputAction m_Gameplay_DropRight;
+        private readonly InputAction m_Gameplay_Cancel;
         /// <summary>
         /// Provides access to input actions defined in input action map "Gameplay".
         /// </summary>
@@ -466,6 +510,10 @@ namespace Game.Input.Generated
             /// </summary>
             public InputAction @MouseScroll => m_Wrapper.m_Gameplay_MouseScroll;
             /// <summary>
+            /// Provides access to the underlying input action "Gameplay/MousePosition".
+            /// </summary>
+            public InputAction @MousePosition => m_Wrapper.m_Gameplay_MousePosition;
+            /// <summary>
             /// Provides access to the underlying input action "Gameplay/Jump".
             /// </summary>
             public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
@@ -485,6 +533,10 @@ namespace Game.Input.Generated
             /// Provides access to the underlying input action "Gameplay/DropRight".
             /// </summary>
             public InputAction @DropRight => m_Wrapper.m_Gameplay_DropRight;
+            /// <summary>
+            /// Provides access to the underlying input action "Gameplay/Cancel".
+            /// </summary>
+            public InputAction @Cancel => m_Wrapper.m_Gameplay_Cancel;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -520,6 +572,9 @@ namespace Game.Input.Generated
                 @MouseScroll.started += instance.OnMouseScroll;
                 @MouseScroll.performed += instance.OnMouseScroll;
                 @MouseScroll.canceled += instance.OnMouseScroll;
+                @MousePosition.started += instance.OnMousePosition;
+                @MousePosition.performed += instance.OnMousePosition;
+                @MousePosition.canceled += instance.OnMousePosition;
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
@@ -535,6 +590,9 @@ namespace Game.Input.Generated
                 @DropRight.started += instance.OnDropRight;
                 @DropRight.performed += instance.OnDropRight;
                 @DropRight.canceled += instance.OnDropRight;
+                @Cancel.started += instance.OnCancel;
+                @Cancel.performed += instance.OnCancel;
+                @Cancel.canceled += instance.OnCancel;
             }
 
             /// <summary>
@@ -555,6 +613,9 @@ namespace Game.Input.Generated
                 @MouseScroll.started -= instance.OnMouseScroll;
                 @MouseScroll.performed -= instance.OnMouseScroll;
                 @MouseScroll.canceled -= instance.OnMouseScroll;
+                @MousePosition.started -= instance.OnMousePosition;
+                @MousePosition.performed -= instance.OnMousePosition;
+                @MousePosition.canceled -= instance.OnMousePosition;
                 @Jump.started -= instance.OnJump;
                 @Jump.performed -= instance.OnJump;
                 @Jump.canceled -= instance.OnJump;
@@ -570,6 +631,9 @@ namespace Game.Input.Generated
                 @DropRight.started -= instance.OnDropRight;
                 @DropRight.performed -= instance.OnDropRight;
                 @DropRight.canceled -= instance.OnDropRight;
+                @Cancel.started -= instance.OnCancel;
+                @Cancel.performed -= instance.OnCancel;
+                @Cancel.canceled -= instance.OnCancel;
             }
 
             /// <summary>
@@ -645,6 +709,13 @@ namespace Game.Input.Generated
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnMouseScroll(InputAction.CallbackContext context);
             /// <summary>
+            /// Method invoked when associated input action "MousePosition" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnMousePosition(InputAction.CallbackContext context);
+            /// <summary>
             /// Method invoked when associated input action "Jump" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
             /// </summary>
             /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
@@ -679,6 +750,13 @@ namespace Game.Input.Generated
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnDropRight(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "Cancel" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnCancel(InputAction.CallbackContext context);
         }
     }
 }

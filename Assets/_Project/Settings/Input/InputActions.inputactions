@@ -34,6 +34,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "MousePosition",
+                    "type": "Value",
+                    "id": "549259cc-59bc-4092-9f69-b25b3e98fcf4",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "Jump",
                     "type": "Button",
                     "id": "dbd69e77-d3ce-4316-993b-79935c2e18d4",
@@ -73,6 +82,15 @@
                     "name": "DropRight",
                     "type": "Button",
                     "id": "5d7c617b-baea-480d-98b1-67643c522802",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Cancel",
+                    "type": "Button",
+                    "id": "ba70ba7e-ede3-40a9-b36c-fd673d299916",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -231,6 +249,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "DropRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2df01f58-f018-40f4-bdaf-c64a4d965d33",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "992b8f34-5b58-475d-accf-33004b956241",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MousePosition",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
