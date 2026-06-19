@@ -12,29 +12,49 @@ namespace Game.Interaction
         public readonly RaycastHit? Hit;
 
         public readonly IFocusHandler FocusHandler;
-        public readonly IContainer HandContainer;
+        public readonly IContainer ActiveHand;
+        public readonly IDualHandInteractor DualHandInteractor;
 
-        public InteractionContext(Vector3 headPosition, Vector3 headForward, RaycastHit? hit, IFocusHandler focusHandler, IContainer handContainer)
+        public InteractionContext(
+            Vector3 headPosition, 
+            Vector3 headForward, 
+            RaycastHit? hit, 
+            IFocusHandler focusHandler, 
+            IContainer activeHand,
+            IDualHandInteractor dualHandInteractor)
         {
             HeadPosition = headPosition;
             HeadForward = headForward;
             Hit = hit;
             FocusHandler = focusHandler;
-            HandContainer = handContainer;
+            ActiveHand = activeHand;
+            DualHandInteractor = dualHandInteractor;
         }
 
-        public InteractionContext(Vector3 headPosition, Vector3 headForward, IFocusHandler focusHandler, IContainer handContainer)
+        public InteractionContext(
+            Vector3 headPosition, 
+            Vector3 headForward, 
+            IFocusHandler focusHandler, 
+            IContainer activeHand,
+            IDualHandInteractor dualHandInteractor)
         {
             HeadPosition = headPosition;
             HeadForward = headForward;
             Hit = null;
             FocusHandler = focusHandler;
-            HandContainer = handContainer;
+            ActiveHand = activeHand;
+            DualHandInteractor = dualHandInteractor;
         }
 
         public InteractionContext WithHitInfo(in RaycastHit hit)
         {
-            return new InteractionContext(HeadPosition, HeadForward, hit, FocusHandler, HandContainer);
+            return new InteractionContext(
+                HeadPosition, 
+                HeadForward, 
+                hit, 
+                FocusHandler, 
+                ActiveHand, 
+                DualHandInteractor);
         }
     }
 }

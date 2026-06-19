@@ -1,7 +1,6 @@
 using Game.Items;
 using Game.Items.Components;
 using Game.Items.Properties;
-using Game.Services;
 using System;
 using UnityEngine;
 
@@ -23,9 +22,9 @@ namespace Game.Interaction
 
         private PhysicsItemService _physicsItemService;
 
-        public Hand()
+        public Hand(PhysicsItemService physicsItemService)
         {
-            _physicsItemService = ServiceLocator.Get<PhysicsItemService>();
+            _physicsItemService = physicsItemService;
         }
 
         public void SetVisible(bool visible)

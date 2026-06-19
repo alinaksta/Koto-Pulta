@@ -2,7 +2,6 @@ using Game.Input;
 using Game.Items;
 using Game.Player;
 using Game.Services;
-using System;
 using UnityEngine;
 
 namespace Game.Interaction
@@ -13,7 +12,7 @@ namespace Game.Interaction
         Right
     }
 
-    public class HandsInteractor : MonoBehaviour, IFocusHandler
+    public class DualHandInteractor : MonoBehaviour, IFocusHandler, IDualHandInteractor
     {
         [SerializeField] private CameraController _cameraController;
         [SerializeField] private Transform _lookDirection;
@@ -23,7 +22,6 @@ namespace Game.Interaction
         [SerializeField] private Transform _rightSpawnPosition;
 
         private IInputService _inputService;
-        private PhysicsItemService _physicsItemService;
 
         private Hand _leftHand;
         private Hand _rightHand;
@@ -38,9 +36,9 @@ namespace Game.Interaction
         private void Awake()
         {
             _inputService = ServiceLocator.Get<IInputService>();
-            _physicsItemService = ServiceLocator.Get<PhysicsItemService>();
-            _leftHand = new();
-            _rightHand = new();
+            var physicsItemService = ServiceLocator.Get<PhysicsItemService>();
+            _leftHand = new(physicsItemService);
+            _rightHand = new(physicsItemService);
         }
 
         private void Update()
@@ -80,7 +78,12 @@ namespace Game.Interaction
             if (FocusStatus != FocusStatus.Unfocused)
                 return;
 
-            var context = new InteractionContext(_lookDirection.position, _lookDirection.forward, this, hand);
+            var context = new InteractionContext(
+                _lookDirection.position, 
+                _lookDirection.forward, 
+                this, 
+                hand,
+                this);
 
             if (hand.TryStartInteractionWithItemInHand(in context))
                 return;
@@ -103,7 +106,12 @@ namespace Game.Interaction
             if (FocusStatus != FocusStatus.Unfocused)
                 return;
 
-            var context = new InteractionContext(_lookDirection.position, _lookDirection.forward, this, hand);
+            var context = new InteractionContext(
+                _lookDirection.position, 
+                _lookDirection.forward, 
+                this, 
+                hand, 
+                this);
 
             if (hand.TryHoldInteractionWithItemInHand(in context, delta))
                 return;
@@ -114,7 +122,11 @@ namespace Game.Interaction
             if (FocusStatus != FocusStatus.Unfocused)
                 return;
 
-            var context = new InteractionContext(_lookDirection.position, _lookDirection.forward, this, hand);
+            var context = new InteractionContext(_lookDirection.position, 
+                _lookDirection.forward, 
+                this, 
+                hand, 
+                this);
 
             if (hand.TryEndInteractionWithItemInHand(in context))
                 return;
@@ -128,5 +140,13 @@ namespace Game.Interaction
 
         public void SetMouseLocked(bool locked) => _cameraController.SetMouseLocked(locked);
         public void ClearMouseLocked() => _cameraController.ClearMouseLocked();
+
+        public bool TryGetFreeHand(out IContainer freeHand)
+        {
+            freeHand = _leftHand.IsEmpty ? _leftHand : _rightHand; // Set to left hand if free, right hand otherwise
+            freeHand = freeHand.IsEmpty ? freeHand : null; // If the selected hand is empty, set to null
+
+            return freeHand != null;
+        }
     }
 }

@@ -56,13 +56,13 @@ namespace Game.Characters
         }
 
         #region IInteractable
-        public bool CanInteract(in InteractionContext context) => !context.HandContainer.IsEmpty;
+        public bool CanInteract(in InteractionContext context) => !context.ActiveHand.IsEmpty;
 
         public void OnInteractionStarted(in InteractionContext context)
         {
             if (!CanInteract(in context)) return;
 
-            var heldItem = context.HandContainer.Item.Value;
+            var heldItem = context.ActiveHand.Item.Value;
 
             if (heldItem.Definition.Id != _order.Id)
             {
@@ -71,7 +71,7 @@ namespace Game.Characters
                 return;
             }
 
-            context.HandContainer.Remove();
+            context.ActiveHand.Remove();
             _state = CustomerState.None;
             OnServed.Invoke(this);
         }

@@ -17,7 +17,7 @@ namespace Game.Interaction
             Animator.StringToHash("Click");
 
         [Header("Dependencies")]
-        [SerializeField] private HandsInteractor _handsInteractor;
+        [SerializeField] private DualHandInteractor _handsInteractor;
         [SerializeField] private PlayerController _playerController;
         [SerializeField] private Animator _handAnimator;
         [SerializeField] private RectTransform _handTransform;

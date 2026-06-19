@@ -280,16 +280,16 @@ namespace Game.Characters
 
         public void OnInteractionStarted(in InteractionContext context)
         {
-            if (context.HandContainer.IsEmpty)
+            if (context.ActiveHand.IsEmpty)
             {
-                var result = ItemTransferUtility.TryTransfer(_selfContainer, context.HandContainer);
+                var result = ItemTransferUtility.TryTransfer(_selfContainer, context.ActiveHand);
                 if (result == ItemTransferUtility.TransferResult.Success)
                     EnterHandState();
 
                 return;
             }
 
-            ItemTransferUtility.TryTransfer(context.HandContainer, _carryContainer.Container);
+            ItemTransferUtility.TryTransfer(context.ActiveHand, _carryContainer.Container);
         }
 
         public void OnInteractionHeld(in InteractionContext context, float delta) { }

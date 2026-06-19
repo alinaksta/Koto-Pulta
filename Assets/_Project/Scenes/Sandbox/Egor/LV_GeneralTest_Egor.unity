@@ -10877,7 +10877,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4861fa71d59826408e0b470b5d65ced, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Game.Interaction.HandsInteractor
+  m_EditorClassIdentifier: Assembly-CSharp::Game.Interaction.DualHandInteractor
   _cameraController: {fileID: 1397537757}
   _lookDirection: {fileID: 1939770185}
   _interactionDistance: 2
