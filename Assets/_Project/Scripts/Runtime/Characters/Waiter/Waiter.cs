@@ -94,8 +94,12 @@ namespace Game.Characters
         public bool IsRagdolled => _locomotionState == WaiterLocomotionState.Ragdoll;
 
         public event Action<Customer> OnCustomerAssigned = delegate { };
+        public event Action OnCustomerUnassigned = delegate { };
+        public event Action<Customer> OnCustomerWasAsked = delegate { };
+
         public event Action OnMealPointEntered = delegate { };
         public event Action OnMealPointExited = delegate { };
+
         public event Action<WaiterServiceState, WaiterServiceState> OnServiceStateChanged = delegate { };
         public event Action<WaiterLocomotionState, WaiterLocomotionState> OnLocomotionStateChanged = delegate { };
 
@@ -239,7 +243,10 @@ namespace Game.Characters
             {
                 _askCustomerTimer -= Time.deltaTime;
                 if (_askCustomerTimer <= 0f)
+                {
                     EnterAwaitingMealState();
+                    OnCustomerWasAsked.Invoke(_assignedCustomer);
+                }
 
                 return;
             }
@@ -578,6 +585,7 @@ namespace Game.Characters
             ExitMealPoint();
             SetServiceState(WaiterServiceState.Unassigned);
             _askCustomerTimer = 0f;
+            OnCustomerUnassigned.Invoke();
 
             if (gameObject.activeInHierarchy && _locomotionState != WaiterLocomotionState.InHand && _locomotionState != WaiterLocomotionState.Ragdoll && _locomotionState != WaiterLocomotionState.Recovering)
                 StartWanderPause();

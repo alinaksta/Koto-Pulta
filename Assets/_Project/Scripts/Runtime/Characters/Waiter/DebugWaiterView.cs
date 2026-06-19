@@ -1,7 +1,6 @@
 using TMPro;
 using Game.Items.Properties;
 using UnityEngine;
-using System;
 
 namespace Game.Characters
 {
@@ -15,42 +14,35 @@ namespace Game.Characters
         {
             if (_waiter != null)
             {
-                _waiter.OnCustomerAssigned += OnCustomerAssigned;
                 _waiter.OnMealPointEntered += OnMealPointEntered;
                 _waiter.OnMealPointExited += OnMealPointExited;
-                _waiter.OnServiceStateChanged += OnServiceStateChanged;
+                _waiter.OnCustomerWasAsked += OnCustomerWasAsked;
+                _waiter.OnCustomerUnassigned += OnCustomerUnassigned;
             }
 
             Refresh();
             HideMealSprite();
         }
 
+        private void OnCustomerUnassigned()
+        {
+            _text.text = string.Empty;
+        }
+
+        private void OnCustomerWasAsked(Customer customer)
+        {
+            _text.text = customer.Table.TableNumber.ToString();
+        }
+
         private void OnDestroy()
         {
             if (_waiter != null)
             {
-                _waiter.OnCustomerAssigned -= OnCustomerAssigned;
                 _waiter.OnMealPointEntered -= OnMealPointEntered;
                 _waiter.OnMealPointExited -= OnMealPointExited;
-                _waiter.OnServiceStateChanged -= OnServiceStateChanged;
+                _waiter.OnCustomerWasAsked -= OnCustomerWasAsked;
+                _waiter.OnCustomerUnassigned -= OnCustomerUnassigned;
             }
-        }
-
-        private void OnServiceStateChanged(WaiterServiceState from, WaiterServiceState to)
-        {
-            if (from == WaiterServiceState.AskingCustomer && to == WaiterServiceState.AwaitingMeal)
-            {
-                _text.text = _waiter.IsAssigned ? _waiter.AssignedCustomer.Table.TableNumber.ToString() : string.Empty;
-            }
-            if (from == WaiterServiceState.Delivering && to == WaiterServiceState.Unassigned)
-            {
-                _text.text = string.Empty;
-            }
-        }
-
-        private void OnCustomerAssigned(Customer customer)
-        {
-            // nothing
         }
 
 
