@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace Game.Interaction
 {
+    /// <summary>
+    /// Placeholder interactable for testing wobble reactions.
+    /// </summary>
     public class WobbleInteractable : MonoBehaviour//, IInteractable
     {
         [SerializeField] private float _duration = 4f;

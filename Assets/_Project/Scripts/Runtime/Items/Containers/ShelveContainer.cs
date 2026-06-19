@@ -4,12 +4,16 @@ using Game.Items.Properties;
 using Itemworks.UnityEngine;
 using UnityEngine;
 
+/// <summary>
+/// Exposes a shelf slot as a container and keeps its sprite in sync.
+/// </summary>
 public class ShelveContainer : MonoBehaviour, IInteractable, IContainerHolder
 {
     [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] private ItemDefinitionAsset _initialItem;
 
     private ItemContainer _container = new();
+    /// <inheritdoc/>
     public IContainer Container => _container;
 
     private void Awake()
@@ -53,14 +57,18 @@ public class ShelveContainer : MonoBehaviour, IInteractable, IContainerHolder
         }
     }
 
+    /// <inheritdoc/>
     public bool CanInteract(in InteractionContext context)
     {
         return true;
     }
 
+    /// <inheritdoc/>
     public void OnInteractionHeld(in InteractionContext context, float delta) { }
 
+    /// <inheritdoc/>
     public void OnInteractionStarted(in InteractionContext context) { }
 
+    /// <inheritdoc/>
     public void OnInteractionStopped(in InteractionContext context) { }
 }

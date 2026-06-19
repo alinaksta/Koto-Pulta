@@ -5,11 +5,15 @@ using UnityEngine;
 
 namespace Game.Characters
 {
+    /// <summary>
+    /// Displays and exposes the item currently carried by a waiter.
+    /// </summary>
     public class WaiterContainer : MonoBehaviour, IContainerHolder
     {
         [SerializeField] private SpriteRenderer _spriteRenderer;
 
         private readonly CarryContainer _container = new();
+        /// <inheritdoc/>
         public IContainer Container => _container;
 
         private void Awake()

@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Game.Player.CameraLayers
 {
+    /// <summary>
+    /// Tilts the camera based on sideways grounded movement.
+    /// </summary>
     [AddComponentMenu("Camera Layers/Viewroll")]
     public class ViewrollLayer : PlayerCameraLayerBase
     {

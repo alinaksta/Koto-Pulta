@@ -4,11 +4,17 @@ using UnityEngine;
 
 namespace Game.Lifecycle
 {
+    /// <summary>
+    /// Represents the service root that starts bootstrap for the project.
+    /// </summary>
     public interface IBootstrapService : IBootstrapable
     {
 
     }
 
+    /// <summary>
+    /// Ensures the service root prefab is instantiated and bootstrapped before scene load.
+    /// </summary>
     public static class Bootstraper
     {
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]

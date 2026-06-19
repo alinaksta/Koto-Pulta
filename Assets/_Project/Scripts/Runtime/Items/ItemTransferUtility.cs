@@ -1,7 +1,13 @@
 namespace Game.Items
 {
+    /// <summary>
+    /// Performs validated transfers between item containers.
+    /// </summary>
     public static class ItemTransferUtility
     {
+        /// <summary>
+        /// Describes the outcome of a transfer attempt.
+        /// </summary>
         public enum TransferResult
         {
             Success,
@@ -14,6 +20,12 @@ namespace Game.Items
             DestinationRejected
         }
 
+        /// <summary>
+        /// Tries to move the current item from one container into another.
+        /// </summary>
+        /// <param name="source">Container providing the item.</param>
+        /// <param name="destination">Container receiving the item.</param>
+        /// <returns>The result of the transfer attempt.</returns>
         public static TransferResult TryTransfer(IContainer source, IContainer destination)
         {
             if (source == null || destination == null) return TransferResult.InvalidContainer;

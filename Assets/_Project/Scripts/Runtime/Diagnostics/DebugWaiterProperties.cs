@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace Game.Diagnostics
 {
+    /// <summary>
+    /// Renders a formatted text dump of key waiter state values.
+    /// </summary>
     public class DebugWaiterProperties : MonoBehaviour
     {
         [SerializeField] private Waiter _waiter;

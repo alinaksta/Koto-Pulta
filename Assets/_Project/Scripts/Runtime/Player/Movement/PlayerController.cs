@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace Game.Movement
 {
+    /// <summary>
+    /// Moves the player using CharacterController-based ground and air physics.
+    /// </summary>
     [RequireComponent(typeof(CharacterController))]
     public class PlayerController : MonoBehaviour
     {
@@ -42,10 +45,24 @@ namespace Game.Movement
         private bool _grounded;
         private Vector3 _groundNormal;
 
+        /// <summary>
+        /// Gets the current simulated velocity.
+        /// </summary>
         public Vector3 Velocity => _velocity;
+
+        /// <summary>
+        /// Gets whether the controller is currently grounded.
+        /// </summary>
         public bool IsGrounded => _grounded;
+
+        /// <summary>
+        /// Gets the current ground normal when grounded checks hit.
+        /// </summary>
         public Vector3 GroundNormal => _groundNormal;
 
+        /// <summary>
+        /// Gets the orientation source used to convert movement input into world space.
+        /// </summary>
         public IOrientation Orientation => _orientation;
 
         private void Awake()

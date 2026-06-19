@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace Game.Player
 {
+    /// <summary>
+    /// Smoothly follows a target transform for the player rig.
+    /// </summary>
     public class PlayerRig : MonoBehaviour
     {
         [SerializeField] private Transform _target;

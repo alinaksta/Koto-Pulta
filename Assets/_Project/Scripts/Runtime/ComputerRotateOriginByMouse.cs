@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace Game.Computer
 {
+    /// <summary>
+    /// Rotates a local origin toward the current mouse position.
+    /// </summary>
     public class ComputerRotateOriginByMouse : MonoBehaviour
     {
         [SerializeField] private Transform _origin;

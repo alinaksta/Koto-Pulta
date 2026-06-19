@@ -5,12 +5,16 @@ using UnityEngine.Pool;
 
 namespace Game.Items
 {
+    /// <summary>
+    /// Spawns pooled physics-backed item containers into the world.
+    /// </summary>
     public class PhysicsItemService : MonoBehaviour, IBootstrapable
     {
         [SerializeField] private PhysicsContainer _physicsContainerPrefab;
 
         private ObjectPool<PhysicsContainer> _pool;
 
+        /// <inheritdoc/>
         public void Bootstrap()
         {
             ServiceLocator.Register(this);
@@ -22,6 +26,13 @@ namespace Game.Items
                 DestroyPhysicsContainer);
         }
 
+        /// <summary>
+        /// Tries to move an item out of a container and into a pooled physics container.
+        /// </summary>
+        /// <param name="position">Spawn position.</param>
+        /// <param name="velocity">Initial linear velocity.</param>
+        /// <param name="from">Container providing the item.</param>
+        /// <returns><see langword="true"/> when the item was spawned successfully.</returns>
         public bool TrySpawnFromContainer(Vector3 position, Vector3 velocity, IContainer from)
         {
             var physics = _pool.Get();
@@ -40,6 +51,12 @@ namespace Game.Items
             return false;
         }
 
+        /// <summary>
+        /// Spawns an item directly into a pooled physics container.
+        /// </summary>
+        /// <param name="position">Spawn position.</param>
+        /// <param name="velocity">Initial linear velocity.</param>
+        /// <param name="item">Item to spawn.</param>
         public void Spawn(Vector3 position, Vector3 velocity, Item item)
         {
             var physics = _pool.Get();

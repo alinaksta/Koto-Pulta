@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace Game.Services
 {
+    /// <summary>
+    /// Stores globally accessible runtime services by type.
+    /// </summary>
     public static class ServiceLocator
     {
         private static readonly Dictionary<Type, object> _services = new Dictionary<Type, object>();
@@ -14,6 +17,11 @@ namespace Game.Services
             _services.Clear();
         }
 
+        /// <summary>
+        /// Registers a service instance for its type.
+        /// </summary>
+        /// <typeparam name="T">Service type to register.</typeparam>
+        /// <param name="service">Service instance to store.</param>
         public static void Register<T>(T service)
         {
             if (service == null)
@@ -29,6 +37,11 @@ namespace Game.Services
             _services[typeof(T)] = service;
         }
 
+        /// <summary>
+        /// Gets a registered service by type.
+        /// </summary>
+        /// <typeparam name="T">Service type to resolve.</typeparam>
+        /// <returns>The registered service instance.</returns>
         public static T Get<T>()
         {
             if (_services.TryGetValue(typeof(T), out object service))
@@ -39,6 +52,12 @@ namespace Game.Services
             throw new Exception($"Service of type {typeof(T)} is not registered.");
         }
 
+        /// <summary>
+        /// Tries to get a registered service by type.
+        /// </summary>
+        /// <typeparam name="T">Service type to resolve.</typeparam>
+        /// <param name="service">Receives the service when registered.</param>
+        /// <returns><see langword="true"/> when the service is registered.</returns>
         public static bool TryGet<T>(out T service)
         {
             if (_services.TryGetValue(typeof(T), out object obj))
@@ -51,6 +70,10 @@ namespace Game.Services
             return false;
         }
 
+        /// <summary>
+        /// Removes a registered service by type.
+        /// </summary>
+        /// <typeparam name="T">Service type to remove.</typeparam>
         public static void Unregister<T>()
         {
             _services.Remove(typeof(T));
