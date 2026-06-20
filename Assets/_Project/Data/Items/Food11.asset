@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65dec6dc6bb991845b520950c9f9e84c, type: 3}
   m_Name: Food11
   m_EditorClassIdentifier: Assembly-CSharp::Itemworks.Samples.BasicInventory.ItemDefinitionAsset
-  Id: food1
+  Id: food11
   Properties:
   - rid: 6891364298855022867
   references:
@@ -21,4 +21,4 @@ MonoBehaviour:
     - rid: 6891364298855022867
       type: {class: SpriteProperty, ns: Game.Items.Properties, asm: Assembly-CSharp}
       data:
-        Sprite: {fileID: 21300000, guid: 0637a656be643954587cbf0a099c7945, type: 3}
+        Sprite: {fileID: 21300000, guid: e941ac977a2c7124aa673c33b052fe82, type: 3}
