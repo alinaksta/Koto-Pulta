@@ -6,7 +6,7 @@ using UnityEngine.UI;
 namespace Game.UI
 {
     /// <summary>
-    /// UI button component for the scrollable website mockup.
+    /// UI button component for the scrollable website.
     /// Distributes items to player hands when clicked.
     /// </summary>
     public class SiteItemButton : MonoBehaviour

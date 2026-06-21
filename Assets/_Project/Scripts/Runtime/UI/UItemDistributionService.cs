@@ -6,7 +6,6 @@ namespace Game.UI
 {
     /// <summary>
     /// Global service for distributing items through UI interactions (website/computer).
-    /// Registered as IBootstrapable on ServiceRoot.
     /// </summary>
     public class UItemDistributionService : MonoBehaviour
     {

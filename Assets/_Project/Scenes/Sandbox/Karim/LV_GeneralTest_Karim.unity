@@ -1461,15 +1461,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3041218814896205459, guid: 6352f89e88fd4894e852841cd23fd506, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.03419
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3041218814896205459, guid: 6352f89e88fd4894e852841cd23fd506, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.23655
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3041218814896205459, guid: 6352f89e88fd4894e852841cd23fd506, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.63164
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3041218814896205459, guid: 6352f89e88fd4894e852841cd23fd506, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1834,6 +1834,20 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1ed41bcf3fde83f47b69cec8438f92d1, type: 3}
   m_PrefabInstance: {fileID: 594876100}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &485232682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 485232671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f172c68012ed1f44ba60d77c94225c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteActivator
+  sites:
+  - {fileID: 1771087888}
 --- !u!1 &508486743
 GameObject:
   m_ObjectHideFlags: 0
@@ -2054,6 +2068,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1ed41bcf3fde83f47b69cec8438f92d1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 485232674}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1ed41bcf3fde83f47b69cec8438f92d1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 485232682}
   m_SourcePrefab: {fileID: 100100000, guid: 1ed41bcf3fde83f47b69cec8438f92d1, type: 3}
 --- !u!1 &651484365
 GameObject:
@@ -9308,6 +9325,7 @@ GameObject:
   - component: {fileID: 1771087892}
   - component: {fileID: 1771087891}
   - component: {fileID: 1771087890}
+  - component: {fileID: 1771087893}
   m_Layer: 8
   m_Name: Scroll View
   m_TagString: Untagged
@@ -9405,6 +9423,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1771087888}
   m_CullTransparentMesh: 1
+--- !u!114 &1771087893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1771087888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88f4c709f9f025748ba0888835a54138, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteButtonRandomizer
+  buttonsToShuffle:
+  - {fileID: 730755823}
+  - {fileID: 296557949}
+  - {fileID: 1838771677}
+  - {fileID: 1198773099}
+  - {fileID: 953006004}
+  - {fileID: 861187581}
+  - {fileID: 1607708486}
+  - {fileID: 651484368}
+  - {fileID: 1549973284}
+  - {fileID: 436822701}
+  - {fileID: 699258097}
+  - {fileID: 1038089037}
+  - {fileID: 1738903243}
 --- !u!1 &1790757263
 GameObject:
   m_ObjectHideFlags: 0
