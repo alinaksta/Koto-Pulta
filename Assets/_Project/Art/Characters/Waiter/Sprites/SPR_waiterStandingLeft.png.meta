@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 6c71d9af8e56763409a7261cfc92e30e
+guid: 79087afb4245d6c4babfebee23474ea1
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -45,12 +45,12 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 0
+  spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 512
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 0
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -69,7 +69,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 4096
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -97,7 +97,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: SPR_waiterStandingSideways_0
+      name: SPR_waiterStandingLeft_0
       rect:
         serializedVersion: 2
         x: 0
@@ -112,14 +112,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a222aa3ce7ef08b35843942720d898c5
-      internalID: 1093170071
+      spriteID: 43ddedf5d21f1aa2398c03f63af01eec
+      internalID: -1007044851
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SPR_waiterStandingSideways_1
+      name: SPR_waiterStandingLeft_1
       rect:
         serializedVersion: 2
         x: 512
@@ -134,14 +134,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bcf40aecf6b2fe2fba2cf39c3d7aec9d
-      internalID: -1794917284
+      spriteID: 63c5f776d61e27240afcdeba96157bd6
+      internalID: 1774474562
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SPR_waiterStandingSideways_2
+      name: SPR_waiterStandingLeft_2
       rect:
         serializedVersion: 2
         x: 1024
@@ -156,14 +156,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6357cd511b093ee9c9538f9af4fe4a50
-      internalID: -1608843108
+      spriteID: 50e24b0f7f0c8152bbb9d40e242a6a73
+      internalID: 1137135747
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SPR_waiterStandingSideways_3
+      name: SPR_waiterStandingLeft_3
       rect:
         serializedVersion: 2
         x: 1536
@@ -178,14 +178,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 80f5723f5cf33c174b0bff9135af30b3
-      internalID: -308359670
+      spriteID: 5b663366cfd0fc58dbac7d907fdc16b0
+      internalID: 1944594739
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SPR_waiterStandingSideways_4
+      name: SPR_waiterStandingLeft_4
       rect:
         serializedVersion: 2
         x: 2048
@@ -200,14 +200,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 42d3512f4b9004a98907ede72bccb2a5
-      internalID: -1859238998
+      spriteID: 0e40a96f22757cb0582f6fcb95e9df9b
+      internalID: 749636490
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SPR_waiterStandingSideways_5
+      name: SPR_waiterStandingLeft_5
       rect:
         serializedVersion: 2
         x: 2560
@@ -222,14 +222,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ec62c8102e28b1b99ad7ac61e5d60821
-      internalID: -613737577
+      spriteID: 280366f9b0a192ea191b645a6fcfc10f
+      internalID: 1416294186
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SPR_waiterStandingSideways_6
+      name: SPR_waiterStandingLeft_6
       rect:
         serializedVersion: 2
         x: 3072
@@ -244,14 +244,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6938a527da31115339105707e987e816
-      internalID: -263305686
+      spriteID: 750205e54d09f48b5b273182d00cfff3
+      internalID: 528503363
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SPR_waiterStandingSideways_7
+      name: SPR_waiterStandingLeft_7
       rect:
         serializedVersion: 2
         x: 3584
@@ -266,14 +266,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a010e67c13eef5a70b708f2a9f1d0a0b
-      internalID: 870114690
+      spriteID: d3d0270e7d8ef7427b0ba479b75f4765
+      internalID: 1154410166
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SPR_waiterStandingSideways_8
+      name: SPR_waiterStandingLeft_8
       rect:
         serializedVersion: 2
         x: 0
@@ -288,14 +288,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6b0f1770f08bad283aaed70ec80c4e65
-      internalID: -293911478
+      spriteID: d610f16292c6dfdf9a0b4ff31054adec
+      internalID: -579395084
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SPR_waiterStandingSideways_9
+      name: SPR_waiterStandingLeft_9
       rect:
         serializedVersion: 2
         x: 512
@@ -310,14 +310,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6ae789edabfb5d9819274f683e22466f
-      internalID: -1756418254
+      spriteID: ed1201011db9a960392117c919ebf908
+      internalID: 512928201
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SPR_waiterStandingSideways_10
+      name: SPR_waiterStandingLeft_10
       rect:
         serializedVersion: 2
         x: 1024
@@ -332,14 +332,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7cf141be075481fc8b2c95aeae69dfd3
-      internalID: 1075009409
+      spriteID: d8160111d643683c4854177dd82076aa
+      internalID: 1613436477
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SPR_waiterStandingSideways_11
+      name: SPR_waiterStandingLeft_11
       rect:
         serializedVersion: 2
         x: 1536
@@ -354,30 +354,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5bc5c567bc4a26b7d93ec0f5014679e8
-      internalID: 1526010227
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterStandingSideways_12
-      rect:
-        serializedVersion: 2
-        x: 2048
-        y: 3
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3883aba13e3809477a49abc44cec8397
-      internalID: 638472563
+      spriteID: 54209e8396c7e3acf8f5c379f845dd50
+      internalID: -1160303340
       vertices: []
       indices: 
       edges: []
@@ -386,7 +364,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 10c78e2f36ec182ed8ed18bef6808cba
+    spriteID: 9a1d11be7e56824c988f1da2af60dd5b
     internalID: 0
     vertices: []
     indices: 
@@ -398,22 +376,22 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":512.0,"y":512.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      SPR_waiterStandingSideways_0: 1093170071
-      SPR_waiterStandingSideways_1: -1794917284
-      SPR_waiterStandingSideways_10: 1075009409
-      SPR_waiterStandingSideways_11: 1526010227
-      SPR_waiterStandingSideways_12: 638472563
-      SPR_waiterStandingSideways_13: -577094963
-      SPR_waiterStandingSideways_14: -1350820286
-      SPR_waiterStandingSideways_15: -136973906
-      SPR_waiterStandingSideways_2: -1608843108
-      SPR_waiterStandingSideways_3: -308359670
-      SPR_waiterStandingSideways_4: -1859238998
-      SPR_waiterStandingSideways_5: -613737577
-      SPR_waiterStandingSideways_6: -263305686
-      SPR_waiterStandingSideways_7: 870114690
-      SPR_waiterStandingSideways_8: -293911478
-      SPR_waiterStandingSideways_9: -1756418254
+      SPR_waiterStandingLeft_0: -1007044851
+      SPR_waiterStandingLeft_1: 1774474562
+      SPR_waiterStandingLeft_10: 1613436477
+      SPR_waiterStandingLeft_11: -1160303340
+      SPR_waiterStandingLeft_12: -1472225584
+      SPR_waiterStandingLeft_13: -1741777826
+      SPR_waiterStandingLeft_14: -1842423011
+      SPR_waiterStandingLeft_15: 1591797582
+      SPR_waiterStandingLeft_2: 1137135747
+      SPR_waiterStandingLeft_3: 1944594739
+      SPR_waiterStandingLeft_4: 749636490
+      SPR_waiterStandingLeft_5: 1416294186
+      SPR_waiterStandingLeft_6: 528503363
+      SPR_waiterStandingLeft_7: 1154410166
+      SPR_waiterStandingLeft_8: -579395084
+      SPR_waiterStandingLeft_9: 512928201
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
