@@ -19,6 +19,9 @@ namespace Game.Interaction
         private static readonly int ClickTriggerHash =
             Animator.StringToHash("Click");
 
+        private static readonly int HoldingBoolHash =
+            Animator.StringToHash("Holding");
+
         [Header("Dependencies")]
         [SerializeField] private DualHandInteractor _handsInteractor;
         [SerializeField] private PlayerController _playerController;
@@ -216,6 +219,7 @@ namespace Game.Interaction
             _waiterItemImage.sprite = null;
             _waiterItemImage.enabled = false;
             _waiterTableNumber.text = string.Empty;
+            _handAnimator.SetBool(HoldingBoolHash, item.HasValue);
             if (!item.HasValue)
             {
                 _heldItemImage.enabled = false;
