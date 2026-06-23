@@ -174,6 +174,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3041218814896205459}
   - component: {fileID: 6159944891443287955}
+  - component: {fileID: 5986377663110142810}
   m_Layer: 0
   m_Name: ServiceRoot
   m_TagString: Untagged
@@ -213,6 +214,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a4e37da17c36944a928d21227e8826f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.Lifecycle.BootstrapService
+--- !u!114 &5986377663110142810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2630258808537035070}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8edc9b577dbab714fa8a839b940451ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Game.UI.UItemDistributionService
+  _dualHandInteractor: {fileID: 0}
 --- !u!1 &7014507076640361212
 GameObject:
   m_ObjectHideFlags: 0
