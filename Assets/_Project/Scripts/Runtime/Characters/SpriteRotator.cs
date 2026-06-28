@@ -2,30 +2,15 @@ using UnityEngine;
 
 public class SpriteRotator : MonoBehaviour
 {
-    public Vector3 cam_position;
-    Animator animator;
-    public float angle;
-
-    Vector3 last_pos;
-    public Vector3 velocity;
-
+    [SerializeField] private Transform _cameraTransform;
+    [SerializeField] private bool _fullRotation = false;
     void Start()
     {
-        velocity = transform.parent.forward;
-        animator = gameObject.GetComponent<Animator>();
+        _cameraTransform = Camera.main.transform;
     }
-
-    void Update()
+    void LateUpdate()
     {
-        cam_position = GameObject.FindWithTag("MainCamera").transform.parent.parent.position;
-        transform.rotation = Quaternion.LookRotation(cam_position - transform.position);
-        angle = transform.localEulerAngles.y;
-        transform.localEulerAngles = new Vector3(0f, angle, 0f);
-        animator.SetFloat("angle", angle - 180);
-
-        velocity = (transform.parent.position - last_pos) / Time.deltaTime;
-        animator.SetFloat("speed", velocity.magnitude);
-
-        last_pos = transform.parent.position;
+        transform.rotation = Quaternion.LookRotation(_cameraTransform.position - transform.position);   
+        if(!_fullRotation) transform.localEulerAngles = new Vector3(0f, transform.localEulerAngles.y, 0f);
     }
 }

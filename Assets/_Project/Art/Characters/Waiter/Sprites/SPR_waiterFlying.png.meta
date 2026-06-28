@@ -101,7 +101,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 2567
+        y: 1028
         width: 512
         height: 512
       alignment: 0
@@ -123,7 +123,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 512
-        y: 2567
+        y: 1028
         width: 512
         height: 512
       alignment: 0
@@ -145,7 +145,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1024
-        y: 2567
+        y: 1028
         width: 512
         height: 512
       alignment: 0
@@ -167,7 +167,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1536
-        y: 2567
+        y: 1028
         width: 512
         height: 512
       alignment: 0
@@ -189,7 +189,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 2048
-        y: 2567
+        y: 1028
         width: 512
         height: 512
       alignment: 0
@@ -211,7 +211,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 2560
-        y: 2567
+        y: 1028
         width: 512
         height: 512
       alignment: 0
@@ -233,7 +233,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 3072
-        y: 2567
+        y: 1028
         width: 512
         height: 512
       alignment: 0
@@ -255,7 +255,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 3584
-        y: 2567
+        y: 1028
         width: 512
         height: 512
       alignment: 0
@@ -277,7 +277,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 2055
+        y: 516
         width: 512
         height: 512
       alignment: 0
@@ -299,7 +299,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 512
-        y: 2055
+        y: 516
         width: 512
         height: 512
       alignment: 0
@@ -321,7 +321,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1024
-        y: 2055
+        y: 516
         width: 512
         height: 512
       alignment: 0
@@ -343,7 +343,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1536
-        y: 2055
+        y: 516
         width: 512
         height: 512
       alignment: 0
@@ -365,7 +365,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 2048
-        y: 2055
+        y: 516
         width: 512
         height: 512
       alignment: 0
@@ -387,7 +387,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 2560
-        y: 2055
+        y: 516
         width: 512
         height: 512
       alignment: 0
@@ -409,7 +409,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 3072
-        y: 2055
+        y: 516
         width: 512
         height: 512
       alignment: 0
@@ -431,7 +431,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 3584
-        y: 2055
+        y: 516
         width: 512
         height: 512
       alignment: 0
@@ -453,7 +453,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 1543
+        y: 4
         width: 512
         height: 512
       alignment: 0
@@ -475,7 +475,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 512
-        y: 1543
+        y: 4
         width: 512
         height: 512
       alignment: 0
@@ -497,7 +497,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1024
-        y: 1543
+        y: 4
         width: 512
         height: 512
       alignment: 0
@@ -519,7 +519,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1536
-        y: 1543
+        y: 4
         width: 512
         height: 512
       alignment: 0
@@ -541,7 +541,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 2048
-        y: 1543
+        y: 4
         width: 512
         height: 512
       alignment: 0
@@ -563,7 +563,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 2560
-        y: 1543
+        y: 4
         width: 512
         height: 512
       alignment: 0
@@ -585,7 +585,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 3072
-        y: 1543
+        y: 4
         width: 512
         height: 512
       alignment: 0
@@ -607,7 +607,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 3584
-        y: 1543
+        y: 4
         width: 512
         height: 512
       alignment: 0
@@ -620,534 +620,6 @@ TextureImporter:
       bones: []
       spriteID: 51cd4e2d9ab3f01559c74ca0241cc66a
       internalID: 641806635
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterFlying_24
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 1031
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ee5ac92576e066a7aa3f963545e4fc39
-      internalID: 425671807
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterFlying_25
-      rect:
-        serializedVersion: 2
-        x: 512
-        y: 1031
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 61a3bc42edd149e65874c7270fa182b9
-      internalID: 2045143793
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterFlying_26
-      rect:
-        serializedVersion: 2
-        x: 1024
-        y: 1031
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9089e46e3f31af8268d3e28b9ef4a036
-      internalID: -2037577791
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterFlying_27
-      rect:
-        serializedVersion: 2
-        x: 1536
-        y: 1031
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 15d1611fb0deb8901b32080cf4944c1f
-      internalID: -2057562708
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterFlying_28
-      rect:
-        serializedVersion: 2
-        x: 2048
-        y: 1031
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3be3970b20e7cc6e18450972d4fedc4f
-      internalID: 2138080285
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterFlying_29
-      rect:
-        serializedVersion: 2
-        x: 2560
-        y: 1031
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1cbd83d8a0891880783f21dafe6de363
-      internalID: 948319747
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterFlying_30
-      rect:
-        serializedVersion: 2
-        x: 3072
-        y: 1031
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a35e39d7a4366d97cb9226341160b238
-      internalID: -62769531
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterFlying_31
-      rect:
-        serializedVersion: 2
-        x: 3584
-        y: 1031
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b7993716c2a657ba7bd9c09f9071cc22
-      internalID: 1434506057
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterFlying_32
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 519
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a6ae98fddbfddafda9001d246d327e00
-      internalID: 2031359203
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterFlying_33
-      rect:
-        serializedVersion: 2
-        x: 512
-        y: 519
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a134da095863c4126a5315be9824192d
-      internalID: -1337402784
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterFlying_34
-      rect:
-        serializedVersion: 2
-        x: 1024
-        y: 519
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 25e7ed822dd96686db968fa01a7e5225
-      internalID: 960893376
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterFlying_35
-      rect:
-        serializedVersion: 2
-        x: 1536
-        y: 519
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 95f22d98cbbb605d0a39c7c112769116
-      internalID: -1872697056
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterFlying_36
-      rect:
-        serializedVersion: 2
-        x: 2048
-        y: 519
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: cb429a97e6ba2999fa8c981605b830bc
-      internalID: 1712566017
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterFlying_37
-      rect:
-        serializedVersion: 2
-        x: 2560
-        y: 519
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 84adfbbfa87da77fab1bd98d2b8f31f0
-      internalID: -1513832526
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterFlying_38
-      rect:
-        serializedVersion: 2
-        x: 3072
-        y: 519
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 28e0b7a00ce4c9b28a83bbe15258dfe8
-      internalID: 1342098647
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterFlying_39
-      rect:
-        serializedVersion: 2
-        x: 3584
-        y: 519
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 665802c5c6a23059c9a3eb2534948003
-      internalID: -1155435187
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterFlying_40
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 7
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 191fb586cb6e784eaaa4e4741915e753
-      internalID: 1712461322
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterFlying_41
-      rect:
-        serializedVersion: 2
-        x: 512
-        y: 7
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6d9fe128f2d577951b15f5c62b77a6ba
-      internalID: -23313874
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterFlying_42
-      rect:
-        serializedVersion: 2
-        x: 1024
-        y: 7
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 04bffced39b52bd3d8150fba6a47fd35
-      internalID: -1702900268
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterFlying_43
-      rect:
-        serializedVersion: 2
-        x: 1536
-        y: 7
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6609b62fb732aad5abd6ff4770d5d2cd
-      internalID: 895905768
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterFlying_44
-      rect:
-        serializedVersion: 2
-        x: 2048
-        y: 7
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 44e0b62798a46de749c6dc1ffc2deb74
-      internalID: 204389414
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterFlying_45
-      rect:
-        serializedVersion: 2
-        x: 2560
-        y: 7
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 25ded8d686063c1a88110fb3314996a8
-      internalID: 1215950009
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterFlying_46
-      rect:
-        serializedVersion: 2
-        x: 3072
-        y: 7
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 17f1c88882ee6f23fa1c53986151a3f4
-      internalID: 2099301424
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterFlying_47
-      rect:
-        serializedVersion: 2
-        x: 3584
-        y: 7
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 71cf5a7a561c7a227a04cb503a771ba9
-      internalID: 333374142
       vertices: []
       indices: 
       edges: []
@@ -1185,32 +657,8 @@ TextureImporter:
       SPR_waiterFlying_21: -533137893
       SPR_waiterFlying_22: 70506135
       SPR_waiterFlying_23: 641806635
-      SPR_waiterFlying_24: 425671807
-      SPR_waiterFlying_25: 2045143793
-      SPR_waiterFlying_26: -2037577791
-      SPR_waiterFlying_27: -2057562708
-      SPR_waiterFlying_28: 2138080285
-      SPR_waiterFlying_29: 948319747
       SPR_waiterFlying_3: -10833772
-      SPR_waiterFlying_30: -62769531
-      SPR_waiterFlying_31: 1434506057
-      SPR_waiterFlying_32: 2031359203
-      SPR_waiterFlying_33: -1337402784
-      SPR_waiterFlying_34: 960893376
-      SPR_waiterFlying_35: -1872697056
-      SPR_waiterFlying_36: 1712566017
-      SPR_waiterFlying_37: -1513832526
-      SPR_waiterFlying_38: 1342098647
-      SPR_waiterFlying_39: -1155435187
       SPR_waiterFlying_4: -1373608303
-      SPR_waiterFlying_40: 1712461322
-      SPR_waiterFlying_41: -23313874
-      SPR_waiterFlying_42: -1702900268
-      SPR_waiterFlying_43: 895905768
-      SPR_waiterFlying_44: 204389414
-      SPR_waiterFlying_45: 1215950009
-      SPR_waiterFlying_46: 2099301424
-      SPR_waiterFlying_47: 333374142
       SPR_waiterFlying_5: 1979718392
       SPR_waiterFlying_6: 1368401510
       SPR_waiterFlying_7: 1841593122
