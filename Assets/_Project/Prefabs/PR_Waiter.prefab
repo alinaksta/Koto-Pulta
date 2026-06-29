@@ -333,6 +333,12 @@ MonoBehaviour:
   _minimumRagdollTime: 0.8
   _settledVelocity: 0.02
   _navMeshSampleRadius: 2
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 1
+  _groundCheckDistance: 0.2
+  _groundCheckRadius: 0.2
+  _groundCheckOffset: 0.35
   _wanderOrigin: {fileID: 0}
   _wanderRadius: 16
   _wanderPauseMin: 2

@@ -1,31 +1,74 @@
 using UnityEngine;
 
-public class AngleAnimator : MonoBehaviour
+namespace Game.Animation
 {
-    private Animator _animator;
-    private SpriteRenderer _spriteRenderer;
-    [SerializeField] private float _angle;
-    [SerializeField] private bool _sideViewIsLeft = true;
-    [SerializeField] private float _minSideThreshold = 70f;
-    [SerializeField] private float _maxSideThreshold = 110f;
-    [SerializeField] private float _forwardValue = 0f;
-    [SerializeField] private float _sideValue = 1f;
-    [SerializeField] private float _backValue = 2f;
-    void Start()
+    public sealed class AngleAnimator : MonoBehaviour
     {
-        _animator = gameObject.GetComponent<Animator>();
-        _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
-    }
-    void LateUpdate()
-    {
-        _angle = transform.localEulerAngles.y-180; // [-180; 180] because absolutes
-        float animAngle = (Mathf.Abs(_angle) < _minSideThreshold) ? _forwardValue : (Mathf.Abs(_angle) < _maxSideThreshold) ? _sideValue : _backValue;
-        
-        // if its in the side view state specifically to not flip on front and back views
-        // and if its supposed to be right-facing (andle < 0) while the normal side view is left-facing!!!
-        _spriteRenderer.flipX = animAngle == _sideValue && (_angle < 0 == _sideViewIsLeft);
+        private static readonly int AngleHash = Animator.StringToHash("angle");
 
-        // ints dont seem to work in blend trees? its float only, so 0 1 2 are kind of weird.
-        _animator.SetFloat("angle", animAngle); 
+        [Header("Dependencies")]
+        [SerializeField] private Animator _animator;
+        [SerializeField] private SpriteRenderer _spriteRenderer;
+        [SerializeField] private Transform _source;
+
+        [Header("Side Sprite")]
+        [SerializeField] private bool _sideViewIsLeft = true;
+
+        [Header("Angle Thresholds")]
+        [Range(0f, 180f)]
+        [SerializeField] private float _minSideThreshold = 45f;
+
+        [Range(0f, 180f)]
+        [SerializeField] private float _maxSideThreshold = 135f;
+
+        [Header("Animator Values")]
+        [SerializeField] private float _forwardValue = 0f;
+        [SerializeField] private float _sideValue = 1f;
+        [SerializeField] private float _backValue = 2f;
+
+        private Transform _cameraTransform;
+
+        private void Awake()
+        {
+            _cameraTransform = Camera.main.transform;
+            _source ??= transform;
+        }
+
+        private void LateUpdate()
+        {
+            float angle = GetViewAngle();
+            float absoluteAngle = Mathf.Abs(angle);
+
+            if (absoluteAngle < _minSideThreshold)
+                SetView(_forwardValue, false);
+            else if (absoluteAngle < _maxSideThreshold)
+                SetView(_sideValue, (angle < 0f) != _sideViewIsLeft);
+            else
+                SetView(_backValue, false);
+        }
+
+        private float GetViewAngle()
+        {
+            Vector3 forward = _source.forward;
+            Vector3 directionToCamera = _cameraTransform.position - _source.position;
+
+            forward.y = 0f;
+            directionToCamera.y = 0f;
+
+            return Vector3.SignedAngle(forward, directionToCamera, Vector3.up);
+        }
+
+        private void SetView(float value, bool flipX)
+        {
+            _animator.SetFloat(AngleHash, value);
+            _spriteRenderer.flipX = flipX;
+        }
+
+        private void OnValidate()
+        {
+            _maxSideThreshold = Mathf.Max(
+                _minSideThreshold,
+                _maxSideThreshold);
+        }
     }
 }

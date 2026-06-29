@@ -1,21 +1,30 @@
+using Game.Animation;
 using UnityEngine;
 
-public class WaiterAnimator : MonoBehaviour
+namespace Game.Characters
 {
-    private Animator _animator;
-    private Vector3 _lastPos;
-    [SerializeField] private Vector3 _velocity;
-    void Start()
+    public class WaiterAnimator : MonoBehaviour
     {
-        _velocity = transform.parent.forward;
-        _animator = gameObject.GetComponent<Animator>();
-    }
-    void LateUpdate()
-    {
-        _velocity = (transform.parent.position - _lastPos) / Time.deltaTime;
-        _animator.SetBool("isMoving", _velocity.magnitude > 0.001f);
-        _animator.SetFloat("speedY", Mathf.Abs(_velocity.y));
+        private static readonly int IsMovingHash = Animator.StringToHash("isMoving");
+        private static readonly int IsRagdolledHash = Animator.StringToHash("isRagdolled");
 
-        _lastPos = transform.parent.position;
+        [SerializeField] private Animator _animator;
+        [SerializeField] private Waiter _waiter;
+        [SerializeField] private SpriteRotator _rotator;
+
+        private void LateUpdate()
+        {
+            WaiterLocomotionState state = _waiter.LocomotionState;
+
+            _animator.SetBool(
+                IsMovingHash,
+                state is WaiterLocomotionState.Walking);
+
+            _animator.SetBool(
+                IsRagdolledHash,
+                state == WaiterLocomotionState.Ragdoll);
+
+            _rotator.FullRotation = _waiter.IsRagdolled;
+        }
     }
 }
