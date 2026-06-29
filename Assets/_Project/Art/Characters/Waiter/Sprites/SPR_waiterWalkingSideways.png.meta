@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 3ad24893e4b9b7c4985aa08a9128c50d
+guid: 6e754eb0a44ddb6138fa90bad66f70ad
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -34,7 +34,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 512
+  spritePixelsToUnits: 384
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
@@ -73,8 +73,8 @@ TextureImporter:
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
+    compressionQuality: 100
+    crunchedCompression: 1
     allowsAlphaSplitting: 0
     overridden: 0
     ignorePlatformSupport: 0
@@ -93,1061 +93,546 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_0
+      name: SPR_waiterWalkingLeft_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 2567
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        y: 1027
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 48ffea0b35339ab878d84820e8abf970
-      internalID: 184966146
+      spriteID: d8361cb31e782c24587d1b066f1374b1
+      internalID: -1467763137
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_1
+      name: SPR_waiterWalkingLeft_1
       rect:
         serializedVersion: 2
-        x: 512
-        y: 2567
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 513
+        y: 1027
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6273a00cfd7bbf202b8e734203d668ed
-      internalID: -1031569741
+      spriteID: d9ee1513595e05f4eba7e0531b7b28d1
+      internalID: 1610312427
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_2
+      name: SPR_waiterWalkingLeft_2
       rect:
         serializedVersion: 2
-        x: 1024
-        y: 2567
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 1026
+        y: 1027
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1c2c4af45a1ce3098abd5db0f88d7d6e
-      internalID: -2049389457
+      spriteID: 0bbbf8c6b382efd4f8bc69280f34e741
+      internalID: -1632335184
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_3
+      name: SPR_waiterWalkingLeft_3
       rect:
         serializedVersion: 2
-        x: 1536
-        y: 2567
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 1539
+        y: 1027
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e5cbc0f83f77959ebadf0fc4ad74bb41
-      internalID: 931947528
+      spriteID: 58b592c81dd81c34e95ad16ab25958bf
+      internalID: -491584419
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_4
+      name: SPR_waiterWalkingLeft_4
       rect:
         serializedVersion: 2
-        x: 2048
-        y: 2567
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 2052
+        y: 1027
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f57efbef491fb7cd5945ba71d6440e9d
-      internalID: -1975457573
+      spriteID: a28915aebd227df438faac54989e0b3c
+      internalID: -513286425
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_5
+      name: SPR_waiterWalkingLeft_5
       rect:
         serializedVersion: 2
-        x: 2560
-        y: 2567
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 2565
+        y: 1027
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 115c468d8d8709bd38290d6981f68cd4
-      internalID: 1125394626
+      spriteID: 0c8c55937c120784196760237765e028
+      internalID: -1079142219
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_6
+      name: SPR_waiterWalkingLeft_6
       rect:
         serializedVersion: 2
-        x: 3072
-        y: 2567
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 3078
+        y: 1027
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: df76a73b2ff947be59c4229f60c4c97f
-      internalID: -561018508
+      spriteID: a2ae4fc4e49ee61498a25555fe9c69e4
+      internalID: 827337502
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_7
+      name: SPR_waiterWalkingLeft_7
       rect:
         serializedVersion: 2
-        x: 3584
-        y: 2567
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 3591
+        y: 1027
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 78899b79d8e0d78d3b7b0d333f139362
-      internalID: 970471418
+      spriteID: 28432e1cc2fa6b448abab87aa3a53f0b
+      internalID: -1731305052
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_8
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 2055
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 318ef1d7b58862d43a1cffbf601c6a41
-      internalID: -1311059051
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_9
-      rect:
-        serializedVersion: 2
-        x: 512
-        y: 2055
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1fceb76953ac66fe3a8f59ae68ab918c
-      internalID: -1500859447
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_10
-      rect:
-        serializedVersion: 2
-        x: 1024
-        y: 2055
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 01bdc418e6e92a859b123bd13056b781
-      internalID: 1945790224
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_11
-      rect:
-        serializedVersion: 2
-        x: 1536
-        y: 2055
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 749a80ff6290513b4984f273f806fb4f
-      internalID: -116425562
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_12
-      rect:
-        serializedVersion: 2
-        x: 2048
-        y: 2055
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ecda74e4911c005558c422816dce6971
-      internalID: -608524616
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_13
-      rect:
-        serializedVersion: 2
-        x: 2560
-        y: 2055
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 73a1cc46eb717973da53ddd3c5e9d8d9
-      internalID: -1956918544
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_14
-      rect:
-        serializedVersion: 2
-        x: 3072
-        y: 2055
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8723499931ce13615a5c392c59cdd133
-      internalID: 2086301495
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_15
-      rect:
-        serializedVersion: 2
-        x: 3584
-        y: 2055
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c7f222b0f7b0ae29aa84a0eca0cde231
-      internalID: 1551918099
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_16
+      name: SPR_waiterWalkingLeft_8
       rect:
         serializedVersion: 2
         x: 0
-        y: 1543
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        y: 514
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cd84d690d7b0e1bcca149c7535902623
-      internalID: -440421202
+      spriteID: e8b5b8e3e234f0b47a5bec4af516e8d9
+      internalID: -431521844
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_17
+      name: SPR_waiterWalkingLeft_9
       rect:
         serializedVersion: 2
-        x: 512
-        y: 1543
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 513
+        y: 514
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b6c8a2150d0245a679cc98774ab73855
-      internalID: 226339440
+      spriteID: 470461cdf8a58b743bb2ab563df6cb4d
+      internalID: 658637951
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_18
+      name: SPR_waiterWalkingLeft_10
       rect:
         serializedVersion: 2
-        x: 1024
-        y: 1543
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 1026
+        y: 514
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bacefc052c4165b9b8e9282a4ef829ce
-      internalID: 1931125502
+      spriteID: 690e0b34efd724941b7eb70cce3e6ed3
+      internalID: -43330447
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_19
+      name: SPR_waiterWalkingLeft_11
       rect:
         serializedVersion: 2
-        x: 1536
-        y: 1543
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 1539
+        y: 514
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 96c8713cdc06cc8e99bca0e53d28f962
-      internalID: 1491377022
+      spriteID: b42ea054177fc944e8a4bf2836187c13
+      internalID: 2069014251
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_20
+      name: SPR_waiterWalkingLeft_12
       rect:
         serializedVersion: 2
-        x: 2048
-        y: 1543
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 2052
+        y: 514
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: da634995a5ff5d2da96bd8ad2ce3ed00
-      internalID: 1037973835
+      spriteID: 0e679caa7972af34c840277044e889cc
+      internalID: 810430495
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_21
+      name: SPR_waiterWalkingLeft_13
       rect:
         serializedVersion: 2
-        x: 2560
-        y: 1543
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 2565
+        y: 514
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a214708ff5e555589871dd23e771403c
-      internalID: 533175662
+      spriteID: 601325f1e2ab9f84ebc5a7ecbe6cb821
+      internalID: 145890093
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_22
+      name: SPR_waiterWalkingLeft_14
       rect:
         serializedVersion: 2
-        x: 3072
-        y: 1543
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 3078
+        y: 514
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 52018c105e1104e2bb829f4fdbe65a71
-      internalID: -828162562
+      spriteID: 8799ee3b370b88c46a1513747abc1924
+      internalID: 548068754
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_23
+      name: SPR_waiterWalkingLeft_15
       rect:
         serializedVersion: 2
-        x: 3584
-        y: 1543
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 3591
+        y: 514
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 45d1da65d51ec487f92adc54d9cf1297
-      internalID: -1435180785
+      spriteID: a0866de33e02ce44a9a6b27a14d2e861
+      internalID: -1487215798
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_24
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 1031
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 05908574fee41085aa2c4f07d3d17460
-      internalID: 1376584120
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_25
-      rect:
-        serializedVersion: 2
-        x: 512
-        y: 1031
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c2682d18fc6d6f3d98fb1c509f4e15b3
-      internalID: 372386879
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_26
-      rect:
-        serializedVersion: 2
-        x: 1024
-        y: 1031
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 956e7ae2ced028b42aec7b3414c9577f
-      internalID: -1564450998
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_27
-      rect:
-        serializedVersion: 2
-        x: 1536
-        y: 1031
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8d931f6e785a74db39caa7049c7a6bb1
-      internalID: -800314071
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_28
-      rect:
-        serializedVersion: 2
-        x: 2048
-        y: 1031
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e9266e4781a9d04febaa28168a1c4afc
-      internalID: -1132181904
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_29
-      rect:
-        serializedVersion: 2
-        x: 2560
-        y: 1031
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 058b118801e24501eb1a7f4694587bd8
-      internalID: 1807948015
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_30
-      rect:
-        serializedVersion: 2
-        x: 3072
-        y: 1031
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 79f71688524e4f934ba45d0ea260971d
-      internalID: -1818725072
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_31
-      rect:
-        serializedVersion: 2
-        x: 3584
-        y: 1031
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 556476250f55c2ccba626e68b8827bf9
-      internalID: -164563899
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_32
+      name: SPR_waiterWalkingLeft_16
       rect:
         serializedVersion: 2
         x: 0
-        y: 519
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        y: 1
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6c08a87f218c7a953ba67cee054f218c
-      internalID: -1515442813
+      spriteID: 2e92d4a1e19a00c48bfa0196b5aa46d4
+      internalID: 606277351
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_33
+      name: SPR_waiterWalkingLeft_17
       rect:
         serializedVersion: 2
-        x: 512
-        y: 519
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 513
+        y: 1
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 421dd3b69036dbc0f940cf9d40bd3168
-      internalID: 2119287018
+      spriteID: fe19b43e816dceb49b9491fe6e330ac1
+      internalID: -1823507352
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_34
+      name: SPR_waiterWalkingLeft_18
       rect:
         serializedVersion: 2
-        x: 1024
-        y: 519
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 1026
+        y: 1
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 31e822305500064eabc358dd5771655c
-      internalID: 1834646645
+      spriteID: bb6761e23b99fd8458d08d26cfa32e0a
+      internalID: 965786361
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_35
+      name: SPR_waiterWalkingLeft_19
       rect:
         serializedVersion: 2
-        x: 1536
-        y: 519
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 1539
+        y: 1
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: adb4312d56b959631a51502cbef5d97b
-      internalID: 1095183305
+      spriteID: 541fa06a15e841841b90b637fb2b2a99
+      internalID: -1520586222
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_36
+      name: SPR_waiterWalkingLeft_20
       rect:
         serializedVersion: 2
-        x: 2048
-        y: 519
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 2052
+        y: 1
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 95f989ffc7d7c4569a2c80f84a6b732d
-      internalID: 1295622456
+      spriteID: ba3b60d79865bc542967c8e063e590b4
+      internalID: 303113722
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_37
+      name: SPR_waiterWalkingLeft_21
       rect:
         serializedVersion: 2
-        x: 2560
-        y: 519
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 2565
+        y: 1
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ce99e69e02ebfcfeab43b162b0426f94
-      internalID: -266252907
+      spriteID: 355508befe4dce647b51c1635da43fda
+      internalID: -2136266794
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_38
+      name: SPR_waiterWalkingLeft_22
       rect:
         serializedVersion: 2
-        x: 3072
-        y: 519
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 3078
+        y: 1
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0257ac4d72fe66645bfb529b6a20b014
-      internalID: -227233616
+      spriteID: 61ffc7a5496a65f46b50bab0ccafb541
+      internalID: 656942568
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_39
+      name: SPR_waiterWalkingLeft_23
       rect:
         serializedVersion: 2
-        x: 3584
-        y: 519
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 3591
+        y: 1
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2dc1fe6cffcc187bda71fc3200f38ca3
-      internalID: -825741236
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_40
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 7
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 70dbf74834f702d35b77b066b84704d1
-      internalID: -1315503966
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_41
-      rect:
-        serializedVersion: 2
-        x: 512
-        y: 7
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1a56ea46014da4a53b0b7c76ca47d397
-      internalID: -1468055026
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_42
-      rect:
-        serializedVersion: 2
-        x: 1024
-        y: 7
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 74599ae66d62f426482455836f9cf5aa
-      internalID: 114581759
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_43
-      rect:
-        serializedVersion: 2
-        x: 1536
-        y: 7
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7527e78881c8c139d9bb9c10be2dd855
-      internalID: -1419684055
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_44
-      rect:
-        serializedVersion: 2
-        x: 2048
-        y: 7
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7cefa1e205bc1195cb08e4514b21f6e2
-      internalID: -1214378013
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_45
-      rect:
-        serializedVersion: 2
-        x: 2560
-        y: 7
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 87d3a77dc8726e00c8a0ac163be46673
-      internalID: -1434894885
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_46
-      rect:
-        serializedVersion: 2
-        x: 3072
-        y: 7
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ad421f13f2fba100a8b45b1399883a43
-      internalID: -1313837586
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SPR_waiterWalkingSideways_47
-      rect:
-        serializedVersion: 2
-        x: 3584
-        y: 7
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 32daccc82589af95cb36a82c43cd54ae
-      internalID: 1387053565
+      spriteID: e64605a37ef430748ad8f712944696c1
+      internalID: -737955752
       vertices: []
       indices: 
       edges: []
@@ -1156,7 +641,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 6c562d52dc151a9d887ac436a8f6bb03
+    spriteID: ed5ec3b8b6520264f98cb3a9dc20dd88
     internalID: 0
     vertices: []
     indices: 
@@ -1166,56 +651,32 @@ TextureImporter:
     spriteCustomMetadata:
       entries:
       - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":512.0,"y":512.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":8.0,"y":3.0},"gridSpriteSize":{"x":513.0,"y":513.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.0},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":7,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      SPR_waiterWalkingSideways_0: 184966146
-      SPR_waiterWalkingSideways_1: -1031569741
-      SPR_waiterWalkingSideways_10: 1945790224
-      SPR_waiterWalkingSideways_11: -116425562
-      SPR_waiterWalkingSideways_12: -608524616
-      SPR_waiterWalkingSideways_13: -1956918544
-      SPR_waiterWalkingSideways_14: 2086301495
-      SPR_waiterWalkingSideways_15: 1551918099
-      SPR_waiterWalkingSideways_16: -440421202
-      SPR_waiterWalkingSideways_17: 226339440
-      SPR_waiterWalkingSideways_18: 1931125502
-      SPR_waiterWalkingSideways_19: 1491377022
-      SPR_waiterWalkingSideways_2: -2049389457
-      SPR_waiterWalkingSideways_20: 1037973835
-      SPR_waiterWalkingSideways_21: 533175662
-      SPR_waiterWalkingSideways_22: -828162562
-      SPR_waiterWalkingSideways_23: -1435180785
-      SPR_waiterWalkingSideways_24: 1376584120
-      SPR_waiterWalkingSideways_25: 372386879
-      SPR_waiterWalkingSideways_26: -1564450998
-      SPR_waiterWalkingSideways_27: -800314071
-      SPR_waiterWalkingSideways_28: -1132181904
-      SPR_waiterWalkingSideways_29: 1807948015
-      SPR_waiterWalkingSideways_3: 931947528
-      SPR_waiterWalkingSideways_30: -1818725072
-      SPR_waiterWalkingSideways_31: -164563899
-      SPR_waiterWalkingSideways_32: -1515442813
-      SPR_waiterWalkingSideways_33: 2119287018
-      SPR_waiterWalkingSideways_34: 1834646645
-      SPR_waiterWalkingSideways_35: 1095183305
-      SPR_waiterWalkingSideways_36: 1295622456
-      SPR_waiterWalkingSideways_37: -266252907
-      SPR_waiterWalkingSideways_38: -227233616
-      SPR_waiterWalkingSideways_39: -825741236
-      SPR_waiterWalkingSideways_4: -1975457573
-      SPR_waiterWalkingSideways_40: -1315503966
-      SPR_waiterWalkingSideways_41: -1468055026
-      SPR_waiterWalkingSideways_42: 114581759
-      SPR_waiterWalkingSideways_43: -1419684055
-      SPR_waiterWalkingSideways_44: -1214378013
-      SPR_waiterWalkingSideways_45: -1434894885
-      SPR_waiterWalkingSideways_46: -1313837586
-      SPR_waiterWalkingSideways_47: 1387053565
-      SPR_waiterWalkingSideways_5: 1125394626
-      SPR_waiterWalkingSideways_6: -561018508
-      SPR_waiterWalkingSideways_7: 970471418
-      SPR_waiterWalkingSideways_8: -1311059051
-      SPR_waiterWalkingSideways_9: -1500859447
+      SPR_waiterWalkingLeft_0: -1467763137
+      SPR_waiterWalkingLeft_1: 1610312427
+      SPR_waiterWalkingLeft_10: -43330447
+      SPR_waiterWalkingLeft_11: 2069014251
+      SPR_waiterWalkingLeft_12: 810430495
+      SPR_waiterWalkingLeft_13: 145890093
+      SPR_waiterWalkingLeft_14: 548068754
+      SPR_waiterWalkingLeft_15: -1487215798
+      SPR_waiterWalkingLeft_16: 606277351
+      SPR_waiterWalkingLeft_17: -1823507352
+      SPR_waiterWalkingLeft_18: 965786361
+      SPR_waiterWalkingLeft_19: -1520586222
+      SPR_waiterWalkingLeft_2: -1632335184
+      SPR_waiterWalkingLeft_20: 303113722
+      SPR_waiterWalkingLeft_21: -2136266794
+      SPR_waiterWalkingLeft_22: 656942568
+      SPR_waiterWalkingLeft_23: -737955752
+      SPR_waiterWalkingLeft_3: -491584419
+      SPR_waiterWalkingLeft_4: -513286425
+      SPR_waiterWalkingLeft_5: -1079142219
+      SPR_waiterWalkingLeft_6: 827337502
+      SPR_waiterWalkingLeft_7: -1731305052
+      SPR_waiterWalkingLeft_8: -431521844
+      SPR_waiterWalkingLeft_9: 658637951
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
