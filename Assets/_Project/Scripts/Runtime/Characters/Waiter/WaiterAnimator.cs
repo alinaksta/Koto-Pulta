@@ -7,6 +7,7 @@ namespace Game.Characters
     {
         private static readonly int IsMovingHash = Animator.StringToHash("isMoving");
         private static readonly int IsRagdolledHash = Animator.StringToHash("isRagdolled");
+        private static readonly int IsGroundedHash = Animator.StringToHash("isGrounded");
 
         [SerializeField] private Animator _animator;
         [SerializeField] private Waiter _waiter;
@@ -23,6 +24,10 @@ namespace Game.Characters
             _animator.SetBool(
                 IsRagdolledHash,
                 state == WaiterLocomotionState.Ragdoll);
+
+            _animator.SetBool(
+                IsGroundedHash,
+                (state == WaiterLocomotionState.Ragdoll || state == WaiterLocomotionState.Recovering) && _waiter.IsGrounded);
 
             _rotator.FullRotation = _waiter.IsRagdolled;
         }
