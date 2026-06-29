@@ -288,7 +288,7 @@ GameObject:
   - component: {fileID: 4442487814534279009}
   - component: {fileID: 2330359007449180217}
   m_Layer: 8
-  m_Name: PR_Waiter
+  m_Name: PR_CatWaiter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
