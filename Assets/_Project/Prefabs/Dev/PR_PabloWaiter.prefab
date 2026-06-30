@@ -288,7 +288,7 @@ GameObject:
   - component: {fileID: 4442487814534279009}
   - component: {fileID: 2330359007449180217}
   m_Layer: 8
-  m_Name: PR_CatWaiter
+  m_Name: PR_PabloWaiter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -372,8 +372,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.Diagnostics.DebugWaiterView
   _waiter: {fileID: 1134767841638170774}
-  _text: {fileID: 8123248286648965508}
-  _mealSpriteRenderer: {fileID: 2296167881913095022}
+  _orderNote: {fileID: 2269296997480955563}
+  _tableNumberLabel: {fileID: 8123248286648965508}
+  _orderSpriteRenderer: {fileID: 2296167881913095022}
 --- !u!195 &8800695103037304719
 NavMeshAgent:
   m_ObjectHideFlags: 0
