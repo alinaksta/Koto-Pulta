@@ -6,7 +6,7 @@ TextureImporter:
   serializedVersion: 13
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 1
+    enableMipMap: 0
     sRGBTexture: 1
     linearTexture: 0
     fadeOut: 0
@@ -37,24 +37,24 @@ TextureImporter:
     filterMode: 1
     aniso: 1
     mipBias: 0
-    wrapU: 0
-    wrapV: 0
+    wrapU: 1
+    wrapV: 1
     wrapW: 0
-  nPOTScale: 1
+  nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 0
+  spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 384
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 1
+  spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
-  alphaIsTransparency: 0
+  alphaIsTransparency: 1
   spriteTessellationDetail: -1
-  textureType: 0
+  textureType: 8
   textureShape: 1
   singleChannelComponent: 0
   flipbookRows: 1
@@ -73,8 +73,8 @@ TextureImporter:
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
+    compressionQuality: 100
+    crunchedCompression: 1
     allowsAlphaSplitting: 0
     overridden: 0
     ignorePlatformSupport: 0
@@ -93,14 +93,555 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: SPR_waiterWalkingForward_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1027
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5d0836b401f199bfd81a28d121095746
+      internalID: -769657006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingForward_1
+      rect:
+        serializedVersion: 2
+        x: 513
+        y: 1027
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 161d7433689251000886598000c98a0c
+      internalID: -1297527645
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingForward_2
+      rect:
+        serializedVersion: 2
+        x: 1026
+        y: 1027
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: da1996dcf98c99464a97fe7c505b3234
+      internalID: 498728759
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingForward_3
+      rect:
+        serializedVersion: 2
+        x: 1539
+        y: 1027
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 530a642c2d5513869a529a4d4e92c7a8
+      internalID: 541841970
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingForward_4
+      rect:
+        serializedVersion: 2
+        x: 2052
+        y: 1027
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6977ccd783221bf9a8adaa202f0e2f96
+      internalID: -1636813466
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingForward_5
+      rect:
+        serializedVersion: 2
+        x: 2565
+        y: 1027
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d9a5c9774b61a216198e605337b6d0bc
+      internalID: 1598524779
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingForward_6
+      rect:
+        serializedVersion: 2
+        x: 3078
+        y: 1027
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d3880de55eaae7f6bb3883d6c1b2ecdc
+      internalID: 1568151831
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingForward_7
+      rect:
+        serializedVersion: 2
+        x: 3591
+        y: 1027
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8f3c5871f6a663d89a10eb429e854989
+      internalID: 1838205139
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingForward_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 514
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 002d731ab51bc6f96985b0b4ec212617
+      internalID: -1664587077
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingForward_9
+      rect:
+        serializedVersion: 2
+        x: 513
+        y: 514
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0396ade69dbe6c49fb8de1580fe5b84e
+      internalID: -1946529966
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingForward_10
+      rect:
+        serializedVersion: 2
+        x: 1026
+        y: 514
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8b835a956788e9afabe643982fdd6f73
+      internalID: -447169010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingForward_11
+      rect:
+        serializedVersion: 2
+        x: 1539
+        y: 514
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c4346e74efea5394c9a5c53684204c2e
+      internalID: -1015673690
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingForward_12
+      rect:
+        serializedVersion: 2
+        x: 2052
+        y: 514
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f71cd47963fcbe37da3f2e2fb3976f03
+      internalID: -806125305
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingForward_13
+      rect:
+        serializedVersion: 2
+        x: 2565
+        y: 514
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3600949c304f6f4ebaa0a610cd496d28
+      internalID: -1537566769
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingForward_14
+      rect:
+        serializedVersion: 2
+        x: 3078
+        y: 514
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: df6dd13017c68105b8d00710dc906373
+      internalID: 254393834
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingForward_15
+      rect:
+        serializedVersion: 2
+        x: 3591
+        y: 514
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8eb917ad33f19994e995208c2b95dff4
+      internalID: 191490335
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingForward_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e7525091ae1c4e89181b4f244604167e
+      internalID: -227671523
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingForward_17
+      rect:
+        serializedVersion: 2
+        x: 513
+        y: 1
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 327af77d7b7ca296aad03be88be1c336
+      internalID: 443383658
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingForward_18
+      rect:
+        serializedVersion: 2
+        x: 1026
+        y: 1
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 34be05941aa8876799106b0692a1cf3e
+      internalID: 1684796034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingForward_19
+      rect:
+        serializedVersion: 2
+        x: 1539
+        y: 1
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6eff83d226557af96833bcf448545ec4
+      internalID: 468924054
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingForward_20
+      rect:
+        serializedVersion: 2
+        x: 2052
+        y: 1
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 13448c6afc9116306a9442513e7eb837
+      internalID: -1333564961
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingForward_21
+      rect:
+        serializedVersion: 2
+        x: 2565
+        y: 1
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f6cc6879130122c9aa31c7ba91d44e78
+      internalID: -795480487
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingForward_22
+      rect:
+        serializedVersion: 2
+        x: 3078
+        y: 1
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e3c00a623433f8aabb28321e3879a044
+      internalID: -2032617775
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingForward_23
+      rect:
+        serializedVersion: 2
+        x: 3591
+        y: 1
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0c2ade265f09b21b1bee4ec412ed24c5
+      internalID: -668549215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: cd7db39cdea45907ca9ab6a8c0f8f70c
     internalID: 0
     vertices: []
     indices: 
@@ -108,8 +649,34 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
-    nameFileIdTable: {}
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":8.0,"y":3.0},"gridSpriteSize":{"x":513.0,"y":513.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.0},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":7,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      SPR_waiterWalkingForward_0: -769657006
+      SPR_waiterWalkingForward_1: -1297527645
+      SPR_waiterWalkingForward_10: -447169010
+      SPR_waiterWalkingForward_11: -1015673690
+      SPR_waiterWalkingForward_12: -806125305
+      SPR_waiterWalkingForward_13: -1537566769
+      SPR_waiterWalkingForward_14: 254393834
+      SPR_waiterWalkingForward_15: 191490335
+      SPR_waiterWalkingForward_16: -227671523
+      SPR_waiterWalkingForward_17: 443383658
+      SPR_waiterWalkingForward_18: 1684796034
+      SPR_waiterWalkingForward_19: 468924054
+      SPR_waiterWalkingForward_2: 498728759
+      SPR_waiterWalkingForward_20: -1333564961
+      SPR_waiterWalkingForward_21: -795480487
+      SPR_waiterWalkingForward_22: -2032617775
+      SPR_waiterWalkingForward_23: -668549215
+      SPR_waiterWalkingForward_3: 541841970
+      SPR_waiterWalkingForward_4: -1636813466
+      SPR_waiterWalkingForward_5: 1598524779
+      SPR_waiterWalkingForward_6: 1568151831
+      SPR_waiterWalkingForward_7: 1838205139
+      SPR_waiterWalkingForward_8: -1664587077
+      SPR_waiterWalkingForward_9: -1946529966
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

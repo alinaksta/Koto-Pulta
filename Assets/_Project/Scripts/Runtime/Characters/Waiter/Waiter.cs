@@ -64,6 +64,12 @@ namespace Game.Characters
         [SerializeField] private float _settledVelocity = 0.2f;
         [SerializeField] private float _navMeshSampleRadius = 2f;
 
+        [Header("Ground Detection")]
+        [SerializeField] private LayerMask _groundLayer = 1;
+        [SerializeField] private float _groundCheckDistance = 0.2f;
+        [SerializeField] private float _groundCheckRadius = 0.2f;
+        [SerializeField] private float _groundCheckOffset = 0.35f;
+
         [Header("Roaming")]
         [SerializeField] private Transform _wanderOrigin;
         [SerializeField] private float _wanderRadius = 6f;
@@ -156,6 +162,43 @@ namespace Game.Characters
         /// Gets whether the waiter is currently ragdolled.
         /// </summary>
         public bool IsRagdolled => _locomotionState == WaiterLocomotionState.Ragdoll;
+
+        /// <summary>
+        /// Gets the waiter's current velocity.
+        /// </summary>
+        /// <remarks>
+        /// Returns <see cref="Rigidbody.linearVelocity"/> while the waiter is ragdolled or recovering.
+        /// Returns <see cref="NavMeshAgent.velocity"/> while the waiter is using NavMesh locomotion.
+        /// </remarks>
+        public Vector3 Velocity
+        {
+            get
+            {
+                if (IsRecovering || IsRagdolled)
+                    return _rigidbody.linearVelocity;
+                else
+                    return _agent.velocity;
+            }
+        }
+
+        /// <summary>
+        /// Gets whether the waiter is currently grounded.
+        /// </summary>
+        /// <remarks>
+        /// Returns <see langword="true"/> while the waiter is idle or walking because those states use NavMesh locomotion.
+        /// Returns <see langword="false"/> while the waiter is in hand.
+        /// While ragdolled or recovering, this is determined by a downward sphere cast from <c>transform.position + Vector3.up * _groundCheckOffset</c>
+        /// using <c>_groundCheckRadius</c>, <c>_groundCheckDistance</c>, and <c>_groundLayer</c>.
+        /// </remarks>
+        public bool IsGrounded
+            => _locomotionState switch
+            {
+                WaiterLocomotionState.Idle => true,
+                WaiterLocomotionState.Walking => true,
+                WaiterLocomotionState.Ragdoll => CastGround(),
+                WaiterLocomotionState.Recovering => CastGround(),
+                _ => false
+            };
 
         /// <summary>
         /// Raised after a customer is assigned to this waiter.
@@ -771,6 +814,22 @@ namespace Game.Characters
 
         private float GetArrivalDistance()
             => Mathf.Max(_agent.stoppingDistance, _wanderArrivalDistance);
+
+        private bool CastGround()
+        {
+            const float padding = 0.02f;
+
+            Vector3 origin = transform.position + Vector3.up * Mathf.Max(_groundCheckOffset, _groundCheckRadius + padding);
+
+            return Physics.SphereCast(
+                origin,
+                Mathf.Max(0.01f, _groundCheckRadius),
+                Vector3.down,
+                out _,
+                Mathf.Max(0f, _groundCheckDistance) + padding,
+                _groundLayer,
+                QueryTriggerInteraction.Ignore);
+        }
 
         private void SetServiceState(WaiterServiceState state)
         {
