@@ -1544,7 +1544,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemAsset: {fileID: 0}
+  _itemAsset: {fileID: 11400000, guid: 1d7993a15afe54241870f0ec6ccbb0de, type: 2}
 --- !u!114 &436822701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2125,7 +2125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemAsset: {fileID: 0}
+  _itemAsset: {fileID: 11400000, guid: bf0cae3c28479ea4e925e2c41a1e5a60, type: 2}
 --- !u!114 &651484368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2315,7 +2315,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemAsset: {fileID: 0}
+  _itemAsset: {fileID: 11400000, guid: 05d7fe516a398d64482537063bb5183a, type: 2}
 --- !u!114 &699258097
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6937,7 +6937,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemAsset: {fileID: 0}
+  _itemAsset: {fileID: 11400000, guid: b2c58796fc7c0c040866f9e1a0d1e4d1, type: 2}
 --- !u!114 &861187581
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7272,7 +7272,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemAsset: {fileID: 0}
+  _itemAsset: {fileID: 11400000, guid: 66da350420390434881d32f702e58aa8, type: 2}
 --- !u!114 &953006004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7698,7 +7698,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemAsset: {fileID: 0}
+  _itemAsset: {fileID: 11400000, guid: 761d8ffbb93096e4ea8ac868397dd0e8, type: 2}
 --- !u!114 &1038089037
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7999,7 +7999,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemAsset: {fileID: 0}
+  _itemAsset: {fileID: 11400000, guid: f8bb92e7c221f964aa44a02cfcbc4592, type: 2}
 --- !u!114 &1198773099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8535,7 +8535,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemAsset: {fileID: 0}
+  _itemAsset: {fileID: 11400000, guid: 39ed9d28445c78b4eafc8ffa021450b6, type: 2}
 --- !u!114 &1549973284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8669,7 +8669,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemAsset: {fileID: 0}
+  _itemAsset: {fileID: 11400000, guid: cf77036787562b24190e838e4194cb6a, type: 2}
 --- !u!114 &1607708486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9015,7 +9015,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemAsset: {fileID: 0}
+  _itemAsset: {fileID: 11400000, guid: cf54fe7e9e036954384263cb4d5123d0, type: 2}
 --- !u!114 &1738903243
 MonoBehaviour:
   m_ObjectHideFlags: 0
