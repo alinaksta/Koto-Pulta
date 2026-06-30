@@ -1117,7 +1117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemAsset: {fileID: 0}
+  _itemAsset: {fileID: 11400000, guid: 7ee7bacff2389624794a47d801866f09, type: 2}
 --- !u!114 &296557949
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1161,19 +1161,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 296557950}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485232675}
-        m_TargetAssemblyTypeName: Game.Interaction.ComputerInteractable, Assembly-CSharp
-        m_MethodName: ExitComputer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &296557950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1600,19 +1588,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 436822702}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485232675}
-        m_TargetAssemblyTypeName: Game.Interaction.ComputerInteractable, Assembly-CSharp
-        m_MethodName: ExitComputer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &436822702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1844,6 +1820,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteActivator
   sites:
   - {fileID: 1771087888}
+--- !u!114 &485232683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 485232671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50e6bf76c3627124281d5384619a71a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Game.Interaction.ComputerController
+  _computerInteractable: {fileID: 485232675}
+  _itemButtons:
+  - {fileID: 730755822}
+  - {fileID: 296557948}
+  - {fileID: 1838771676}
+  - {fileID: 1198773098}
+  - {fileID: 953006003}
+  - {fileID: 861187580}
+  - {fileID: 1607708485}
+  - {fileID: 651484367}
+  - {fileID: 1549973283}
+  - {fileID: 436822700}
+  - {fileID: 699258096}
+  - {fileID: 1038089036}
+  - {fileID: 1738903242}
 --- !u!1 &508486743
 GameObject:
   m_ObjectHideFlags: 0
@@ -2067,6 +2070,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1ed41bcf3fde83f47b69cec8438f92d1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 485232682}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1ed41bcf3fde83f47b69cec8438f92d1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 485232683}
   m_SourcePrefab: {fileID: 100100000, guid: 1ed41bcf3fde83f47b69cec8438f92d1, type: 3}
 --- !u!1 &651484365
 GameObject:
@@ -2163,19 +2169,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 651484369}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485232675}
-        m_TargetAssemblyTypeName: Game.Interaction.ComputerInteractable, Assembly-CSharp
-        m_MethodName: ExitComputer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &651484369
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2365,19 +2359,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 699258098}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485232675}
-        m_TargetAssemblyTypeName: Game.Interaction.ComputerInteractable, Assembly-CSharp
-        m_MethodName: ExitComputer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &699258098
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2467,7 +2449,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemAsset: {fileID: 0}
+  _itemAsset: {fileID: 11400000, guid: d97aab6ea61c0b248959282a829c8f43, type: 2}
 --- !u!114 &730755823
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2511,19 +2493,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 730755824}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485232675}
-        m_TargetAssemblyTypeName: Game.Interaction.ComputerInteractable, Assembly-CSharp
-        m_MethodName: ExitComputer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &730755824
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7011,19 +6981,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 861187582}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485232675}
-        m_TargetAssemblyTypeName: Game.Interaction.ComputerInteractable, Assembly-CSharp
-        m_MethodName: ExitComputer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &861187582
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7358,19 +7316,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 953006005}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485232675}
-        m_TargetAssemblyTypeName: Game.Interaction.ComputerInteractable, Assembly-CSharp
-        m_MethodName: ExitComputer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &953006005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7796,19 +7742,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1038089038}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485232675}
-        m_TargetAssemblyTypeName: Game.Interaction.ComputerInteractable, Assembly-CSharp
-        m_MethodName: ExitComputer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1038089038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8109,19 +8043,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1198773100}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485232675}
-        m_TargetAssemblyTypeName: Game.Interaction.ComputerInteractable, Assembly-CSharp
-        m_MethodName: ExitComputer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1198773100
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8516,6 +8438,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.Interaction.ComputerController
   _computerInteractable: {fileID: 485232675}
+  _itemButtons: []
 --- !u!1 &1511495224
 GameObject:
   m_ObjectHideFlags: 0
@@ -8656,19 +8579,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1549973285}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485232675}
-        m_TargetAssemblyTypeName: Game.Interaction.ComputerInteractable, Assembly-CSharp
-        m_MethodName: ExitComputer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1549973285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8802,19 +8713,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1607708487}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485232675}
-        m_TargetAssemblyTypeName: Game.Interaction.ComputerInteractable, Assembly-CSharp
-        m_MethodName: ExitComputer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1607708487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9160,19 +9059,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1738903244}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485232675}
-        m_TargetAssemblyTypeName: Game.Interaction.ComputerInteractable, Assembly-CSharp
-        m_MethodName: ExitComputer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1738903244
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9664,7 +9551,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemAsset: {fileID: 0}
+  _itemAsset: {fileID: 11400000, guid: 6ae552bdcf52a284a81e5a995aeb6d29, type: 2}
 --- !u!114 &1838771677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9708,19 +9595,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1838771678}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485232675}
-        m_TargetAssemblyTypeName: Game.Interaction.ComputerInteractable, Assembly-CSharp
-        m_MethodName: ExitComputer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1838771678
 MonoBehaviour:
   m_ObjectHideFlags: 0

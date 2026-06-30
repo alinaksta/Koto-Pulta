@@ -17,12 +17,14 @@ namespace Game.UI
         [SerializeField] private ItemDefinitionAsset _itemAsset; 
         public event System.Action<Item> OnItemChosen = delegate { };
         private Button _button;
-        private ComputerController _computerController;
 
         private void Awake()
         {
             _button = GetComponent<Button>();
-            _computerController = ServiceLocator.Get<ComputerController>();
+
+            // No need to make any global service, we actually don't need ComputerController here
+            // The events allow us to inform ComputerController, so we don't need a reference
+            //_computerController = ServiceLocator.Get<ComputerController>();
             if (_button != null)
             {
                 _button.onClick.AddListener(OnButtonClick);
@@ -52,14 +54,11 @@ namespace Game.UI
                 return;
             }
 
-            if (_computerController == null)
-            {
-                Debug.LogError("Buttons Dont's see controller");
-            }
-            OnItemChosen.Invoke(Item.FromId(_itemAsset.Id).Value);
+            OnItemChosen.Invoke(item.Value);
             Debug.Log("Event invoked");
-            _computerController.GiveItemToPlayer(Item.FromId(_itemAsset.Id).Value);
-            Debug.Log("Gave Item");
+
+            // Computer controller can subscibe to event, no need to call stuff manually
+            //_computerController.GiveItemToPlayer(item.Value);
         }
     }
 }
