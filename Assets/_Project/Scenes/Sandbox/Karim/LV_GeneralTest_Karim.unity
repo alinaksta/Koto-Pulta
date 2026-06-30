@@ -371,11 +371,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 35037502}
   m_CullTransparentMesh: 1
---- !u!4 &35267356 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3041218814896205459, guid: 6352f89e88fd4894e852841cd23fd506, type: 3}
-  m_PrefabInstance: {fileID: 426904718}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &112488228
 GameObject:
   m_ObjectHideFlags: 0
@@ -1487,10 +1482,7 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 5986377663110142810, guid: 6352f89e88fd4894e852841cd23fd506, type: 3}
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 3041218814896205459, guid: 6352f89e88fd4894e852841cd23fd506, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1432316402}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6352f89e88fd4894e852841cd23fd506, type: 3}
 --- !u!1 &436822698
@@ -8393,52 +8385,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1428157206}
   m_CullTransparentMesh: 1
---- !u!1 &1432316401
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1432316402}
-  - component: {fileID: 1432316403}
-  m_Layer: 0
-  m_Name: ComputerController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1432316402
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1432316401}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 35267356}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1432316403
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1432316401}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50e6bf76c3627124281d5384619a71a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Game.Interaction.ComputerController
-  _computerInteractable: {fileID: 485232675}
-  _itemButtons: []
 --- !u!1 &1511495224
 GameObject:
   m_ObjectHideFlags: 0
