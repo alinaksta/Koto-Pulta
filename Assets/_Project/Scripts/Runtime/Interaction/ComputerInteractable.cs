@@ -14,7 +14,6 @@ namespace Game.Interaction
         [SerializeField] private float _startFocusDuration = 2f;
         [SerializeField] private float _endFocusDuration = 2f;
 
-        private SiteActivator sites;
 
         /// <summary>
         /// Raised when the player enters focus on this computer.
@@ -47,14 +46,6 @@ namespace Game.Interaction
 
         private IFocusHandler _focusHandler;
 
-        private void Start()
-        {
-            sites = GetComponent<SiteActivator>();
-            if (sites == null)
-            {
-                Debug.Log("No sites assigned");
-            }
-        }
 
         /// <inheritdoc/>
         /// <remarks>
@@ -73,10 +64,6 @@ namespace Game.Interaction
             CurrentInteractor = null;
             _focusHandler = null;
             Debug.Log("Exited computer");
-            if (sites != null)
-            {
-                sites.EndInteraction();
-            }
         }
 
         /// <inheritdoc/>
@@ -91,10 +78,6 @@ namespace Game.Interaction
             _focusHandler.SetMouseLocked(false);
             FocusStarted.Invoke();
             Debug.Log("Entered computer");
-            if (sites != null)
-            {
-                sites.StartInteraction();
-            }
         }
 
         /// <summary>

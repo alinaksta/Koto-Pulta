@@ -371,6 +371,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 35037502}
   m_CullTransparentMesh: 1
+--- !u!4 &35267356 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3041218814896205459, guid: 6352f89e88fd4894e852841cd23fd506, type: 3}
+  m_PrefabInstance: {fileID: 426904718}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &112488228
 GameObject:
   m_ObjectHideFlags: 0
@@ -1112,8 +1117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemId: food2
-  _distributionService: {fileID: 398834869}
+  _itemAsset: {fileID: 0}
 --- !u!114 &296557949
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1345,17 +1349,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 376689288}
   m_CullTransparentMesh: 1
---- !u!114 &398834869 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5986377663110142810, guid: 6352f89e88fd4894e852841cd23fd506, type: 3}
-  m_PrefabInstance: {fileID: 426904718}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8edc9b577dbab714fa8a839b940451ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Game.UI.UItemDistributionService
 --- !u!1 &402209815
 GameObject:
   m_ObjectHideFlags: 0
@@ -1503,9 +1496,13 @@ PrefabInstance:
       propertyPath: _dualHandInteractor
       value: 
       objectReference: {fileID: 1887974252}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5986377663110142810, guid: 6352f89e88fd4894e852841cd23fd506, type: 3}
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 3041218814896205459, guid: 6352f89e88fd4894e852841cd23fd506, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1432316402}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6352f89e88fd4894e852841cd23fd506, type: 3}
 --- !u!1 &436822698
@@ -1559,8 +1556,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemId: food10
-  _distributionService: {fileID: 398834869}
+  _itemAsset: {fileID: 0}
 --- !u!114 &436822701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2123,8 +2119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemId: food8
-  _distributionService: {fileID: 398834869}
+  _itemAsset: {fileID: 0}
 --- !u!114 &651484368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2326,8 +2321,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemId: food11
-  _distributionService: {fileID: 398834869}
+  _itemAsset: {fileID: 0}
 --- !u!114 &699258097
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2473,8 +2467,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemId: food1
-  _distributionService: {fileID: 398834869}
+  _itemAsset: {fileID: 0}
 --- !u!114 &730755823
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6974,8 +6967,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemId: food6
-  _distributionService: {fileID: 398834869}
+  _itemAsset: {fileID: 0}
 --- !u!114 &861187581
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7322,8 +7314,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemId: food5
-  _distributionService: {fileID: 398834869}
+  _itemAsset: {fileID: 0}
 --- !u!114 &953006004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7536,7 +7527,7 @@ GameObject:
   - component: {fileID: 974311397}
   - component: {fileID: 974311396}
   m_Layer: 8
-  m_Name: Image
+  m_Name: Site1BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7761,8 +7752,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemId: food12
-  _distributionService: {fileID: 398834869}
+  _itemAsset: {fileID: 0}
 --- !u!114 &1038089037
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8075,8 +8065,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemId: food4
-  _distributionService: {fileID: 398834869}
+  _itemAsset: {fileID: 0}
 --- !u!114 &1198773099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8482,6 +8471,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1428157206}
   m_CullTransparentMesh: 1
+--- !u!1 &1432316401
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1432316402}
+  - component: {fileID: 1432316403}
+  m_Layer: 0
+  m_Name: ComputerController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1432316402
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1432316401}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 35267356}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1432316403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1432316401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50e6bf76c3627124281d5384619a71a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Game.Interaction.ComputerController
+  _computerInteractable: {fileID: 485232675}
 --- !u!1 &1511495224
 GameObject:
   m_ObjectHideFlags: 0
@@ -8578,8 +8612,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemId: food9
-  _distributionService: {fileID: 398834869}
+  _itemAsset: {fileID: 0}
 --- !u!114 &1549973284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8725,8 +8758,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemId: food7
-  _distributionService: {fileID: 398834869}
+  _itemAsset: {fileID: 0}
 --- !u!114 &1607708486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9084,8 +9116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemId: food13
-  _distributionService: {fileID: 398834869}
+  _itemAsset: {fileID: 0}
 --- !u!114 &1738903243
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9327,7 +9358,7 @@ GameObject:
   - component: {fileID: 1771087890}
   - component: {fileID: 1771087893}
   m_Layer: 8
-  m_Name: Scroll View
+  m_Name: Site1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9633,8 +9664,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemId: food3
-  _distributionService: {fileID: 398834869}
+  _itemAsset: {fileID: 0}
 --- !u!114 &1838771677
 MonoBehaviour:
   m_ObjectHideFlags: 0
