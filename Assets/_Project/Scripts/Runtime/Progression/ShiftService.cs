@@ -1,5 +1,10 @@
+using Game.Characters;
+using Game.Items;
+using Game.Items.Properties;
 using Game.Lifecycle;
 using Game.Services;
+using Itemworks.Core;
+using Itemworks.UnityEngine;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,12 +19,34 @@ namespace Game.Progression
         public int AvailableRecepies;
     }
 
+    public sealed class ShiftRandomItemDefinitionGiver : IRandomItemDefinitionGiver
+    {
+        private readonly ShiftService _shiftService;
+        private readonly List<ItemDefinition> _allowedItems;
+
+        public ShiftRandomItemDefinitionGiver(ShiftService shiftService, List<ItemDefinition> allowedItems)
+        {
+            _shiftService = shiftService;
+            _allowedItems = allowedItems;
+        }
+
+        /// <inheritdoc/>
+        public ItemDefinition GetRandomItemDefinition()
+        {
+            var unlocked = _allowedItems
+                .FindAll(item => item.TryGetProperty<ShiftProperty>(out var shiftProp)
+                && shiftProp.RequiredShift <= _shiftService.ShiftIndex);
+            return unlocked.Count > 0 ? unlocked[UnityEngine.Random.Range(0, unlocked.Count)] : null;
+        }
+    }
+
     /// <summary>
     /// Stores shift definitions and runs the shift game mode.
     /// </summary>
     public class ShiftService : MonoBehaviour, IBootstrapable, IGameMode
     {
         [SerializeField] private List<Shift> _shifts;
+        [SerializeField] private List<ItemDefinitionAsset> _allowedItems;
         [SerializeField] private float _shiftDuration = 180f;
 
         private GameModeContext _context;
@@ -117,10 +144,28 @@ namespace Game.Progression
 
             _context.Balance.OnBalanceChanged += HandleBalanceChanged;
 
+            _context.Customers.OnCustomerServed += HandleCustomerServed;
+
+            _context.Customers.SetRandomItemGiver(GetShiftRandomItemGiver());
+
             _context.Session.ResetState();
             _context.Session.StartRun();
 
             StartNextShift();
+        }
+
+        private IRandomItemDefinitionGiver GetShiftRandomItemGiver()
+        {
+            List<ItemDefinition> itemList = new List<ItemDefinition>();
+            foreach (var itemAsset in _allowedItems)
+            {
+                if (!ItemRegistry.Instance.TryGet(itemAsset.Id, out var definition))
+                    continue;
+
+                itemList.Add(definition);
+            }
+
+            return new ShiftRandomItemDefinitionGiver(this, itemList);
         }
 
         /// <inheritdoc/>
@@ -150,6 +195,9 @@ namespace Game.Progression
         {
             if (_context?.Balance != null)
                 _context.Balance.OnBalanceChanged -= HandleBalanceChanged;
+
+            if (_context.Customers != null)
+                _context.Customers.OnCustomerServed -= HandleCustomerServed;
 
             if (ShiftInProgress)
                 EndCurrentShift();
@@ -260,6 +308,16 @@ namespace Game.Progression
                 _currentRevenue += newBalance - _lastKnownBalance;
 
             _lastKnownBalance = newBalance;
+        }
+
+
+        private void HandleCustomerServed(Customer customer)
+        {
+            if (customer.Order.TryGetProperty(out FoodProperty food))
+            {
+                _context.Balance.Add(food.UnitPrice);
+                Debug.Log("Here");
+            }
         }
     }
 }

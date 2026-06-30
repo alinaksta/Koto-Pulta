@@ -14,26 +14,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Itemworks.Samples.BasicInventory.ItemDefinitionAsset
   Id: dev_smiley
   Properties:
-  - rid: 6891364298855022867
-  - rid: 6891364298855022971
-  - rid: 6891364328616493325
-  - rid: 6891364328616493348
+  - rid: 6891364640889241690
+  - rid: 6891364640889241691
+  - rid: 6891364640889241692
+  - rid: 6891364640889241693
   references:
     version: 2
     RefIds:
-    - rid: 6891364298855022867
-      type: {class: SpriteProperty, ns: Game.Items.Properties, asm: Assembly-CSharp}
+    - rid: 6891364640889241690
+      type: {class: FoodProperty, ns: Game.Items.Properties, asm: Assembly-CSharp}
       data:
-        Sprite: {fileID: 21300000, guid: d1b6c3dab445fe2448a0406f98456899, type: 3}
-    - rid: 6891364298855022971
-      type: {class: HandSpriteProperty, ns: Game.Items.Properties, asm: Assembly-CSharp}
-      data:
-        HandSprite: {fileID: 21300000, guid: 04a789a7a5232334091f0c0837ccddd9, type: 3}
-    - rid: 6891364328616493325
+        WorldSprite: {fileID: 21300000, guid: d1b6c3dab445fe2448a0406f98456899, type: 3}
+        DialogueSprite: {fileID: 21300000, guid: d1b6c3dab445fe2448a0406f98456899, type: 3}
+        UnitPrice: 10
+    - rid: 6891364640889241691
       type: {class: WaiterProperty, ns: Game.Items.Properties, asm: Assembly-CSharp}
       data: 
-    - rid: 6891364328616493348
+    - rid: 6891364640889241692
       type: {class: ThrowableProperty, ns: Game.Items.Properties, asm: Assembly-CSharp}
       data:
         HoldTime: 0.8
-        ForwardForce: 12
+        ForwardForce: 6
+    - rid: 6891364640889241693
+      type: {class: HandSpriteProperty, ns: Game.Items.Properties, asm: Assembly-CSharp}
+      data:
+        HandSprite: {fileID: 21300000, guid: 04a789a7a5232334091f0c0837ccddd9, type: 3}

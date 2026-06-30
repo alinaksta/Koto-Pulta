@@ -14,20 +14,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Itemworks.Samples.BasicInventory.ItemDefinitionAsset
   Id: dev_cup
   Properties:
-  - rid: 6891364298855022867
-  - rid: 6891364298855022971
-  - rid: 6891364328616493240
+  - rid: 6891364640889241687
+  - rid: 6891364640889241688
+  - rid: 6891364640889241689
   references:
     version: 2
     RefIds:
-    - rid: 6891364298855022867
-      type: {class: SpriteProperty, ns: Game.Items.Properties, asm: Assembly-CSharp}
+    - rid: 6891364640889241687
+      type: {class: FoodProperty, ns: Game.Items.Properties, asm: Assembly-CSharp}
       data:
-        Sprite: {fileID: 21300000, guid: 61e5340c073e8fe4a80500e4705cdf49, type: 3}
-    - rid: 6891364298855022971
+        WorldSprite: {fileID: 21300000, guid: 61e5340c073e8fe4a80500e4705cdf49, type: 3}
+        DialogueSprite: {fileID: 21300000, guid: 5b309776fd5f4904391d3b1866f0a040, type: 3}
+        UnitPrice: 4
+    - rid: 6891364640889241688
       type: {class: HandSpriteProperty, ns: Game.Items.Properties, asm: Assembly-CSharp}
       data:
         HandSprite: {fileID: 21300000, guid: 5b309776fd5f4904391d3b1866f0a040, type: 3}
-    - rid: 6891364328616493240
+    - rid: 6891364640889241689
       type: {class: ThrowableProperty, ns: Game.Items.Properties, asm: Assembly-CSharp}
-      data: 
+      data:
+        HoldTime: 0.8
+        ForwardForce: 6
