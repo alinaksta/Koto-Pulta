@@ -1112,8 +1112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemId: food2
-  _distributionService: {fileID: 398834869}
+  _itemAsset: {fileID: 11400000, guid: 7ee7bacff2389624794a47d801866f09, type: 2}
 --- !u!114 &296557949
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1157,19 +1156,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 296557950}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485232675}
-        m_TargetAssemblyTypeName: Game.Interaction.ComputerInteractable, Assembly-CSharp
-        m_MethodName: ExitComputer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &296557950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1345,17 +1332,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 376689288}
   m_CullTransparentMesh: 1
---- !u!114 &398834869 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5986377663110142810, guid: 6352f89e88fd4894e852841cd23fd506, type: 3}
-  m_PrefabInstance: {fileID: 426904718}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8edc9b577dbab714fa8a839b940451ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Game.UI.UItemDistributionService
 --- !u!1 &402209815
 GameObject:
   m_ObjectHideFlags: 0
@@ -1503,7 +1479,8 @@ PrefabInstance:
       propertyPath: _dualHandInteractor
       value: 
       objectReference: {fileID: 1887974252}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5986377663110142810, guid: 6352f89e88fd4894e852841cd23fd506, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1559,8 +1536,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemId: food10
-  _distributionService: {fileID: 398834869}
+  _itemAsset: {fileID: 11400000, guid: 1d7993a15afe54241870f0ec6ccbb0de, type: 2}
 --- !u!114 &436822701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1604,19 +1580,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 436822702}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485232675}
-        m_TargetAssemblyTypeName: Game.Interaction.ComputerInteractable, Assembly-CSharp
-        m_MethodName: ExitComputer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &436822702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1848,6 +1812,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteActivator
   sites:
   - {fileID: 1771087888}
+--- !u!114 &485232683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 485232671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50e6bf76c3627124281d5384619a71a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Game.Interaction.ComputerController
+  _computerInteractable: {fileID: 485232675}
+  _itemButtons:
+  - {fileID: 730755822}
+  - {fileID: 296557948}
+  - {fileID: 1838771676}
+  - {fileID: 1198773098}
+  - {fileID: 953006003}
+  - {fileID: 861187580}
+  - {fileID: 1607708485}
+  - {fileID: 651484367}
+  - {fileID: 1549973283}
+  - {fileID: 436822700}
+  - {fileID: 699258096}
+  - {fileID: 1038089036}
+  - {fileID: 1738903242}
 --- !u!1 &508486743
 GameObject:
   m_ObjectHideFlags: 0
@@ -2071,6 +2062,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1ed41bcf3fde83f47b69cec8438f92d1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 485232682}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1ed41bcf3fde83f47b69cec8438f92d1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 485232683}
   m_SourcePrefab: {fileID: 100100000, guid: 1ed41bcf3fde83f47b69cec8438f92d1, type: 3}
 --- !u!1 &651484365
 GameObject:
@@ -2123,8 +2117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemId: food8
-  _distributionService: {fileID: 398834869}
+  _itemAsset: {fileID: 11400000, guid: bf0cae3c28479ea4e925e2c41a1e5a60, type: 2}
 --- !u!114 &651484368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2168,19 +2161,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 651484369}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485232675}
-        m_TargetAssemblyTypeName: Game.Interaction.ComputerInteractable, Assembly-CSharp
-        m_MethodName: ExitComputer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &651484369
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2326,8 +2307,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemId: food11
-  _distributionService: {fileID: 398834869}
+  _itemAsset: {fileID: 11400000, guid: 05d7fe516a398d64482537063bb5183a, type: 2}
 --- !u!114 &699258097
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2371,19 +2351,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 699258098}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485232675}
-        m_TargetAssemblyTypeName: Game.Interaction.ComputerInteractable, Assembly-CSharp
-        m_MethodName: ExitComputer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &699258098
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2473,8 +2441,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemId: food1
-  _distributionService: {fileID: 398834869}
+  _itemAsset: {fileID: 11400000, guid: d97aab6ea61c0b248959282a829c8f43, type: 2}
 --- !u!114 &730755823
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2518,19 +2485,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 730755824}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485232675}
-        m_TargetAssemblyTypeName: Game.Interaction.ComputerInteractable, Assembly-CSharp
-        m_MethodName: ExitComputer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &730755824
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6974,8 +6929,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemId: food6
-  _distributionService: {fileID: 398834869}
+  _itemAsset: {fileID: 11400000, guid: b2c58796fc7c0c040866f9e1a0d1e4d1, type: 2}
 --- !u!114 &861187581
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7019,19 +6973,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 861187582}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485232675}
-        m_TargetAssemblyTypeName: Game.Interaction.ComputerInteractable, Assembly-CSharp
-        m_MethodName: ExitComputer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &861187582
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7322,8 +7264,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemId: food5
-  _distributionService: {fileID: 398834869}
+  _itemAsset: {fileID: 11400000, guid: 66da350420390434881d32f702e58aa8, type: 2}
 --- !u!114 &953006004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7367,19 +7308,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 953006005}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485232675}
-        m_TargetAssemblyTypeName: Game.Interaction.ComputerInteractable, Assembly-CSharp
-        m_MethodName: ExitComputer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &953006005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7536,7 +7465,7 @@ GameObject:
   - component: {fileID: 974311397}
   - component: {fileID: 974311396}
   m_Layer: 8
-  m_Name: Image
+  m_Name: Site1BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7761,8 +7690,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemId: food12
-  _distributionService: {fileID: 398834869}
+  _itemAsset: {fileID: 11400000, guid: 761d8ffbb93096e4ea8ac868397dd0e8, type: 2}
 --- !u!114 &1038089037
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7806,19 +7734,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1038089038}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485232675}
-        m_TargetAssemblyTypeName: Game.Interaction.ComputerInteractable, Assembly-CSharp
-        m_MethodName: ExitComputer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1038089038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8075,8 +7991,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemId: food4
-  _distributionService: {fileID: 398834869}
+  _itemAsset: {fileID: 11400000, guid: f8bb92e7c221f964aa44a02cfcbc4592, type: 2}
 --- !u!114 &1198773099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8120,19 +8035,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1198773100}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485232675}
-        m_TargetAssemblyTypeName: Game.Interaction.ComputerInteractable, Assembly-CSharp
-        m_MethodName: ExitComputer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1198773100
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8578,8 +8481,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemId: food9
-  _distributionService: {fileID: 398834869}
+  _itemAsset: {fileID: 11400000, guid: 39ed9d28445c78b4eafc8ffa021450b6, type: 2}
 --- !u!114 &1549973284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8623,19 +8525,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1549973285}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485232675}
-        m_TargetAssemblyTypeName: Game.Interaction.ComputerInteractable, Assembly-CSharp
-        m_MethodName: ExitComputer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1549973285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8725,8 +8615,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemId: food7
-  _distributionService: {fileID: 398834869}
+  _itemAsset: {fileID: 11400000, guid: cf77036787562b24190e838e4194cb6a, type: 2}
 --- !u!114 &1607708486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8770,19 +8659,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1607708487}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485232675}
-        m_TargetAssemblyTypeName: Game.Interaction.ComputerInteractable, Assembly-CSharp
-        m_MethodName: ExitComputer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1607708487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9084,8 +8961,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemId: food13
-  _distributionService: {fileID: 398834869}
+  _itemAsset: {fileID: 11400000, guid: cf54fe7e9e036954384263cb4d5123d0, type: 2}
 --- !u!114 &1738903243
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9129,19 +9005,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1738903244}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485232675}
-        m_TargetAssemblyTypeName: Game.Interaction.ComputerInteractable, Assembly-CSharp
-        m_MethodName: ExitComputer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1738903244
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9327,7 +9191,7 @@ GameObject:
   - component: {fileID: 1771087890}
   - component: {fileID: 1771087893}
   m_Layer: 8
-  m_Name: Scroll View
+  m_Name: Site1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9633,8 +9497,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e51370a0041e546b970b67e8cdc83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
-  _itemId: food3
-  _distributionService: {fileID: 398834869}
+  _itemAsset: {fileID: 11400000, guid: 6ae552bdcf52a284a81e5a995aeb6d29, type: 2}
 --- !u!114 &1838771677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9678,19 +9541,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1838771678}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 485232675}
-        m_TargetAssemblyTypeName: Game.Interaction.ComputerInteractable, Assembly-CSharp
-        m_MethodName: ExitComputer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1838771678
 MonoBehaviour:
   m_ObjectHideFlags: 0
