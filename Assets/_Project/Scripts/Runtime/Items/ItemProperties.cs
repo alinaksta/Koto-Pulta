@@ -2,6 +2,7 @@ using Game.Items.Components;
 using Itemworks.Core;
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Game.Items.Properties
 {
@@ -9,12 +10,34 @@ namespace Game.Items.Properties
     /// Stores the world sprite used to display an item.
     /// </summary>
     [Serializable]
-    public class SpriteProperty : ItemProperty
+    public class FoodProperty : ItemProperty
     {
         /// <summary>
         /// Sprite shown for the item in world-space views.
         /// </summary>
-        public Sprite Sprite;
+        public Sprite WorldSprite;
+
+        /// <summary>
+        /// Sprite shown for the item in dialogues (waiter for example).
+        /// </summary>
+        public Sprite DialogueSprite;
+
+        /// <summary>
+        /// How much money you get for successfully delivering this item.
+        /// </summary>
+        public int UnitPrice = 10;
+    }
+
+    /// <summary>
+    /// Stores information on when can this item be spawned in the shift game mode.
+    /// </summary>
+    [Serializable]
+    public class ShiftProperty : ItemProperty
+    {
+        /// <summary>
+        /// At which shift this item can be get using computer
+        /// </summary>
+        public int RequiredShift = 0;
     }
 
     /// <summary>
@@ -24,7 +47,7 @@ namespace Game.Items.Properties
     public class HandSpriteProperty : ItemProperty
     {
         /// <summary>
-        /// Sprite shown while the item is in hand.
+        /// WorldSprite shown while the item is in hand.
         /// </summary>
         public Sprite HandSprite;
     }

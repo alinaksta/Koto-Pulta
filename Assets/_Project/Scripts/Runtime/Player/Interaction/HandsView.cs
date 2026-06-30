@@ -239,15 +239,15 @@ namespace Game.Interaction
                 }
                 else
                 {
-                    if (definition.TryGetProperty<SpriteProperty>(out var spriteProperty))
+                    if (definition.TryGetProperty<FoodProperty>(out var spriteProperty))
                     {
-                        _heldItemImage.sprite = spriteProperty.Sprite;
+                        _heldItemImage.sprite = spriteProperty.WorldSprite;
                         _heldItemImage.enabled = true;
                         _handAnimator.enabled = true;
                     }
                     else
                     {
-                        Debug.LogWarning($"The item {definition.Id} does not have a SpriteProperty!");
+                        Debug.LogWarning($"The item {definition.Id} does not have a FoodProperty!");
                     }
                 }
 
@@ -258,10 +258,10 @@ namespace Game.Interaction
                     if (instance.TryGetComponent<WaiterComponent>(out var waiterComponent))
                     {
                         Item? waiterItem = waiterComponent.Waiter.CarryContainer.Item;
-                        if (waiterItem.HasValue && waiterItem.Value.Definition.TryGetProperty<SpriteProperty>(out var waiterItemSpriteProp))
+                        if (waiterItem.HasValue && waiterItem.Value.Definition.TryGetProperty<FoodProperty>(out var waiterItemSpriteProp))
                         {
                             _waiterItemImage.enabled = true;
-                            _waiterItemImage.sprite = waiterItemSpriteProp.Sprite;
+                            _waiterItemImage.sprite = waiterItemSpriteProp.WorldSprite;
                         }
                         if (waiterComponent.Waiter.TableNumber.HasValue)
                         {

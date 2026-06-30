@@ -71,10 +71,10 @@ namespace Game.Diagnostics
             }
 
             if (_waiter.AssignedCustomer.Order != null &&
-                _waiter.AssignedCustomer.Order.TryGetProperty<SpriteProperty>(out var spriteProperty))
+                _waiter.AssignedCustomer.Order.TryGetProperty<FoodProperty>(out var spriteProperty))
             {
-                _mealSpriteRenderer.sprite = spriteProperty.Sprite;
-                _mealSpriteRenderer.enabled = spriteProperty.Sprite != null;
+                _mealSpriteRenderer.sprite = spriteProperty.WorldSprite;
+                _mealSpriteRenderer.enabled = spriteProperty.WorldSprite != null;
                 return;
             }
 
