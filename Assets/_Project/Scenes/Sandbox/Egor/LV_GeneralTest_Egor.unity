@@ -279,10 +279,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PR_Waiter (2)
       objectReference: {fileID: 0}
-    - target: {fileID: 3827038801614108890, guid: a03a858d75cf6bc48b68f94723d83017, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 5325243197194466205, guid: a03a858d75cf6bc48b68f94723d83017, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.568696
@@ -1443,8 +1439,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: $100/200
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 20751f002bc6ea94da23fca70192c6f1, type: 2}
+  m_sharedMaterial: {fileID: -2087214075127781217, guid: 20751f002bc6ea94da23fca70192c6f1, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1474,7 +1470,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -1985,8 +1981,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: $ 100
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 20751f002bc6ea94da23fca70192c6f1, type: 2}
+  m_sharedMaterial: {fileID: -2087214075127781217, guid: 20751f002bc6ea94da23fca70192c6f1, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2016,7 +2012,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 2
+  m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -2709,8 +2705,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 2:39
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 20751f002bc6ea94da23fca70192c6f1, type: 2}
+  m_sharedMaterial: {fileID: -2087214075127781217, guid: 20751f002bc6ea94da23fca70192c6f1, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2734,13 +2730,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 96
-  m_fontSizeBase: 96
+  m_fontSize: 130
+  m_fontSizeBase: 130
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -7589,10 +7585,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PR_Waiter
       objectReference: {fileID: 0}
-    - target: {fileID: 3827038801614108890, guid: a03a858d75cf6bc48b68f94723d83017, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 5325243197194466205, guid: a03a858d75cf6bc48b68f94723d83017, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5.823839
@@ -7916,8 +7908,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Shift 2
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 20751f002bc6ea94da23fca70192c6f1, type: 2}
+  m_sharedMaterial: {fileID: -2087214075127781217, guid: 20751f002bc6ea94da23fca70192c6f1, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -7947,7 +7939,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -8288,10 +8280,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PR_Waiter (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 3827038801614108890, guid: a03a858d75cf6bc48b68f94723d83017, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 5325243197194466205, guid: a03a858d75cf6bc48b68f94723d83017, type: 3}
       propertyPath: m_LocalPosition.x
       value: 7.343126
