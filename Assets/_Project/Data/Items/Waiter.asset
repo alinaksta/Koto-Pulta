@@ -38,4 +38,4 @@ MonoBehaviour:
     - rid: 6891364640889241693
       type: {class: HandSpriteProperty, ns: Game.Items.Properties, asm: Assembly-CSharp}
       data:
-        HandSprite: {fileID: 21300000, guid: 04a789a7a5232334091f0c0837ccddd9, type: 3}
+        HandSprite: {fileID: 21300000, guid: 60d81ce1955ceb2468b7e776572e8574, type: 3}

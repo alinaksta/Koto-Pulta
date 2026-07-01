@@ -1,3 +1,4 @@
+using Game.Characters;
 using Game.Items;
 using Game.Items.Components;
 using Game.Items.Properties;
@@ -57,14 +58,12 @@ namespace Game.Interaction
 
         private readonly struct WaiterOverlayVisual
         {
-            public WaiterOverlayVisual(Sprite sprite, string tableNumber)
+            public WaiterOverlayVisual(Waiter waiter)
             {
-                Sprite = sprite;
-                TableNumber = tableNumber;
+                Waiter = waiter;
             }
 
-            public Sprite Sprite { get; }
-            public string TableNumber { get; }
+            public Waiter Waiter { get; }
         }
 
         private readonly struct HandItemVisual
@@ -125,16 +124,20 @@ namespace Game.Interaction
             Distance = 480f,
             Duration = 0.4f
         };
+        [SerializeField] private Vector2 _waiterHeldBaseOffset = new Vector2(120f, 40f);
 
+        private float HandSign => _handType == HandType.Left ? 1f : -1f;
         private float BobPhaseOffset =>
             _handType == HandType.Right ? Mathf.PI : 0f;
 
         private Hand _hand;
+        private WaiterHeldView _waiterHeldView;
 
         private RectTransform _heldItemRect;
         private Vector2 _visibleAnchoredPosition;
         private Vector2 _heldItemInitialAnchoredPosition;
         private Vector2 _currentVisibilityPosition;
+        private Vector2 _desiredHandRootOffset;
         private Vector2 _itemAnimationOffset;
         private Sprite _defaultHandSprite;
 
@@ -148,6 +151,7 @@ namespace Game.Interaction
         private void Start()
         {
             _hand = _interactor.GetHand(_handType);
+            TryGetComponent(out _waiterHeldView);
             _heldItemRect = _heldItemImage.rectTransform;
             _visibleAnchoredPosition = _handRoot.anchoredPosition;
             _currentVisibilityPosition = _visibleAnchoredPosition;
@@ -202,11 +206,18 @@ namespace Game.Interaction
 
         private void UpdateVisibility(float deltaTime)
         {
+            Vector2 visiblePosition =
+                _visibleAnchoredPosition +
+                _desiredHandRootOffset;
+
             Vector2 hiddenPosition =
-                _visibleAnchoredPosition + Vector2.down * _visibility.HiddenDistance;
+                visiblePosition +
+                Vector2.down * _visibility.HiddenDistance;
 
             Vector2 targetPosition =
-                _hand.Visible ? _visibleAnchoredPosition : hiddenPosition;
+                _hand.Visible
+                    ? visiblePosition
+                    : hiddenPosition;
 
             float smoothingFactor =
                 1f - Mathf.Exp(-_visibility.Smoothness * deltaTime);
@@ -246,6 +257,13 @@ namespace Game.Interaction
             return Vector2.up * bobY;
         }
 
+        private Vector2 GetWaiterHandRootOffset()
+        {
+            return new Vector2(
+                _waiterHeldBaseOffset.x * HandSign,
+                _waiterHeldBaseOffset.y);
+        }
+
         private void HandleHandItemChanged(Item? item)
         {
             HandItemVisual visual = ResolveVisual(item);
@@ -276,16 +294,7 @@ namespace Game.Interaction
             if (!item.IsInstance || !item.Instance.TryGetComponent<WaiterComponent>(out var waiterComponent))
                 return default;
 
-            Sprite waiterItemSprite = null;
-            Item? waiterItem = waiterComponent.Waiter.CarryContainer.Item;
-            if (waiterItem.HasValue && waiterItem.Value.Definition.TryGetProperty<FoodProperty>(out var waiterFoodProperty))
-                waiterItemSprite = waiterFoodProperty.WorldSprite;
-
-            string tableNumber = waiterComponent.Waiter.TableNumber.HasValue
-                ? waiterComponent.Waiter.TableNumber.Value.ToString()
-                : string.Empty;
-
-            return new WaiterOverlayVisual(waiterItemSprite, tableNumber);
+            return new WaiterOverlayVisual(waiterComponent.Waiter);
         }
 
         private bool TryResolveHeldItemSprite(ItemDefinition definition, out Sprite sprite)
@@ -363,6 +372,10 @@ namespace Game.Interaction
             else
                 _baseHandImage.sprite = visual.HandSprite;
 
+            _desiredHandRootOffset = visual.WaiterOverlay.Waiter != null
+                ? GetWaiterHandRootOffset()
+                : Vector2.zero;
+
             ApplyHeldItemVisual(visual);
             ApplyWaiterOverlay(visual.WaiterOverlay);
         }
@@ -376,9 +389,7 @@ namespace Game.Interaction
 
         private void ApplyWaiterOverlay(WaiterOverlayVisual waiterOverlay)
         {
-            _waiterHeldItemImage.sprite = waiterOverlay.Sprite;
-            _waiterHeldItemImage.enabled = waiterOverlay.Sprite != null;
-            _waiterTableNumberLabel.text = waiterOverlay.TableNumber ?? string.Empty;
+            _waiterHeldView?.SetWaiter(waiterOverlay.Waiter);
         }
 
         private void SetAnimatorMode(bool usesAnimator)
