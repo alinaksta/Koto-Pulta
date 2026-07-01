@@ -435,7 +435,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5addb163f7a950841bae8e029fcdf37a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Game.Diagnostics.DebugWaiterView
+  m_EditorClassIdentifier: Assembly-CSharp::Game.Diagnostics.WaiterView
   _waiter: {fileID: 2181775631686005228}
   _orderNote: {fileID: 2395280909654176813}
   _tableNumberLabel: {fileID: 2284083612931144734}

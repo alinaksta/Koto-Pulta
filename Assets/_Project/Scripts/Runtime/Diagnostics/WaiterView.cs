@@ -8,7 +8,7 @@ namespace Game.Diagnostics
     /// <summary>
     /// Shows the waiter's sticky note and requested meal debug visuals.
     /// </summary>
-    public class DebugWaiterView : MonoBehaviour
+    public class WaiterView : MonoBehaviour
     {
         [SerializeField] private Waiter _waiter;
         [SerializeField] private GameObject _orderNote;
