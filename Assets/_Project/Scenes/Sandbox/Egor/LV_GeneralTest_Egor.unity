@@ -712,27 +712,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d37901d63276304186a19b16712dda9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.Interaction.HandView
-  _handsInteractor: {fileID: 1887974252}
+  _interactor: {fileID: 1887974252}
   _playerController: {fileID: 30708973}
-  _handAnimator: {fileID: 196453607}
-  _handTransform: {fileID: 196453604}
+  _animator: {fileID: 196453607}
+  _handRoot: {fileID: 196453604}
+  _baseHandImage: {fileID: 196453605}
   _heldItemImage: {fileID: 1890194997}
-  _handImage: {fileID: 196453605}
-  _waiterItemImage: {fileID: 1012083373}
-  _waiterTableNumber: {fileID: 282610104}
+  _waiterHeldItemImage: {fileID: 1012083373}
+  _waiterTableNumberLabel: {fileID: 282610104}
   _handType: 0
-  _hiddenDistance: 600
-  _visibilitySmoothness: 8
-  _bobSpeedThreshold: 0.25
-  _bobAmplitude: 54
-  _bobFrequency: 1.6
-  _bobBlendSpeed: 8
-  _speedSmoothness: 12
-  _scaleBobWithSpeed: 1
-  _speedForFullBob: 5
-  _clickDistance: 320
-  _clickDuration: 0.2
-  _itemChangeDuration: 0.38
+  _visibility:
+    HiddenDistance: 600
+    Smoothness: 8
+  _headBob:
+    SpeedThreshold: 0.25
+    Amplitude: 54
+    Frequency: 1.6
+    BlendSpeed: 8
+    SpeedSmoothness: 12
+    ScaleWithSpeed: 1
+    SpeedForFullAmplitude: 5
+  _itemSwap:
+    Distance: 600
+    Duration: 0.38
 --- !u!4 &199794768 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6005568668479059776, guid: 402e8a11f0ca14740bc067dcf3f4882f, type: 3}
@@ -852,27 +854,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d37901d63276304186a19b16712dda9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.Interaction.HandView
-  _handsInteractor: {fileID: 1887974252}
+  _interactor: {fileID: 1887974252}
   _playerController: {fileID: 30708973}
-  _handAnimator: {fileID: 204174927}
-  _handTransform: {fileID: 204174924}
+  _animator: {fileID: 204174927}
+  _handRoot: {fileID: 204174924}
+  _baseHandImage: {fileID: 204174925}
   _heldItemImage: {fileID: 443847250}
-  _handImage: {fileID: 204174925}
-  _waiterItemImage: {fileID: 953103706}
-  _waiterTableNumber: {fileID: 1661134913}
+  _waiterHeldItemImage: {fileID: 953103706}
+  _waiterTableNumberLabel: {fileID: 1661134913}
   _handType: 1
-  _hiddenDistance: 600
-  _visibilitySmoothness: 8
-  _bobSpeedThreshold: 0.25
-  _bobAmplitude: 54
-  _bobFrequency: 1.6
-  _bobBlendSpeed: 8
-  _speedSmoothness: 12
-  _scaleBobWithSpeed: 1
-  _speedForFullBob: 5
-  _clickDistance: 320
-  _clickDuration: 0.2
-  _itemChangeDuration: 0.38
+  _visibility:
+    HiddenDistance: 600
+    Smoothness: 8
+  _headBob:
+    SpeedThreshold: 0.25
+    Amplitude: 54
+    Frequency: 1.6
+    BlendSpeed: 8
+    SpeedSmoothness: 12
+    ScaleWithSpeed: 1
+    SpeedForFullAmplitude: 5
+  _itemSwap:
+    Distance: 600
+    Duration: 0.38
 --- !u!1001 &280365199
 PrefabInstance:
   m_ObjectHideFlags: 0

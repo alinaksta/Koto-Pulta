@@ -27,11 +27,6 @@ namespace Game.Interaction
         public bool Visible => _visible;
 
         /// <summary>
-        /// Event hook for custom hand interaction notifications.
-        /// </summary>
-        public event Action OnInteracted = delegate { };
-
-        /// <summary>
         /// Raised when the hand visibility changes.
         /// </summary>
         public event Action<bool> OnSetVisible = delegate { };
