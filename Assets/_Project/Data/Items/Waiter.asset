@@ -33,8 +33,8 @@ MonoBehaviour:
     - rid: 6891364640889241692
       type: {class: ThrowableProperty, ns: Game.Items.Properties, asm: Assembly-CSharp}
       data:
-        HoldTime: 0.5
-        ForwardForce: 12
+        HoldTime: 0.4
+        ForwardForce: 9.6
     - rid: 6891364640889241693
       type: {class: HandSpriteProperty, ns: Game.Items.Properties, asm: Assembly-CSharp}
       data:

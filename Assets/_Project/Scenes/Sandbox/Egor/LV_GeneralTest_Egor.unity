@@ -10594,7 +10594,7 @@ MonoBehaviour:
     ScaleWithSpeed: 1
     SpeedForFullAmplitude: 5
   _itemSwap:
-    Distance: 600
+    Distance: 1200
     Duration: 0.38
   _waiterHeldBaseOffset: {x: -328, y: -536}
 --- !u!222 &2081136423
