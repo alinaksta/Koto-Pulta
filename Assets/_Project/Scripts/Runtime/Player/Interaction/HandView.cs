@@ -56,6 +56,13 @@ namespace Game.Interaction
             [Min(0f)] public float Duration;
         }
 
+        [System.Serializable]
+        private struct TrajectorySmoothingSettings
+        {
+            [Min(0f)] public float PositionLerp;
+            [Min(0f)] public float DirectionLerp;
+        }
+
         private readonly struct WaiterOverlayVisual
         {
             public WaiterOverlayVisual(Waiter waiter)
@@ -93,6 +100,7 @@ namespace Game.Interaction
         [Header("Dependencies")]
         [SerializeField] private DualHandInteractor _interactor;
         [SerializeField] private PlayerController _playerController;
+        [SerializeField] private TrajectoryView _trajectoryView;
 
         [Header("Hand UI")]
         [SerializeField] private Animator _animator;
@@ -125,6 +133,11 @@ namespace Game.Interaction
             Duration = 0.4f
         };
         [SerializeField] private Vector2 _waiterHeldBaseOffset = new Vector2(120f, 40f);
+        [SerializeField] private TrajectorySmoothingSettings _trajectorySmoothing = new TrajectorySmoothingSettings
+        {
+            PositionLerp = 20f,
+            DirectionLerp = 20f
+        };
 
         private float HandSign => _handType == HandType.Left ? 1f : -1f;
         private float BobPhaseOffset =>
@@ -148,6 +161,11 @@ namespace Game.Interaction
         private MotionHandle _itemAnimationMotion;
         private int _visualVersion;
 
+        private bool _trajectoryVisible;
+        private bool _hasSmoothedTrajectory;
+        private Vector3 _smoothedThrowPosition;
+        private Vector3 _smoothedThrowDirection;
+
         private void Start()
         {
             _hand = _interactor.GetHand(_handType);
@@ -162,11 +180,14 @@ namespace Game.Interaction
             _hand.OnItemChanged += HandleHandItemChanged;
             _previousPlayerPosition = _playerController.transform.position;
             ApplyVisual(ResolveVisual(_hand.Item));
+            UpdateThrowTrajectory();
         }
 
         private void OnDestroy()
         {
-            _hand.OnItemChanged -= HandleHandItemChanged;
+            if (_hand != null)
+                _hand.OnItemChanged -= HandleHandItemChanged;
+
             CancelItemAnimation();
             _itemAnimationOffset = Vector2.zero;
         }
@@ -185,6 +206,60 @@ namespace Game.Interaction
                 _currentVisibilityPosition +
                 _itemAnimationOffset +
                 GetHeadBobOffset();
+        }
+
+        private void LateUpdate()
+        {
+            UpdateThrowTrajectory();
+        }
+
+        private void UpdateThrowTrajectory()
+        {
+            if (_trajectoryView == null || _hand == null || _interactor == null)
+                return;
+
+            float deltaTime = Mathf.Max(Time.deltaTime, 0f);
+
+            if (_hand.TryGetThrowPreview(_interactor.LookForward, out var preview))
+            {
+                preview = SmoothTrajectoryPreview(preview, deltaTime);
+                SetTrajectoryVisible(true);
+                _trajectoryView.Draw(preview.Force, preview.Start, preview.Direction);
+            }
+            else
+            {
+                SetTrajectoryVisible(false);
+            }
+
+            _trajectoryView.Tick(deltaTime);
+        }
+
+        private ThrowPreviewData SmoothTrajectoryPreview(ThrowPreviewData preview, float deltaTime)
+        {
+            if (!_hasSmoothedTrajectory)
+            {
+                _hasSmoothedTrajectory = true;
+                _smoothedThrowPosition = preview.Start;
+                _smoothedThrowDirection = preview.Direction.normalized;
+                return new ThrowPreviewData(_smoothedThrowPosition, _smoothedThrowDirection, preview.Force);
+            }
+
+            float positionLerp = 1f - Mathf.Exp(-_trajectorySmoothing.PositionLerp * deltaTime);
+            _smoothedThrowPosition = Vector3.Lerp(_smoothedThrowPosition, preview.Start, positionLerp);
+
+            Vector3 targetDirection = preview.Direction.normalized;
+            float directionLerp = 1f - Mathf.Exp(-_trajectorySmoothing.DirectionLerp * deltaTime);
+
+            if (_smoothedThrowDirection.sqrMagnitude <= Mathf.Epsilon)
+            {
+                _smoothedThrowDirection = targetDirection;
+            }
+            else
+            {
+                _smoothedThrowDirection = Vector3.Slerp(_smoothedThrowDirection, targetDirection, directionLerp).normalized;
+            }
+
+            return new ThrowPreviewData(_smoothedThrowPosition, _smoothedThrowDirection, preview.Force);
         }
 
         private void UpdatePlayerSpeed(float deltaTime)
@@ -266,6 +341,7 @@ namespace Game.Interaction
 
         private void HandleHandItemChanged(Item? item)
         {
+            _hasSmoothedTrajectory = false;
             HandItemVisual visual = ResolveVisual(item);
             _ = PlayItemSwapAnimationAsync(visual, ++_visualVersion);
         }
@@ -401,6 +477,24 @@ namespace Game.Interaction
         {
             if (_itemAnimationMotion.IsActive())
                 _itemAnimationMotion.Cancel();
+        }
+
+        private void SetTrajectoryVisible(bool visible)
+        {
+            if (_trajectoryVisible == visible)
+                return;
+
+            _trajectoryVisible = visible;
+
+            if (visible)
+            {
+                _trajectoryView.Show();
+            }
+            else
+            {
+                _hasSmoothedTrajectory = false;
+                _trajectoryView.Hide();
+            }
         }
     }
 }
