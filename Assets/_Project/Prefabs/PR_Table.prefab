@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8798041214677748924}
   - component: {fileID: 1994037531060739079}
   - component: {fileID: 3892811391244514618}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: PR_Table
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 5085348140636107768}
   - component: {fileID: 6744028928284209371}
   - component: {fileID: 5659761624951686818}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Table
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -238,7 +238,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6280726426062089646}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Seats
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -273,7 +273,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8478158794621206535}
   - component: {fileID: 3099233478898467976}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Seat
   m_TagString: Untagged
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
@@ -320,7 +320,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4986306095144295709}
   - component: {fileID: 3768700502191866947}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Seat3
   m_TagString: Untagged
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
@@ -366,7 +366,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3744077478973677909}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -400,7 +400,7 @@ GameObject:
   - component: {fileID: 8905842214169191807}
   - component: {fileID: 3748423402392821506}
   - component: {fileID: 3743569026207424365}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: TableNumberText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -580,7 +580,7 @@ GameObject:
   m_Component:
   - component: {fileID: 368375083787551722}
   - component: {fileID: 5678698245929922382}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -671,7 +671,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8697540838315124681}
   - component: {fileID: 2641068847390857685}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Seat2
   m_TagString: Untagged
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
@@ -718,7 +718,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2153413581457984469}
   - component: {fileID: 8635751861577481578}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -809,7 +809,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7019166351119988638}
   - component: {fileID: 7431161315349380376}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -900,7 +900,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2836586171418041200}
   - component: {fileID: 1688641739515236066}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: NotebookSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
