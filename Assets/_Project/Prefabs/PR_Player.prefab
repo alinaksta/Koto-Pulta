@@ -194,6 +194,9 @@ MonoBehaviour:
     Distance: 1200
     Duration: 0.38
   _waiterHeldBaseOffset: {x: -328, y: -536}
+  _trajectorySmoothing:
+    PositionLerp: 20
+    DirectionLerp: 20
 --- !u!114 &4511736699702311957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -759,7 +762,7 @@ MonoBehaviour:
   _interactionDistance: 2
   _interactionLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 2304
   _leftSpawnPosition: {fileID: 6797390932915054599}
   _rightSpawnPosition: {fileID: 626910469954994175}
 --- !u!1 &3658875750636732867
@@ -1430,6 +1433,9 @@ MonoBehaviour:
     Distance: 600
     Duration: 0.38
   _waiterHeldBaseOffset: {x: -328, y: -536}
+  _trajectorySmoothing:
+    PositionLerp: 20
+    DirectionLerp: 20
 --- !u!114 &4401585158460766519
 MonoBehaviour:
   m_ObjectHideFlags: 0

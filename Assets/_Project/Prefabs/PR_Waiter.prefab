@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6854776134705662653}
   - component: {fileID: 4200462854677017681}
   - component: {fileID: 4195548889271698021}
-  m_Layer: 8
+  m_Layer: 11
   m_Name: ItemRenderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,7 +117,7 @@ GameObject:
   - component: {fileID: 3109497723924054786}
   - component: {fileID: 4721583092023430135}
   - component: {fileID: 8323948392563998356}
-  m_Layer: 8
+  m_Layer: 11
   m_Name: HeldItemContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -185,7 +185,7 @@ GameObject:
   - component: {fileID: 4281354336879330549}
   - component: {fileID: 3827038801614108890}
   - component: {fileID: 2284083612931144734}
-  m_Layer: 8
+  m_Layer: 11
   m_Name: TableNumberText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -369,7 +369,7 @@ GameObject:
   - component: {fileID: 2650628544443303349}
   - component: {fileID: 6839888440025666666}
   - component: {fileID: 6973934558690485577}
-  m_Layer: 8
+  m_Layer: 11
   m_Name: PR_Waiter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -522,7 +522,7 @@ GameObject:
   m_Component:
   - component: {fileID: 845788634753538020}
   - component: {fileID: 8682398924120120355}
-  m_Layer: 8
+  m_Layer: 11
   m_Name: NoteSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -615,7 +615,7 @@ GameObject:
   - component: {fileID: 4091024983704075440}
   - component: {fileID: 634656712453854300}
   - component: {fileID: 6161619220561725045}
-  m_Layer: 8
+  m_Layer: 11
   m_Name: Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -686,7 +686,7 @@ GameObject:
   - component: {fileID: 8583300829573835838}
   - component: {fileID: 2125786045220101814}
   - component: {fileID: 5149206179874036257}
-  m_Layer: 8
+  m_Layer: 11
   m_Name: OrderSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -793,7 +793,7 @@ GameObject:
   - component: {fileID: 4216319770083254003}
   - component: {fileID: 1315496712827007671}
   - component: {fileID: 8472885659545770115}
-  m_Layer: 8
+  m_Layer: 11
   m_Name: WaiterSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
