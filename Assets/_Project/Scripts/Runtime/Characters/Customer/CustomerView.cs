@@ -14,12 +14,18 @@ namespace Game.Characters
         private static int StoppedAskingHash = Animator.StringToHash("stoppedAsking");
         private static int ServedHash = Animator.StringToHash("served");
 
+        private static int FillAmountID = Shader.PropertyToID("_FillAmount");
+
         private const float NoAlpha = 0f;
         private const float FullAlpha = 1f;
 
-        [SerializeField] private SpriteRenderer _spriteRenderer;
+        [SerializeField] private SpriteRenderer _patienceRenderer;
+        [SerializeField] private Gradient _patienceGradient;
+        [SerializeField] private SpriteRenderer _bodyRenderer;
         [SerializeField] private Animator _animator;
         [SerializeField] private Customer _customer;
+
+        private Material _patienceMaterial;
 
         private void Awake()
         {
@@ -29,12 +35,14 @@ namespace Game.Characters
         private void Start()
         {
             if (_customer.Seat != null)
-                _spriteRenderer.flipX = _customer.Seat.FlipSprite;
+                _bodyRenderer.flipX = _customer.Seat.FlipSprite;
 
             _customer.OnWrongItemGiven += HandleWrongItemGiven;
             _customer.OnTimedOut += HandleTimedOut;
             _customer.OnWaiterStartedAsking += HandleWaiterStartedAsking;
             _customer.OnServed += HandleServed;
+
+            _patienceMaterial = _patienceRenderer.material;
 
             AnimateSpawn(_customer.SpawnDuration);
         }
@@ -52,7 +60,18 @@ namespace Game.Characters
 
         private void Update()
         {
+            UpdatePatienceIndicatorColor();
             _animator.SetFloat(PatienceHash, _customer.WaitTimer);
+        }
+
+        private void UpdatePatienceIndicatorColor()
+        {
+            _patienceMaterial.SetFloat(FillAmountID, _customer.NormalizedWaitTimer);
+            var patienceColor = _patienceRenderer.color;
+            var oldAlpha = patienceColor.a;
+            patienceColor = _patienceGradient.Evaluate(_customer.NormalizedWaitTimer);
+            patienceColor.a = oldAlpha;
+            _patienceRenderer.color = patienceColor;
         }
 
         #region Event handlers
@@ -85,13 +104,16 @@ namespace Game.Characters
         #region Helpers
         private void SetSpriteAlpha(float alpha)
         {
-            var color = _spriteRenderer.color;
+            var color = _bodyRenderer.color;
             color.a = alpha;
-            _spriteRenderer.color = color;
+            _bodyRenderer.color = color;
         }
 
         private void AnimateAlpha(float from, float to, float duration)
-            => LMotion.Create(from, to, duration).BindToColorA(_spriteRenderer);
+        {
+            LMotion.Create(from, to, duration).BindToColorA(_bodyRenderer);
+            LMotion.Create(from, to, duration).BindToColorA(_patienceRenderer);
+        }
 
         private void AnimateSpawn(float duration)
             => AnimateAlpha(NoAlpha, FullAlpha, duration);

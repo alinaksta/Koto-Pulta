@@ -28,6 +28,7 @@ namespace Game.Characters
         private Table _table;
         private Seat _seat;
         private ItemDefinition _order;
+        private float _initialWaitTime;
         private float _waitTimer;
         private CustomerState _state;
 
@@ -59,6 +60,10 @@ namespace Game.Characters
         public float SpawnDuration => _spawnDuration;
 
         public float DespawnDuration => _despawnDuration;
+
+        public float InitialWaitTime => _initialWaitTime;
+
+        public float NormalizedWaitTimer => Mathf.Clamp01(_waitTimer / _initialWaitTime);
 
         /// <summary>
         /// Raised when a new order starts.
@@ -94,7 +99,8 @@ namespace Game.Characters
             _table = table;
             _seat = seat;
             _order = order;
-            _waitTimer = waitTimerOverride ?? _defaultWaitTime;
+            _initialWaitTime = waitTimerOverride == null ? _defaultWaitTime : waitTimerOverride.Value;
+            _waitTimer = _initialWaitTime;
             _state = CustomerState.AwaitingWaiter;
             OnOrderStarted.Invoke(this);
         }
