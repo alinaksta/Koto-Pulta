@@ -154,6 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Game.Characters.Seat
   _customerSpawnOrigin: {fileID: 326707460486312403}
   _customerAskOrigin: {fileID: 7619128395713086411}
+  _flipSprite: 1
 --- !u!1 &9020280717347176398
 GameObject:
   m_ObjectHideFlags: 0

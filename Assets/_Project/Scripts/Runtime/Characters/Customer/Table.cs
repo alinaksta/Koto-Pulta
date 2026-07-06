@@ -13,7 +13,7 @@ namespace Game.Characters
     {
         [SerializeField] private int _tableNumber;
         [SerializeField] private bool _registerAutomatically = false;
-        [SerializeField] private Seat[] _seatPoints;
+        [SerializeField] private Seat[] _seats;
 
         private readonly List<Customer> _customers = new();
 
@@ -30,7 +30,7 @@ namespace Game.Characters
         /// <summary>
         /// Gets the number of seat points configured on the table.
         /// </summary>
-        public int SeatCount => _seatPoints.Length;
+        public int SeatCount => _seats.Length;
 
         /// <summary>
         /// Gets whether the table currently has no customers.
@@ -95,7 +95,22 @@ namespace Game.Characters
             if (customer == null || !HasFreeSeat)
                 return false;
 
-            seat = _seatPoints[_customers.Count];
+            seat = _seats[_customers.Count];
+            _customers.Add(customer);
+            OnCustomerAdded.Invoke(this, customer);
+
+            return true;
+        }
+
+        public bool TryAddCustomerAtRandomSeat(Customer customer, out Seat seat)
+        {
+            seat = null;
+
+            if (customer == null || !IsFree)
+                return false;
+
+            int randomIndex = UnityEngine.Random.Range(0, _seats.Length);
+            seat = _seats[randomIndex];
             _customers.Add(customer);
             OnCustomerAdded.Invoke(this, customer);
 

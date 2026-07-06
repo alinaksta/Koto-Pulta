@@ -105,7 +105,7 @@ namespace Game.Characters
 
             var customer = Instantiate(_customerPrefab);
 
-            if (table.TryAddCustomer(customer, out var seat))
+            if (table.TryAddCustomerAtRandomSeat(customer, out var seat))
             {
                 customer.transform.position = seat.CustomerSpawnOrigin;
                 customer.transform.rotation = Quaternion.identity; // We rotate using SpriteRotator, so it doesn't matter
