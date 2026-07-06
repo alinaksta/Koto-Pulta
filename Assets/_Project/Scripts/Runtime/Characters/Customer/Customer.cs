@@ -22,6 +22,8 @@ namespace Game.Characters
     public class Customer : MonoBehaviour, IInteractable
     {
         [SerializeField] private float _defaultWaitTime = 60f;
+        [SerializeField] private float _spawnDuration = 1f;
+        [SerializeField] private float _despawnDuration = 1f;
 
         private Table _table;
         private Seat _seat;
@@ -53,6 +55,10 @@ namespace Game.Characters
         /// Gets whether the customer is still waiting for a valid delivery.
         /// </summary>
         public bool IsWaiting => Order != null && WaitTimer > 0f;
+
+        public float SpawnDuration => _spawnDuration;
+
+        public float DespawnDuration => _despawnDuration;
 
         /// <summary>
         /// Raised when a new order starts.

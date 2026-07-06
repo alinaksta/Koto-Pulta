@@ -141,20 +141,20 @@ namespace Game.Characters
         private void HandleCustomerWrongItem(Customer customer, Item item)
         {
             OnCustomerWrongItem.Invoke(customer, item);
-            CleanUpCustomer(customer);
+            DespawnCustomer(customer);
         }
 
         private void HandleCustomerTimedOut(Customer customer)
         {
             OnCustomerTimedOut.Invoke(customer);
-            CleanUpCustomer(customer);
+            DespawnCustomer(customer);
         }
 
         private void HandleCustomerServed(Customer customer)
         {
             OnCustomerServed.Invoke(customer);
             Debug.Log("Customer Served");
-            CleanUpCustomer(customer);
+            DespawnCustomer(customer);
         }
 
         private ItemDefinition GetRandomOrder()
@@ -162,20 +162,22 @@ namespace Game.Characters
             return _randomItemGiver.GetRandomItemDefinition();
         }
 
-        private void CleanUpCustomer(Customer customer)
+        private async void DespawnCustomer(Customer customer)
         {
             if (customer == null) return;
 
             customer.OnServed -= HandleCustomerServed;
             customer.OnTimedOut -= HandleCustomerTimedOut;
             customer.OnWrongItemGiven -= HandleCustomerWrongItem;
+            
+            await Awaitable.WaitForSecondsAsync(customer.DespawnDuration);
 
             _activeCustomers.Remove(customer);
 
             if (customer.Table != null)
                 customer.Table.RemoveCustomer(customer);
 
-            Destroy(customer.gameObject);
+            Destroy(gameObject);
         }
 
         private void HandleTableFreed(Table table)
