@@ -169,15 +169,15 @@ namespace Game.Characters
             customer.OnServed -= HandleCustomerServed;
             customer.OnTimedOut -= HandleCustomerTimedOut;
             customer.OnWrongItemGiven -= HandleCustomerWrongItem;
-            
-            await Awaitable.WaitForSecondsAsync(customer.DespawnDuration);
 
+            await Awaitable.WaitForSecondsAsync(customer.DespawnDuration);
+            
             _activeCustomers.Remove(customer);
 
             if (customer.Table != null)
                 customer.Table.RemoveCustomer(customer);
 
-            Destroy(gameObject);
+            Destroy(customer.gameObject);
         }
 
         private void HandleTableFreed(Table table)

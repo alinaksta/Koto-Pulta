@@ -39,7 +39,7 @@ TextureImporter:
     mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: 0
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 1040
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
@@ -108,12 +108,540 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: SPR_customerAngry_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 3003
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4d30337f385f9d94ab42f07dabdd737e
+      internalID: 317149207
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerAngry_1
+      rect:
+        serializedVersion: 2
+        x: 1501
+        y: 3003
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 486bbb8175667d64cb8c4ed060e3e639
+      internalID: 889134073
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerAngry_2
+      rect:
+        serializedVersion: 2
+        x: 3002
+        y: 3003
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7a3db46eea9102f4f8b03bcd255d4044
+      internalID: -1942991724
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerAngry_3
+      rect:
+        serializedVersion: 2
+        x: 4503
+        y: 3003
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fc6171057d8210e48b86d358bc0a58d7
+      internalID: 564797319
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerAngry_4
+      rect:
+        serializedVersion: 2
+        x: 6004
+        y: 3003
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c2d404c79de692b40a809bf1c54258e0
+      internalID: -439581103
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerAngry_5
+      rect:
+        serializedVersion: 2
+        x: 7505
+        y: 3003
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 025d27aa2743d0246b52816b32f83244
+      internalID: 481957455
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerAngry_6
+      rect:
+        serializedVersion: 2
+        x: 9006
+        y: 3003
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b5ae6f72a5d6de8409b74996913cb208
+      internalID: 1618609604
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerAngry_7
+      rect:
+        serializedVersion: 2
+        x: 10507
+        y: 3003
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ed093a7fb21e99d48bbace4cdced43b9
+      internalID: 994139568
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerAngry_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1502
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4a245ed96861d9940b88f4ce229999ef
+      internalID: 1309681264
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerAngry_9
+      rect:
+        serializedVersion: 2
+        x: 1501
+        y: 1502
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0e822090829c87e47a01c4b1c7f98771
+      internalID: -2015478977
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerAngry_10
+      rect:
+        serializedVersion: 2
+        x: 3002
+        y: 1502
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dde434cf27ddd134186bb50ea242953b
+      internalID: -1053687332
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerAngry_11
+      rect:
+        serializedVersion: 2
+        x: 4503
+        y: 1502
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8635f345c1fad9347bdc58541733fc06
+      internalID: 1125026726
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerAngry_12
+      rect:
+        serializedVersion: 2
+        x: 6004
+        y: 1502
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3dd162c7ccdfd754993df14dc0e96133
+      internalID: -1987906462
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerAngry_13
+      rect:
+        serializedVersion: 2
+        x: 7505
+        y: 1502
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f62a5b07b936bbf41bccf059cbf3ebc5
+      internalID: 770370793
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerAngry_14
+      rect:
+        serializedVersion: 2
+        x: 9006
+        y: 1502
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5c46d5b72aa59e149b27e062af33acc5
+      internalID: 573389596
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerAngry_15
+      rect:
+        serializedVersion: 2
+        x: 10507
+        y: 1502
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 49176ab92061b294a9b57b76ead4bd53
+      internalID: -558577686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerAngry_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6dfba547e2786f74799606ea6e302880
+      internalID: -351063779
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerAngry_17
+      rect:
+        serializedVersion: 2
+        x: 1501
+        y: 1
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: df6a58eb60f78234e87d598e9d3f0147
+      internalID: -286729632
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerAngry_18
+      rect:
+        serializedVersion: 2
+        x: 3002
+        y: 1
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5c117f8c97bc9aa4c816a500050f2fde
+      internalID: -1673621676
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerAngry_19
+      rect:
+        serializedVersion: 2
+        x: 4503
+        y: 1
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a9838f9a3ae8d24438687500b80b8e01
+      internalID: -522783955
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerAngry_20
+      rect:
+        serializedVersion: 2
+        x: 6004
+        y: 1
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1815ae95d84e7dc46b59c0d95aaf4370
+      internalID: -1597301989
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerAngry_21
+      rect:
+        serializedVersion: 2
+        x: 7505
+        y: 1
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3d79ec382cfc99545bd05ab995e9249f
+      internalID: -1282527187
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerAngry_22
+      rect:
+        serializedVersion: 2
+        x: 9006
+        y: 1
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f7ae46b67ca5ac54986703000ce215e9
+      internalID: -1017280247
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerAngry_23
+      rect:
+        serializedVersion: 2
+        x: 10507
+        y: 1
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f75cbb873ebb99e46876dd5fcfdae31e
+      internalID: 913794978
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 114cdb9aace465049a91701033312043
     internalID: 0
     vertices: []
     indices: 
@@ -121,8 +649,34 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
-    nameFileIdTable: {}
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":8.0,"y":3.0},"gridSpriteSize":{"x":1501.0,"y":1501.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      SPR_customerAngry_0: 317149207
+      SPR_customerAngry_1: 889134073
+      SPR_customerAngry_10: -1053687332
+      SPR_customerAngry_11: 1125026726
+      SPR_customerAngry_12: -1987906462
+      SPR_customerAngry_13: 770370793
+      SPR_customerAngry_14: 573389596
+      SPR_customerAngry_15: -558577686
+      SPR_customerAngry_16: -351063779
+      SPR_customerAngry_17: -286729632
+      SPR_customerAngry_18: -1673621676
+      SPR_customerAngry_19: -522783955
+      SPR_customerAngry_2: -1942991724
+      SPR_customerAngry_20: -1597301989
+      SPR_customerAngry_21: -1282527187
+      SPR_customerAngry_22: -1017280247
+      SPR_customerAngry_23: 913794978
+      SPR_customerAngry_3: 564797319
+      SPR_customerAngry_4: -439581103
+      SPR_customerAngry_5: 481957455
+      SPR_customerAngry_6: 1618609604
+      SPR_customerAngry_7: 994139568
+      SPR_customerAngry_8: 1309681264
+      SPR_customerAngry_9: -2015478977
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

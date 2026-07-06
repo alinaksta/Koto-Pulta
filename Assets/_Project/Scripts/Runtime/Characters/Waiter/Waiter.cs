@@ -749,6 +749,7 @@ namespace Game.Characters
         {
             _askCustomerTimer = _askCustomerDuration;
             transform.rotation = _assignedCustomer.Seat.CustomerAskRotation;
+            _assignedCustomer.TakeOrder(_askCustomerDuration);
             EnterIdleState();
         }
 

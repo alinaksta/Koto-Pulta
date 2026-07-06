@@ -80,6 +80,8 @@ namespace Game.Characters
         /// </summary>
         public event Action<Customer, Item> OnWrongItemGiven = delegate { };
 
+        public event Action<Customer, float> OnWaiterStartedAsking = delegate { };
+
         /// <summary>
         /// Sets the table, order, and wait timer for this customer.
         /// </summary>
@@ -93,8 +95,17 @@ namespace Game.Characters
             _seat = seat;
             _order = order;
             _waitTimer = waitTimerOverride ?? _defaultWaitTime;
-            _state = CustomerState.AwaitingDelivery; // TODO: Implement AwaitingOrder phase/state
+            _state = CustomerState.AwaitingWaiter;
             OnOrderStarted.Invoke(this);
+        }
+
+        public async void TakeOrder(float duration)
+        {
+            OnWaiterStartedAsking.Invoke(this, duration);
+
+            await Awaitable.WaitForSecondsAsync(duration);
+
+            _state = CustomerState.AwaitingDelivery;
         }
 
         private void Update()

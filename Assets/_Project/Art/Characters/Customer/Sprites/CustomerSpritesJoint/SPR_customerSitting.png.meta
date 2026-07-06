@@ -39,7 +39,7 @@ TextureImporter:
     mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: 0
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 328
+  spritePixelsToUnits: 1040
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
@@ -114,9 +114,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 1027
-        width: 513
-        height: 513
+        y: 3003
+        width: 1501
+        height: 1501
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -135,10 +135,10 @@ TextureImporter:
       name: SPR_customerSitting_1
       rect:
         serializedVersion: 2
-        x: 513
-        y: 1027
-        width: 513
-        height: 513
+        x: 1501
+        y: 3003
+        width: 1501
+        height: 1501
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -157,10 +157,10 @@ TextureImporter:
       name: SPR_customerSitting_2
       rect:
         serializedVersion: 2
-        x: 1026
-        y: 1027
-        width: 513
-        height: 513
+        x: 3002
+        y: 3003
+        width: 1501
+        height: 1501
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -179,10 +179,10 @@ TextureImporter:
       name: SPR_customerSitting_3
       rect:
         serializedVersion: 2
-        x: 1539
-        y: 1027
-        width: 513
-        height: 513
+        x: 4503
+        y: 3003
+        width: 1501
+        height: 1501
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -201,10 +201,10 @@ TextureImporter:
       name: SPR_customerSitting_4
       rect:
         serializedVersion: 2
-        x: 2052
-        y: 1027
-        width: 513
-        height: 513
+        x: 6004
+        y: 3003
+        width: 1501
+        height: 1501
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -223,10 +223,10 @@ TextureImporter:
       name: SPR_customerSitting_5
       rect:
         serializedVersion: 2
-        x: 2565
-        y: 1027
-        width: 513
-        height: 513
+        x: 7505
+        y: 3003
+        width: 1501
+        height: 1501
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -245,10 +245,10 @@ TextureImporter:
       name: SPR_customerSitting_6
       rect:
         serializedVersion: 2
-        x: 3078
-        y: 1027
-        width: 513
-        height: 513
+        x: 9006
+        y: 3003
+        width: 1501
+        height: 1501
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -267,10 +267,10 @@ TextureImporter:
       name: SPR_customerSitting_7
       rect:
         serializedVersion: 2
-        x: 3591
-        y: 1027
-        width: 513
-        height: 513
+        x: 10507
+        y: 3003
+        width: 1501
+        height: 1501
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -290,9 +290,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 514
-        width: 513
-        height: 513
+        y: 1502
+        width: 1501
+        height: 1501
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -311,10 +311,10 @@ TextureImporter:
       name: SPR_customerSitting_9
       rect:
         serializedVersion: 2
-        x: 513
-        y: 514
-        width: 513
-        height: 513
+        x: 1501
+        y: 1502
+        width: 1501
+        height: 1501
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -333,10 +333,10 @@ TextureImporter:
       name: SPR_customerSitting_10
       rect:
         serializedVersion: 2
-        x: 1026
-        y: 514
-        width: 513
-        height: 513
+        x: 3002
+        y: 1502
+        width: 1501
+        height: 1501
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -355,10 +355,10 @@ TextureImporter:
       name: SPR_customerSitting_11
       rect:
         serializedVersion: 2
-        x: 1539
-        y: 514
-        width: 513
-        height: 513
+        x: 4503
+        y: 1502
+        width: 1501
+        height: 1501
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -377,10 +377,10 @@ TextureImporter:
       name: SPR_customerSitting_12
       rect:
         serializedVersion: 2
-        x: 2052
-        y: 514
-        width: 513
-        height: 513
+        x: 6004
+        y: 1502
+        width: 1501
+        height: 1501
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -399,10 +399,10 @@ TextureImporter:
       name: SPR_customerSitting_13
       rect:
         serializedVersion: 2
-        x: 2565
-        y: 514
-        width: 513
-        height: 513
+        x: 7505
+        y: 1502
+        width: 1501
+        height: 1501
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -421,10 +421,10 @@ TextureImporter:
       name: SPR_customerSitting_14
       rect:
         serializedVersion: 2
-        x: 3078
-        y: 514
-        width: 513
-        height: 513
+        x: 9006
+        y: 1502
+        width: 1501
+        height: 1501
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -443,10 +443,10 @@ TextureImporter:
       name: SPR_customerSitting_15
       rect:
         serializedVersion: 2
-        x: 3591
-        y: 514
-        width: 513
-        height: 513
+        x: 10507
+        y: 1502
+        width: 1501
+        height: 1501
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -467,8 +467,8 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 1
-        width: 513
-        height: 513
+        width: 1501
+        height: 1501
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -487,10 +487,10 @@ TextureImporter:
       name: SPR_customerSitting_17
       rect:
         serializedVersion: 2
-        x: 513
+        x: 1501
         y: 1
-        width: 513
-        height: 513
+        width: 1501
+        height: 1501
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -509,10 +509,10 @@ TextureImporter:
       name: SPR_customerSitting_18
       rect:
         serializedVersion: 2
-        x: 1026
+        x: 3002
         y: 1
-        width: 513
-        height: 513
+        width: 1501
+        height: 1501
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -531,10 +531,10 @@ TextureImporter:
       name: SPR_customerSitting_19
       rect:
         serializedVersion: 2
-        x: 1539
+        x: 4503
         y: 1
-        width: 513
-        height: 513
+        width: 1501
+        height: 1501
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -553,10 +553,10 @@ TextureImporter:
       name: SPR_customerSitting_20
       rect:
         serializedVersion: 2
-        x: 2052
+        x: 6004
         y: 1
-        width: 513
-        height: 513
+        width: 1501
+        height: 1501
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -575,10 +575,10 @@ TextureImporter:
       name: SPR_customerSitting_21
       rect:
         serializedVersion: 2
-        x: 2565
+        x: 7505
         y: 1
-        width: 513
-        height: 513
+        width: 1501
+        height: 1501
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -597,10 +597,10 @@ TextureImporter:
       name: SPR_customerSitting_22
       rect:
         serializedVersion: 2
-        x: 3078
+        x: 9006
         y: 1
-        width: 513
-        height: 513
+        width: 1501
+        height: 1501
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -629,7 +629,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries:
       - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":8.0,"y":3.0},"gridSpriteSize":{"x":513.0,"y":513.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":8.0,"y":3.0},"gridSpriteSize":{"x":1501.0,"y":1501.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       SPR_customerSitting_0: 2093470801
       SPR_customerSitting_1: 1297351253

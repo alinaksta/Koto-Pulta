@@ -39,7 +39,7 @@ TextureImporter:
     mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: 0
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 1040
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
@@ -108,12 +108,276 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: SPR_customerOrdering_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1502
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ff5e71b0f1819ac4cbadf2cf18a4e9e1
+      internalID: -1423717311
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerOrdering_1
+      rect:
+        serializedVersion: 2
+        x: 1501
+        y: 1502
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c425fad80044eeb42b370cae9132202d
+      internalID: -1723829473
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerOrdering_2
+      rect:
+        serializedVersion: 2
+        x: 3002
+        y: 1502
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f2ec315c98cecb94b983800ef3861764
+      internalID: -2096797670
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerOrdering_3
+      rect:
+        serializedVersion: 2
+        x: 4503
+        y: 1502
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7e6ccf76799813340b2c4f217aef717f
+      internalID: -204193477
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerOrdering_4
+      rect:
+        serializedVersion: 2
+        x: 6004
+        y: 1502
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 65e0852f6f73f1b44ac886a602879e7e
+      internalID: -1995048932
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerOrdering_5
+      rect:
+        serializedVersion: 2
+        x: 7505
+        y: 1502
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9b0ec4853bf03f0498450026ffd6c0ab
+      internalID: 709068436
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerOrdering_6
+      rect:
+        serializedVersion: 2
+        x: 9006
+        y: 1502
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 19ad43063727392438a1cbd94aeedce7
+      internalID: 1617117301
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerOrdering_7
+      rect:
+        serializedVersion: 2
+        x: 10507
+        y: 1502
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e394efc155e796e4b990eab064c8e3db
+      internalID: -706295782
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerOrdering_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 697f1acf9cfaffd4faec7ad708a5dd4d
+      internalID: -282497036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerOrdering_9
+      rect:
+        serializedVersion: 2
+        x: 1501
+        y: 1
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 58cb5eccb29ac514d9972d2292c4feaf
+      internalID: -470816422
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerOrdering_10
+      rect:
+        serializedVersion: 2
+        x: 3002
+        y: 1
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f9c0886b0324f714b8a95636977eacb1
+      internalID: -867797851
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerOrdering_11
+      rect:
+        serializedVersion: 2
+        x: 4503
+        y: 1
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c199071d8ac7b3a4d9e3f70523a6af98
+      internalID: -661063193
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 099b15c586948234fb7f4dac219a7c07
     internalID: 0
     vertices: []
     indices: 
@@ -121,8 +385,26 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
-    nameFileIdTable: {}
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":8.0,"y":2.0},"gridSpriteSize":{"x":1501.0,"y":1501.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      SPR_customerOrdering_0: -1423717311
+      SPR_customerOrdering_1: -1723829473
+      SPR_customerOrdering_10: -867797851
+      SPR_customerOrdering_11: -661063193
+      SPR_customerOrdering_12: 1477658578
+      SPR_customerOrdering_13: -1302131722
+      SPR_customerOrdering_14: 476964424
+      SPR_customerOrdering_15: -344819250
+      SPR_customerOrdering_2: -2096797670
+      SPR_customerOrdering_3: -204193477
+      SPR_customerOrdering_4: -1995048932
+      SPR_customerOrdering_5: 709068436
+      SPR_customerOrdering_6: 1617117301
+      SPR_customerOrdering_7: -706295782
+      SPR_customerOrdering_8: -282497036
+      SPR_customerOrdering_9: -470816422
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
