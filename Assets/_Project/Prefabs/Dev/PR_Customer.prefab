@@ -58,7 +58,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  - {fileID: 2100000, guid: 91be2aebf69928d4a86451f12243976f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -241,6 +241,7 @@ GameObject:
   - component: {fileID: 3312960356770173993}
   - component: {fileID: 5406570592058842523}
   - component: {fileID: 1628090136015575571}
+  - component: {fileID: 5013564494514049194}
   - component: {fileID: 10896609522927725}
   m_Layer: 8
   m_Name: PR_Customer
@@ -278,6 +279,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.Characters.Customer
   _defaultWaitTime: 60
+  _spawnDuration: 1
+  _despawnDuration: 1
 --- !u!114 &1628090136015575571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -291,7 +294,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.Characters.CustomerView
   _spriteRenderer: {fileID: 1760449533518082515}
+  _colorPalette: {fileID: 0}
   _customer: {fileID: 5406570592058842523}
+--- !u!114 &5013564494514049194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8561113606837197399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 664bde12e94f81c48add8b4dc9d82dc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Game.Environment.BatchRecolor
+  _palette: {fileID: 11400000, guid: 56a819f81ebf9a248b77c924b36e7965, type: 2}
+  _targets:
+  - {fileID: 1760449533518082515}
 --- !u!135 &10896609522927725
 SphereCollider:
   m_ObjectHideFlags: 0

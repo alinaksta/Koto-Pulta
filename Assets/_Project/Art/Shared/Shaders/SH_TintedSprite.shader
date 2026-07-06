@@ -63,10 +63,10 @@ Shader "Custom/TintedSprite"
                 float gray = tex.r;
 
                 // Blend between the tint color and white based on brightness
-                // Dark pixels ¡ú tint color, bright pixels ¡ú stay white
+                // Dark pixels ï¿½ï¿½ tint color, bright pixels ï¿½ï¿½ stay white
                 fixed4 result;
-                result.rgb = lerp(_Color.rgb, float3(1, 1, 1), gray);
-                result.a = tex.a;   // keep the original transparency
+                result.rgb = lerp(_Color.rgb, float3(1, 1, 1), gray) * i.color.rgb;
+                result.a = tex.a * _Color.a * i.color.a;
 
                 return result;
             }

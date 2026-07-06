@@ -1,8 +1,7 @@
+using Game.Environment;
 using Game.Items;
 using LitMotion;
 using LitMotion.Extensions;
-using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Game.Characters
@@ -13,11 +12,12 @@ namespace Game.Characters
         private const float FullAlpha = 1f;
 
         [SerializeField] private SpriteRenderer _spriteRenderer;
+        [SerializeField] private ColorPalette _colorPalette;
         [SerializeField] private Customer _customer;
 
         private void Awake()
         {
-            _spriteRenderer.color = _spriteRenderer.color.WithAlpha(NoAlpha);
+            SetSpriteAlpha(NoAlpha);
         }
 
         private void Start()
@@ -36,7 +36,7 @@ namespace Game.Characters
             _customer.OnWrongItemGiven -= HandleWrongItemGiven;
             _customer.OnTimedOut -= HandleTimedOut;
 
-            _spriteRenderer.color = _spriteRenderer.color.WithAlpha(NoAlpha);
+            SetSpriteAlpha(NoAlpha);
         }
 
         #region Event handlers
@@ -52,6 +52,13 @@ namespace Game.Characters
         #endregion
 
         #region Helpers
+        private void SetSpriteAlpha(float alpha)
+        {
+            var color = _spriteRenderer.color;
+            color.a = alpha;
+            _spriteRenderer.color = color;
+        }
+
         private void AnimateAlpha(float from, float to, float duration)
             => LMotion.Create(from, to, duration).BindToColorA(_spriteRenderer);
 
