@@ -24,6 +24,7 @@ namespace Game.Characters
         [SerializeField] private float _defaultWaitTime = 60f;
 
         private Table _table;
+        private Seat _seat;
         private ItemDefinition _order;
         private float _waitTimer;
         private CustomerState _state;
@@ -32,6 +33,11 @@ namespace Game.Characters
         /// Gets the table this customer belongs to.
         /// </summary>
         public Table Table => _table;
+
+        /// <summary>
+        /// Gets the seat this customer belongs to.
+        /// </summary>
+        public Seat Seat => _seat;
 
         /// <summary>
         /// Gets the item definition currently ordered by the customer.
@@ -72,11 +78,13 @@ namespace Game.Characters
         /// Sets the table, order, and wait timer for this customer.
         /// </summary>
         /// <param name="table">Table the customer belongs to.</param>
+        /// <param name="seat">Seat the customer belongs to.</param>
         /// <param name="order">Requested item definition.</param>
         /// <param name="waitTimerOverride">Optional override for the starting wait time.</param>
-        public void Initialize(Table table, ItemDefinition order, float? waitTimerOverride = null)
+        public void Initialize(Table table, Seat seat, ItemDefinition order, float? waitTimerOverride = null)
         {
             _table = table;
+            _seat = seat;
             _order = order;
             _waitTimer = waitTimerOverride ?? _defaultWaitTime;
             _state = CustomerState.AwaitingDelivery; // TODO: Implement AwaitingOrder phase/state

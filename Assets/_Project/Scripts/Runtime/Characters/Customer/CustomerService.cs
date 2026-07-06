@@ -107,8 +107,8 @@ namespace Game.Characters
 
             if (table.TryAddCustomer(customer, out var seat))
             {
-                customer.transform.position = seat.position;
-                customer.transform.rotation = seat.rotation;
+                customer.transform.position = seat.CustomerSpawnOrigin;
+                customer.transform.rotation = Quaternion.identity; // We rotate using SpriteRotator, so it doesn't matter
             }
             else
             {
@@ -117,7 +117,7 @@ namespace Game.Characters
             }
 
             ItemDefinition order = GetRandomOrder();
-            customer.Initialize(table, order);
+            customer.Initialize(table, seat, order);
 
             customer.OnServed += HandleCustomerServed;
             customer.OnTimedOut += HandleCustomerTimedOut;

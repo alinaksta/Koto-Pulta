@@ -13,7 +13,7 @@ namespace Game.Characters
     {
         [SerializeField] private int _tableNumber;
         [SerializeField] private bool _registerAutomatically = false;
-        [SerializeField] private Transform[] _seatPoints;
+        [SerializeField] private Seat[] _seatPoints;
 
         private readonly List<Customer> _customers = new();
 
@@ -86,9 +86,9 @@ namespace Game.Characters
         /// Tries to add a customer and assign the next free seat transform.
         /// </summary>
         /// <param name="customer">Customer to seat.</param>
-        /// <param name="seat">Receives the assigned seat transform.</param>
+        /// <param name="seat">Receives the assigned seat.</param>
         /// <returns><see langword="true"/> when the customer was seated.</returns>
-        public bool TryAddCustomer(Customer customer, out Transform seat)
+        public bool TryAddCustomer(Customer customer, out Seat seat)
         {
             seat = null;
 
