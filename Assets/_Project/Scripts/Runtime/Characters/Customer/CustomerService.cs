@@ -163,6 +163,22 @@ namespace Game.Characters
             return false;
         }
 
+        /// <summary>
+        /// Forces every currently waiting active customer to time out.
+        /// </summary>
+        public void TimeoutAllActiveCustomers()
+        {
+            var customers = _activeCustomers.ToArray();
+            for (int i = 0; i < customers.Length; i++)
+            {
+                var customer = customers[i];
+                if (customer == null || !customer.IsWaiting)
+                    continue;
+
+                customer.ForceTimeout();
+            }
+        }
+
         private void HandleCustomerWrongItem(Customer customer, Item item)
         {
             OnCustomerWrongItem.Invoke(customer, item);

@@ -36,6 +36,9 @@ namespace Game.Progression
         private float _spawnTimer;
         private bool _modeActive;
 
+        private ShiftStatisticsCollector _statisticsCollector;
+        private ShiftStatistics _lastShiftStatistics;
+
         /// <inheritdoc/>
         public string Id => "shift";
 
@@ -89,6 +92,8 @@ namespace Game.Progression
         /// </summary>
         public float NormalizedRevenueProgress => CalculateNormalizedRevenueProgress();
 
+        public ShiftStatistics LastStatistics => _lastShiftStatistics;
+
         /// <summary>
         /// Raised after a shift starts.
         /// </summary>
@@ -127,10 +132,10 @@ namespace Game.Progression
 
             _context.Customers.SetRandomItemGiver(GetShiftRandomItemGiver());
 
+            _statisticsCollector = new ShiftStatisticsCollector(context.Customers);
+
             _context.Session.ResetState();
             _context.Session.StartRun();
-
-            StartNextShift();
         }
 
         private IRandomItemDefinitionGiver GetShiftRandomItemGiver()
@@ -154,19 +159,31 @@ namespace Game.Progression
                 return;
 
             _shiftTimer = Mathf.Max(0f, _shiftTimer - deltaTime);
+
+            if (_shiftTimer <= 0f)
+            {
+                FinishCurrentShiftFromTimeout();
+                return;
+            }
+
             _spawnTimer -= deltaTime;
 
             if (_spawnTimer <= 0f)
                 SpawnCustomerAndResetTimer();
+        }
 
-            if (CurrentRevenue >= CurrentGoalRevenue)
-            {
-                CompleteCurrentShift();
-                return;
-            }
-
-            if (_shiftTimer <= 0f)
+        private void FinishCurrentShift()
+        {
+            if (CurrentRevenue < CurrentShift.GoalRevenue)
                 FailCurrentShift();
+            else
+                CompleteCurrentShift();
+        }
+
+        private void FinishCurrentShiftFromTimeout()
+        {
+            _context?.Customers?.TimeoutAllActiveCustomers();
+            FinishCurrentShift();
         }
 
         /// <inheritdoc/>
@@ -186,6 +203,15 @@ namespace Game.Progression
             _spawnTimer = 0f;
             _currentRevenue = 0;
             _context = null;
+        }
+
+        public bool TryStartNextShift()
+        {
+            if (ShiftInProgress)
+                return false;
+
+            StartNextShift();
+            return true;
         }
 
         /// <summary>
@@ -209,6 +235,7 @@ namespace Game.Progression
             _currentRevenue = 0;
             _lastKnownBalance = _context.Balance.Balance;
             _shiftTimer = Mathf.Max(0f, _shiftDuration);
+            _modeActive = true;
             _spawnTimer = GetSpawnDelay();
             OnShiftStarted.Invoke();
         }
@@ -260,8 +287,6 @@ namespace Game.Progression
                 _context.Session.MarkSucceeded();
                 return;
             }
-
-            StartNextShift();
         }
 
         private void FailCurrentShift()
@@ -278,6 +303,9 @@ namespace Game.Progression
 
             _shiftTimer = 0f;
             _spawnTimer = 0f;
+            _statisticsCollector.SetMoneyEarned(CurrentRevenue);
+            _lastShiftStatistics = _statisticsCollector.GetStatistics();
+            _statisticsCollector.Reset();
             OnShiftEnded.Invoke();
         }
 
