@@ -6,7 +6,7 @@ TextureImporter:
   serializedVersion: 13
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 1
+    enableMipMap: 0
     sRGBTexture: 1
     linearTexture: 0
     fadeOut: 0
@@ -37,24 +37,24 @@ TextureImporter:
     filterMode: 1
     aniso: 1
     mipBias: 0
-    wrapU: 0
-    wrapV: 0
-    wrapW: 0
-  nPOTScale: 1
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 0
+  spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 1040
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 1
+  spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
-  alphaIsTransparency: 0
+  alphaIsTransparency: 1
   spriteTessellationDetail: -1
-  textureType: 0
+  textureType: 8
   textureShape: 1
   singleChannelComponent: 0
   flipbookRows: 1
@@ -73,8 +73,8 @@ TextureImporter:
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
+    compressionQuality: 100
+    crunchedCompression: 1
     allowsAlphaSplitting: 0
     overridden: 0
     ignorePlatformSupport: 0
@@ -93,14 +93,533 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: SPR_customerSitting_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 3003
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 44b4567af100fa74f9b0622b1eff459e
+      internalID: 2093470801
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerSitting_1
+      rect:
+        serializedVersion: 2
+        x: 1501
+        y: 3003
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fd66fb26320220d4188c824782f04c34
+      internalID: 1297351253
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerSitting_2
+      rect:
+        serializedVersion: 2
+        x: 3002
+        y: 3003
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9edfa4f96dac04644bf3f66222415577
+      internalID: 1027566549
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerSitting_3
+      rect:
+        serializedVersion: 2
+        x: 4503
+        y: 3003
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4b8fc5a5c8393c2428b2c6f518e263a8
+      internalID: 1369808899
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerSitting_4
+      rect:
+        serializedVersion: 2
+        x: 6004
+        y: 3003
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b5be5f4dd79f1af4983517e28f9520f9
+      internalID: 1995479215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerSitting_5
+      rect:
+        serializedVersion: 2
+        x: 7505
+        y: 3003
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 01b37d988cd7e8d4e9a118559c4aee34
+      internalID: 209280679
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerSitting_6
+      rect:
+        serializedVersion: 2
+        x: 9006
+        y: 3003
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 29c4c35a1d4714a40ad6e8fe0409fcc3
+      internalID: 674683155
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerSitting_7
+      rect:
+        serializedVersion: 2
+        x: 10507
+        y: 3003
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9d52067345d35bd43b9220d8e7f6ab31
+      internalID: 899624360
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerSitting_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1502
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: adb9a4832bfbd07449514eca444e8af6
+      internalID: 1882452576
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerSitting_9
+      rect:
+        serializedVersion: 2
+        x: 1501
+        y: 1502
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 68098fef78da7c342a61fa60118e6ed5
+      internalID: -90760390
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerSitting_10
+      rect:
+        serializedVersion: 2
+        x: 3002
+        y: 1502
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: adc64f47201a6454ea6b8464ce4f0a14
+      internalID: 594122890
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerSitting_11
+      rect:
+        serializedVersion: 2
+        x: 4503
+        y: 1502
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ec9fd49856e259d43b92707ff67b2b2e
+      internalID: 737942171
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerSitting_12
+      rect:
+        serializedVersion: 2
+        x: 6004
+        y: 1502
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6466beb22a4dc81489a51edbf5dfa01e
+      internalID: -849730805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerSitting_13
+      rect:
+        serializedVersion: 2
+        x: 7505
+        y: 1502
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 095fa1ff8674b1548aa648a9a925821c
+      internalID: 713575978
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerSitting_14
+      rect:
+        serializedVersion: 2
+        x: 9006
+        y: 1502
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9d0ecfe02418d944eb79164863a9dc0f
+      internalID: -1655095977
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerSitting_15
+      rect:
+        serializedVersion: 2
+        x: 10507
+        y: 1502
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6d597ea800521764b8ba08766a6822bc
+      internalID: -1802101425
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerSitting_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8466c7ac2ae27674bbf0c4b58118cc6b
+      internalID: 1704782973
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerSitting_17
+      rect:
+        serializedVersion: 2
+        x: 1501
+        y: 1
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b9bf0a3b238213e46b0a19138092fe9f
+      internalID: 1776080187
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerSitting_18
+      rect:
+        serializedVersion: 2
+        x: 3002
+        y: 1
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 682846ee44f2c6b4e913fa5a86f5e357
+      internalID: -1555915388
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerSitting_19
+      rect:
+        serializedVersion: 2
+        x: 4503
+        y: 1
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0c1fafadab34df248985df0280d0a072
+      internalID: -1325786966
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerSitting_20
+      rect:
+        serializedVersion: 2
+        x: 6004
+        y: 1
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d53b7cb65af393e44bf1e42dc5cb2a91
+      internalID: -2026440156
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerSitting_21
+      rect:
+        serializedVersion: 2
+        x: 7505
+        y: 1
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 81f076b2692442f4ab07961fde9191fa
+      internalID: -357440623
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_customerSitting_22
+      rect:
+        serializedVersion: 2
+        x: 9006
+        y: 1
+        width: 1501
+        height: 1501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b0910eb94013dbc4a958d7fd3396312a
+      internalID: 266597666
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 8bf5f64172408204cb050b338018229b
     internalID: 0
     vertices: []
     indices: 
@@ -108,8 +627,34 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
-    nameFileIdTable: {}
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":8.0,"y":3.0},"gridSpriteSize":{"x":1501.0,"y":1501.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      SPR_customerSitting_0: 2093470801
+      SPR_customerSitting_1: 1297351253
+      SPR_customerSitting_10: 594122890
+      SPR_customerSitting_11: 737942171
+      SPR_customerSitting_12: -849730805
+      SPR_customerSitting_13: 713575978
+      SPR_customerSitting_14: -1655095977
+      SPR_customerSitting_15: -1802101425
+      SPR_customerSitting_16: 1704782973
+      SPR_customerSitting_17: 1776080187
+      SPR_customerSitting_18: -1555915388
+      SPR_customerSitting_19: -1325786966
+      SPR_customerSitting_2: 1027566549
+      SPR_customerSitting_20: -2026440156
+      SPR_customerSitting_21: -357440623
+      SPR_customerSitting_22: 266597666
+      SPR_customerSitting_23: 661819557
+      SPR_customerSitting_3: 1369808899
+      SPR_customerSitting_4: 1995479215
+      SPR_customerSitting_5: 209280679
+      SPR_customerSitting_6: 674683155
+      SPR_customerSitting_7: 899624360
+      SPR_customerSitting_8: 1882452576
+      SPR_customerSitting_9: -90760390
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

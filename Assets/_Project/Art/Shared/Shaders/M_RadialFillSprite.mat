@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Tinted
-  m_Shader: {fileID: 4800000, guid: f8ac6c257986c7948900b1f83b1b779e, type: 3}
+  m_Name: M_RadialFillSprite
+  m_Shader: {fileID: 4800000, guid: e87a85a9236f79f4ebefb2447938503c, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -28,8 +28,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
-    m_Floats: []
+    m_Floats:
+    - _Clockwise: 0
+    - _FillAmount: 1
+    - _StartAngle: 90
     m_Colors:
-    - _Color: {r: 0, g: 0, b: 0, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

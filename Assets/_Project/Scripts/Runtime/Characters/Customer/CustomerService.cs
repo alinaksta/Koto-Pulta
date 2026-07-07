@@ -105,10 +105,10 @@ namespace Game.Characters
 
             var customer = Instantiate(_customerPrefab);
 
-            if (table.TryAddCustomer(customer, out var seat))
+            if (table.TryAddCustomerAtRandomSeat(customer, out var seat))
             {
-                customer.transform.position = seat.position;
-                customer.transform.rotation = seat.rotation;
+                customer.transform.position = seat.CustomerSpawnOrigin;
+                customer.transform.rotation = Quaternion.identity; // We rotate using SpriteRotator, so it doesn't matter
             }
             else
             {
@@ -117,7 +117,7 @@ namespace Game.Characters
             }
 
             ItemDefinition order = GetRandomOrder();
-            customer.Initialize(table, order);
+            customer.Initialize(table, seat, order);
 
             customer.OnServed += HandleCustomerServed;
             customer.OnTimedOut += HandleCustomerTimedOut;
@@ -141,20 +141,20 @@ namespace Game.Characters
         private void HandleCustomerWrongItem(Customer customer, Item item)
         {
             OnCustomerWrongItem.Invoke(customer, item);
-            CleanUpCustomer(customer);
+            DespawnCustomer(customer);
         }
 
         private void HandleCustomerTimedOut(Customer customer)
         {
             OnCustomerTimedOut.Invoke(customer);
-            CleanUpCustomer(customer);
+            DespawnCustomer(customer);
         }
 
         private void HandleCustomerServed(Customer customer)
         {
             OnCustomerServed.Invoke(customer);
             Debug.Log("Customer Served");
-            CleanUpCustomer(customer);
+            DespawnCustomer(customer);
         }
 
         private ItemDefinition GetRandomOrder()
@@ -162,7 +162,7 @@ namespace Game.Characters
             return _randomItemGiver.GetRandomItemDefinition();
         }
 
-        private void CleanUpCustomer(Customer customer)
+        private async void DespawnCustomer(Customer customer)
         {
             if (customer == null) return;
 
@@ -170,6 +170,8 @@ namespace Game.Characters
             customer.OnTimedOut -= HandleCustomerTimedOut;
             customer.OnWrongItemGiven -= HandleCustomerWrongItem;
 
+            await Awaitable.WaitForSecondsAsync(customer.DespawnDuration);
+            
             _activeCustomers.Remove(customer);
 
             if (customer.Table != null)

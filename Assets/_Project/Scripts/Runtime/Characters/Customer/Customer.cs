@@ -22,9 +22,13 @@ namespace Game.Characters
     public class Customer : MonoBehaviour, IInteractable
     {
         [SerializeField] private float _defaultWaitTime = 60f;
+        [SerializeField] private float _spawnDuration = 1f;
+        [SerializeField] private float _despawnDuration = 1f;
 
         private Table _table;
+        private Seat _seat;
         private ItemDefinition _order;
+        private float _initialWaitTime;
         private float _waitTimer;
         private CustomerState _state;
 
@@ -32,6 +36,11 @@ namespace Game.Characters
         /// Gets the table this customer belongs to.
         /// </summary>
         public Table Table => _table;
+
+        /// <summary>
+        /// Gets the seat this customer belongs to.
+        /// </summary>
+        public Seat Seat => _seat;
 
         /// <summary>
         /// Gets the item definition currently ordered by the customer.
@@ -47,6 +56,14 @@ namespace Game.Characters
         /// Gets whether the customer is still waiting for a valid delivery.
         /// </summary>
         public bool IsWaiting => Order != null && WaitTimer > 0f;
+
+        public float SpawnDuration => _spawnDuration;
+
+        public float DespawnDuration => _despawnDuration;
+
+        public float InitialWaitTime => _initialWaitTime;
+
+        public float NormalizedWaitTimer => Mathf.Clamp01(_waitTimer / _initialWaitTime);
 
         /// <summary>
         /// Raised when a new order starts.
@@ -68,19 +85,33 @@ namespace Game.Characters
         /// </summary>
         public event Action<Customer, Item> OnWrongItemGiven = delegate { };
 
+        public event Action<Customer, float> OnWaiterStartedAsking = delegate { };
+
         /// <summary>
         /// Sets the table, order, and wait timer for this customer.
         /// </summary>
         /// <param name="table">Table the customer belongs to.</param>
+        /// <param name="seat">Seat the customer belongs to.</param>
         /// <param name="order">Requested item definition.</param>
         /// <param name="waitTimerOverride">Optional override for the starting wait time.</param>
-        public void Initialize(Table table, ItemDefinition order, float? waitTimerOverride = null)
+        public void Initialize(Table table, Seat seat, ItemDefinition order, float? waitTimerOverride = null)
         {
             _table = table;
+            _seat = seat;
             _order = order;
-            _waitTimer = waitTimerOverride ?? _defaultWaitTime;
-            _state = CustomerState.AwaitingDelivery; // TODO: Implement AwaitingOrder phase/state
+            _initialWaitTime = waitTimerOverride == null ? _defaultWaitTime : waitTimerOverride.Value;
+            _waitTimer = _initialWaitTime;
+            _state = CustomerState.AwaitingWaiter;
             OnOrderStarted.Invoke(this);
+        }
+
+        public async void TakeOrder(float duration)
+        {
+            OnWaiterStartedAsking.Invoke(this, duration);
+
+            await Awaitable.WaitForSecondsAsync(duration);
+
+            _state = CustomerState.AwaitingDelivery;
         }
 
         private void Update()

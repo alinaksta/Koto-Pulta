@@ -1,9 +1,12 @@
-Shader "Custom/TintedSprite"
+Shader "Custom/RadialFillSprite"
 {
     Properties
     {
-        _MainTex ("Sprite Texture", 2D) = "white" {}
-        _Color ("Tint Color", Color) = (1, 0, 0, 1)
+        [PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
+        _Color ("Tint", Color) = (1, 1, 1, 1)
+        _FillAmount ("Fill Amount", Range(0, 1)) = 1
+        _StartAngle ("Start Angle", Range(0, 360)) = 90
+        [Toggle] _Clockwise ("Clockwise", Float) = 1
     }
 
     SubShader
@@ -14,6 +17,7 @@ Shader "Custom/TintedSprite"
             "RenderType" = "Transparent"
             "IgnoreProjector" = "True"
             "PreviewType" = "Plane"
+            "CanUseSpriteAtlas" = "True"
         }
 
         Blend SrcAlpha OneMinusSrcAlpha
@@ -39,36 +43,42 @@ Shader "Custom/TintedSprite"
                 float4 vertex : SV_POSITION;
                 float2 uv : TEXCOORD0;
                 float4 color : COLOR;
+                float2 localPos : TEXCOORD1;
             };
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
             float4 _Color;
+            float _FillAmount;
+            float _StartAngle;
+            float _Clockwise;
 
-            v2f vert (appdata v)
+            v2f vert(appdata v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                 o.color = v.color;
+                o.localPos = v.vertex.xy;
                 return o;
             }
 
-            fixed4 frag (v2f i) : SV_Target
+            fixed4 frag(v2f i) : SV_Target
             {
-                // Sample the original texture
-                fixed4 tex = tex2D(_MainTex, i.uv);
+                fixed4 color = tex2D(_MainTex, i.uv) * _Color * i.color;
 
-                // The grayscale value: 0 = black, 1 = white
-                float gray = tex.r;
+                float angle = atan2(i.localPos.y, i.localPos.x);
+                float startAngle = radians(_StartAngle);
+                float normalizedAngle = frac((angle - startAngle) / (2.0 * UNITY_PI) + 1.0);
 
-                // Blend between the tint color and white based on brightness
-                // Dark pixels ¡ú tint color, bright pixels ¡ú stay white
-                fixed4 result;
-                result.rgb = lerp(_Color.rgb, float3(1, 1, 1), gray);
-                result.a = tex.a;   // keep the original transparency
+                if (_Clockwise > 0.5)
+                {
+                    normalizedAngle = 1.0 - normalizedAngle;
+                }
 
-                return result;
+                clip(_FillAmount - normalizedAngle);
+
+                return color;
             }
             ENDCG
         }

@@ -725,7 +725,7 @@ namespace Game.Characters
             if (!IsAssigned)
                 return;
 
-            NavigateTo(_assignedCustomer.transform.position);
+            NavigateTo(_assignedCustomer.Seat.CustomerAskOrigin);
         }
 
         /// <summary>
@@ -748,6 +748,8 @@ namespace Game.Characters
         private void StartAskCustomerPause()
         {
             _askCustomerTimer = _askCustomerDuration;
+            transform.rotation = _assignedCustomer.Seat.CustomerAskRotation;
+            _assignedCustomer.TakeOrder(_askCustomerDuration);
             EnterIdleState();
         }
 
