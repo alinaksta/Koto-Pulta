@@ -38,7 +38,6 @@ namespace Game.UI
             activeSite = Random.Range(0, sites.Count);
             sites[activeSite].SetActive(true);
             sites[activeSite].GetComponent<ScrollRect>().verticalNormalizedPosition=1f;
-            sites[activeSite].GetComponent<SiteButtonRandomizer>().Randomize();
         }    
 
         public void OnFocusEnded()
