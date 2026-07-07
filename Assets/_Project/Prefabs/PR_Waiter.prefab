@@ -452,7 +452,7 @@ NavMeshAgent:
   m_Radius: 0.5
   m_Speed: 5.6
   m_Acceleration: 56
-  avoidancePriority: 50
+  avoidancePriority: 0
   m_AngularSpeed: 960
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
@@ -461,7 +461,7 @@ NavMeshAgent:
   m_Height: 2
   m_BaseOffset: -0.05
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 2
 --- !u!54 &6839888440025666666
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -496,7 +496,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2204201829867112283}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 1ad555641888b6a4498b438f323daa4a, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

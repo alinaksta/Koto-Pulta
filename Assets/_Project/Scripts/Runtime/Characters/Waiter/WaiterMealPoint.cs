@@ -13,18 +13,25 @@ namespace Game.Characters
         /// <summary>
         /// Gets the transform waiters should navigate to for meals.
         /// </summary>
-        public Transform Point => _point != null ? _point : transform;
+        public Transform Point => _point;
+
+        public Vector3 Position => _point.position;
+
+        private void Awake()
+        {
+            _point = _point == null ? transform : _point;
+        }
 
         private void OnEnable()
         {
-            if (ServiceLocator.TryGet<WaiterService>(out var waiterService))
-                waiterService.SetMealPoint(this);
+            if (ServiceLocator.TryGet<WaiterQueueService>(out var waiterQueueService))
+                waiterQueueService.AddPoint(this);
         }
 
         private void OnDisable()
         {
-            if (ServiceLocator.TryGet<WaiterService>(out var waiterService))
-                waiterService.ClearMealPoint(this);
+            if (ServiceLocator.TryGet<WaiterQueueService>(out var waiterQueueService))
+                waiterQueueService.RemovePoint(this);
         }
     }
 }

@@ -138,6 +138,31 @@ namespace Game.Characters
             _randomItemGiver = giver;
         }
 
+        /// <summary>
+        /// Tries to get the next active customer who is still waiting for a waiter.
+        /// </summary>
+        /// <param name="customer">Receives the matching customer when found.</param>
+        /// <param name="predicate">Optional extra filter for candidate customers.</param>
+        /// <returns><see langword="true"/> when a matching customer is found.</returns>
+        public bool TryGetNextCustomerNeedingWaiter(out Customer customer, Func<Customer, bool> predicate = null)
+        {
+            for (int i = 0; i < _activeCustomers.Count; i++)
+            {
+                var candidate = _activeCustomers[i];
+                if (candidate == null || !candidate.NeedsWaiter)
+                    continue;
+
+                if (predicate != null && !predicate(candidate))
+                    continue;
+
+                customer = candidate;
+                return true;
+            }
+
+            customer = null;
+            return false;
+        }
+
         private void HandleCustomerWrongItem(Customer customer, Item item)
         {
             OnCustomerWrongItem.Invoke(customer, item);

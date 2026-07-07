@@ -53,9 +53,19 @@ namespace Game.Characters
         public float WaitTimer => _waitTimer;
 
         /// <summary>
+        /// Gets the customer's current order/service state.
+        /// </summary>
+        public CustomerState State => _state;
+
+        /// <summary>
         /// Gets whether the customer is still waiting for a valid delivery.
         /// </summary>
-        public bool IsWaiting => Order != null && WaitTimer > 0f;
+        public bool IsWaiting => _state != CustomerState.None && Order != null && WaitTimer > 0f;
+
+        /// <summary>
+        /// Gets whether the customer still needs a waiter to take the order.
+        /// </summary>
+        public bool NeedsWaiter => _state == CustomerState.AwaitingWaiter && Order != null && WaitTimer > 0f;
 
         public float SpawnDuration => _spawnDuration;
 
