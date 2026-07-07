@@ -16,8 +16,6 @@ namespace Game.Characters
         private readonly Dictionary<Waiter, Customer> _customerByWaiter = new();
         private readonly Dictionary<Customer, Waiter> _waiterByCustomer = new();
 
-        private WaiterMealPoint _mealPoint;
-
         /// <summary>
         /// Raised after a customer is assigned to a waiter.
         /// </summary>
@@ -32,16 +30,6 @@ namespace Game.Characters
         /// Raised when a waiter is directed to the active meal point.
         /// </summary>
         public event Action<Waiter> OnWaiterSentToMealPoint = delegate { };
-
-        /// <summary>
-        /// Gets whether a meal point is currently registered.
-        /// </summary>
-        public bool HasMealPoint => _mealPoint != null;
-
-        /// <summary>
-        /// Gets the transform used as the current meal point destination.
-        /// </summary>
-        public Transform MealPointTransform => _mealPoint.Point;
 
         /// <inheritdoc/>
         public void Bootstrap()
@@ -70,25 +58,6 @@ namespace Game.Characters
 
             ClearAssignmentForWaiter(waiter, false, false);
             _waiters.Remove(waiter);
-        }
-
-        /// <summary>
-        /// Sets the active meal point used by waiters awaiting meals.
-        /// </summary>
-        /// <param name="mealPoint">Meal point to use.</param>
-        public void SetMealPoint(WaiterMealPoint mealPoint)
-        {
-            _mealPoint = mealPoint;
-        }
-
-        /// <summary>
-        /// Clears the active meal point when it matches the supplied instance.
-        /// </summary>
-        /// <param name="mealPoint">Meal point to clear.</param>
-        public void ClearMealPoint(WaiterMealPoint mealPoint)
-        {
-            if (_mealPoint == mealPoint)
-                _mealPoint = null;
         }
 
         /// <summary>
@@ -170,31 +139,6 @@ namespace Game.Characters
             => waiter != null && _waiters.Contains(waiter);
 
         /// <summary>
-        /// Sends a waiter to the active meal point, or idles it if none is available.
-        /// </summary>
-        /// <param name="waiter">Waiter to redirect.</param>
-        public void SendWaiterToMealPoint(Waiter waiter)
-        {
-            if (waiter == null)
-                return;
-
-            if (_mealPoint == null)
-            {
-                waiter.EnterIdleState();
-                return;
-            }
-
-            if (!waiter.gameObject.activeInHierarchy)
-            {
-                waiter.EnterIdleState();
-                return;
-            }
-
-            waiter.NavigateTo(_mealPoint.Point.position);
-            OnWaiterSentToMealPoint.Invoke(waiter);
-        }
-
-        /// <summary>
         /// Gets the number of currently registered waiters.
         /// </summary>
         /// <returns>Registered waiter count.</returns>
@@ -253,7 +197,7 @@ namespace Game.Characters
             OnCustomerUnassignedFromWaiter.Invoke(waiter, customer);
 
             if (sendToMealPoint)
-                SendWaiterToMealPoint(waiter);
+                waiter.StartGoingToMealPoint();
             else
                 waiter.EnterIdleState();
         }
@@ -278,7 +222,7 @@ namespace Game.Characters
             OnCustomerUnassignedFromWaiter.Invoke(waiter, customer);
 
             if (sendToMealPoint)
-                SendWaiterToMealPoint(waiter);
+                waiter.StartGoingToMealPoint();
             else
                 waiter.EnterIdleState();
         }

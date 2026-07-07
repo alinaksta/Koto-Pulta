@@ -199,6 +199,7 @@ Transform:
   - {fileID: 8556256298289742501}
   - {fileID: 7019082291019249880}
   - {fileID: 2234357958083423540}
+  - {fileID: 3199845416423565282}
   - {fileID: 494438713049448182}
   - {fileID: 7218063988416477264}
   - {fileID: 4036256992325648831}
@@ -217,6 +218,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a4e37da17c36944a928d21227e8826f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.Lifecycle.BootstrapService
+--- !u!1 &2638063522203812954
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3199845416423565282}
+  - component: {fileID: 2460486623794190787}
+  m_Layer: 0
+  m_Name: WaiterQueueService
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3199845416423565282
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2638063522203812954}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3041218814896205459}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2460486623794190787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2638063522203812954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 286763947b96f164c9a2234e309d879f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Game.Characters.WaiterQueueService
 --- !u!1 &3506388391098946459
 GameObject:
   m_ObjectHideFlags: 0
