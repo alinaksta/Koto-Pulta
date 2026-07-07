@@ -131,11 +131,22 @@ namespace Game.Characters
 
             _waitTimer -= Time.deltaTime;
             if (_waitTimer <= 0f)
-            {
-                _waitTimer = 0f;
-                _state = CustomerState.None;
-                OnTimedOut.Invoke(this);
-            }
+                ForceTimeout();
+        }
+
+        /// <summary>
+        /// Forces the customer into the timed out state if it is still waiting.
+        /// </summary>
+        /// <returns><see langword="true"/> when a timeout was triggered.</returns>
+        public bool ForceTimeout()
+        {
+            if (_state == CustomerState.None || _order == null)
+                return false;
+
+            _waitTimer = 0f;
+            _state = CustomerState.None;
+            OnTimedOut.Invoke(this);
+            return true;
         }
 
         #region IInteractable

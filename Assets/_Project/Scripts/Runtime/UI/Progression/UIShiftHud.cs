@@ -1,5 +1,6 @@
 using Game.Progression;
 using Game.Services;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -10,6 +11,12 @@ namespace Game.UI
     /// </summary>
     public class UIShiftHud : MonoBehaviour
     {
+        [Header("Animation")]
+        [SerializeField] private float _slideDuration = 0.35f;
+        [SerializeField] private float _hiddenYOffset = 160f;
+        [SerializeField] private RectTransform _target;
+        [SerializeField] private AnimationCurve _slideCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
+
         [Header("Labels")]
         [SerializeField] private TMP_Text _timerLabel;
         [SerializeField] private TMP_Text _revenueLabel;
@@ -21,10 +28,20 @@ namespace Game.UI
         [SerializeField] private string _shiftNumberFormat = "Shift {0} / {1}";
 
         private ShiftService _shiftService;
+        private Vector2 _shownAnchoredPosition;
+        private Vector2 _hiddenAnchoredPosition;
+        private Coroutine _slideCoroutine;
 
         private void Awake()
         {
+            _shownAnchoredPosition = _target.anchoredPosition;
+            _hiddenAnchoredPosition = _shownAnchoredPosition + Vector2.up * _hiddenYOffset;
             TryResolveService();
+        }
+
+        private void Start()
+        {
+            SetAnchoredPosition(_hiddenAnchoredPosition);
         }
 
         private void OnEnable()
@@ -32,18 +49,24 @@ namespace Game.UI
             if (!TryResolveService())
                 return;
 
-            _shiftService.OnShiftStarted += RefreshAll;
-            _shiftService.OnShiftEnded += RefreshAll;
+            _shiftService.OnShiftStarted += HandleShiftStarted;
+            _shiftService.OnShiftEnded += HandleShiftEnded;
             RefreshAll();
         }
 
         private void OnDisable()
         {
+            if (_slideCoroutine != null)
+            {
+                StopCoroutine(_slideCoroutine);
+                _slideCoroutine = null;
+            }
+
             if (_shiftService == null)
                 return;
 
-            _shiftService.OnShiftStarted -= RefreshAll;
-            _shiftService.OnShiftEnded -= RefreshAll;
+            _shiftService.OnShiftStarted -= HandleShiftStarted;
+            _shiftService.OnShiftEnded -= HandleShiftEnded;
         }
 
         private void Update()
@@ -53,14 +76,26 @@ namespace Game.UI
                 if (!TryResolveService())
                     return;
 
-                _shiftService.OnShiftStarted += RefreshAll;
-                _shiftService.OnShiftEnded += RefreshAll;
+                _shiftService.OnShiftStarted += HandleShiftStarted;
+                _shiftService.OnShiftEnded += HandleShiftEnded;
                 RefreshAll();
             }
 
             UpdateTimer();
             UpdateRevenue();
             UpdateShiftNumber();
+        }
+
+        private void HandleShiftStarted()
+        {
+            RefreshAll();
+            SlideTo(_shownAnchoredPosition);
+        }
+
+        private void HandleShiftEnded()
+        {
+            RefreshAll();
+            SlideTo(_hiddenAnchoredPosition);
         }
 
         private void RefreshAll()
@@ -113,6 +148,45 @@ namespace Game.UI
                 return true;
 
             return ServiceLocator.TryGet(out _shiftService);
+        }
+
+        private void SlideTo(Vector2 targetPosition)
+        {
+            if (_slideCoroutine != null)
+                StopCoroutine(_slideCoroutine);
+
+            _slideCoroutine = StartCoroutine(SlideToRoutine(targetPosition));
+        }
+
+        private IEnumerator SlideToRoutine(Vector2 targetPosition)
+        {
+            Vector2 startPosition = _target.anchoredPosition;
+
+            if (_slideDuration <= 0f)
+            {
+                SetAnchoredPosition(targetPosition);
+                _slideCoroutine = null;
+                yield break;
+            }
+
+            float elapsed = 0f;
+            while (elapsed < _slideDuration)
+            {
+                elapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / _slideDuration);
+                float curveT = _slideCurve != null ? _slideCurve.Evaluate(t) : t;
+                SetAnchoredPosition(Vector2.LerpUnclamped(startPosition, targetPosition, curveT));
+                yield return null;
+            }
+
+            SetAnchoredPosition(targetPosition);
+            _slideCoroutine = null;
+        }
+
+        private void SetAnchoredPosition(Vector2 position)
+        {
+            if (_target != null)
+                _target.anchoredPosition = position;
         }
     }
 }
