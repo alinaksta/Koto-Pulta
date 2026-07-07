@@ -44,7 +44,11 @@ namespace Game.Characters
         public void RegisterWaiter(Waiter waiter)
         {
             if (waiter != null)
+            {
                 _waiters.Add(waiter);
+
+                TryAssignNextWaitingCustomerToWaiter(waiter);
+            }
         }
 
         /// <summary>
@@ -56,8 +60,8 @@ namespace Game.Characters
             if (waiter == null)
                 return;
 
-            ClearAssignmentForWaiter(waiter, false, false);
             _waiters.Remove(waiter);
+            ClearAssignmentForWaiter(waiter, false, false);
         }
 
         /// <summary>
@@ -93,7 +97,7 @@ namespace Game.Characters
         {
             waiter = null;
 
-            if (customer == null)
+            if (customer == null || !customer.NeedsWaiter)
                 return false;
 
             if (_waiterByCustomer.ContainsKey(customer))
@@ -102,16 +106,7 @@ namespace Game.Characters
             if (!TryGetUnassignedWaiter(out waiter))
                 return false;
 
-            waiter.AssignCustomer(customer);
-
-            _customerByWaiter[waiter] = customer;
-            _waiterByCustomer[customer] = waiter;
-
-            customer.OnServed += HandleCustomerServed;
-            customer.OnTimedOut += HandleCustomerTimedOut;
-            customer.OnWrongItemGiven += HandleCustomerWrongItem;
-
-            OnCustomerAssignedToWaiter.Invoke(waiter, customer);
+            AssignCustomerToWaiter(waiter, customer);
             return true;
         }
 
@@ -162,6 +157,23 @@ namespace Game.Characters
             return count;
         }
 
+        /// <summary>
+        /// Tries to assign the supplied waiter to the next active customer that still needs service.
+        /// </summary>
+        /// <param name="waiter">Waiter to assign.</param>
+        /// <returns><see langword="true"/> when a new customer assignment was made.</returns>
+        public bool TryAssignNextWaitingCustomerToWaiter(Waiter waiter)
+        {
+            if (waiter == null || !IsWaiterRegistered(waiter) || !waiter.CanAcceptAssignment)
+                return false;
+
+            if (!TryGetNextUnassignedCustomerNeedingWaiter(out var customer))
+                return false;
+
+            AssignCustomerToWaiter(waiter, customer);
+            return true;
+        }
+
         private void HandleCustomerServed(Customer customer)
         {
             ClearAssignmentForCustomer(customer, true, false);
@@ -196,6 +208,9 @@ namespace Game.Characters
 
             OnCustomerUnassignedFromWaiter.Invoke(waiter, customer);
 
+            if (TryAssignNextWaitingCustomerToWaiter(waiter))
+                return;
+
             if (sendToMealPoint)
                 waiter.StartGoingToMealPoint();
             else
@@ -221,10 +236,37 @@ namespace Game.Characters
 
             OnCustomerUnassignedFromWaiter.Invoke(waiter, customer);
 
+            if (TryAssignNextWaitingCustomerToWaiter(waiter))
+                return;
+
             if (sendToMealPoint)
                 waiter.StartGoingToMealPoint();
             else
                 waiter.EnterIdleState();
+        }
+
+        private bool TryGetNextUnassignedCustomerNeedingWaiter(out Customer customer)
+        {
+            customer = null;
+
+            if (!ServiceLocator.TryGet<CustomerService>(out var customerService))
+                return false;
+
+            return customerService.TryGetNextCustomerNeedingWaiter(out customer, candidate => !_waiterByCustomer.ContainsKey(candidate));
+        }
+
+        private void AssignCustomerToWaiter(Waiter waiter, Customer customer)
+        {
+            waiter.AssignCustomer(customer);
+
+            _customerByWaiter[waiter] = customer;
+            _waiterByCustomer[customer] = waiter;
+
+            customer.OnServed += HandleCustomerServed;
+            customer.OnTimedOut += HandleCustomerTimedOut;
+            customer.OnWrongItemGiven += HandleCustomerWrongItem;
+
+            OnCustomerAssignedToWaiter.Invoke(waiter, customer);
         }
     }
 }

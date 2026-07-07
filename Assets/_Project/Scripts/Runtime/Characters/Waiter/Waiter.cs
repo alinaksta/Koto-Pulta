@@ -694,6 +694,9 @@ namespace Game.Characters
                 return;
             }
 
+            if (_waiterService.TryAssignNextWaitingCustomerToWaiter(this))
+                return;
+
             StartWanderPause();
         }
 
