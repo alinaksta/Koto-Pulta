@@ -416,8 +416,8 @@ MonoBehaviour:
   _waiterDefinition: {fileID: 11400000, guid: 489f247c44e7cd24097163abedcb5124, type: 2}
   _carryContainer: {fileID: 4721583092023430135}
   _worldVisualRoot: {fileID: 5325243197194466205}
-  _recoverDelay: 2
-  _minimumRagdollTime: 0.8
+  _recoverDelay: 0.82
+  _minimumRagdollTime: 0.4
   _settledVelocity: 0.02
   _navMeshSampleRadius: 2
   _groundLayer:
