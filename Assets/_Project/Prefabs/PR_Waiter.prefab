@@ -152,6 +152,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc0cb89659a2b7d408f99d029e538ec6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.Characters.WaiterContainer
+  _pickupDuration: 0.6
+  _pickupFirstSquishScale: {x: 1.28, y: 0.72}
+  _pickupFirstStretchScale: {x: 0.8, y: 1.22}
+  _pickupSecondSquishScale: {x: 1.16, y: 0.86}
+  _pickupSecondStretchScale: {x: 0.92, y: 1.08}
+  _deliveryDuration: 0.35
+  _deliveryRiseDistance: 0.35
+  _deliverySpinDegrees: 360
   _spriteRenderer: {fileID: 4200462854677017681}
 --- !u!135 &8323948392563998356
 SphereCollider:
@@ -408,8 +416,8 @@ MonoBehaviour:
   _waiterDefinition: {fileID: 11400000, guid: 489f247c44e7cd24097163abedcb5124, type: 2}
   _carryContainer: {fileID: 4721583092023430135}
   _worldVisualRoot: {fileID: 5325243197194466205}
-  _recoverDelay: 2
-  _minimumRagdollTime: 0.8
+  _recoverDelay: 0.82
+  _minimumRagdollTime: 0.4
   _settledVelocity: 0.02
   _navMeshSampleRadius: 2
   _groundLayer:
@@ -757,7 +765,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: d1b6c3dab445fe2448a0406f98456899, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -765,7 +773,7 @@ SpriteRenderer:
   m_Size: {x: 0.48611113, y: 0.48611113}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!114 &5149206179874036257
 MonoBehaviour:

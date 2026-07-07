@@ -168,6 +168,8 @@ namespace Game.Characters
         /// </summary>
         public bool IsRagdolled => _locomotionState == WaiterLocomotionState.Ragdoll;
 
+        public bool IsAkingCustomer => _locomotionState == WaiterLocomotionState.Idle && _serviceState == WaiterServiceState.AskingCustomer && _askCustomerTimer > 0f;
+
         /// <summary>
         /// Gets the waiter's current velocity.
         /// </summary>
@@ -304,7 +306,13 @@ namespace Game.Characters
             }
 
             if (AtMealPoint)
+            {
                 LookAtServiceCounter();
+            }
+            if (IsAkingCustomer)
+            {
+                LookAtCustomer();
+            }
         }
 
         private void CreateItemInstance()
@@ -767,7 +775,6 @@ namespace Game.Characters
         private void StartAskCustomerPause()
         {
             _askCustomerTimer = _askCustomerDuration;
-            transform.rotation = _assignedCustomer.Seat.CustomerAskRotation;
             _assignedCustomer.TakeOrder(_askCustomerDuration);
             EnterIdleState();
         }
@@ -899,6 +906,15 @@ namespace Game.Characters
             OnMealPointEntered.Invoke();
         }
 
+        private void ExitMealPoint()
+        {
+            if (!_mealPointEntered)
+                return;
+
+            _mealPointEntered = false;
+            OnMealPointExited.Invoke();
+        }
+
         private void LookAtServiceCounter()
         {
             Vector3 lookDirection = _waiterQueueService.ServiceCounterOrigin - transform.position;
@@ -908,13 +924,9 @@ namespace Game.Characters
             transform.rotation = Quaternion.FromToRotation(Vector3.forward, lookDirection);
         }
 
-        private void ExitMealPoint()
+        private void LookAtCustomer()
         {
-            if (!_mealPointEntered)
-                return;
-
-            _mealPointEntered = false;
-            OnMealPointExited.Invoke();
+            transform.rotation = _assignedCustomer.Seat.CustomerAskRotation;
         }
 
         private void TryStartWander()
