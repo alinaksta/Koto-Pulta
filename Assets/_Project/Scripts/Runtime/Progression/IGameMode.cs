@@ -7,6 +7,9 @@ namespace Game.Progression
     /// </summary>
     public sealed class GameModeContext
     {
+        /// <summary>
+        /// Creates a new game mode context from the supplied runtime services.
+        /// </summary>
         public GameModeContext(GameModeService gameModes, RunSessionService session, BalanceService balance, CustomerService customers, WaiterService waiters)
         {
             GameModes = gameModes;
@@ -16,10 +19,25 @@ namespace Game.Progression
             Waiters = waiters;
         }
 
+        /// <summary>
+        /// Gets the game mode service.
+        /// </summary>
         public GameModeService GameModes { get; }
+        /// <summary>
+        /// Gets the run session service.
+        /// </summary>
         public RunSessionService Session { get; }
+        /// <summary>
+        /// Gets the balance service.
+        /// </summary>
         public BalanceService Balance { get; }
+        /// <summary>
+        /// Gets the customer service.
+        /// </summary>
         public CustomerService Customers { get; }
+        /// <summary>
+        /// Gets the waiter service.
+        /// </summary>
         public WaiterService Waiters { get; }
     }
 

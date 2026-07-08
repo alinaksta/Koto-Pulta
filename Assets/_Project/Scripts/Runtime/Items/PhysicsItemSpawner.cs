@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace Game.Items
 {
+    /// <summary>
+    /// Spawns a configured physics item when the scene starts.
+    /// </summary>
     public class PhysicsItemSpawner : MonoBehaviour
     {
         [SerializeField] private ItemDefinitionAsset _asset;

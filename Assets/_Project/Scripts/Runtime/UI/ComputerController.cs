@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace Game.Interaction
 {
+    /// <summary>
+    /// Handles computer item selection and delivery to the player.
+    /// </summary>
     public class ComputerController : MonoBehaviour
     {
         [SerializeField] private ComputerInteractable _computerInteractable;
@@ -42,6 +45,9 @@ namespace Game.Interaction
             GiveItemToPlayer(item);
         }
 
+        /// <summary>
+        /// Attempts to place the selected item into the current player hand.
+        /// </summary>
         public void GiveItemToPlayer(Item item)
         {
             // Create Item, checks, etc.

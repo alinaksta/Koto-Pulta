@@ -15,6 +15,9 @@ namespace Game.Characters
         /// </summary>
         public Transform Point => _point;
 
+        /// <summary>
+        /// Gets the world position of this waiter meal point.
+        /// </summary>
         public Vector3 Position => _point.position;
 
         private void Awake()

@@ -6,8 +6,14 @@ using UnityEngine;
 
 namespace Game.Interaction
 {
+    /// <summary>
+    /// Represents throw preview data for a hand action.
+    /// </summary>
     public readonly struct ThrowPreviewData
     {
+        /// <summary>
+        /// Creates throw preview data from the supplied launch values.
+        /// </summary>
         public ThrowPreviewData(Vector3 start, Vector3 direction, float force)
         {
             Start = start;
@@ -15,8 +21,17 @@ namespace Game.Interaction
             Force = force;
         }
 
+        /// <summary>
+        /// Gets the preview start position.
+        /// </summary>
         public Vector3 Start { get; }
+        /// <summary>
+        /// Gets the preview direction.
+        /// </summary>
         public Vector3 Direction { get; }
+        /// <summary>
+        /// Gets the preview force.
+        /// </summary>
         public float Force { get; }
     }
 

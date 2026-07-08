@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 namespace Game.Progression
 {
+    /// <summary>
+    /// Displays shift state and results on the computer UI.
+    /// </summary>
     public class ComputerShiftView : MonoBehaviour
     {
         private enum ComputerShiftState

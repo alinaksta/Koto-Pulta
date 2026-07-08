@@ -29,6 +29,9 @@ namespace Game.UI
             Randomize();
         }
 
+        /// <summary>
+        /// Randomizes the positions of the configured buttons.
+        /// </summary>
         public void Randomize()
         {
             if (buttonsToShuffle == null)

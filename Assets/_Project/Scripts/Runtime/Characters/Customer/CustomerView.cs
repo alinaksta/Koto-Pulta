@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace Game.Characters
 {
+    /// <summary>
+    /// Updates customer visuals from gameplay state.
+    /// </summary>
     public class CustomerView : MonoBehaviour
     {
         private static int PatienceHash = Animator.StringToHash("patience");

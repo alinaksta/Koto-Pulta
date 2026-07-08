@@ -6,11 +6,15 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
+/// <summary>
+/// Draws interface reference fields in the inspector.
+/// </summary>
 [CustomPropertyDrawer(typeof(InterfaceReference<>))]
 [CustomPropertyDrawer(typeof(InterfaceReference<,>))]
 public class InterfaceReferenceDrawer : PropertyDrawer {
     const string UnderlyingValueFieldName = "underlyingValue";
 
+    /// <inheritdoc/>
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
         var underlyingProperty = property.FindPropertyRelative(UnderlyingValueFieldName);
         var args = GetArguments(fieldInfo);
@@ -100,10 +104,16 @@ public class InterfaceReferenceDrawer : PropertyDrawer {
     }
 }
 
+/// <summary>
+/// Stores resolved interface drawer argument types.
+/// </summary>
 public struct InterfaceArgs {
     public readonly Type ObjectType;
     public readonly Type InterfaceType;
 
+    /// <summary>
+    /// Creates resolved drawer argument types for an interface reference field.
+    /// </summary>
     public InterfaceArgs(Type objectType, Type interfaceType) {
         Debug.Assert(typeof(Object).IsAssignableFrom(objectType), $"{nameof(objectType)} needs to be of Type {typeof(Object)}.");
         Debug.Assert(interfaceType.IsInterface, $"{nameof(interfaceType)} needs to be an interface.");

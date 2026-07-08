@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace Game.Animation
 {
+    /// <summary>
+    /// Rotates a target so sprite-style visuals face the camera.
+    /// </summary>
     public sealed class SpriteRotator : MonoBehaviour
     {
         [SerializeField] private Transform _target;

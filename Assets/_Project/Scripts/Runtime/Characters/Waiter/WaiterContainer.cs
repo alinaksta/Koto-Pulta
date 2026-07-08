@@ -260,11 +260,20 @@ namespace Game.Characters
         {
             private Item? _item;
 
+            /// <summary>
+            /// Gets the item currently stored in the waiter container.
+            /// </summary>
             public Item? Item => _item;
+            /// <summary>
+            /// Gets whether the waiter container is empty.
+            /// </summary>
             public bool IsEmpty => !_item.HasValue;
 
             public event System.Action<Item?> OnItemChanged = delegate { };
 
+            /// <summary>
+            /// Checks whether the waiter container can accept the supplied transfer request.
+            /// </summary>
             public bool CanInsert(in TransferRequest request)
             {
                 if (!IsEmpty)
@@ -273,14 +282,23 @@ namespace Game.Characters
                 return !request.Item.TryGetComponent<WaiterComponent>(out _);
             }
 
+            /// <summary>
+            /// Checks whether the waiter container can remove its current item for the supplied transfer request.
+            /// </summary>
             public bool CanRemove(in TransferRequest request) => !IsEmpty;
 
+            /// <summary>
+            /// Inserts an item into the waiter container.
+            /// </summary>
             public void Insert(Item item)
             {
                 _item = item;
                 OnItemChanged.Invoke(_item);
             }
 
+            /// <summary>
+            /// Removes and returns the current item from the waiter container.
+            /// </summary>
             public Item? Remove()
             {
                 var removed = _item;

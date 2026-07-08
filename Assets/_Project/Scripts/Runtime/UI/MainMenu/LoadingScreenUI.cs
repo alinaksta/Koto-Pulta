@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Game.UI
 {
+    /// <summary>
+    /// Animates the main menu loading screen.
+    /// </summary>
     public class LoadingScreenUI : MonoBehaviour
     {
         private enum LoadingScreenState
@@ -35,6 +38,9 @@ namespace Game.UI
         private Vector3 _iconShownScale;
         private LoadingScreenState _state;
 
+        /// <summary>
+        /// Gets whether the loading screen is currently marked as active.
+        /// </summary>
         public bool IsLoading => _isLoading;
 
         private void Awake()
@@ -61,16 +67,25 @@ namespace Game.UI
             HideImmediate();
         }
 
+        /// <summary>
+        /// Starts showing the loading screen.
+        /// </summary>
         public void Show()
         {
             _ = ShowAsync();
         }
 
+        /// <summary>
+        /// Starts hiding the loading screen.
+        /// </summary>
         public void Hide()
         {
             _ = HideAsync();
         }
 
+        /// <summary>
+        /// Shows the loading screen and waits until the curtains finish closing.
+        /// </summary>
         public Awaitable ShowAsync()
         {
             _isLoading = true;
@@ -86,6 +101,9 @@ namespace Game.UI
             return _currentTransitionAwaitable;
         }
 
+        /// <summary>
+        /// Hides the loading screen and waits until the curtains finish opening.
+        /// </summary>
         public Awaitable HideAsync()
         {
             _isLoading = false;

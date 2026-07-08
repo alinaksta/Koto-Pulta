@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Game.Characters
 {
+    /// <summary>
+    /// Registers the service counter origin used by waiter routing.
+    /// </summary>
     public class ServiceCounterOrigin : MonoBehaviour
     {
         [SerializeField] private Transform _origin;

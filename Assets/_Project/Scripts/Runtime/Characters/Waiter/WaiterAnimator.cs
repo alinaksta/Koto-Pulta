@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Game.Characters
 {
+    /// <summary>
+    /// Updates waiter animation parameters from runtime state.
+    /// </summary>
     public class WaiterAnimator : MonoBehaviour
     {
         private static readonly int IsMovingHash = Animator.StringToHash("isMoving");
