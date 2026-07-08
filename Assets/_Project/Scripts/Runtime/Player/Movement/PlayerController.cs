@@ -2,6 +2,7 @@ using Game.Input;
 using Game.Services;
 using Game.Utils;
 using UnityEngine;
+using System;
 
 namespace Game.Movement
 {
@@ -33,6 +34,7 @@ namespace Game.Movement
         [SerializeField] private LayerMask _groundLayers = -1;
         [SerializeField] private float _groundCheckDistance = 0.12f;
         [SerializeField] private float _groundSnapDistance = 0.6f;
+        public static Action PlayerWalk;
 
         private IInputService _input;
         private IOrientation _orientation;
@@ -64,6 +66,7 @@ namespace Game.Movement
         /// Gets the orientation source used to convert movement input into world space.
         /// </summary>
         public IOrientation Orientation => _orientation;
+
 
         private void Awake()
         {
@@ -127,6 +130,7 @@ namespace Game.Movement
 
             _velocity.x = flat.x;
             _velocity.z = flat.z;
+            if (wishDir != Vector3.zero) PlayerWalk?.Invoke();
         }
 
         private void MoveAir(Vector3 wishDir, float dt)
