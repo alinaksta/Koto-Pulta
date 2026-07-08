@@ -33,6 +33,8 @@ namespace Game.UI
             while (!sceneLoad.isDone)
                 await Awaitable.NextFrameAsync();
 
+            await Awaitable.WaitForSecondsAsync(0.8f);
+
             await _loadingService.StopLoadingAsync();
         }
     }
