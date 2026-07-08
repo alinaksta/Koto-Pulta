@@ -19,9 +19,19 @@ namespace Game.UI
         {
             await _loadingService.StartLoadingAsync();
 
-            await SceneManager.LoadSceneAsync(_nextSceneIndex, LoadSceneMode.Single);
+            await Awaitable.WaitForSecondsAsync(0.8f);
 
-            await Awaitable.WaitForSecondsAsync(1.2f);
+            AsyncOperation sceneLoad = SceneManager.LoadSceneAsync(_nextSceneIndex, LoadSceneMode.Single);
+
+            sceneLoad.allowSceneActivation = false;
+
+            while (sceneLoad.progress < 0.9f)
+                await Awaitable.NextFrameAsync();
+
+            sceneLoad.allowSceneActivation = true;
+
+            while (!sceneLoad.isDone)
+                await Awaitable.NextFrameAsync();
 
             await _loadingService.StopLoadingAsync();
         }
