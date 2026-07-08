@@ -6,7 +6,7 @@ TextureImporter:
   serializedVersion: 13
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 1
+    enableMipMap: 0
     sRGBTexture: 1
     linearTexture: 0
     fadeOut: 0
@@ -37,24 +37,24 @@ TextureImporter:
     filterMode: 1
     aniso: 1
     mipBias: 0
-    wrapU: 0
-    wrapV: 0
+    wrapU: 1
+    wrapV: 1
     wrapW: 0
-  nPOTScale: 1
+  nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 0
+  spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 1
+  spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
-  alphaIsTransparency: 0
+  alphaIsTransparency: 1
   spriteTessellationDetail: -1
-  textureType: 0
+  textureType: 8
   textureShape: 1
   singleChannelComponent: 0
   flipbookRows: 1
@@ -73,8 +73,8 @@ TextureImporter:
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
+    compressionQuality: 100
+    crunchedCompression: 1
     allowsAlphaSplitting: 0
     overridden: 0
     ignorePlatformSupport: 0
@@ -93,14 +93,555 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: SPR_catEating_mainMenu_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 5005
+        width: 788
+        height: 1251
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a617a60f06cbddd408befa8ab0bcbd76
+      internalID: 1928237785
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_catEating_mainMenu_1
+      rect:
+        serializedVersion: 2
+        x: 788
+        y: 5005
+        width: 788
+        height: 1251
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 26b24675f90538e45ba16ef1333d73d3
+      internalID: 516942903
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_catEating_mainMenu_2
+      rect:
+        serializedVersion: 2
+        x: 1576
+        y: 5005
+        width: 788
+        height: 1251
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8989daa25448b9e4b8758b89bca1d963
+      internalID: 614634337
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_catEating_mainMenu_3
+      rect:
+        serializedVersion: 2
+        x: 2364
+        y: 5005
+        width: 788
+        height: 1251
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6d8aec4f58ec2dc4483c300ab0c6e347
+      internalID: -1895391916
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_catEating_mainMenu_4
+      rect:
+        serializedVersion: 2
+        x: 3152
+        y: 5005
+        width: 788
+        height: 1251
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6fc9fa3bc17327c4faffecda5443aff4
+      internalID: -931559020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_catEating_mainMenu_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 3754
+        width: 788
+        height: 1251
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 13257b866e835d346a7702276e724efe
+      internalID: -1386087613
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_catEating_mainMenu_6
+      rect:
+        serializedVersion: 2
+        x: 788
+        y: 3754
+        width: 788
+        height: 1251
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 525995fbfe4b93143b08501bff1a960a
+      internalID: 1724156350
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_catEating_mainMenu_7
+      rect:
+        serializedVersion: 2
+        x: 1576
+        y: 3754
+        width: 788
+        height: 1251
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4a21a15a5f20b6d4fa9adb63297894e2
+      internalID: 516180616
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_catEating_mainMenu_8
+      rect:
+        serializedVersion: 2
+        x: 2364
+        y: 3754
+        width: 788
+        height: 1251
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 52387c756004bd64ab273e54cb589f73
+      internalID: 352775985
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_catEating_mainMenu_9
+      rect:
+        serializedVersion: 2
+        x: 3152
+        y: 3754
+        width: 788
+        height: 1251
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 00ac205b1f0db204698e86cd363c35e9
+      internalID: -249606452
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_catEating_mainMenu_10
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2503
+        width: 788
+        height: 1251
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d975d6056cddcdf43b909ffb27704340
+      internalID: 106943474
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_catEating_mainMenu_11
+      rect:
+        serializedVersion: 2
+        x: 788
+        y: 2503
+        width: 788
+        height: 1251
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 11060f2230c6b5242a0ed01a8fd4e7bc
+      internalID: -1862216724
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_catEating_mainMenu_12
+      rect:
+        serializedVersion: 2
+        x: 1576
+        y: 2503
+        width: 788
+        height: 1251
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 033bde1981667214aaf13dbd33f38eb2
+      internalID: 1441421897
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_catEating_mainMenu_13
+      rect:
+        serializedVersion: 2
+        x: 2364
+        y: 2503
+        width: 788
+        height: 1251
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 25d253cf41c49ab438e0da2593d7e160
+      internalID: 448965848
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_catEating_mainMenu_14
+      rect:
+        serializedVersion: 2
+        x: 3152
+        y: 2503
+        width: 788
+        height: 1251
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a2c8e96b384605344a8cc5eff008cb0c
+      internalID: -728486918
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_catEating_mainMenu_15
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1252
+        width: 788
+        height: 1251
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9460704afff4912488795c7b55c30cbb
+      internalID: -681958633
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_catEating_mainMenu_16
+      rect:
+        serializedVersion: 2
+        x: 788
+        y: 1252
+        width: 788
+        height: 1251
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5897a479ebd64a643ab3e8e9a0421957
+      internalID: 1963933850
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_catEating_mainMenu_17
+      rect:
+        serializedVersion: 2
+        x: 1576
+        y: 1252
+        width: 788
+        height: 1251
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e42dd32a93ecbdd4a8ac047080d143e7
+      internalID: -1011694979
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_catEating_mainMenu_18
+      rect:
+        serializedVersion: 2
+        x: 2364
+        y: 1252
+        width: 788
+        height: 1251
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 45c9ccdf4f8e79749a7f93e03571d558
+      internalID: 48302166
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_catEating_mainMenu_19
+      rect:
+        serializedVersion: 2
+        x: 3152
+        y: 1252
+        width: 788
+        height: 1251
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 55e79e16a70af6e4bb68b44359d13c48
+      internalID: 1419714577
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_catEating_mainMenu_20
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1
+        width: 788
+        height: 1251
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1c344883a584f144fa3e8ff62910c65c
+      internalID: -422419034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_catEating_mainMenu_21
+      rect:
+        serializedVersion: 2
+        x: 788
+        y: 1
+        width: 788
+        height: 1251
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9eb4d98afa65f0640bb9966e03001875
+      internalID: -415228630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_catEating_mainMenu_22
+      rect:
+        serializedVersion: 2
+        x: 1576
+        y: 1
+        width: 788
+        height: 1251
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e0a6808f806b1914d9409c0169909e41
+      internalID: 1960701929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_catEating_mainMenu_23
+      rect:
+        serializedVersion: 2
+        x: 2364
+        y: 1
+        width: 788
+        height: 1251
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 811aa96f7bfa0bb45b413ace77e6ab45
+      internalID: 1443864201
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -108,8 +649,34 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
-    nameFileIdTable: {}
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":5.0,"y":5.0},"gridSpriteSize":{"x":788.0,"y":1251.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      SPR_catEating_mainMenu_0: 1928237785
+      SPR_catEating_mainMenu_1: 516942903
+      SPR_catEating_mainMenu_10: 106943474
+      SPR_catEating_mainMenu_11: -1862216724
+      SPR_catEating_mainMenu_12: 1441421897
+      SPR_catEating_mainMenu_13: 448965848
+      SPR_catEating_mainMenu_14: -728486918
+      SPR_catEating_mainMenu_15: -681958633
+      SPR_catEating_mainMenu_16: 1963933850
+      SPR_catEating_mainMenu_17: -1011694979
+      SPR_catEating_mainMenu_18: 48302166
+      SPR_catEating_mainMenu_19: 1419714577
+      SPR_catEating_mainMenu_2: 614634337
+      SPR_catEating_mainMenu_20: -422419034
+      SPR_catEating_mainMenu_21: -415228630
+      SPR_catEating_mainMenu_22: 1960701929
+      SPR_catEating_mainMenu_23: 1443864201
+      SPR_catEating_mainMenu_3: -1895391916
+      SPR_catEating_mainMenu_4: -931559020
+      SPR_catEating_mainMenu_5: -1386087613
+      SPR_catEating_mainMenu_6: 1724156350
+      SPR_catEating_mainMenu_7: 516180616
+      SPR_catEating_mainMenu_8: 352775985
+      SPR_catEating_mainMenu_9: -249606452
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
