@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Game.Characters
 {
+    /// <summary>
+    /// Updates table visuals based on customer occupancy.
+    /// </summary>
     public class TableView : MonoBehaviour
     {
         [SerializeField] private Table _table;

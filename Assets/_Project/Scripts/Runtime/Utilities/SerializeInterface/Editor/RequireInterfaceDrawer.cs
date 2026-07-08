@@ -4,10 +4,14 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
+/// <summary>
+/// Draws fields marked with the require interface attribute.
+/// </summary>
 [CustomPropertyDrawer(typeof(RequireInterfaceAttribute))]
 public class RequireInterfaceDrawer : PropertyDrawer {
     RequireInterfaceAttribute RequireInterfaceAttribute => (RequireInterfaceAttribute)attribute;
 
+    /// <inheritdoc/>
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
         Type requiredInterfaceType = RequireInterfaceAttribute.InterfaceType;
         EditorGUI.BeginProperty(position, label, property);

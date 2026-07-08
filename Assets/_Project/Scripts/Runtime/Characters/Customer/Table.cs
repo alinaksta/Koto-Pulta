@@ -102,6 +102,9 @@ namespace Game.Characters
             return true;
         }
 
+        /// <summary>
+        /// Tries to assign the customer to a random free seat on the table.
+        /// </summary>
         public bool TryAddCustomerAtRandomSeat(Customer customer, out Seat seat)
         {
             seat = null;

@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace Game.UI
 {
+    /// <summary>
+    /// Applies looping vertical motion to a UI rect transform.
+    /// </summary>
     public class UIVerticalLoopMotion : MonoBehaviour
     {
         [SerializeField] private RectTransform _target;

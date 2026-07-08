@@ -4,6 +4,9 @@ using UnityEngine.SceneManagement;
 
 namespace Game.UI
 {
+    /// <summary>
+    /// Starts gameplay scene loading from the main menu.
+    /// </summary>
     public class PlayButton : MonoBehaviour
     {
         [SerializeField] private int _nextSceneIndex = 1;
@@ -15,6 +18,9 @@ namespace Game.UI
             _loadingService = ServiceLocator.Get<LoadingService>();
         }
 
+        /// <summary>
+        /// Loads the configured gameplay scene from the main menu.
+        /// </summary>
         public async void EnterNextScene()
         {
             await _loadingService.StartLoadingAsync();

@@ -67,12 +67,24 @@ namespace Game.Characters
         /// </summary>
         public bool NeedsWaiter => _state == CustomerState.AwaitingWaiter && Order != null && WaitTimer > 0f;
 
+        /// <summary>
+        /// Gets the duration of the customer spawn animation.
+        /// </summary>
         public float SpawnDuration => _spawnDuration;
 
+        /// <summary>
+        /// Gets the duration of the customer despawn animation.
+        /// </summary>
         public float DespawnDuration => _despawnDuration;
 
+        /// <summary>
+        /// Gets the initial amount of time the customer will wait.
+        /// </summary>
         public float InitialWaitTime => _initialWaitTime;
 
+        /// <summary>
+        /// Gets the current wait timer normalized to the initial wait time.
+        /// </summary>
         public float NormalizedWaitTimer => Mathf.Clamp01(_waitTimer / _initialWaitTime);
 
         /// <summary>
@@ -115,6 +127,9 @@ namespace Game.Characters
             OnOrderStarted.Invoke(this);
         }
 
+        /// <summary>
+        /// Plays the customer order-taking interaction.
+        /// </summary>
         public async void TakeOrder(float duration)
         {
             OnWaiterStartedAsking.Invoke(this, duration);

@@ -151,6 +151,9 @@ namespace Game.Characters
         /// </summary>
         public bool AtMealPoint => HasMealPoint && Vector3.Distance(transform.position, _mealPoint.Position) <= GetArrivalDistance();
 
+        /// <summary>
+        /// Gets whether the waiter currently has an assigned meal point.
+        /// </summary>
         public bool HasMealPoint => _mealPoint != null;
 
         /// <summary>
@@ -168,6 +171,9 @@ namespace Game.Characters
         /// </summary>
         public bool IsRagdolled => _locomotionState == WaiterLocomotionState.Ragdoll;
 
+        /// <summary>
+        /// Gets whether the waiter is currently asking a customer for an order.
+        /// </summary>
         public bool IsAkingCustomer => _locomotionState == WaiterLocomotionState.Idle && _serviceState == WaiterServiceState.AskingCustomer && _askCustomerTimer > 0f;
 
         /// <summary>
@@ -821,6 +827,9 @@ namespace Game.Characters
                 StartGoingToMealPoint();
         }
 
+        /// <summary>
+        /// Sends the waiter toward its assigned meal point.
+        /// </summary>
         public void StartGoingToMealPoint()
         {
             if (_mealPoint == null)

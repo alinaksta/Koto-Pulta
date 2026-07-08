@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace Game.UI
 {
+    /// <summary>
+    /// Applies continuous rotation to a UI rect transform.
+    /// </summary>
     public class UIContinuousSpin : MonoBehaviour
     {
         [SerializeField] private RectTransform _target;

@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace Game.Items
 {
+    /// <summary>
+    /// Renders the projected throw trajectory.
+    /// </summary>
     public class TrajectoryView : MonoBehaviour
     {
         [Header("Dependencies")]
@@ -49,17 +52,26 @@ namespace Game.Items
             HideImmediate();
         }
 
+        /// <summary>
+        /// Shows the trajectory view.
+        /// </summary>
         public void Show()
         {
             _targetVisible = true;
             _lineRenderer.enabled = true;
         }
 
+        /// <summary>
+        /// Hides the trajectory view.
+        /// </summary>
         public void Hide()
         {
             _targetVisible = false;
         }
 
+        /// <summary>
+        /// Advances trajectory view animation state by one frame.
+        /// </summary>
         public void Tick(float deltaTime)
         {
             float duration = _targetVisible ? _showDuration : _hideDuration;
@@ -99,6 +111,9 @@ namespace Game.Items
                 _endMarkerRenderer.color = _endMarkerColor;
         }
 
+        /// <summary>
+        /// Draws a projected trajectory from the supplied launch data.
+        /// </summary>
         public void Draw(float force, Vector3 start, Vector3 direction)
         {
             Show();

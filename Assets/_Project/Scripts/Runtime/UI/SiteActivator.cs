@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 namespace Game.UI
 {
+    /// <summary>
+    /// Defines the available computer site tabs.
+    /// </summary>
     public enum ComputerSiteTab
     {
         ShiftStatistics,
@@ -13,6 +16,9 @@ namespace Game.UI
         Website
     }
 
+    /// <summary>
+    /// Controls which computer site tab is currently displayed.
+    /// </summary>
     public class SiteActivator : MonoBehaviour
     {
         [Serializable]
@@ -73,6 +79,9 @@ namespace Game.UI
             HideAllTabs();
         }
 
+        /// <summary>
+        /// Sets the active computer site tab.
+        /// </summary>
         public void SetTab(ComputerSiteTab tab)
         {
             if (!CanDisplayTab(tab))
@@ -92,6 +101,9 @@ namespace Game.UI
                 OnTabChanged.Invoke(_currentTab);
         }
 
+        /// <summary>
+        /// Sets the active computer site tab by enum index.
+        /// </summary>
         public void SetTab(int tab)
         {
             if (!Enum.IsDefined(typeof(ComputerSiteTab), tab))
@@ -103,6 +115,9 @@ namespace Game.UI
             SetTab((ComputerSiteTab)tab);
         }
 
+        /// <summary>
+        /// Hides every known computer site tab.
+        /// </summary>
         public void HideAllTabs()
         {
             foreach (var root in GetAllKnownRoots())

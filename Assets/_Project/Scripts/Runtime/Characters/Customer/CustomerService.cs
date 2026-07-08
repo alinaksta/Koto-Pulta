@@ -133,6 +133,9 @@ namespace Game.Characters
             return true;
         }
 
+        /// <summary>
+        /// Sets the random item source used when creating customer orders.
+        /// </summary>
         public void SetRandomItemGiver(IRandomItemDefinitionGiver giver)
         {
             _randomItemGiver = giver;

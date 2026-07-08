@@ -1,9 +1,15 @@
 using UnityEditor;
 using UnityEngine;
 
+/// <summary>
+/// Provides shared inspector helpers for interface references.
+/// </summary>
 public class InterfaceReferenceUtil {
     static GUIStyle labelStyle;
 
+    /// <summary>
+    /// Draws an interface-constrained object field.
+    /// </summary>
     public static void OnGUI(Rect position, SerializedProperty property, GUIContent label, InterfaceArgs args) {
         InitializeStyleIfNeeded();
         

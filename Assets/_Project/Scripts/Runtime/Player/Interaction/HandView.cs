@@ -70,6 +70,9 @@ namespace Game.Interaction
                 Waiter = waiter;
             }
 
+            /// <summary>
+            /// Gets the waiter currently represented by the hand view.
+            /// </summary>
             public Waiter Waiter { get; }
         }
 
@@ -85,12 +88,33 @@ namespace Game.Interaction
                 WaiterOverlay = waiterOverlay;
             }
 
+            /// <summary>
+            /// Gets whether the hand view currently displays an item.
+            /// </summary>
             public bool HasItem { get; }
+            /// <summary>
+            /// Gets whether the hand view uses an animator-driven presentation.
+            /// </summary>
             public bool UsesAnimator { get; }
+            /// <summary>
+            /// Gets the base hand sprite.
+            /// </summary>
             public Sprite HandSprite { get; }
+            /// <summary>
+            /// Gets the sprite currently used for the held item.
+            /// </summary>
             public Sprite HeldItemSprite { get; }
+            /// <summary>
+            /// Gets the local offset applied to the held item sprite.
+            /// </summary>
             public Vector2 HeldItemOffset { get; }
+            /// <summary>
+            /// Gets the waiter overlay visual used by this hand view.
+            /// </summary>
             public WaiterOverlayVisual WaiterOverlay { get; }
+            /// <summary>
+            /// Gets whether the hand view currently has a held item sprite to show.
+            /// </summary>
             public bool ShowsHeldItem => HeldItemSprite != null;
         }
 

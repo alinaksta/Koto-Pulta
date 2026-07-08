@@ -11,6 +11,9 @@ using UnityEngine;
 
 namespace Game.Progression
 {
+    /// <summary>
+    /// Represents a configured gameplay shift.
+    /// </summary>
     [Serializable]
     public struct Shift
     {
@@ -92,6 +95,9 @@ namespace Game.Progression
         /// </summary>
         public float NormalizedRevenueProgress => CalculateNormalizedRevenueProgress();
 
+        /// <summary>
+        /// Gets the statistics from the most recently finished shift.
+        /// </summary>
         public ShiftStatistics LastStatistics => _lastShiftStatistics;
 
         /// <summary>
@@ -205,6 +211,9 @@ namespace Game.Progression
             _context = null;
         }
 
+        /// <summary>
+        /// Tries to start the next configured shift.
+        /// </summary>
         public bool TryStartNextShift()
         {
             if (ShiftInProgress)
