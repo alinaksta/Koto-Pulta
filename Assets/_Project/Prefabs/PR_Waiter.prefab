@@ -422,7 +422,7 @@ MonoBehaviour:
   _navMeshSampleRadius: 2
   _groundLayer:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 1025
   _groundCheckDistance: 0.2
   _groundCheckRadius: 0.2
   _groundCheckOffset: 0.35
