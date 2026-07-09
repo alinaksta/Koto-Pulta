@@ -280,6 +280,7 @@ Transform:
   - {fileID: 4036256992325648831}
   - {fileID: 7151745986545422564}
   - {fileID: 1653448605052216241}
+  - {fileID: 5092670579620456100}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6159944891443287955
@@ -664,6 +665,188 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.LoadingService
   _loadingScreenUI: {fileID: 581677993437960056}
+--- !u!1 &6278022106044683132
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5092670579620456100}
+  - component: {fileID: 905709274440079222}
+  - component: {fileID: 7853447857733925496}
+  m_Layer: 0
+  m_Name: SoundService
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5092670579620456100
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6278022106044683132}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3041218814896205459}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &905709274440079222
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6278022106044683132}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &7853447857733925496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6278022106044683132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de6622619da032d118467ece3f61e69e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SoundService
+  _soundList:
+  - _name: Walk
+    _sounds:
+    - {fileID: 8300000, guid: ccc19d6567527852b853e8a3af839ae7, type: 3}
+    - {fileID: 8300000, guid: f947800ed7158bcfc8303d7b4a39a808, type: 3}
+    - {fileID: 8300000, guid: 6a3a583221d288d1c848e6236d62da6e, type: 3}
+  - _name: PickUp
+    _sounds:
+    - {fileID: 8300000, guid: 6313b38ee917784b6a9cb82f77adf9d7, type: 3}
+  - _name: Throw
+    _sounds:
+    - {fileID: 8300000, guid: 26b2fb7476988074999011a845b322db, type: 3}
+  - _name: Money
+    _sounds:
+    - {fileID: 8300000, guid: fafb40e6f76ee148f8a76cc29012b6d1, type: 3}
+  - _name: Upgrade
+    _sounds:
+    - {fileID: 8300000, guid: 9a3f873001108300f8f95620c8cf13ea, type: 3}
+  - _name: Button
+    _sounds:
+    - {fileID: 8300000, guid: 3d9aaeb74b405d24f84805c2c522e804, type: 3}
+  - _name: WaiterWalk
+    _sounds:
+    - {fileID: 8300000, guid: 75d2a267403e02b6ca7a996768e1fbc5, type: 3}
+    - {fileID: 8300000, guid: 3d0c8db7f643c8715b1579caf4128780, type: 3}
+  - _name: WaiterSplat
+    _sounds:
+    - {fileID: 8300000, guid: 376ec1c4fe56893c38444ff68e76b3ce, type: 3}
+  - _name: ClockTick
+    _sounds: []
+  - _name: Alarm
+    _sounds: []
+  - _name: Error
+    _sounds: []
+  - _name: PopUp
+    _sounds: []
+  - _name: ComputerClick
+    _sounds: []
+  - _name: TabSwitch
+    _sounds: []
 --- !u!1 &7014507076640361212
 GameObject:
   m_ObjectHideFlags: 0

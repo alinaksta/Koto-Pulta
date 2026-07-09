@@ -34,7 +34,6 @@ namespace Game.Movement
         [SerializeField] private LayerMask _groundLayers = -1;
         [SerializeField] private float _groundCheckDistance = 0.12f;
         [SerializeField] private float _groundSnapDistance = 0.6f;
-        public static Action PlayerWalk;
 
         private IInputService _input;
         private IOrientation _orientation;
@@ -130,7 +129,6 @@ namespace Game.Movement
 
             _velocity.x = flat.x;
             _velocity.z = flat.z;
-            if (wishDir != Vector3.zero) PlayerWalk?.Invoke();
         }
 
         private void MoveAir(Vector3 wishDir, float dt)

@@ -5,6 +5,7 @@ using System.Collections;
 
 public class AudioEventListener : MonoBehaviour
 {
+    /*
     private IEnumerator Wait(float time, Action set)
     {
         yield return new WaitForSeconds(time);
@@ -51,10 +52,9 @@ public class AudioEventListener : MonoBehaviour
     {
         SoundManager.PlaySound(SoundType.WAITERFLY);
     }
-
     private void WaiterSplatSFX()
     {
         SoundManager.PlaySound(SoundType.WAITERSPLAT);
     }
-
+    */
 }
