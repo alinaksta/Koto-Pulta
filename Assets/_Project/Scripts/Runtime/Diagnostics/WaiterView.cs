@@ -23,6 +23,7 @@ namespace Game.Diagnostics
         [SerializeField] private GameObject _orderNote;
         [SerializeField] private TextMeshPro _tableNumberLabel;
         [SerializeField] private SpriteRenderer _orderSpriteRenderer;
+        [SerializeField] private SpriteMask _orderSpriteMask;
         
         [SerializeField] private SpriteRenderer _patienceRenderer;
         [SerializeField] private Gradient _patienceGradient;
@@ -171,6 +172,7 @@ namespace Game.Diagnostics
                 foodProperty.DialogueSprite != null)
             {
                 _orderSpriteRenderer.sprite = foodProperty.DialogueSprite;
+                _orderSpriteMask.sprite = foodProperty.WorldSprite;
                 _orderSpriteRenderer.enabled = true;
                 SetPatienceAlpha(FullAlpha);
                 return;
