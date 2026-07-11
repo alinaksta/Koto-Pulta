@@ -37,7 +37,6 @@ namespace Game.Diagnostics
             _waiter.OnCustomerWasAsked += HandleCustomerWasAsked;
             _waiter.OnMealPointEntered += HandleMealPointEntered;
             _waiter.OnMealPointExited += HandleMealPointExited;
-            _waiter.OnServiceStateChanged += HandleServiceStateChanged;
 
             if (_patienceRenderer != null)
             {
@@ -55,7 +54,6 @@ namespace Game.Diagnostics
             _waiter.OnCustomerWasAsked -= HandleCustomerWasAsked;
             _waiter.OnMealPointEntered -= HandleMealPointEntered;
             _waiter.OnMealPointExited -= HandleMealPointExited;
-            _waiter.OnServiceStateChanged -= HandleServiceStateChanged;
         }
 
         private void Update()
@@ -70,35 +68,18 @@ namespace Game.Diagnostics
 
         private void UpdatePatienceIndicator()
         {
+            
             if (_patienceRenderer == null || _patienceMaterial == null)
                 return;
 
-            bool shouldShowPatience = ShouldShowPatience();
             
-            if (shouldShowPatience)
-            {
-                _patienceMaterial.SetFloat(FillAmountID, _waiter.NormalizedPatience);
-                var patienceColor = _patienceRenderer.color;
-                var oldAlpha = patienceColor.a;
-                patienceColor = _patienceGradient.Evaluate(_waiter.NormalizedPatience);
-                patienceColor.a = oldAlpha;
-                _patienceRenderer.color = patienceColor;
-                
-                SetPatienceAlpha(FullAlpha);
-            }
-            else
-            {
-                SetPatienceAlpha(NoAlpha);
-            }
-        }
-
-        private bool ShouldShowPatience()
-        {
-            return _waiter.IsAssigned && 
-                   _waiter.ServiceState != WaiterServiceState.Unassigned &&
-                   _waiter.LocomotionState != WaiterLocomotionState.InHand &&
-                   _waiter.LocomotionState != WaiterLocomotionState.Ragdoll &&
-                   _waiter.LocomotionState != WaiterLocomotionState.Recovering;
+            _patienceMaterial.SetFloat(FillAmountID, _waiter.NormalizedPatience);
+            var patienceColor = _patienceRenderer.color;
+            var oldAlpha = patienceColor.a;
+            patienceColor = _patienceGradient.Evaluate(_waiter.NormalizedPatience);
+            patienceColor.a = oldAlpha;
+            _patienceRenderer.color = patienceColor;
+               
         }
 
         private void SetPatienceAlpha(float alpha)
@@ -111,45 +92,24 @@ namespace Game.Diagnostics
             _patienceRenderer.color = color;
         }
 
-        private void AnimatePatience(float from, float to, float duration)
-        {
-            if (_patienceRenderer == null)
-                return;
-                
-            LMotion.Create(from, to, duration).BindToColorA(_patienceRenderer);
-        }
-
-        private void HandleServiceStateChanged(WaiterServiceState from, WaiterServiceState to)
-        {
-            if (ShouldShowPatience())
-            {
-                AnimatePatience(NoAlpha, FullAlpha, 0.3f);
-            }
-            else
-            {
-                AnimatePatience(FullAlpha, NoAlpha, 0.3f);
-            }
-        }
 
         private void HandleCustomerAssigned(Customer _)
         {
             HideOrderNote();
             HideOrderSprite();
-            SetPatienceAlpha(NoAlpha);
         }
 
         private void HandleCustomerUnassigned()
         {
             HideOrderNote();
             HideOrderSprite();
-            SetPatienceAlpha(NoAlpha);
+            
         }
 
         private void HandleCustomerWasAsked(Customer customer)
         {
             ShowOrderNote(customer);
             HideOrderSprite();
-            AnimatePatience(NoAlpha, FullAlpha, 0.3f);
         }
 
         private void HandleMealPointEntered()
@@ -212,6 +172,7 @@ namespace Game.Diagnostics
             {
                 _orderSpriteRenderer.sprite = foodProperty.DialogueSprite;
                 _orderSpriteRenderer.enabled = true;
+                SetPatienceAlpha(FullAlpha);
                 return;
             }
 
@@ -222,6 +183,7 @@ namespace Game.Diagnostics
         {
             _orderSpriteRenderer.sprite = null;
             _orderSpriteRenderer.enabled = false;
+            SetPatienceAlpha(NoAlpha);
         }
     }
 }

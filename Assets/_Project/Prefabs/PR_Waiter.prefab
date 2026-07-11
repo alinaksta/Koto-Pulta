@@ -192,6 +192,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7110083916091463371}
   - component: {fileID: 2814292023247330684}
+  - component: {fileID: 8056161823640054954}
   m_Layer: 11
   m_Name: ParienceIndicator
   m_TagString: Untagged
@@ -211,7 +212,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 1.66, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 8583300829573835838}
   m_Father: {fileID: 4091024983704075440}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2814292023247330684
@@ -240,7 +242,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  - {fileID: 2100000, guid: bcf75451ee0a2ab4ea1cb3a7d6811e24, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -273,6 +275,20 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &8056161823640054954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1732182379875809243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d7de99b129bce4b7a9ce5436ce4c3a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Game.Animation.SpriteRotator
+  _target: {fileID: 7110083916091463371}
+  FullRotation: 1
 --- !u!1 &2192019369183956829
 GameObject:
   m_ObjectHideFlags: 0
@@ -543,17 +559,17 @@ MonoBehaviour:
   _patienceRenderer: {fileID: 2814292023247330684}
   _patienceGradient:
     serializedVersion: 2
-    key0: {r: 1, g: 1, b: 1, a: 1}
-    key1: {r: 1, g: 1, b: 1, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 0}
+    key0: {r: 1, g: 0, b: 0, a: 1}
+    key1: {r: 0.9465648, g: 1, b: 0, a: 1}
+    key2: {r: 0, g: 1, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
-    ctime1: 65535
-    ctime2: 0
+    ctime1: 32768
+    ctime2: 65535
     ctime3: 0
     ctime4: 0
     ctime5: 0
@@ -569,7 +585,7 @@ MonoBehaviour:
     atime7: 0
     m_Mode: 0
     m_ColorSpace: -1
-    m_NumColorKeys: 2
+    m_NumColorKeys: 3
     m_NumAlphaKeys: 2
   _animator: {fileID: 1315496712827007671}
 --- !u!195 &2650628544443303349
@@ -769,7 +785,6 @@ Transform:
   m_Children:
   - {fileID: 9090870223529905491}
   - {fileID: 7110083916091463371}
-  - {fileID: 8583300829573835838}
   m_Father: {fileID: 5325243197194466205}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &634656712453854300
@@ -835,11 +850,11 @@ Transform:
   m_GameObject: {fileID: 6801024358571258114}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.66, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.010000229}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 4091024983704075440}
+  m_Father: {fileID: 7110083916091463371}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2125786045220101814
 SpriteRenderer:

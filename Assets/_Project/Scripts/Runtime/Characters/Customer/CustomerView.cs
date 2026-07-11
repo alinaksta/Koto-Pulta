@@ -17,8 +17,6 @@ namespace Game.Characters
         private static int StoppedAskingHash = Animator.StringToHash("stoppedAsking");
         private static int ServedHash = Animator.StringToHash("served");
 
-        private static int FillAmountID = Shader.PropertyToID("_FillAmount");
-
         private const float NoAlpha = 0f;
         private const float FullAlpha = 1f;
 
@@ -26,9 +24,16 @@ namespace Game.Characters
         [SerializeField] private Animator _animator;
         [SerializeField] private Customer _customer;
 
+        
+        
         private void Awake()
         {
             SetSpriteAlpha(NoAlpha);
+        }
+
+        private void Update()
+        {
+            _animator.SetFloat(PatienceHash, _customer.GetCurrentWaitTimer());
         }
 
         private void Start()

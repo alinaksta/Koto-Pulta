@@ -412,6 +412,7 @@ namespace Game.Characters
             if (_serviceState == WaiterServiceState.AskingCustomer)
             {
                 _askCustomerTimer -= Time.deltaTime;
+                SyncTimerWithCustomer();
                 if (_askCustomerTimer <= 0f)
                 {
                     EnterAwaitingMealState();
@@ -425,7 +426,7 @@ namespace Game.Characters
             if (_serviceState == WaiterServiceState.AwaitingMeal)
             {
                 _patienceTimer -= Time.deltaTime;
-        
+                SyncTimerWithCustomer();
                 if (_patienceTimer <= 0f)
                 {
                     HandlePatienceTimeout();
@@ -444,7 +445,7 @@ namespace Game.Characters
             if (_serviceState == WaiterServiceState.Delivering)
             {
                 _patienceTimer -= Time.deltaTime;
-        
+                SyncTimerWithCustomer();
                 if (_patienceTimer <= 0f)
                 {
                     HandlePatienceTimeout();
@@ -466,6 +467,7 @@ namespace Game.Characters
         {
             if (_assignedCustomer != null)
             {
+                _assignedCustomer.SetWaitTimer(0f);
                 _assignedCustomer.ForceTimeout();
                 ClearCustomer();
                 ClearCarriedItem();
@@ -477,12 +479,11 @@ namespace Game.Characters
             }
         }
 
-        public void SyncPatienceWithCustomer()
+        public void SyncTimerWithCustomer()
         {
             if (_assignedCustomer != null)
             {
-                _maxPatienceTime = _assignedCustomer.InitialWaitTime;
-                _patienceTimer = _assignedCustomer.WaitTimer;
+                _assignedCustomer.SetWaitTimer(_patienceTimer);
             }
         }
 
@@ -839,10 +840,12 @@ namespace Game.Characters
         private void StartAskCustomerPause()
         {
             _askCustomerTimer = _askCustomerDuration;
+
             if (_assignedCustomer != null)
             {
                 _assignedCustomer.StartPatienceTimer();
                 ResetPatience();
+                SyncTimerWithCustomer();
             }
             _assignedCustomer.TakeOrder(_askCustomerDuration);
             EnterIdleState();
