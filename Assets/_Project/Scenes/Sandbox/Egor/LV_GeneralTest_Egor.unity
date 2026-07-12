@@ -830,6 +830,33 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 6552da78f23a7fb4fab7d8ef782f4ccc, type: 3}
+--- !u!1 &466301271 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7098306563879448833, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
+  m_PrefabInstance: {fileID: 3866821625330271603}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &466301276 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 1863445905988709106, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
+  m_PrefabInstance: {fileID: 3866821625330271603}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &466301279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 466301271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 914aa057e1374aee980729ec2460eff5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Game.Interaction.MeshOutlineHover
+  _renderers:
+  - {fileID: 466301276}
+  _outlineColor: {r: 0.42547834, g: 0, b: 0.79622644, a: 1}
+  _outlineWidth: 10
+  _outlinedWhenNotHovered: 0
 --- !u!1 &471082524
 GameObject:
   m_ObjectHideFlags: 0
@@ -6866,13 +6893,37 @@ PrefabInstance:
       propertyPath: m_AnchorMin.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3964279487787816355, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3964279487787816355, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3964279487787816355, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4889863835696989216, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4889863835696989216, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4889863835696989216, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6118335297202639111, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 768.7999
       objectReference: {fileID: 0}
     - target: {fileID: 6367435225239670965, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 768.8
+      value: 768.8002
       objectReference: {fileID: 0}
     - target: {fileID: 7098306563879448833, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
       propertyPath: m_Name
@@ -6921,7 +6972,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7098306563879448833, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 466301279}
   m_SourcePrefab: {fileID: 100100000, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
 --- !u!1001 &8895413298887766300
 PrefabInstance:

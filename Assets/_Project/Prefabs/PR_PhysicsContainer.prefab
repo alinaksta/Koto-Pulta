@@ -118,6 +118,7 @@ GameObject:
   - component: {fileID: 7696201592065392940}
   - component: {fileID: -6118689746010827114}
   - component: {fileID: 7251720046521572930}
+  - component: {fileID: 4467259059064711740}
   m_Layer: 8
   m_Name: PR_PhysicsContainer
   m_TagString: Untagged
@@ -202,3 +203,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.Items.PhysicsContainer
   _spriteRenderer: {fileID: 7771419860956724295}
+--- !u!114 &4467259059064711740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8227219526013526573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a61dbf0de9b42e09999d3d017d3c35f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Game.Interaction.SpriteOutlineHover
+  _renderers:
+  - {fileID: 7771419860956724295}
+  _outlineColor: {r: 0.35151958, g: 0, b: 0.6377357, a: 1}
+  _outlineWidth: 10
+  _outlinedWhenNotHovered: 0
