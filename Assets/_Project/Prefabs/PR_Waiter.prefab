@@ -197,8 +197,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Game.Interaction.SpriteOutlineHover
   _renderers:
   - {fileID: 4200462854677017681}
-  _outlineColor: {r: 1, g: 0.76862746, b: 0, a: 1}
-  _outlineWidth: 6
+  _outlineColor: {r: 0.43390927, g: 0, b: 0.6679245, a: 1}
+  _outlineWidth: 10
   _outlinedWhenNotHovered: 0
 --- !u!1 &2192019369183956829
 GameObject:

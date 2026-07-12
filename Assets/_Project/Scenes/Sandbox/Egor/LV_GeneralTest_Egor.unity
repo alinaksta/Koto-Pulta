@@ -6800,25 +6800,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 387894607056896881, guid: cadd2d0a517a2d241a90a8df7644865f, type: 3}
-      propertyPath: _trajectorySmoothing.PositionLerp
-      value: 36
-      objectReference: {fileID: 0}
-    - target: {fileID: 387894607056896881, guid: cadd2d0a517a2d241a90a8df7644865f, type: 3}
-      propertyPath: _trajectorySmoothing.DirectionLerp
-      value: 32
+    - target: {fileID: 1240513327798177267, guid: cadd2d0a517a2d241a90a8df7644865f, type: 3}
+      propertyPath: _hoverSize
+      value: 26
       objectReference: {fileID: 0}
     - target: {fileID: 3073664870868815278, guid: cadd2d0a517a2d241a90a8df7644865f, type: 3}
       propertyPath: m_Name
       value: PR_Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584943976550635269, guid: cadd2d0a517a2d241a90a8df7644865f, type: 3}
-      propertyPath: _trajectorySmoothing.PositionLerp
-      value: 36
-      objectReference: {fileID: 0}
-    - target: {fileID: 4584943976550635269, guid: cadd2d0a517a2d241a90a8df7644865f, type: 3}
-      propertyPath: _trajectorySmoothing.DirectionLerp
-      value: 32
       objectReference: {fileID: 0}
     - target: {fileID: 8702285836892066892, guid: cadd2d0a517a2d241a90a8df7644865f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6919,7 +6907,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6118335297202639111, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 768.7999
+      value: 768.8001
       objectReference: {fileID: 0}
     - target: {fileID: 6367435225239670965, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
       propertyPath: m_AnchoredPosition.y

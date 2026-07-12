@@ -195,8 +195,8 @@ MonoBehaviour:
     Duration: 0.38
   _waiterHeldBaseOffset: {x: -328, y: -536}
   _trajectorySmoothing:
-    PositionLerp: 20
-    DirectionLerp: 20
+    PositionLerp: 36
+    DirectionLerp: 32
 --- !u!114 &4511736699702311957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1434,8 +1434,8 @@ MonoBehaviour:
     Duration: 0.38
   _waiterHeldBaseOffset: {x: -328, y: -536}
   _trajectorySmoothing:
-    PositionLerp: 20
-    DirectionLerp: 20
+    PositionLerp: 36
+    DirectionLerp: 32
 --- !u!114 &4401585158460766519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1679,7 +1679,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 10, y: 10}
+  m_SizeDelta: {x: 14, y: 14}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6127513488591510027
 CanvasRenderer:
@@ -1837,7 +1837,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Game.Interaction.InteractionReticle
   _interactor: {fileID: 4441006715926322419}
   _reticle: {fileID: 4080905980177073792}
-  _hoverSize: 18
+  _hoverSize: 22
   _lerp: 24
 --- !u!1 &7408018310091963013
 GameObject:

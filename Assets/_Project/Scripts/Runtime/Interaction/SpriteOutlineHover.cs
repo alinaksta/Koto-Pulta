@@ -13,6 +13,7 @@ namespace Game.Interaction
         [SerializeField] private bool _outlinedWhenNotHovered;
 
         private bool _hovered;
+        private bool _outlineSuppressed;
 
         private void OnEnable() => ApplyOutlineState();
 
@@ -35,7 +36,19 @@ namespace Game.Interaction
             ApplyOutlineState();
         }
 
-        private void ApplyOutlineState() => SetOutlined(_hovered || _outlinedWhenNotHovered);
+        /// <summary>
+        /// Temporarily prevents this component from drawing its outline.
+        /// </summary>
+        public void SetOutlineSuppressed(bool suppressed)
+        {
+            if (_outlineSuppressed == suppressed)
+                return;
+
+            _outlineSuppressed = suppressed;
+            ApplyOutlineState();
+        }
+
+        private void ApplyOutlineState() => SetOutlined(!_outlineSuppressed && (_hovered || _outlinedWhenNotHovered));
 
         private void SetOutlined(bool outlined)
         {

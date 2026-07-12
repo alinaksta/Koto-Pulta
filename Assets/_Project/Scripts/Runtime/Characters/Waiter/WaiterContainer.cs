@@ -1,8 +1,10 @@
 using Game.Items;
 using Game.Items.Components;
 using Game.Items.Properties;
+using Game.Interaction;
 using LitMotion;
 using LitMotion.Extensions;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -24,6 +26,7 @@ namespace Game.Characters
         [SerializeField] private float _deliverySpinDegrees = 360f;
 
         [SerializeField] private SpriteRenderer _spriteRenderer;
+        [SerializeField] private SpriteOutlineHover[] _spriteOutlineHovers;
 
         private readonly CarryContainer _container = new();
         private MotionHandle _scaleMotion;
@@ -35,6 +38,7 @@ namespace Game.Characters
         private Quaternion _defaultLocalRotation;
         private Color _defaultColor;
         private int _animationVersion;
+        private int _outlineSuppressionVersion;
 
         /// <inheritdoc/>
         public IContainer Container => _container;
@@ -45,6 +49,7 @@ namespace Game.Characters
             _defaultLocalPosition = _spriteRenderer.transform.localPosition;
             _defaultLocalRotation = _spriteRenderer.transform.localRotation;
             _defaultColor = _spriteRenderer.color;
+            CacheSpriteOutlineHovers();
 
             ResetVisualState();
             ApplySpriteForItem(_container.Item);
@@ -194,40 +199,53 @@ namespace Game.Characters
 
         private async Task PlayDeliveryAnimationAsync(int version)
         {
-            Vector3 startPosition = _defaultLocalPosition;
-            Vector3 targetPosition = startPosition + Vector3.up * _deliveryRiseDistance;
+            int suppressionVersion = ++_outlineSuppressionVersion;
+            SetSpriteOutlineSuppressed(true);
 
-            if (_deliveryDuration <= 0f)
+            try
             {
+                Vector3 startPosition = _defaultLocalPosition;
+                Vector3 targetPosition = startPosition + Vector3.up * _deliveryRiseDistance;
+
+                if (_deliveryDuration <= 0f)
+                {
+                    ResetVisualState();
+                    HideSprite();
+                    return;
+                }
+
+                _moveMotion = LMotion
+                    .Create(startPosition, targetPosition, _deliveryDuration)
+                    .Bind(value => _spriteRenderer.transform.localPosition = value);
+
+                _rotateMotion = LMotion
+                    .Create(0f, _deliverySpinDegrees, _deliveryDuration)
+                    .Bind(value => _spriteRenderer.transform.localRotation = _defaultLocalRotation * Quaternion.Euler(0f, 0f, value));
+
+                _alphaMotion = LMotion
+                    .Create(1f, 0f, _deliveryDuration)
+                    .BindToColorA(_spriteRenderer);
+
+                await _alphaMotion;
+
+                if (version != _animationVersion)
+                    return;
+
                 ResetVisualState();
                 HideSprite();
-                return;
             }
-
-            _moveMotion = LMotion
-                .Create(startPosition, targetPosition, _deliveryDuration)
-                .Bind(value => _spriteRenderer.transform.localPosition = value);
-
-            _rotateMotion = LMotion
-                .Create(0f, _deliverySpinDegrees, _deliveryDuration)
-                .Bind(value => _spriteRenderer.transform.localRotation = _defaultLocalRotation * Quaternion.Euler(0f, 0f, value));
-
-            _alphaMotion = LMotion
-                .Create(1f, 0f, _deliveryDuration)
-                .BindToColorA(_spriteRenderer);
-
-            await _alphaMotion;
-
-            if (version != _animationVersion)
-                return;
-
-            ResetVisualState();
-            HideSprite();
+            finally
+            {
+                if (suppressionVersion == _outlineSuppressionVersion)
+                    SetSpriteOutlineSuppressed(false);
+            }
         }
 
         private void CancelActiveAnimations()
         {
             _animationVersion++;
+            _outlineSuppressionVersion++;
+            SetSpriteOutlineSuppressed(false);
 
             CancelMotion(ref _scaleMotion);
             CancelMotion(ref _moveMotion);
@@ -254,6 +272,38 @@ namespace Game.Characters
             var color = _spriteRenderer.color;
             color.a = alpha;
             _spriteRenderer.color = color;
+        }
+
+        private void CacheSpriteOutlineHovers()
+        {
+            if (_spriteOutlineHovers != null && _spriteOutlineHovers.Length > 0)
+                return;
+
+            var hovers = new List<SpriteOutlineHover>();
+            AddSpriteOutlineHovers(hovers, GetComponentsInParent<SpriteOutlineHover>(true));
+            AddSpriteOutlineHovers(hovers, GetComponentsInChildren<SpriteOutlineHover>(true));
+            _spriteOutlineHovers = hovers.ToArray();
+        }
+
+        private void AddSpriteOutlineHovers(List<SpriteOutlineHover> target, SpriteOutlineHover[] source)
+        {
+            for (int i = 0; i < source.Length; i++)
+            {
+                if (source[i] != null && !target.Contains(source[i]))
+                    target.Add(source[i]);
+            }
+        }
+
+        private void SetSpriteOutlineSuppressed(bool suppressed)
+        {
+            if (_spriteOutlineHovers == null)
+                return;
+
+            for (int i = 0; i < _spriteOutlineHovers.Length; i++)
+            {
+                if (_spriteOutlineHovers[i] != null)
+                    _spriteOutlineHovers[i].SetOutlineSuppressed(suppressed);
+            }
         }
 
         private sealed class CarryContainer : IContainer
