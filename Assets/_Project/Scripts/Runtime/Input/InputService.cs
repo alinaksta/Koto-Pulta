@@ -12,6 +12,7 @@ namespace Game.Input
     public class InputService : MonoBehaviour, IInputService, IBootstrapable
     {
         private InputActions _actions;
+        private bool _gameplaySuppressed;
 
         private void Awake()
         {
@@ -20,34 +21,57 @@ namespace Game.Input
         }
 
         /// <inheritdoc/>
-        public Vector2 Move => _actions.Gameplay.Move.ReadValue<Vector2>();
+        public Vector2 Move => _gameplaySuppressed ? Vector2.zero : _actions.Gameplay.Move.ReadValue<Vector2>();
 
         /// <inheritdoc/>
-        public Vector2 MouseDelta => _actions.Gameplay.MouseDelta.ReadValue<Vector2>();
+        public bool GameplaySuppressed => _gameplaySuppressed;
 
         /// <inheritdoc/>
-        public Vector2 MouseScroll => _actions.Gameplay.MouseScroll.ReadValue<Vector2>();
+        public Vector2 MouseDelta => _gameplaySuppressed ? Vector2.zero : _actions.Gameplay.MouseDelta.ReadValue<Vector2>();
+
+        /// <inheritdoc/>
+        public Vector2 MouseScroll => _gameplaySuppressed ? Vector2.zero : _actions.Gameplay.MouseScroll.ReadValue<Vector2>();
 
         /// <inheritdoc/>
         public Vector2 MousePosition => _actions.Gameplay.MousePosition.ReadValue<Vector2>();
 
         /// <inheritdoc/>
-        public ButtonState Jump => GetButtonState(_actions.Gameplay.Jump);
+        public ButtonState Jump => GetGameplayButtonState(_actions.Gameplay.Jump);
 
         /// <inheritdoc/>
-        public ButtonState InteractLeft => GetButtonState(_actions.Gameplay.InteractLeft);
+        public ButtonState InteractLeft => GetGameplayButtonState(_actions.Gameplay.InteractLeft);
 
         /// <inheritdoc/>
-        public ButtonState InteractRight => GetButtonState(_actions.Gameplay.InteractRight);
+        public ButtonState InteractRight => GetGameplayButtonState(_actions.Gameplay.InteractRight);
 
         /// <inheritdoc/>
-        public ButtonState DropLeft => GetButtonState(_actions.Gameplay.DropLeft);
+        public ButtonState DropLeft => GetGameplayButtonState(_actions.Gameplay.DropLeft);
 
         /// <inheritdoc/>
-        public ButtonState DropRight => GetButtonState(_actions.Gameplay.DropRight);
+        public ButtonState DropRight => GetGameplayButtonState(_actions.Gameplay.DropRight);
 
         /// <inheritdoc/>
-        public ButtonState Cancel => GetButtonState(_actions.Gameplay.Cancel);
+        public ButtonState Cancel => GetGameplayButtonState(_actions.Gameplay.Cancel);
+
+        /// <inheritdoc/>
+        public ButtonState DialogueAdvance
+        {
+            get
+            {
+                ButtonState left = GetButtonState(_actions.Gameplay.InteractLeft);
+                ButtonState right = GetButtonState(_actions.Gameplay.InteractRight);
+                return new ButtonState(
+                    left.Pressed || right.Pressed,
+                    left.Held || right.Held,
+                    left.Released || right.Released);
+            }
+        }
+
+        /// <inheritdoc/>
+        public void SetGameplaySuppressed(bool suppressed)
+        {
+            _gameplaySuppressed = suppressed;
+        }
 
         /// <summary>
         /// Reads a frame snapshot for the supplied input action.
@@ -60,6 +84,11 @@ namespace Game.Input
                 action.WasPressedThisFrame(),
                 action.IsPressed(),
                 action.WasReleasedThisFrame());
+        }
+
+        private ButtonState GetGameplayButtonState(InputAction action)
+        {
+            return _gameplaySuppressed ? default : GetButtonState(action);
         }
 
         /// <inheritdoc/>

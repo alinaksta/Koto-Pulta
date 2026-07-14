@@ -32,6 +32,8 @@ namespace Game.Characters
         private bool _waiterHasArrived;
         private float _waitTimer;
         private CustomerState _state;
+        private bool _timeoutEnabled = true;
+        private bool _directDeliveryEnabled = true;
 
         /// <summary>
         /// Gets the table this customer belongs to.
@@ -69,6 +71,16 @@ namespace Game.Characters
         public bool NeedsWaiter => _state == CustomerState.AwaitingWaiter && Order != null && WaitTimer > 0f;
 
         /// <summary>
+        /// Gets whether this customer can currently run out of patience.
+        /// </summary>
+        public bool TimeoutEnabled => _timeoutEnabled;
+
+        /// <summary>
+        /// Gets whether the player may deliver directly instead of using a waiter.
+        /// </summary>
+        public bool DirectDeliveryEnabled => _directDeliveryEnabled;
+
+        /// <summary>
         /// Gets the duration of the customer spawn animation.
         /// </summary>
         public float SpawnDuration => _spawnDuration;
@@ -88,6 +100,22 @@ namespace Game.Characters
         public void SetWaitTimer(float value)
         {
             _waitTimer = Mathf.Clamp(value, 0f, _initialWaitTime);
+        }
+
+        /// <summary>
+        /// Enables or disables patience timeout for this customer.
+        /// </summary>
+        public void SetTimeoutEnabled(bool enabled)
+        {
+            _timeoutEnabled = enabled;
+        }
+
+        /// <summary>
+        /// Enables or disables direct player delivery for this customer.
+        /// </summary>
+        public void SetDirectDeliveryEnabled(bool enabled)
+        {
+            _directDeliveryEnabled = enabled;
         }
 
         /// <summary>
@@ -150,7 +178,7 @@ namespace Game.Characters
 
         private void Update()
         {
-            if (_waitTimer <= 0f && _state != CustomerState.None)
+            if (_timeoutEnabled && _waitTimer <= 0f && _state != CustomerState.None)
                 ForceTimeout();
         }
 
@@ -184,7 +212,8 @@ namespace Game.Characters
         /// <remarks>
         /// Customers only accept direct interaction when the active hand is holding an item.
         /// </remarks>
-        public bool CanInteract(in InteractionContext context) => !context.ActiveHand.IsEmpty;
+        public bool CanInteract(in InteractionContext context)
+            => _directDeliveryEnabled && !context.ActiveHand.IsEmpty;
 
         /// <inheritdoc/>
         public void OnInteractionStarted(in InteractionContext context)
@@ -195,7 +224,6 @@ namespace Game.Characters
 
             if (heldItem.Definition.Id != _order.Id)
             {
-                _state = CustomerState.None;
                 OnWrongItemGiven.Invoke(this, heldItem);
                 return;
             }
@@ -232,14 +260,13 @@ namespace Game.Characters
             if (!IsWaiting)
                 return false;
 
-            _state = CustomerState.None;
-
             if (_order == null || item.Definition.Id != _order.Id)
             {
                 OnWrongItemGiven.Invoke(this, item);
                 return false;
             }
 
+            _state = CustomerState.None;
             OnServed.Invoke(this);
             return true;
         }

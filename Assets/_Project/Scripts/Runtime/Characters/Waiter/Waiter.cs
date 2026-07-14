@@ -256,6 +256,11 @@ namespace Game.Characters
         /// </summary>
         public event Action<WaiterLocomotionState, WaiterLocomotionState> OnLocomotionStateChanged = delegate { };
 
+        /// <summary>
+        /// Raised after the waiter recovers and resolves a landing attempt.
+        /// </summary>
+        public event Action<WaiterLandingResult> OnLandingResolved = delegate { };
+
         private void Awake()
         {
             if (_carryContainer == null)
@@ -425,7 +430,9 @@ namespace Game.Characters
 
             if (_serviceState == WaiterServiceState.AwaitingMeal)
             {
-                _patienceTimer -= Time.deltaTime;
+                if (_assignedCustomer == null || _assignedCustomer.TimeoutEnabled)
+                    _patienceTimer -= Time.deltaTime;
+
                 SyncTimerWithCustomer();
                 if (_patienceTimer <= 0f)
                 {
@@ -444,7 +451,9 @@ namespace Game.Characters
 
             if (_serviceState == WaiterServiceState.Delivering)
             {
-                _patienceTimer -= Time.deltaTime;
+                if (_assignedCustomer == null || _assignedCustomer.TimeoutEnabled)
+                    _patienceTimer -= Time.deltaTime;
+
                 SyncTimerWithCustomer();
                 if (_patienceTimer <= 0f)
                 {
@@ -735,6 +744,7 @@ namespace Game.Characters
             }
 
             WaiterLandingResult landingResult = ResolveLanding();
+            OnLandingResolved.Invoke(landingResult);
 
             if (_locomotionState == WaiterLocomotionState.Walking)
                 return;
