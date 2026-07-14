@@ -70,6 +70,16 @@ namespace Game.Interaction
         public event Action<Item?> OnItemChanged = delegate { };
 
         /// <summary>
+        /// Raised after an item is dropped from this hand without throw velocity.
+        /// </summary>
+        public event Action<Item> OnItemDropped = delegate { };
+
+        /// <summary>
+        /// Raised after an item is thrown from this hand.
+        /// </summary>
+        public event Action<Item> OnItemThrown = delegate { };
+
+        /// <summary>
         /// Creates a hand backed by the supplied physics item service.
         /// </summary>
         /// <param name="physicsItemService">Service used when dropping items into the world.</param>
@@ -272,14 +282,29 @@ namespace Game.Interaction
                 var removed = Remove();
 
                 if (velocity.sqrMagnitude > 0f)
+                {
                     waiterComponent.Waiter.ThrowFromHand(removed.Value, point, velocity);
+                    OnItemThrown.Invoke(item);
+                }
                 else
+                {
                     waiterComponent.Waiter.DropFromHand(removed.Value, point);
+                    OnItemDropped.Invoke(item);
+                }
 
                 return true;
             }
 
-            return _physicsItemService.TrySpawnFromContainer(point, velocity, this);
+            bool released = _physicsItemService.TrySpawnFromContainer(point, velocity, this);
+            if (!released)
+                return false;
+
+            if (velocity.sqrMagnitude > 0f)
+                OnItemThrown.Invoke(item);
+            else
+                OnItemDropped.Invoke(item);
+
+            return true;
         }
     }
 }
