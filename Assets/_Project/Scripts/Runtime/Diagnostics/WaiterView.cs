@@ -2,18 +2,34 @@ using TMPro;
 using Game.Characters;
 using Game.Items.Properties;
 using UnityEngine;
+using LitMotion;
+using LitMotion.Extensions;
 
 namespace Game.Diagnostics
 {
     /// <summary>
-    /// Shows the waiter's sticky note and requested meal debug visuals.
+    /// Shows the waiter's sticky note, requested meal, and patience timer visuals.
     /// </summary>
     public class WaiterView : MonoBehaviour
     {
+        private static int PatienceHash = Animator.StringToHash("patience");
+        
+        private static int FillAmountID = Shader.PropertyToID("_FillAmount");
+
+        private const float NoAlpha = 0f;
+        private const float FullAlpha = 1f;
+
         [SerializeField] private Waiter _waiter;
         [SerializeField] private GameObject _orderNote;
         [SerializeField] private TextMeshPro _tableNumberLabel;
         [SerializeField] private SpriteRenderer _orderSpriteRenderer;
+        [SerializeField] private SpriteMask _orderSpriteMask;
+        
+        [SerializeField] private SpriteRenderer _patienceRenderer;
+        [SerializeField] private Gradient _patienceGradient;
+        [SerializeField] private Animator _animator; 
+
+        private Material _patienceMaterial;
 
         private void OnEnable()
         {
@@ -22,6 +38,12 @@ namespace Game.Diagnostics
             _waiter.OnCustomerWasAsked += HandleCustomerWasAsked;
             _waiter.OnMealPointEntered += HandleMealPointEntered;
             _waiter.OnMealPointExited += HandleMealPointExited;
+
+            if (_patienceRenderer != null)
+            {
+                _patienceMaterial = _patienceRenderer.material;
+                SetPatienceAlpha(NoAlpha);
+            }
 
             RefreshVisuals();
         }
@@ -35,6 +57,43 @@ namespace Game.Diagnostics
             _waiter.OnMealPointExited -= HandleMealPointExited;
         }
 
+        private void Update()
+        {
+            UpdatePatienceIndicator();
+            
+            if (_animator != null)
+            {
+                _animator.SetFloat(PatienceHash, _waiter.WaitTimer);
+            }
+        }
+
+        private void UpdatePatienceIndicator()
+        {
+            
+            if (_patienceRenderer == null || _patienceMaterial == null)
+                return;
+
+            
+            _patienceMaterial.SetFloat(FillAmountID, _waiter.NormalizedPatience);
+            var patienceColor = _patienceRenderer.color;
+            var oldAlpha = patienceColor.a;
+            patienceColor = _patienceGradient.Evaluate(_waiter.NormalizedPatience);
+            patienceColor.a = oldAlpha;
+            _patienceRenderer.color = patienceColor;
+               
+        }
+
+        private void SetPatienceAlpha(float alpha)
+        {
+            if (_patienceRenderer == null)
+                return;
+                
+            var color = _patienceRenderer.color;
+            color.a = alpha;
+            _patienceRenderer.color = color;
+        }
+
+
         private void HandleCustomerAssigned(Customer _)
         {
             HideOrderNote();
@@ -45,6 +104,7 @@ namespace Game.Diagnostics
         {
             HideOrderNote();
             HideOrderSprite();
+            
         }
 
         private void HandleCustomerWasAsked(Customer customer)
@@ -112,7 +172,9 @@ namespace Game.Diagnostics
                 foodProperty.DialogueSprite != null)
             {
                 _orderSpriteRenderer.sprite = foodProperty.DialogueSprite;
+                _orderSpriteMask.sprite = foodProperty.WorldSprite;
                 _orderSpriteRenderer.enabled = true;
+                SetPatienceAlpha(FullAlpha);
                 return;
             }
 
@@ -123,6 +185,7 @@ namespace Game.Diagnostics
         {
             _orderSpriteRenderer.sprite = null;
             _orderSpriteRenderer.enabled = false;
+            SetPatienceAlpha(NoAlpha);
         }
     }
 }

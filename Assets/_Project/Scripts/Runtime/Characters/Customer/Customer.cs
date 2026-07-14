@@ -29,6 +29,7 @@ namespace Game.Characters
         private Seat _seat;
         private ItemDefinition _order;
         private float _initialWaitTime;
+        private bool _waiterHasArrived;
         private float _waitTimer;
         private CustomerState _state;
 
@@ -82,6 +83,13 @@ namespace Game.Characters
         /// </summary>
         public float InitialWaitTime => _initialWaitTime;
 
+        public float GetCurrentWaitTimer() => _waitTimer;
+
+        public void SetWaitTimer(float value)
+        {
+            _waitTimer = Mathf.Clamp(value, 0f, _initialWaitTime);
+        }
+
         /// <summary>
         /// Gets the current wait timer normalized to the initial wait time.
         /// </summary>
@@ -124,6 +132,7 @@ namespace Game.Characters
             _initialWaitTime = waitTimerOverride == null ? _defaultWaitTime : waitTimerOverride.Value;
             _waitTimer = _initialWaitTime;
             _state = CustomerState.AwaitingWaiter;
+            _waiterHasArrived = false;
             OnOrderStarted.Invoke(this);
         }
 
@@ -141,12 +150,18 @@ namespace Game.Characters
 
         private void Update()
         {
-            if (!IsWaiting)
-                return;
-
-            _waitTimer -= Time.deltaTime;
-            if (_waitTimer <= 0f)
+            if (_waitTimer <= 0f && _state != CustomerState.None)
                 ForceTimeout();
+        }
+
+        public void UpdatePatienceTimer(float timeRemaining)
+        {
+            _waitTimer = timeRemaining;
+        }
+
+        public void StartPatienceTimer()
+        {
+            _waiterHasArrived = true;
         }
 
         /// <summary>
