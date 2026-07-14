@@ -1,6 +1,11 @@
 using Game.Items;
 using Game.Items.Components;
 using Game.Items.Properties;
+using Game.Interaction;
+using LitMotion;
+using LitMotion.Extensions;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Game.Characters
@@ -10,36 +15,294 @@ namespace Game.Characters
     /// </summary>
     public class WaiterContainer : MonoBehaviour, IContainerHolder
     {
+        [Header("Animation")]
+        [SerializeField] private float _pickupDuration = 0.32f;
+        [SerializeField] private Vector2 _pickupFirstSquishScale = new Vector2(1.28f, 0.72f);
+        [SerializeField] private Vector2 _pickupFirstStretchScale = new Vector2(0.8f, 1.22f);
+        [SerializeField] private Vector2 _pickupSecondSquishScale = new Vector2(1.16f, 0.86f);
+        [SerializeField] private Vector2 _pickupSecondStretchScale = new Vector2(0.92f, 1.08f);
+        [SerializeField] private float _deliveryDuration = 0.35f;
+        [SerializeField] private float _deliveryRiseDistance = 0.35f;
+        [SerializeField] private float _deliverySpinDegrees = 360f;
+
         [SerializeField] private SpriteRenderer _spriteRenderer;
+        [SerializeField] private SpriteOutlineHover[] _spriteOutlineHovers;
 
         private readonly CarryContainer _container = new();
+        private MotionHandle _scaleMotion;
+        private MotionHandle _moveMotion;
+        private MotionHandle _rotateMotion;
+        private MotionHandle _alphaMotion;
+        private Vector3 _defaultLocalScale;
+        private Vector3 _defaultLocalPosition;
+        private Quaternion _defaultLocalRotation;
+        private Color _defaultColor;
+        private int _animationVersion;
+        private int _outlineSuppressionVersion;
+
         /// <inheritdoc/>
         public IContainer Container => _container;
 
         private void Awake()
         {
-            OnContainerItemChanged(_container.Item);
+            _defaultLocalScale = _spriteRenderer.transform.localScale;
+            _defaultLocalPosition = _spriteRenderer.transform.localPosition;
+            _defaultLocalRotation = _spriteRenderer.transform.localRotation;
+            _defaultColor = _spriteRenderer.color;
+            CacheSpriteOutlineHovers();
+
+            ResetVisualState();
+            ApplySpriteForItem(_container.Item);
         }
 
         private void OnEnable()
         {
             _container.OnItemChanged += OnContainerItemChanged;
+            CancelActiveAnimations();
+            ResetVisualState();
+            ApplySpriteForItem(_container.Item);
         }
 
         private void OnDisable()
         {
             _container.OnItemChanged -= OnContainerItemChanged;
+            CancelActiveAnimations();
+            ResetVisualState();
+            ApplySpriteForItem(_container.Item);
         }
 
         private void OnContainerItemChanged(Item? item)
         {
-            if (item.HasValue && item.Value.Definition.TryGetProperty<FoodProperty>(out var spriteProperty))
+            Sprite nextSprite = TryGetSprite(item, out var sprite) ? sprite : null;
+            Sprite currentSprite = _spriteRenderer.sprite;
+
+            CancelActiveAnimations();
+            ResetVisualState();
+
+            if (nextSprite != null)
             {
-                _spriteRenderer.sprite = spriteProperty.WorldSprite;
+                ShowSprite(nextSprite);
+                PlayPickupAnimation();
+            }
+            else if (currentSprite != null)
+            {
+                ShowSprite(currentSprite);
+                PlayDeliveryAnimation();
             }
             else
             {
-                _spriteRenderer.sprite = null;
+                HideSprite();
+            }
+        }
+
+        private bool TryGetSprite(Item? item, out Sprite sprite)
+        {
+            if (item.HasValue && item.Value.Definition.TryGetProperty<FoodProperty>(out var spriteProperty))
+            {
+                sprite = spriteProperty.WorldSprite;
+                return sprite != null;
+            }
+
+            sprite = null;
+            return false;
+        }
+
+        private void ApplySpriteForItem(Item? item)
+        {
+            if (TryGetSprite(item, out var sprite))
+                ShowSprite(sprite);
+            else
+                HideSprite();
+        }
+
+        private void ShowSprite(Sprite sprite)
+        {
+            _spriteRenderer.sprite = sprite;
+            _spriteRenderer.enabled = sprite != null;
+            SetAlpha(1f);
+        }
+
+        private void HideSprite()
+        {
+            _spriteRenderer.sprite = null;
+            _spriteRenderer.enabled = false;
+            SetAlpha(1f);
+        }
+
+        private void PlayPickupAnimation()
+        {
+            _animationVersion++;
+            _ = PlayPickupAnimationAsync(_animationVersion);
+        }
+
+        private async Task PlayPickupAnimationAsync(int version)
+        {
+            Vector3 firstSquishScale = new Vector3(_pickupFirstSquishScale.x, _pickupFirstSquishScale.y, _defaultLocalScale.z);
+            Vector3 firstStretchScale = new Vector3(_pickupFirstStretchScale.x, _pickupFirstStretchScale.y, _defaultLocalScale.z);
+            Vector3 secondSquishScale = new Vector3(_pickupSecondSquishScale.x, _pickupSecondSquishScale.y, _defaultLocalScale.z);
+            Vector3 secondStretchScale = new Vector3(_pickupSecondStretchScale.x, _pickupSecondStretchScale.y, _defaultLocalScale.z);
+
+            if (_pickupDuration <= 0f)
+            {
+                _spriteRenderer.transform.localScale = _defaultLocalScale;
+                return;
+            }
+
+            _spriteRenderer.transform.localScale = firstSquishScale;
+
+            float segmentDuration = _pickupDuration * 0.2f;
+
+            _scaleMotion = LMotion
+                .Create(firstSquishScale, firstStretchScale, segmentDuration)
+                .BindToLocalScale(_spriteRenderer.transform);
+
+            await _scaleMotion;
+
+            if (version != _animationVersion || !_spriteRenderer.enabled)
+                return;
+
+            _scaleMotion = LMotion
+                .Create(firstStretchScale, secondSquishScale, segmentDuration)
+                .BindToLocalScale(_spriteRenderer.transform);
+
+            await _scaleMotion;
+
+            if (version != _animationVersion || !_spriteRenderer.enabled)
+                return;
+
+            _scaleMotion = LMotion
+                .Create(secondSquishScale, secondStretchScale, segmentDuration)
+                .BindToLocalScale(_spriteRenderer.transform);
+
+            await _scaleMotion;
+
+            if (version != _animationVersion || !_spriteRenderer.enabled)
+                return;
+
+            _scaleMotion = LMotion
+                .Create(secondStretchScale, _defaultLocalScale, segmentDuration * 2f)
+                .BindToLocalScale(_spriteRenderer.transform);
+
+            await _scaleMotion;
+
+            if (version != _animationVersion)
+                return;
+
+            _spriteRenderer.transform.localScale = _defaultLocalScale;
+        }
+
+        private void PlayDeliveryAnimation()
+        {
+            _animationVersion++;
+            _ = PlayDeliveryAnimationAsync(_animationVersion);
+        }
+
+        private async Task PlayDeliveryAnimationAsync(int version)
+        {
+            int suppressionVersion = ++_outlineSuppressionVersion;
+            SetSpriteOutlineSuppressed(true);
+
+            try
+            {
+                Vector3 startPosition = _defaultLocalPosition;
+                Vector3 targetPosition = startPosition + Vector3.up * _deliveryRiseDistance;
+
+                if (_deliveryDuration <= 0f)
+                {
+                    ResetVisualState();
+                    HideSprite();
+                    return;
+                }
+
+                _moveMotion = LMotion
+                    .Create(startPosition, targetPosition, _deliveryDuration)
+                    .Bind(value => _spriteRenderer.transform.localPosition = value);
+
+                _rotateMotion = LMotion
+                    .Create(0f, _deliverySpinDegrees, _deliveryDuration)
+                    .Bind(value => _spriteRenderer.transform.localRotation = _defaultLocalRotation * Quaternion.Euler(0f, 0f, value));
+
+                _alphaMotion = LMotion
+                    .Create(1f, 0f, _deliveryDuration)
+                    .BindToColorA(_spriteRenderer);
+
+                await _alphaMotion;
+
+                if (version != _animationVersion)
+                    return;
+
+                ResetVisualState();
+                HideSprite();
+            }
+            finally
+            {
+                if (suppressionVersion == _outlineSuppressionVersion)
+                    SetSpriteOutlineSuppressed(false);
+            }
+        }
+
+        private void CancelActiveAnimations()
+        {
+            _animationVersion++;
+            _outlineSuppressionVersion++;
+            SetSpriteOutlineSuppressed(false);
+
+            CancelMotion(ref _scaleMotion);
+            CancelMotion(ref _moveMotion);
+            CancelMotion(ref _rotateMotion);
+            CancelMotion(ref _alphaMotion);
+        }
+
+        private void CancelMotion(ref MotionHandle motion)
+        {
+            if (motion.IsActive())
+                motion.Cancel();
+        }
+
+        private void ResetVisualState()
+        {
+            _spriteRenderer.transform.localScale = _defaultLocalScale;
+            _spriteRenderer.transform.localPosition = _defaultLocalPosition;
+            _spriteRenderer.transform.localRotation = _defaultLocalRotation;
+            _spriteRenderer.color = _defaultColor;
+        }
+
+        private void SetAlpha(float alpha)
+        {
+            var color = _spriteRenderer.color;
+            color.a = alpha;
+            _spriteRenderer.color = color;
+        }
+
+        private void CacheSpriteOutlineHovers()
+        {
+            if (_spriteOutlineHovers != null && _spriteOutlineHovers.Length > 0)
+                return;
+
+            var hovers = new List<SpriteOutlineHover>();
+            AddSpriteOutlineHovers(hovers, GetComponentsInParent<SpriteOutlineHover>(true));
+            AddSpriteOutlineHovers(hovers, GetComponentsInChildren<SpriteOutlineHover>(true));
+            _spriteOutlineHovers = hovers.ToArray();
+        }
+
+        private void AddSpriteOutlineHovers(List<SpriteOutlineHover> target, SpriteOutlineHover[] source)
+        {
+            for (int i = 0; i < source.Length; i++)
+            {
+                if (source[i] != null && !target.Contains(source[i]))
+                    target.Add(source[i]);
+            }
+        }
+
+        private void SetSpriteOutlineSuppressed(bool suppressed)
+        {
+            if (_spriteOutlineHovers == null)
+                return;
+
+            for (int i = 0; i < _spriteOutlineHovers.Length; i++)
+            {
+                if (_spriteOutlineHovers[i] != null)
+                    _spriteOutlineHovers[i].SetOutlineSuppressed(suppressed);
             }
         }
 
@@ -47,11 +310,20 @@ namespace Game.Characters
         {
             private Item? _item;
 
+            /// <summary>
+            /// Gets the item currently stored in the waiter container.
+            /// </summary>
             public Item? Item => _item;
+            /// <summary>
+            /// Gets whether the waiter container is empty.
+            /// </summary>
             public bool IsEmpty => !_item.HasValue;
 
             public event System.Action<Item?> OnItemChanged = delegate { };
 
+            /// <summary>
+            /// Checks whether the waiter container can accept the supplied transfer request.
+            /// </summary>
             public bool CanInsert(in TransferRequest request)
             {
                 if (!IsEmpty)
@@ -60,14 +332,23 @@ namespace Game.Characters
                 return !request.Item.TryGetComponent<WaiterComponent>(out _);
             }
 
+            /// <summary>
+            /// Checks whether the waiter container can remove its current item for the supplied transfer request.
+            /// </summary>
             public bool CanRemove(in TransferRequest request) => !IsEmpty;
 
+            /// <summary>
+            /// Inserts an item into the waiter container.
+            /// </summary>
             public void Insert(Item item)
             {
                 _item = item;
                 OnItemChanged.Invoke(_item);
             }
 
+            /// <summary>
+            /// Removes and returns the current item from the waiter container.
+            /// </summary>
             public Item? Remove()
             {
                 var removed = _item;

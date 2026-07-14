@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace Game.Animation
 {
+    /// <summary>
+    /// Animates a target based on directional angle changes.
+    /// </summary>
     public sealed class AngleAnimator : MonoBehaviour
     {
         private static readonly int AngleHash = Animator.StringToHash("angle");

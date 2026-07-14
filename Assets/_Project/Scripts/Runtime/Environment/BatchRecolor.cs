@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Game.Environment
 {
+    /// <summary>
+    /// Applies shared palette colors to a batch of sprite renderers.
+    /// </summary>
     public class BatchRecolor : MonoBehaviour
     {
         private static int _counter = 0;

@@ -41,8 +41,17 @@ namespace Game.Interaction
                 RestRotation = rectTransform.localRotation;
             }
 
+            /// <summary>
+            /// Gets the rect transform that drives the waiter-held visual.
+            /// </summary>
             public RectTransform RectTransform { get; }
+            /// <summary>
+            /// Gets the default anchored position for the waiter-held visual.
+            /// </summary>
             public Vector2 RestPosition { get; }
+            /// <summary>
+            /// Gets the default rotation for the waiter-held visual.
+            /// </summary>
             public Quaternion RestRotation { get; }
             public float Rotation;
             public Vector2 Offset;

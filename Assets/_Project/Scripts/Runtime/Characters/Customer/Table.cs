@@ -13,7 +13,7 @@ namespace Game.Characters
     {
         [SerializeField] private int _tableNumber;
         [SerializeField] private bool _registerAutomatically = false;
-        [SerializeField] private Transform[] _seatPoints;
+        [SerializeField] private Seat[] _seats;
 
         private readonly List<Customer> _customers = new();
 
@@ -30,7 +30,7 @@ namespace Game.Characters
         /// <summary>
         /// Gets the number of seat points configured on the table.
         /// </summary>
-        public int SeatCount => _seatPoints.Length;
+        public int SeatCount => _seats.Length;
 
         /// <summary>
         /// Gets whether the table currently has no customers.
@@ -86,16 +86,34 @@ namespace Game.Characters
         /// Tries to add a customer and assign the next free seat transform.
         /// </summary>
         /// <param name="customer">Customer to seat.</param>
-        /// <param name="seat">Receives the assigned seat transform.</param>
+        /// <param name="seat">Receives the assigned seat.</param>
         /// <returns><see langword="true"/> when the customer was seated.</returns>
-        public bool TryAddCustomer(Customer customer, out Transform seat)
+        public bool TryAddCustomer(Customer customer, out Seat seat)
         {
             seat = null;
 
             if (customer == null || !HasFreeSeat)
                 return false;
 
-            seat = _seatPoints[_customers.Count];
+            seat = _seats[_customers.Count];
+            _customers.Add(customer);
+            OnCustomerAdded.Invoke(this, customer);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Tries to assign the customer to a random free seat on the table.
+        /// </summary>
+        public bool TryAddCustomerAtRandomSeat(Customer customer, out Seat seat)
+        {
+            seat = null;
+
+            if (customer == null || !IsFree)
+                return false;
+
+            int randomIndex = UnityEngine.Random.Range(0, _seats.Length);
+            seat = _seats[randomIndex];
             _customers.Add(customer);
             OnCustomerAdded.Invoke(this, customer);
 

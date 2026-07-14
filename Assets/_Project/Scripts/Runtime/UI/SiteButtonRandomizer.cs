@@ -11,8 +11,27 @@ namespace Game.UI
     /// </summary>
     public class SiteButtonRandomizer : MonoBehaviour
     {
+        [SerializeField] private ComputerInteractable _computerInteractable;
         [SerializeField] private List<Button> buttonsToShuffle;
-        
+
+        private void OnEnable()
+        {
+            _computerInteractable.FocusStarted += HandleFocusStarted;
+        }
+
+        private void OnDisable()
+        {
+            _computerInteractable.FocusStarted -= HandleFocusStarted;
+        }
+
+        private void HandleFocusStarted()
+        {
+            Randomize();
+        }
+
+        /// <summary>
+        /// Randomizes the positions of the configured buttons.
+        /// </summary>
         public void Randomize()
         {
             if (buttonsToShuffle == null)

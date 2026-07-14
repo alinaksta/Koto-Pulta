@@ -105,10 +105,10 @@ namespace Game.Characters
 
             var customer = Instantiate(_customerPrefab);
 
-            if (table.TryAddCustomer(customer, out var seat))
+            if (table.TryAddCustomerAtRandomSeat(customer, out var seat))
             {
-                customer.transform.position = seat.position;
-                customer.transform.rotation = seat.rotation;
+                customer.transform.position = seat.CustomerSpawnOrigin;
+                customer.transform.rotation = Quaternion.identity; // We rotate using SpriteRotator, so it doesn't matter
             }
             else
             {
@@ -117,7 +117,7 @@ namespace Game.Characters
             }
 
             ItemDefinition order = GetRandomOrder();
-            customer.Initialize(table, order);
+            customer.Initialize(table, seat, order);
 
             customer.OnServed += HandleCustomerServed;
             customer.OnTimedOut += HandleCustomerTimedOut;
@@ -133,28 +133,72 @@ namespace Game.Characters
             return true;
         }
 
+        /// <summary>
+        /// Sets the random item source used when creating customer orders.
+        /// </summary>
         public void SetRandomItemGiver(IRandomItemDefinitionGiver giver)
         {
             _randomItemGiver = giver;
         }
 
+        /// <summary>
+        /// Tries to get the next active customer who is still waiting for a waiter.
+        /// </summary>
+        /// <param name="customer">Receives the matching customer when found.</param>
+        /// <param name="predicate">Optional extra filter for candidate customers.</param>
+        /// <returns><see langword="true"/> when a matching customer is found.</returns>
+        public bool TryGetNextCustomerNeedingWaiter(out Customer customer, Func<Customer, bool> predicate = null)
+        {
+            for (int i = 0; i < _activeCustomers.Count; i++)
+            {
+                var candidate = _activeCustomers[i];
+                if (candidate == null || !candidate.NeedsWaiter)
+                    continue;
+
+                if (predicate != null && !predicate(candidate))
+                    continue;
+
+                customer = candidate;
+                return true;
+            }
+
+            customer = null;
+            return false;
+        }
+
+        /// <summary>
+        /// Forces every currently waiting active customer to time out.
+        /// </summary>
+        public void TimeoutAllActiveCustomers()
+        {
+            var customers = _activeCustomers.ToArray();
+            for (int i = 0; i < customers.Length; i++)
+            {
+                var customer = customers[i];
+                if (customer == null || !customer.IsWaiting)
+                    continue;
+
+                customer.ForceTimeout();
+            }
+        }
+
         private void HandleCustomerWrongItem(Customer customer, Item item)
         {
             OnCustomerWrongItem.Invoke(customer, item);
-            CleanUpCustomer(customer);
+            DespawnCustomer(customer);
         }
 
         private void HandleCustomerTimedOut(Customer customer)
         {
             OnCustomerTimedOut.Invoke(customer);
-            CleanUpCustomer(customer);
+            DespawnCustomer(customer);
         }
 
         private void HandleCustomerServed(Customer customer)
         {
             OnCustomerServed.Invoke(customer);
             Debug.Log("Customer Served");
-            CleanUpCustomer(customer);
+            DespawnCustomer(customer);
         }
 
         private ItemDefinition GetRandomOrder()
@@ -162,7 +206,7 @@ namespace Game.Characters
             return _randomItemGiver.GetRandomItemDefinition();
         }
 
-        private void CleanUpCustomer(Customer customer)
+        private async void DespawnCustomer(Customer customer)
         {
             if (customer == null) return;
 
@@ -170,6 +214,8 @@ namespace Game.Characters
             customer.OnTimedOut -= HandleCustomerTimedOut;
             customer.OnWrongItemGiven -= HandleCustomerWrongItem;
 
+            await Awaitable.WaitForSecondsAsync(customer.DespawnDuration);
+            
             _activeCustomers.Remove(customer);
 
             if (customer.Table != null)
