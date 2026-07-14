@@ -49,6 +49,9 @@ namespace Game.Input
         /// <inheritdoc/>
         public ButtonState Cancel => GetButtonState(_actions.Gameplay.Cancel);
 
+        /// <inheritdoc/>
+        public ButtonState Pause => GetButtonState(_actions.Gameplay.Pause);
+
         /// <summary>
         /// Reads a frame snapshot for the supplied input action.
         /// </summary>

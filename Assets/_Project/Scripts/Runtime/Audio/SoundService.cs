@@ -43,7 +43,7 @@ namespace Game.Audio
 
         private void Start()
         {
-            _audioSource = GetComponent<AudioSource>();
+            _audioSource = gameObject.GetComponent<AudioSource>();
         }
 
 
@@ -57,14 +57,15 @@ namespace Game.Audio
         }
     #endif
 
-        public void PlaySound(SoundType sound, float volume = 1)
+        public void PlaySound(SoundType sound, float volume = 1, int order = -1)
         {
-            Debug.Log(sound);
             AudioClip[] clips = _soundList[(int)sound].Sounds;
-            if(clips.Length == 0) return;
-            AudioClip randomClip = clips.Length > 1 ? clips[UnityEngine.Random.Range(0, clips.Length)] : clips[0];
+            if(clips.Length == 0 || _audioSource == null) return;
+            AudioClip selectedClip = (order > -1 && order < clips.Length) ? clips[order] :
+                                     (clips.Length > 1) ? clips[UnityEngine.Random.Range(0, clips.Length)] : clips[0];
+            if (sound == SoundType.PickUp) Debug.Log(_audioSource); 
             // Debug.Log(randomClip);
-            _audioSource.PlayOneShot(randomClip, volume);
+            _audioSource.PlayOneShot(selectedClip, volume);
         }
     }
 } 

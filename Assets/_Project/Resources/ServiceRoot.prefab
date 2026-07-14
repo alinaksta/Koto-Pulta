@@ -821,7 +821,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 26b2fb7476988074999011a845b322db, type: 3}
   - _name: Money
     _sounds:
-    - {fileID: 8300000, guid: fafb40e6f76ee148f8a76cc29012b6d1, type: 3}
+    - {fileID: 8300000, guid: ddc5c2ffc1ac34f00aaaeb4b283bc751, type: 3}
   - _name: Upgrade
     _sounds:
     - {fileID: 8300000, guid: 9a3f873001108300f8f95620c8cf13ea, type: 3}
@@ -836,15 +836,19 @@ MonoBehaviour:
     _sounds:
     - {fileID: 8300000, guid: 376ec1c4fe56893c38444ff68e76b3ce, type: 3}
   - _name: ClockTick
-    _sounds: []
+    _sounds:
+    - {fileID: 8300000, guid: 28eededc63bc4e987b67e54345613ed5, type: 3}
   - _name: Alarm
-    _sounds: []
+    _sounds:
+    - {fileID: 8300000, guid: b4350152871b6c1769b1dd55a9260ca6, type: 3}
   - _name: Error
-    _sounds: []
+    _sounds:
+    - {fileID: 8300000, guid: a1c57a30b9b64698b87b5bc9272ad621, type: 3}
   - _name: PopUp
     _sounds: []
   - _name: ComputerClick
-    _sounds: []
+    _sounds:
+    - {fileID: 8300000, guid: 0b2d7478ff944bf9a8ebdd0da146afd7, type: 3}
   - _name: TabSwitch
     _sounds: []
 --- !u!1 &7014507076640361212

@@ -90,5 +90,10 @@ namespace Game.Input
         /// Gets the current cancel button state.
         /// </summary>
         public ButtonState Cancel { get; }
+
+        /// <summary>
+        /// Gets the current cancel button state.
+        /// </summary>
+        public ButtonState Pause { get; }
     }
 }

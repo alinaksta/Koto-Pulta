@@ -19,6 +19,9 @@ public class WaiterAudio : MonoBehaviour
     [Min(0f)]
     [SerializeField] private float _interval = 0.3f;
 
+    private bool _flag;
+    private SoundType _previous = SoundType.WaiterWalk;
+
     private void Awake()
     {
         _soundService = ServiceLocator.Get<SoundService>(); 
@@ -26,13 +29,15 @@ public class WaiterAudio : MonoBehaviour
 
     private void LateUpdate()
     {
+        //Debug.Log(_waiterComponent.LocomotionState);
         if(_waiterComponent.LocomotionState == WaiterLocomotionState.Ragdoll && _waiterComponent.IsGrounded) StartCoroutine(Play(_soundSplat, true));
-        if(_waiterComponent.LocomotionState == WaiterLocomotionState.Ragdoll && !_waiterComponent.IsGrounded) StartCoroutine(Play(_soundThrow, true));
-        if(_waiterComponent.LocomotionState == WaiterLocomotionState.Walking) StartCoroutine(Play(_soundWalk));
+        else if(_waiterComponent.LocomotionState == WaiterLocomotionState.Ragdoll && !_waiterComponent.IsGrounded) StartCoroutine(Play(_soundThrow, true));
+        else if(_waiterComponent.LocomotionState == WaiterLocomotionState.Walking) StartCoroutine(Play(_soundWalk));
     }
-
-    private bool _flag = true;
-    private SoundType _previous = SoundType.WaiterWalk;
+    private void OnEnable()
+    {
+        _flag = true;
+    }
     private IEnumerator Play(SoundType snd, bool noRepeats = false)
     {
         if(!_flag) yield break;

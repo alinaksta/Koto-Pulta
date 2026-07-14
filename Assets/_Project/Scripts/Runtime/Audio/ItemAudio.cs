@@ -31,8 +31,7 @@ public class ItemAudio : MonoBehaviour
     }
     private void Play(Item? item)
     {
-        Debug.Log("AAAAAAAAAAAAAAAAAA");
-        //_soundService.PlaySound(_sound, _volume);
+        _soundService.PlaySound(_sound, _volume);
     }
 
 
