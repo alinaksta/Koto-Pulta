@@ -1564,7 +1564,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8603218274019328773, guid: 372ccd3bd70f0eb46b20c7ab5ace092b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 768.8
+      value: 768.8002
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1676,21 +1676,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3449837174034003659, guid: 8ac9819291a45da438b619e82642a02d, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3449837174034003659, guid: 8ac9819291a45da438b619e82642a02d, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3449837174034003659, guid: 8ac9819291a45da438b619e82642a02d, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4095091925466162156, guid: 8ac9819291a45da438b619e82642a02d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 768.7999
+      value: 768.8001
       objectReference: {fileID: 0}
     - target: {fileID: 4618071488648361453, guid: 8ac9819291a45da438b619e82642a02d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1698,27 +1686,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4618071488648361453, guid: 8ac9819291a45da438b619e82642a02d, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4618071488648361453, guid: 8ac9819291a45da438b619e82642a02d, type: 3}
-      propertyPath: m_AnchorMin.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6009765017003423150, guid: 8ac9819291a45da438b619e82642a02d, type: 3}
       propertyPath: m_Size
-      value: 0.37292007
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6009765017003423150, guid: 8ac9819291a45da438b619e82642a02d, type: 3}
       propertyPath: m_Value
-      value: 0.0000001984754
-      objectReference: {fileID: 0}
-    - target: {fileID: 8984824858801519301, guid: 8ac9819291a45da438b619e82642a02d, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8984824858801519301, guid: 8ac9819291a45da438b619e82642a02d, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
+      value: -0.0000001984754
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

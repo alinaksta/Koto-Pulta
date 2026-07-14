@@ -1,5 +1,4 @@
 using Game.Environment;
-using Game.Items;
 using LitMotion;
 using LitMotion.Extensions;
 using System;
@@ -41,7 +40,6 @@ namespace Game.Characters
             if (_customer.Seat != null)
                 _bodyRenderer.flipX = _customer.Seat.FlipSprite;
 
-            _customer.OnWrongItemGiven += HandleWrongItemGiven;
             _customer.OnTimedOut += HandleTimedOut;
             _customer.OnWaiterStartedAsking += HandleWaiterStartedAsking;
             _customer.OnServed += HandleServed;
@@ -51,7 +49,6 @@ namespace Game.Characters
 
         private void OnDestroy()
         {
-            _customer.OnWrongItemGiven -= HandleWrongItemGiven;
             _customer.OnTimedOut -= HandleTimedOut;
             _customer.OnWaiterStartedAsking -= HandleWaiterStartedAsking;
             _customer.OnServed -= HandleServed;
@@ -68,11 +65,6 @@ namespace Game.Characters
         }
 
         private void HandleTimedOut(Customer customer)
-        {
-            AnimateDespawn(customer.DespawnDuration);
-        }
-
-        private void HandleWrongItemGiven(Customer customer, Item item)
         {
             AnimateDespawn(customer.DespawnDuration);
         }
