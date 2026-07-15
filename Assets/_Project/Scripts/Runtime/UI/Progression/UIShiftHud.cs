@@ -26,7 +26,9 @@ namespace Game.UI
         [SerializeField] private string _timerFormat = "{0:00}:{1:00}";
         [SerializeField] private string _untimedTimerText = "--:--";
         [SerializeField] private string _revenueFormat = "Revenue {0} / {1}";
+        [SerializeField] private string _endlessRevenueText = "No revenue goal";
         [SerializeField] private string _shiftNumberFormat = "Shift {0} / {1}";
+        [SerializeField] private string _endlessShiftNumberFormat = "Shift {0}";
 
         private ShiftService _shiftService;
         private Vector2 _shownAnchoredPosition;
@@ -128,6 +130,12 @@ namespace Game.UI
             if (_revenueLabel == null || _shiftService == null)
                 return;
 
+            if (_shiftService.IsEndlessShift)
+            {
+                _revenueLabel.text = _endlessRevenueText;
+                return;
+            }
+
             _revenueLabel.text = string.Format(
                 _revenueFormat,
                 _shiftService.CurrentRevenue,
@@ -143,8 +151,11 @@ namespace Game.UI
                 ? _shiftService.ShiftIndex + 1
                 : 0;
 
+            string format = _shiftService.IsEndlessShift
+                ? _endlessShiftNumberFormat
+                : _shiftNumberFormat;
             _shiftNumberLabel.text = string.Format(
-                _shiftNumberFormat,
+                format,
                 displayedShiftNumber,
                 _shiftService.ShiftAmount);
         }
