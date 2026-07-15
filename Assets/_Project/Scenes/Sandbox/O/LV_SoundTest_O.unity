@@ -1151,7 +1151,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ComputerAudio
   _buttonArray: []
+  _tabArray: []
   _buttonSound: 5
+  _tabSound: 13
   _clickSound: 12
   _volume: 1
   _interval: 0.3
@@ -1402,6 +1404,39 @@ MonoBehaviour:
   _orderNote: {fileID: 1373216824}
   _tableNumberLabel: {fileID: 1174813061}
   _orderSpriteRenderer: {fileID: 1081908664}
+  _orderSpriteMask: {fileID: 0}
+  _patienceRenderer: {fileID: 0}
+  _patienceGradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  _animator: {fileID: 0}
 --- !u!114 &309612877
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1433,6 +1468,7 @@ MonoBehaviour:
   _wanderPauseMax: 4
   _wanderArrivalDistance: 0.35
   _askCustomerDuration: 2
+  _maxPatienceTime: 60
 --- !u!4 &309612878
 Transform:
   m_ObjectHideFlags: 0
@@ -9729,6 +9765,7 @@ MonoBehaviour:
   _deliveryRiseDistance: 0.35
   _deliverySpinDegrees: 360
   _spriteRenderer: {fileID: 963943811}
+  _spriteOutlineHovers: []
 --- !u!4 &1335226108
 Transform:
   m_ObjectHideFlags: 0
@@ -10278,7 +10315,9 @@ MonoBehaviour:
   - {fileID: 3499749297835403953}
   - {fileID: 3499749297835403953}
   - {fileID: 8055407927909949555}
+  _tabArray: []
   _buttonSound: 5
+  _tabSound: 13
   _clickSound: 12
   _volume: 1
   _interval: 0.3
@@ -11499,6 +11538,7 @@ MonoBehaviour:
   _revenueLabel: {fileID: 350758204}
   _shiftNumberLabel: {fileID: 1198766038}
   _timerFormat: '{0:00}:{1:00}'
+  _untimedTimerText: --:--
   _revenueFormat: ${0}/{1}
   _shiftNumberFormat: Shift {0}
 --- !u!114 &1946674748
@@ -11625,6 +11665,7 @@ MonoBehaviour:
   _deliveryRiseDistance: 0.35
   _deliverySpinDegrees: 360
   _spriteRenderer: {fileID: 652499369}
+  _spriteOutlineHovers: []
 --- !u!4 &1954233653
 Transform:
   m_ObjectHideFlags: 0
@@ -12300,6 +12341,39 @@ MonoBehaviour:
   _orderNote: {fileID: 1307717683}
   _tableNumberLabel: {fileID: 1417944796}
   _orderSpriteRenderer: {fileID: 2042308217}
+  _orderSpriteMask: {fileID: 0}
+  _patienceRenderer: {fileID: 0}
+  _patienceGradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  _animator: {fileID: 0}
 --- !u!114 &2106988928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12331,6 +12405,7 @@ MonoBehaviour:
   _wanderPauseMax: 4
   _wanderArrivalDistance: 0.35
   _askCustomerDuration: 2
+  _maxPatienceTime: 60
 --- !u!4 &2106988929
 Transform:
   m_ObjectHideFlags: 0
@@ -13076,6 +13151,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
   _itemAsset: {fileID: 11400000, guid: 66da350420390434881d32f702e58aa8, type: 2}
+  lockedIcon: {fileID: 0}
+  _isUnlocked: 0
 --- !u!222 &709561775543498501
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -13603,6 +13680,7 @@ MonoBehaviour:
   _wanderPauseMax: 4
   _wanderArrivalDistance: 0.35
   _askCustomerDuration: 2
+  _maxPatienceTime: 60
 --- !u!114 &1419378284179094142
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14207,6 +14285,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
   _itemAsset: {fileID: 11400000, guid: 39ed9d28445c78b4eafc8ffa021450b6, type: 2}
+  lockedIcon: {fileID: 0}
+  _isUnlocked: 0
 --- !u!114 &1800989851467351863
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14397,6 +14477,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
   _itemAsset: {fileID: 11400000, guid: 7ee7bacff2389624794a47d801866f09, type: 2}
+  lockedIcon: {fileID: 0}
+  _isUnlocked: 0
 --- !u!224 &1986443807180344589
 RectTransform:
   m_ObjectHideFlags: 0
@@ -15502,6 +15584,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
   _itemAsset: {fileID: 11400000, guid: cf54fe7e9e036954384263cb4d5123d0, type: 2}
+  lockedIcon: {fileID: 0}
+  _isUnlocked: 0
 --- !u!114 &3106853607153190096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16376,6 +16460,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
   _itemAsset: {fileID: 11400000, guid: f8bb92e7c221f964aa44a02cfcbc4592, type: 2}
+  lockedIcon: {fileID: 0}
+  _isUnlocked: 0
 --- !u!224 &3588474475015204151
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16805,6 +16891,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
   _itemAsset: {fileID: 11400000, guid: 05d7fe516a398d64482537063bb5183a, type: 2}
+  lockedIcon: {fileID: 0}
+  _isUnlocked: 0
 --- !u!224 &4155411442650616523
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16859,6 +16947,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
   _itemAsset: {fileID: 11400000, guid: 761d8ffbb93096e4ea8ac868397dd0e8, type: 2}
+  lockedIcon: {fileID: 0}
+  _isUnlocked: 0
 --- !u!114 &4207257395460620142
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17212,6 +17302,7 @@ MonoBehaviour:
   _deliveryRiseDistance: 0.35
   _deliverySpinDegrees: 360
   _spriteRenderer: {fileID: 6599099591029546463}
+  _spriteOutlineHovers: []
 --- !u!4 &4659729085609476221
 Transform:
   m_ObjectHideFlags: 0
@@ -17322,6 +17413,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
   _itemAsset: {fileID: 11400000, guid: d97aab6ea61c0b248959282a829c8f43, type: 2}
+  lockedIcon: {fileID: 0}
+  _isUnlocked: 0
 --- !u!224 &4736704893372540252
 RectTransform:
   m_ObjectHideFlags: 0
@@ -18767,6 +18860,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
   _itemAsset: {fileID: 11400000, guid: cf77036787562b24190e838e4194cb6a, type: 2}
+  lockedIcon: {fileID: 0}
+  _isUnlocked: 0
 --- !u!1 &5879679251857396580
 GameObject:
   m_ObjectHideFlags: 0
@@ -19163,6 +19258,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
   _itemAsset: {fileID: 11400000, guid: bf0cae3c28479ea4e925e2c41a1e5a60, type: 2}
+  lockedIcon: {fileID: 0}
+  _isUnlocked: 0
 --- !u!114 &6477108312685107693
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19908,6 +20005,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
   _itemAsset: {fileID: 11400000, guid: 1d7993a15afe54241870f0ec6ccbb0de, type: 2}
+  lockedIcon: {fileID: 0}
+  _isUnlocked: 0
 --- !u!114 &7133770239427937117
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20200,6 +20299,39 @@ MonoBehaviour:
   _orderNote: {fileID: 4035276586464406987}
   _tableNumberLabel: {fileID: 2161382425475811235}
   _orderSpriteRenderer: {fileID: 3123922644099746874}
+  _orderSpriteMask: {fileID: 0}
+  _patienceRenderer: {fileID: 0}
+  _patienceGradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  _animator: {fileID: 0}
 --- !u!1 &7422407671532855790
 GameObject:
   m_ObjectHideFlags: 0
@@ -20456,6 +20588,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
   _itemAsset: {fileID: 11400000, guid: 6ae552bdcf52a284a81e5a995aeb6d29, type: 2}
+  lockedIcon: {fileID: 0}
+  _isUnlocked: 0
 --- !u!212 &7850258244129448357
 SpriteRenderer:
   serializedVersion: 2
@@ -20829,6 +20963,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteItemButton
   _itemAsset: {fileID: 11400000, guid: b2c58796fc7c0c040866f9e1a0d1e4d1, type: 2}
+  lockedIcon: {fileID: 0}
+  _isUnlocked: 0
 --- !u!224 &8183288369017932978
 RectTransform:
   m_ObjectHideFlags: 0

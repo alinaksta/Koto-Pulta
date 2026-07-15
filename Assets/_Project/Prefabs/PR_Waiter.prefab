@@ -223,6 +223,7 @@ GameObject:
   - component: {fileID: 3109497723924054786}
   - component: {fileID: 4721583092023430135}
   - component: {fileID: 8323948392563998356}
+  - component: {fileID: 5012216872226390689}
   m_Layer: 11
   m_Name: HeldItemContainer
   m_TagString: Untagged
@@ -267,6 +268,7 @@ MonoBehaviour:
   _deliveryRiseDistance: 0.35
   _deliverySpinDegrees: 360
   _spriteRenderer: {fileID: 4200462854677017681}
+  _spriteOutlineHovers: []
 --- !u!135 &8323948392563998356
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -288,6 +290,23 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.25
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5012216872226390689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1529679727899457358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a61dbf0de9b42e09999d3d017d3c35f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Game.Interaction.SpriteOutlineHover
+  _renderers:
+  - {fileID: 4200462854677017681}
+  _outlineColor: {r: 0.42302713, g: 0, b: 0.690566, a: 1}
+  _outlineWidth: 10
+  _outlinedWhenNotHovered: 0
 --- !u!1 &1732182379875809243
 GameObject:
   m_ObjectHideFlags: 0
@@ -623,6 +642,7 @@ GameObject:
   - component: {fileID: 2650628544443303349}
   - component: {fileID: 6839888440025666666}
   - component: {fileID: 6973934558690485577}
+  - component: {fileID: 4532660713510963246}
   m_Layer: 11
   m_Name: PR_Waiter
   m_TagString: Untagged
@@ -645,6 +665,7 @@ Transform:
   m_Children:
   - {fileID: 4091024983704075440}
   - {fileID: 3109497723924054786}
+  - {fileID: 6659813715673795291}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2181775631686005228
@@ -800,6 +821,23 @@ CapsuleCollider:
   m_Height: 1.2
   m_Direction: 1
   m_Center: {x: 0, y: 0.6, z: 0}
+--- !u!114 &4532660713510963246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2204201829867112283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a61dbf0de9b42e09999d3d017d3c35f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Game.Interaction.SpriteOutlineHover
+  _renderers:
+  - {fileID: 4216319770083254003}
+  _outlineColor: {r: 0.42302713, g: 0, b: 0.690566, a: 1}
+  _outlineWidth: 10
+  _outlinedWhenNotHovered: 0
 --- !u!1 &2395280909654176813
 GameObject:
   m_ObjectHideFlags: 0
@@ -1199,3 +1237,69 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SpriteRotator
   _target: {fileID: 9090870223529905491}
   FullRotation: 0
+--- !u!1001 &1919591879636132821
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 5325243197194466205}
+    m_Modifications:
+    - target: {fileID: 3596040096553837809, guid: aa8347a3009e399318d0e0caa259ef11, type: 3}
+      propertyPath: m_Name
+      value: WaiterAudioSignaler
+      objectReference: {fileID: 0}
+    - target: {fileID: 5102485945457666318, guid: aa8347a3009e399318d0e0caa259ef11, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.06825876
+      objectReference: {fileID: 0}
+    - target: {fileID: 5102485945457666318, guid: aa8347a3009e399318d0e0caa259ef11, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.8653401
+      objectReference: {fileID: 0}
+    - target: {fileID: 5102485945457666318, guid: aa8347a3009e399318d0e0caa259ef11, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.38867688
+      objectReference: {fileID: 0}
+    - target: {fileID: 5102485945457666318, guid: aa8347a3009e399318d0e0caa259ef11, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5102485945457666318, guid: aa8347a3009e399318d0e0caa259ef11, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5102485945457666318, guid: aa8347a3009e399318d0e0caa259ef11, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5102485945457666318, guid: aa8347a3009e399318d0e0caa259ef11, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5102485945457666318, guid: aa8347a3009e399318d0e0caa259ef11, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5102485945457666318, guid: aa8347a3009e399318d0e0caa259ef11, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5102485945457666318, guid: aa8347a3009e399318d0e0caa259ef11, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7394325416412793668, guid: aa8347a3009e399318d0e0caa259ef11, type: 3}
+      propertyPath: _waiterComponent
+      value: 
+      objectReference: {fileID: 2181775631686005228}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: aa8347a3009e399318d0e0caa259ef11, type: 3}
+--- !u!4 &6659813715673795291 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5102485945457666318, guid: aa8347a3009e399318d0e0caa259ef11, type: 3}
+  m_PrefabInstance: {fileID: 1919591879636132821}
+  m_PrefabAsset: {fileID: 0}
