@@ -88,6 +88,24 @@ namespace Game.Characters
         }
 
         /// <summary>
+        /// Tries to get any currently registered waiter.
+        /// </summary>
+        public bool TryGetAnyWaiter(out Waiter waiter)
+        {
+            foreach (Waiter candidate in _waiters)
+            {
+                if (candidate == null)
+                    continue;
+
+                waiter = candidate;
+                return true;
+            }
+
+            waiter = null;
+            return false;
+        }
+
+        /// <summary>
         /// Tries to assign a customer to an available waiter.
         /// </summary>
         /// <param name="customer">Customer that needs service.</param>
@@ -186,7 +204,11 @@ namespace Game.Characters
 
         private void HandleCustomerWrongItem(Customer customer, Item item)
         {
-            ClearAssignmentForCustomer(customer, true, false);
+            if (customer == null || !_waiterByCustomer.TryGetValue(customer, out Waiter waiter))
+                return;
+
+            waiter.ClearCarriedItem();
+            waiter.StartGoingToMealPoint();
         }
 
         private void ClearAssignmentForCustomer(Customer customer, bool clearCarriedItem, bool sendToMealPoint)

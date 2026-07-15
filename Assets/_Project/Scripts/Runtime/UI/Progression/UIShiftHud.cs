@@ -24,6 +24,7 @@ namespace Game.UI
 
         [Header("Format")]
         [SerializeField] private string _timerFormat = "{0:00}:{1:00}";
+        [SerializeField] private string _untimedTimerText = "--:--";
         [SerializeField] private string _revenueFormat = "Revenue {0} / {1}";
         [SerializeField] private string _shiftNumberFormat = "Shift {0} / {1}";
 
@@ -109,6 +110,12 @@ namespace Game.UI
         {
             if (_timerLabel == null || _shiftService == null)
                 return;
+
+            if (_shiftService.IsPracticeShift)
+            {
+                _timerLabel.text = _untimedTimerText;
+                return;
+            }
 
             int totalSeconds = Mathf.Max(0, Mathf.CeilToInt(_shiftService.ShiftTimer));
             int minutes = totalSeconds / 60;

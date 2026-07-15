@@ -27,7 +27,7 @@ namespace Game.Progression
         {
             var unlocked = _allowedItems
                 .FindAll(item => item.TryGetProperty<ShiftProperty>(out var shiftProp)
-                && shiftProp.RequiredShift <= _shiftService.ShiftIndex);
+                && shiftProp.RequiredShift <= _shiftService.ItemUnlockShiftIndex);
             return unlocked.Count > 0 ? unlocked[UnityEngine.Random.Range(0, unlocked.Count)] : null;
         }
     }

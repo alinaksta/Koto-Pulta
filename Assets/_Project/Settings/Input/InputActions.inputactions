@@ -274,6 +274,17 @@
                 },
                 {
                     "name": "",
+                    "id": "e9cd2799-8f29-4dfb-a620-6233ba94bc3f",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "992b8f34-5b58-475d-accf-33004b956241",
                     "path": "<Mouse>/position",
                     "interactions": "",

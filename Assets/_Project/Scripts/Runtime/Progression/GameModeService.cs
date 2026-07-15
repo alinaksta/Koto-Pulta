@@ -12,7 +12,8 @@ namespace Game.Progression
     /// </summary>
     public class GameModeService : MonoBehaviour, IBootstrapable
     {
-        [SerializeField] private string _startingModeId = "shift";
+        [SerializeField] private string _startingModeId = "tutorial";
+        [SerializeField] private string _fallbackModeId = "shift";
         [SerializeField] private bool _autoStart = true;
         [SerializeField] private List<MonoBehaviour> _gameModeBehaviours = new();
 
@@ -51,6 +52,9 @@ namespace Game.Progression
                 return;
 
             if (!string.IsNullOrWhiteSpace(_startingModeId) && TrySetGameMode(_startingModeId))
+                return;
+
+            if (!string.IsNullOrWhiteSpace(_fallbackModeId) && TrySetGameMode(_fallbackModeId))
                 return;
 
             foreach (var mode in _modesById.Values)
