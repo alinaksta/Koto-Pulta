@@ -97,6 +97,10 @@ namespace Game.Input
         public ButtonState Cancel { get; }
 
         /// <summary>
+        /// Gets the current cancel button state.
+        /// </summary>
+        public ButtonState Pause { get; }
+
         /// Gets the unsuppressed input used to advance modal dialogue.
         /// </summary>
         public ButtonState DialogueAdvance { get; }

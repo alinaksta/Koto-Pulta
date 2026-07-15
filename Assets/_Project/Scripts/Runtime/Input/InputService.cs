@@ -73,6 +73,9 @@ namespace Game.Input
             _gameplaySuppressed = suppressed;
         }
 
+        /// <inheritdoc/>
+        public ButtonState Pause => GetButtonState(_actions.Gameplay.Pause);
+
         /// <summary>
         /// Reads a frame snapshot for the supplied input action.
         /// </summary>
