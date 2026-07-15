@@ -13,7 +13,7 @@ namespace Game.UI
     {
         ShiftStatistics,
         Shop,
-        Website
+        Meals
     }
 
     /// <summary>
@@ -29,7 +29,7 @@ namespace Game.UI
         }
 
         [SerializeField] private ComputerInteractable _computer;
-        [SerializeField] private ComputerSiteTab _defaultTab = ComputerSiteTab.Website;
+        [SerializeField] private ComputerSiteTab _defaultTab = ComputerSiteTab.Meals;
         [SerializeField] private List<TabBinding> _tabs = new List<TabBinding>();
 
         [SerializeField, HideInInspector] private List<GameObject> sites = new List<GameObject>();
@@ -41,6 +41,12 @@ namespace Game.UI
         private bool _isFocused;
 
         public event Action<ComputerSiteTab> OnTabChanged = delegate { };
+        public event Action<ComputerSiteTab> OnTabViewed = delegate { };
+        public event Action OnComputerExited = delegate { };
+
+        public ComputerSiteTab CurrentTab => _currentTab;
+        public bool HasCurrentTab => _hasCurrentTab;
+        public bool IsFocused => _isFocused;
 
         private void Awake()
         {
@@ -99,6 +105,9 @@ namespace Game.UI
 
             if (changed)
                 OnTabChanged.Invoke(_currentTab);
+
+            if (_isFocused)
+                OnTabViewed.Invoke(_currentTab);
         }
 
         /// <summary>
@@ -135,12 +144,14 @@ namespace Game.UI
                 InitializeCurrentTab();
 
             ShowCurrentTab();
+            OnTabViewed.Invoke(_currentTab);
         }
 
         private void HandleFocusEnded()
         {
             _isFocused = false;
             HideAllTabs();
+            OnComputerExited.Invoke();
         }
 
         private void InitializeCurrentTab()

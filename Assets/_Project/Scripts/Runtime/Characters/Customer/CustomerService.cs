@@ -77,7 +77,7 @@ namespace Game.Characters
         /// Tries to spawn a customer at a random currently free table.
         /// </summary>
         /// <returns><see langword="true"/> when a customer was spawned.</returns>
-        public bool TrySpawnCustomerAtRandomFreeTable()
+        public bool TrySpawnCustomerAtRandomFreeTable(float? waitTimerOverride = null)
         {
             if (_freeTables.Count == 0)
                 return false;
@@ -85,7 +85,7 @@ namespace Game.Characters
             int randomIndex = UnityEngine.Random.Range(0, _freeTables.Count);
             Table table = _freeTables[randomIndex];
 
-            bool spawned = TrySpawnCustomerAtTable(table);
+            bool spawned = TrySpawnCustomerAtTable(table, waitTimerOverride);
 
             if (spawned)
                 _freeTables.RemoveAt(randomIndex);
@@ -98,7 +98,7 @@ namespace Game.Characters
         /// </summary>
         /// <param name="table">Table to seat the customer at.</param>
         /// <returns><see langword="true"/> when the customer was spawned and seated.</returns>
-        public bool TrySpawnCustomerAtTable(Table table)
+        public bool TrySpawnCustomerAtTable(Table table, float? waitTimerOverride = null)
         {
             if (table == null || !table.HasFreeSeat)
                 return false;
@@ -117,7 +117,7 @@ namespace Game.Characters
             }
 
             ItemDefinition order = GetRandomOrder();
-            customer.Initialize(table, seat, order);
+            customer.Initialize(table, seat, order, waitTimerOverride);
 
             customer.OnServed += HandleCustomerServed;
             customer.OnTimedOut += HandleCustomerTimedOut;
@@ -125,10 +125,10 @@ namespace Game.Characters
 
             _activeCustomers.Add(customer);
 
+            OnCustomerSpawned.Invoke(customer);
+
             if (ServiceLocator.TryGet<WaiterService>(out var waiterService))
                 waiterService.TryAssignCustomerToUnassignedWaiter(customer);
-
-            OnCustomerSpawned.Invoke(customer);
 
             return true;
         }
@@ -185,7 +185,6 @@ namespace Game.Characters
         private void HandleCustomerWrongItem(Customer customer, Item item)
         {
             OnCustomerWrongItem.Invoke(customer, item);
-            DespawnCustomer(customer);
         }
 
         private void HandleCustomerTimedOut(Customer customer)

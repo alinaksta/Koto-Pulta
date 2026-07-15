@@ -1,5 +1,4 @@
 using Game.Characters;
-using Game.Items;
 using System;
 using UnityEngine;
 
@@ -56,7 +55,7 @@ namespace Game.Progression
     /// <summary>
     /// Collects runtime statistics for the current shift.
     /// </summary>
-    public sealed class ShiftStatisticsCollector
+    public sealed class ShiftStatisticsCollector : IDisposable
     {
         /// <summary>
         /// Creates a statistics collector bound to the supplied customer service.
@@ -67,7 +66,6 @@ namespace Game.Progression
 
             _customerService.OnCustomerServed += HandleCustomerServed;
             _customerService.OnCustomerTimedOut += HandleCustomerTimedOut;
-            _customerService.OnCustomerWrongItem += HandleCustomerWrong;
         }
 
         private int _customersServed;
@@ -96,7 +94,9 @@ namespace Game.Progression
         public ShiftStatistics GetStatistics()
         {
             int customersOverall = _customersUnsatisfied + _customersServed;
-            float averageDeliveryTime = _deliveryTimeSumm / (float)customersOverall;
+            float averageDeliveryTime = customersOverall > 0
+                ? _deliveryTimeSumm / customersOverall
+                : 0f;
             Debug.Log($"Average delivery time: {averageDeliveryTime}");
 
             return new ShiftStatistics(
@@ -111,12 +111,18 @@ namespace Game.Progression
         /// </summary>
         public void SetMoneyEarned(int value) => _moneyEarned = value;
 
-        #region Event handlers
-        private void HandleCustomerWrong(Customer customer, Item item)
+        /// <inheritdoc/>
+        public void Dispose()
         {
-            _customersUnsatisfied++;
+            if (_customerService == null)
+                return;
+
+            _customerService.OnCustomerServed -= HandleCustomerServed;
+            _customerService.OnCustomerTimedOut -= HandleCustomerTimedOut;
+            _customerService = null;
         }
 
+        #region Event handlers
         private void HandleCustomerTimedOut(Customer customer)
         {
             _customersUnsatisfied++;
