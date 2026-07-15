@@ -830,6 +830,7 @@ GameObject:
   - component: {fileID: 861958276608096906}
   - component: {fileID: 1646824362821949523}
   - component: {fileID: 6370935048283033734}
+  - component: {fileID: 6147412369661176960}
   m_Layer: 8
   m_Name: PR_Computer
   m_TagString: Untagged
@@ -965,7 +966,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f172c68012ed1f44ba60d77c94225c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteActivator
-  _computer: {fileID: 0}
+  _computer: {fileID: 861958276608096906}
   _defaultTab: 0
   _tabs:
   - Tab: 0
@@ -992,6 +993,23 @@ MonoBehaviour:
   _rotationOfssetVertical: 6
   _rotationOfssetHorizontal: 6
   _lerpCoefficient: 12
+--- !u!114 &6147412369661176960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7098306563879448833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 914aa057e1374aee980729ec2460eff5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Game.Interaction.MeshOutlineHover
+  _renderers:
+  - {fileID: 1863445905988709106}
+  _outlineColor: {r: 0.42547834, g: 0, b: 0.79622644, a: 1}
+  _outlineWidth: 10
+  _outlinedWhenNotHovered: 0
 --- !u!1 &7177571160208906152
 GameObject:
   m_ObjectHideFlags: 0
@@ -1472,11 +1490,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3885640181334625980, guid: 372ccd3bd70f0eb46b20c7ab5ace092b, type: 3}
       propertyPath: m_Size
-      value: 0.37292007
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3885640181334625980, guid: 372ccd3bd70f0eb46b20c7ab5ace092b, type: 3}
       propertyPath: m_Value
-      value: -0.0000001984754
+      value: 0.00000011908524
       objectReference: {fileID: 0}
     - target: {fileID: 4087454248714620102, guid: 372ccd3bd70f0eb46b20c7ab5ace092b, type: 3}
       propertyPath: m_Size
@@ -1564,7 +1582,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8603218274019328773, guid: 372ccd3bd70f0eb46b20c7ab5ace092b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 768.8002
+      value: 768.7999
+      objectReference: {fileID: 0}
+    - target: {fileID: 8744813978913320894, guid: 372ccd3bd70f0eb46b20c7ab5ace092b, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1678,7 +1700,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4095091925466162156, guid: 8ac9819291a45da438b619e82642a02d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 768.8001
+      value: 768.7999
       objectReference: {fileID: 0}
     - target: {fileID: 4618071488648361453, guid: 8ac9819291a45da438b619e82642a02d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1694,7 +1716,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6009765017003423150, guid: 8ac9819291a45da438b619e82642a02d, type: 3}
       propertyPath: m_Value
-      value: -0.0000001984754
+      value: 0.00000011908524
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

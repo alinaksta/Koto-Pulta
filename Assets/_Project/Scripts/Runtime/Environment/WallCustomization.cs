@@ -8,14 +8,13 @@ namespace Game.Environment
     [CreateAssetMenu(
         fileName = "NewWallCustomization",
         menuName = "Customization/Walls")]
-    public class WallCustomization : ScriptableObject
+    public class WallCustomization : CustomizationDefinition
     {
-        [SerializeField] private string _name;
         [SerializeField] private Color _topColor = Color.white;
         [SerializeField] private Color _bottomColor = Color.white;
         [SerializeField] private Texture2D _serviceCounterTexture;
 
-        public string Name => _name;
+        public override CustomizationCategory Category => CustomizationCategory.Walls;
         public Color TopColor => _topColor;
         public Color BottomColor => _bottomColor;
         public Texture2D ServiceCounterTexture => _serviceCounterTexture;

@@ -2,6 +2,7 @@ using Game.Services;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Game.Environment
 {
@@ -32,14 +33,15 @@ namespace Game.Environment
         [Tooltip("Simple URP Unlit material slot used by the service counter/table.")]
         [SerializeField] private RendererMaterialSlot _serviceCounter = new();
 
-        [Header("Windows")]
-        [SerializeField] private List<RendererMaterialSlot> _windows = new();
+        [Header("Panorama")]
+        [SerializeField, FormerlySerializedAs("_windows")]
+        private List<RendererMaterialSlot> _panoramas = new();
 
         public RendererMaterialSlot Floor => _floor;
         public RendererMaterialSlot Door => _door;
         public RendererMaterialSlot Walls => _walls;
         public RendererMaterialSlot ServiceCounter => _serviceCounter;
-        public IReadOnlyList<RendererMaterialSlot> Windows => _windows;
+        public IReadOnlyList<RendererMaterialSlot> Panoramas => _panoramas;
 
         private void OnEnable()
         {

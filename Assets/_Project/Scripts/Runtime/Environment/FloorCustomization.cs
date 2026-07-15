@@ -8,13 +8,12 @@ namespace Game.Environment
     [CreateAssetMenu(
         fileName = "NewFloorCustomization",
         menuName = "Customization/Floor")]
-    public class FloorCustomization : ScriptableObject
+    public class FloorCustomization : CustomizationDefinition
     {
-        [SerializeField] private string _name;
         [SerializeField] private Texture2D _floorTexture;
         [SerializeField] private Texture2D _doorTexture;
 
-        public string Name => _name;
+        public override CustomizationCategory Category => CustomizationCategory.Floor;
         public Texture2D FloorTexture => _floorTexture;
         public Texture2D DoorTexture => _doorTexture;
     }

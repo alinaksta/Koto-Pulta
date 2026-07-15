@@ -18,11 +18,11 @@ namespace Game.Environment
         private CustomizationController _controller;
         private FloorCustomization _floor;
         private WallCustomization _walls;
-        private WindowCustomization _windows;
+        private PanoramaCustomization _panorama;
 
         public FloorCustomization Floor => _floor;
         public WallCustomization Walls => _walls;
-        public WindowCustomization Windows => _windows;
+        public PanoramaCustomization Panorama => _panorama;
 
         private void Awake()
         {
@@ -71,21 +71,21 @@ namespace Game.Environment
         }
 
         /// <summary>
-        /// Applies a window texture to all registered windows.
+        /// Applies a panorama texture to all registered panorama renderers.
         /// </summary>
-        public void ApplyWindows(WindowCustomization customization)
+        public void ApplyPanorama(PanoramaCustomization customization)
         {
             if (customization == null)
                 return;
 
-            _windows = customization;
+            _panorama = customization;
 
             if (_controller == null)
                 return;
 
-            foreach (RendererMaterialSlot window in _controller.Windows)
+            foreach (RendererMaterialSlot panorama in _controller.Panoramas)
             {
-                SetTexture(window, customization.Texture);
+                SetTexture(panorama, customization.Texture);
             }
         }
 
@@ -99,8 +99,8 @@ namespace Game.Environment
             if (_walls != null)
                 ApplyWalls(_walls);
 
-            if (_windows != null)
-                ApplyWindows(_windows);
+            if (_panorama != null)
+                ApplyPanorama(_panorama);
         }
 
         public void Unbind(CustomizationController controller)

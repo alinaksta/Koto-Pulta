@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa600c224bcf440e8933e60b3e2c9695, type: 3}
   m_Name: SecondFloor
   m_EditorClassIdentifier: Assembly-CSharp::Game.Environment.FloorCustomization
-  _name: Dark Blue
+  _displayName: Dark Blue
+  _price: 0
+  _unlockedByDefault: 0
+  _lockedSprite: {fileID: 21300000, guid: 089b0c9b05c775f4181196a76ed66cf3, type: 3}
+  _unlockedSprite: {fileID: 21300000, guid: ccbd308644e1ede458d282e0243f6cc3, type: 3}
   _floorTexture: {fileID: 2800000, guid: 0bcc597755649d64f920908cf3581323, type: 3}
   _doorTexture: {fileID: 2800000, guid: d870258894e881a4b9525d32aabd5ca2, type: 3}
