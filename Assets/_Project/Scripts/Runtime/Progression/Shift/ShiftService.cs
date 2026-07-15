@@ -68,10 +68,10 @@ namespace Game.Progression
         /// </summary>
         public Shift CurrentShift => _practiceShiftActive
             ? _practiceShift
-            : HasNormalShift ? _shifts[_shiftIndex] : default;
+            : HasNormalShift ? _shifts[Mathf.Min(_shiftIndex, ShiftAmount - 1)] : default;
 
         /// <summary>
-        /// Gets whether the current shift index points to a valid configured shift.
+        /// Gets whether a configured, endless, or practice shift is selected.
         /// </summary>
         public bool HasCurrentShift => _practiceShiftActive || HasNormalShift;
 
@@ -81,11 +81,18 @@ namespace Game.Progression
         public bool IsPracticeShift => _practiceShiftActive;
 
         /// <summary>
+        /// Gets whether the current shift is an endless shift after the configured sequence.
+        /// </summary>
+        public bool IsEndlessShift => !_practiceShiftActive
+            && ShiftAmount > 0
+            && _shiftIndex >= ShiftAmount;
+
+        /// <summary>
         /// Gets the shift index used when resolving unlocked items.
         /// </summary>
         public int ItemUnlockShiftIndex => _practiceShiftActive ? 0 : _shiftIndex;
 
-        private bool HasNormalShift => _shiftIndex >= 0 && _shiftIndex < ShiftAmount;
+        private bool HasNormalShift => _shiftIndex >= 0 && ShiftAmount > 0;
 
         /// <summary>
         /// Gets the remaining time for the active shift.
@@ -110,7 +117,9 @@ namespace Game.Progression
         /// <summary>
         /// Gets the revenue goal for the active shift.
         /// </summary>
-        public int CurrentGoalRevenue => HasCurrentShift ? CurrentShift.GoalRevenue : 0;
+        public int CurrentGoalRevenue => HasCurrentShift && !IsEndlessShift
+            ? CurrentShift.GoalRevenue
+            : 0;
 
         /// <summary>
         /// Gets the normalized revenue progress for the active shift.
@@ -211,7 +220,7 @@ namespace Game.Progression
 
         private void FinishCurrentShift()
         {
-            if (CurrentRevenue < CurrentShift.GoalRevenue)
+            if (CurrentRevenue < CurrentGoalRevenue)
                 FailCurrentShift();
             else
                 CompleteCurrentShift();
@@ -273,11 +282,11 @@ namespace Game.Progression
         }
 
         /// <summary>
-        /// Tries to start the next configured shift.
+        /// Tries to start the next shift.
         /// </summary>
         public bool TryStartNextShift()
         {
-            if (ShiftInProgress)
+            if (!_modeActive || ShiftInProgress)
                 return false;
 
             if (_normalShiftStartLocked && !_practiceShiftQueued)
@@ -288,11 +297,11 @@ namespace Game.Progression
         }
 
         /// <summary>
-        /// Starts the next configured shift.
+        /// Starts the next shift.
         /// </summary>
         public void StartNextShift()
         {
-            if (ShiftInProgress)
+            if (!_modeActive || ShiftInProgress)
                 return;
 
             if (_normalShiftStartLocked && !_practiceShiftQueued)
@@ -305,14 +314,6 @@ namespace Game.Progression
             }
 
             int nextShiftIndex = _shiftIndex + 1;
-
-            if (nextShiftIndex >= ShiftAmount)
-            {
-                _modeActive = false;
-                _context.Session.MarkSucceeded();
-                return;
-            }
-
             _shiftIndex = nextShiftIndex;
             _currentRevenue = 0;
             _lastKnownBalance = _context.Balance.Balance;
@@ -395,12 +396,6 @@ namespace Game.Progression
                 return;
             }
 
-            if (_shiftIndex + 1 >= ShiftAmount)
-            {
-                _modeActive = false;
-                _context.Session.MarkSucceeded();
-                return;
-            }
         }
 
         private void FailCurrentShift()
