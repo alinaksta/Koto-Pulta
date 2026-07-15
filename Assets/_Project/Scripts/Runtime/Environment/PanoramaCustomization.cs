@@ -12,7 +12,12 @@ namespace Game.Environment
     {
         [SerializeField] private Texture2D _texture;
 
+        /// <inheritdoc/>
         public override CustomizationCategory Category => CustomizationCategory.Panorama;
+
+        /// <summary>
+        /// Gets the texture applied to panorama/window materials.
+        /// </summary>
         public Texture2D Texture => _texture;
     }
 }

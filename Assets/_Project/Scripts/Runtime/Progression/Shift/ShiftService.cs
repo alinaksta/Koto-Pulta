@@ -17,8 +17,19 @@ namespace Game.Progression
     [Serializable]
     public struct Shift
     {
+        /// <summary>
+        /// Revenue required to complete the shift.
+        /// </summary>
         public int GoalRevenue;
+
+        /// <summary>
+        /// Delay in seconds between customer spawn attempts.
+        /// </summary>
         public float CustomerAppearanceDelay;
+
+        /// <summary>
+        /// Number of recipes available during the shift.
+        /// </summary>
         public int AvailableRecepies;
     }
 
