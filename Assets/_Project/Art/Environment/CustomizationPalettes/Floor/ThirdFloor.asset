@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ThirdFloor
   m_EditorClassIdentifier: Assembly-CSharp::Game.Environment.FloorCustomization
   _displayName: Light Blue
-  _price: 0
+  _price: 5
   _unlockedByDefault: 0
   _lockedSprite: {fileID: 21300000, guid: 6c526660cc99f1e42a97393c566e8e45, type: 3}
   _unlockedSprite: {fileID: 21300000, guid: 33f1d9e458589174a895bcc4df244e97, type: 3}
