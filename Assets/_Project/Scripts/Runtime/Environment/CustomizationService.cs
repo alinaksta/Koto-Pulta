@@ -20,8 +20,19 @@ namespace Game.Environment
         private WallCustomization _walls;
         private PanoramaCustomization _panorama;
 
+        /// <summary>
+        /// Gets the currently applied floor customization.
+        /// </summary>
         public FloorCustomization Floor => _floor;
+
+        /// <summary>
+        /// Gets the currently applied wall customization.
+        /// </summary>
         public WallCustomization Walls => _walls;
+
+        /// <summary>
+        /// Gets the currently applied panorama customization.
+        /// </summary>
         public PanoramaCustomization Panorama => _panorama;
 
         private void Awake()
@@ -89,6 +100,9 @@ namespace Game.Environment
             }
         }
 
+        /// <summary>
+        /// Binds scene renderer references and reapplies the current customizations.
+        /// </summary>
         public void Bind(CustomizationController controller)
         {
             _controller = controller;
@@ -103,6 +117,9 @@ namespace Game.Environment
                 ApplyPanorama(_panorama);
         }
 
+        /// <summary>
+        /// Clears the active scene renderer references if they match the bound controller.
+        /// </summary>
         public void Unbind(CustomizationController controller)
         {
             if (_controller == controller)

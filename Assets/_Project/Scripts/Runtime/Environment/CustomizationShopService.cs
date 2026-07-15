@@ -20,7 +20,14 @@ namespace Game.Environment
         private WallCustomization _equippedWalls;
         private PanoramaCustomization _equippedPanorama;
 
+        /// <summary>
+        /// Raised after a customization is purchased.
+        /// </summary>
         public event Action<CustomizationDefinition> OnPurchased = delegate { };
+
+        /// <summary>
+        /// Raised after a customization is equipped.
+        /// </summary>
         public event Action<CustomizationDefinition> OnEquipped = delegate { };
 
         /// <inheritdoc/>
@@ -48,11 +55,17 @@ namespace Game.Environment
                 TryEquip(customization);
         }
 
+        /// <summary>
+        /// Gets whether the customization is currently owned.
+        /// </summary>
         public bool IsOwned(CustomizationDefinition customization)
         {
             return customization != null && _owned.Contains(customization);
         }
 
+        /// <summary>
+        /// Gets whether the customization is currently equipped for its category.
+        /// </summary>
         public bool IsEquipped(CustomizationDefinition customization)
         {
             return customization != null && ReferenceEquals(
@@ -60,12 +73,18 @@ namespace Game.Environment
                 GetEquipped(customization.Category));
         }
 
+        /// <summary>
+        /// Gets whether the current balance can pay for the customization.
+        /// </summary>
         public bool CanAfford(CustomizationDefinition customization)
         {
             return customization != null
                 && (customization.Price <= 0 || _balanceService.Balance >= customization.Price);
         }
 
+        /// <summary>
+        /// Tries to purchase the customization using the current balance.
+        /// </summary>
         public bool TryPurchase(CustomizationDefinition customization)
         {
             if (customization == null || IsOwned(customization))
@@ -79,6 +98,9 @@ namespace Game.Environment
             return true;
         }
 
+        /// <summary>
+        /// Tries to equip an owned customization and apply it to the environment.
+        /// </summary>
         public bool TryEquip(CustomizationDefinition customization)
         {
             if (customization == null || !IsOwned(customization))
