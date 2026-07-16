@@ -40,7 +40,7 @@ namespace Game.Player
         private Vector2 _smoothedMouseDelta;
         private Vector2 _mouseDeltaVelocity;
 
-        private bool _mouseLocked;
+        private static bool _mouseLocked;
 
         /// <inheritdoc/>
         public Quaternion RotationFlat => Quaternion.Euler(0f, _yaw, 0f);
@@ -210,6 +210,12 @@ namespace Game.Player
         }
 
         /// <inheritdoc/>
+        public static void SetMouseLockedStatic(bool locked = true)
+        {
+            Cursor.lockState = locked ? CursorLockMode.Locked : CursorLockMode.None;
+            Cursor.visible = !locked;
+            _mouseLocked = locked;
+        }
         public void SetMouseLocked(bool locked = true)
         {
             Cursor.lockState = locked ? CursorLockMode.Locked : CursorLockMode.None;

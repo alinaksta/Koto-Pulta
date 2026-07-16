@@ -10,7 +10,6 @@ namespace Game.Interaction
     {
         private IInputService _inputService;
         private SoundService _soundService;
-        [SerializeField] private CameraController _cameraController;
         public GameObject _pauseCanvas;
         [SerializeField] private SoundType _pauseSound = SoundType.Error;
         [Range(0f,1f)]
@@ -33,14 +32,14 @@ namespace Game.Interaction
         private void InitiatePause()
         {
             _pauseCanvas.SetActive(true);
-            _cameraController.SetMouseLocked();
+            CameraController.SetMouseLockedStatic(false);
             _soundService.PlaySound(_pauseSound, _volume);
             Debug.Log("This is a pause");
             Time.timeScale = 0f;
         }
         public void Continue()
         {
-            _cameraController.ClearMouseLocked();
+            CameraController.SetMouseLockedStatic(true);
              Time.timeScale = 1f;
             _pauseCanvas.SetActive(false);
         }
