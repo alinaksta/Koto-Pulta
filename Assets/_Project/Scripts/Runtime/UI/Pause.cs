@@ -1,5 +1,6 @@
 using Game.Input;
 using Game.Services;
+using Game.Player;
 using Game.Audio;
 using UnityEngine;
 
@@ -9,6 +10,8 @@ namespace Game.Interaction
     {
         private IInputService _inputService;
         private SoundService _soundService;
+        [SerializeField] private CameraController _cameraController;
+        public GameObject _pauseCanvas;
         [SerializeField] private SoundType _pauseSound = SoundType.Error;
         [Range(0f,1f)]
         [SerializeField] private float _volume = 1f;
@@ -22,13 +25,24 @@ namespace Game.Interaction
 
         private void Update()
         {
-            if (_inputService.Pause.Pressed)
+            if (_inputService.Pause.Pressed && !_pauseCanvas.activeSelf)
                 InitiatePause();
+            if (_inputService.Pause.Pressed && _pauseCanvas.activeSelf)
+                Continue();
         }
         private void InitiatePause()
         {
+            _pauseCanvas.SetActive(true);
+            _cameraController.SetMouseLocked();
             _soundService.PlaySound(_pauseSound, _volume);
             Debug.Log("This is a pause");
+            Time.timeScale = 0f;
+        }
+        public void Continue()
+        {
+            _cameraController.ClearMouseLocked();
+             Time.timeScale = 1f;
+            _pauseCanvas.SetActive(false);
         }
 
     }

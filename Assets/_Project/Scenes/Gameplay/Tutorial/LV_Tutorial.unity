@@ -6858,7 +6858,9 @@ MonoBehaviour:
   _timerFormat: '{0:00}:{1:00}'
   _untimedTimerText: --:--
   _revenueFormat: ${0}/{1}
+  _endlessRevenueText: No revenue goal
   _shiftNumberFormat: Shift {0}
+  _endlessShiftNumberFormat: Shift {0}
 --- !u!114 &1946674748
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7773,6 +7775,18 @@ PrefabInstance:
       propertyPath: m_AnchorMin.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3964279487787816355, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3964279487787816355, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3964279487787816355, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4437461893258311682, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -7827,6 +7841,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4661187602634654535, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4889863835696989216, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4889863835696989216, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4889863835696989216, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
+      propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5499742964352985186, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}

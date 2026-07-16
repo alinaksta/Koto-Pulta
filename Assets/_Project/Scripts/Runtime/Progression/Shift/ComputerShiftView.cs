@@ -105,11 +105,6 @@ namespace Game.Progression
         private void UpdateEndedUI()
         {
             EnableSinglePanel(_endedPanel);
-            var stats = _shiftService.LastStatistics;
-            _angryCustomersText.text = stats.CustomersUnsatisfied.ToString();
-            _happyCustomersText.text = stats.CustomersServed.ToString();
-            _averageTimeText.text = stats.AverageDeliveryTime.ToString("F1");
-            _moneyEarnedText.text = stats.MoneyEarned.ToString();
         }
 
         private void UpdateInitialUI()

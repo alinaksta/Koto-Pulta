@@ -10,17 +10,23 @@ public class Evaluation : MonoBehaviour
 {
     private ShiftService _shiftService;
     [SerializeField] private Image[] _segments;
-    [SerializeField] private TMP_Text grade;
+    [SerializeField] private TMP_Text _customersServedText;
+    [SerializeField] private TMP_Text _customersUnsatisfiedText;
+    [SerializeField] private TMP_Text _deliveryTimeText;
+    [SerializeField] private TMP_Text _moneyEarnedText;
+    [SerializeField] private GameObject _evaluateButton;
+    [SerializeField] private GameObject _nextShiftButton;
+
 
 
     private void Awake()
     {
         _shiftService = ServiceLocator.Get<ShiftService>();
     }
-    public void SetSegments()
+    public void SetSegments(int segmentAmount)
     {
         for(int i = 0; i < _segments.Length; i++)
-            _segments[i].color = i < _shiftService.ShiftIndex + 1 ? Color.green : Color.white;
+            _segments[i].color = i < segmentAmount + 1 ? Color.green : Color.white;
     }
     public void ResetSegments()
     {
@@ -30,16 +36,40 @@ public class Evaluation : MonoBehaviour
     public void StartEvaluation()
     {
         StartCoroutine(EvaluateGrade());
+        _evaluateButton.SetActive(false);
+        _nextShiftButton.SetActive(true);
+    }
+    public void ResetEvaluation()
+    {
+        ResetGrade();
+        _evaluateButton.SetActive(true);
+        _nextShiftButton.SetActive(false);
     }
     private IEnumerator EvaluateGrade()
     {
-        int satisfied = 0, angry = 0, revenue = 0;
-        for (int i = 0; i < Mathf.Max(_shiftService.LastStatistics.CustomersServed, _shiftService.LastStatistics.CustomersUnsatisfied, _shiftService.LastStatistics.MoneyEarned); i++) {
-            satisfied = Mathf.Min(satisfied + 1, _shiftService.LastStatistics.CustomersServed);
-            angry = Mathf.Min(angry + 1, _shiftService.LastStatistics.CustomersUnsatisfied);
-            revenue = Mathf.Min(revenue + 1, _shiftService.LastStatistics.MoneyEarned);
-            grade.text = $"{satisfied}\n{angry}\n{revenue}";
-            yield return new WaitForSeconds(0.2f);
+        var stats = _shiftService.LastStatistics;
+        float interval = 0.2f;
+        for (int i = 0; i < Mathf.Max(stats.CustomersServed, stats.CustomersUnsatisfied, stats.MoneyEarned, (int)stats.AverageDeliveryTime); i++) {
+            _customersServedText.text = $"{Mathf.Min(i, stats.CustomersServed)}";
+            _customersUnsatisfiedText.text = $"{Mathf.Min(i, stats.CustomersUnsatisfied)}";
+            _moneyEarnedText.text = $"{Mathf.Min(i, stats.MoneyEarned)}";
+            _deliveryTimeText.text = $"{Mathf.Min(i, (int)stats.AverageDeliveryTime)}";
+
+            yield return new WaitForSeconds(interval);
+            interval -= 0.005f;
         }
+        for (int i = 0; i <= _shiftService.ShiftIndex; i++)
+        {
+            SetSegments(i);
+            yield return new WaitForSeconds(0.4f);
+        }
+    }
+    private void ResetGrade()
+    {
+        _customersServedText.text = "";
+        _customersUnsatisfiedText.text = "";
+        _moneyEarnedText.text = "";
+        _deliveryTimeText.text = "";
+        ResetSegments();
     }
 }
