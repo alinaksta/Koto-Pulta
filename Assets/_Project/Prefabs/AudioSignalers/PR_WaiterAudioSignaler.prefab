@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &463121848291658628
+--- !u!1 &3596040096553837809
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,44 +8,45 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 9057047826473256833}
-  - component: {fileID: 7394624357794592080}
-  m_Layer: 0
-  m_Name: ProgressionAudioListener
+  - component: {fileID: 5102485945457666318}
+  - component: {fileID: 7394325416412793668}
+  m_Layer: 7
+  m_Name: PR_WaiterAudioSignaler
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &9057047826473256833
+--- !u!4 &5102485945457666318
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 463121848291658628}
+  m_GameObject: {fileID: 3596040096553837809}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.33121, y: 0.59411, z: 6.62541}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -7.343126, y: 0, z: 0.9979916}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7394624357794592080
+--- !u!114 &7394325416412793668
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 463121848291658628}
+  m_GameObject: {fileID: 3596040096553837809}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42bbc6a3334f76c92867a35ab262c67d, type: 3}
+  m_Script: {fileID: 11500000, guid: 03e6685f35671445d88e9508f8c7a632, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ProgressionAudio
-  _moneySound: 3
-  _timerSound: 8
-  _alarmSound: 9
-  _volume: 1
+  m_EditorClassIdentifier: Assembly-CSharp::WaiterAudio
+  _waiterComponent: {fileID: 0}
+  _soundWalk: 6
+  _soundSplat: 7
+  _soundThrow: 2
+  _volume: 0.5
   _interval: 0.3
