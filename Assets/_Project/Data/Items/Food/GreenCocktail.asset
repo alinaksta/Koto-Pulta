@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65dec6dc6bb991845b520950c9f9e84c, type: 3}
+  m_Name: GreenCocktail
+  m_EditorClassIdentifier: Assembly-CSharp::Itemworks.Samples.BasicInventory.ItemDefinitionAsset
+  Id: green_cocktail
+  Properties:
+  - rid: 6891364640889241674
+  - rid: 6891364640889241675
+  references:
+    version: 2
+    RefIds:
+    - rid: 6891364640889241674
+      type: {class: FoodProperty, ns: Game.Items.Properties, asm: Assembly-CSharp}
+      data:
+        WorldSprite: {fileID: 21300000, guid: 0637a656be643954587cbf0a099c7945, type: 3}
+        DialogueSprite: {fileID: 21300000, guid: 2f91aff1a88677e488bd7f7c3e50450f, type: 3}
+        UnitPrice: 5
+    - rid: 6891364640889241675
+      type: {class: ShiftProperty, ns: Game.Items.Properties, asm: Assembly-CSharp}
+      data:
+        RequiredShift: 0

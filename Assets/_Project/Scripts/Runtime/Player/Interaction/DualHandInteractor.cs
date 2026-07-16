@@ -42,6 +42,16 @@ namespace Game.Interaction
         /// </summary>
         public Hand RightHand => _rightHand;
 
+        /// <summary>
+        /// Gets the current world-space look direction.
+        /// </summary>
+        public Vector3 LookForward => _lookDirection != null ? _lookDirection.forward : transform.forward;
+
+        /// <summary>
+        /// Gets the current world-space look origin.
+        /// </summary>
+        public Vector3 LookPosition => _lookDirection != null ? _lookDirection.position : transform.position;
+
 
         /// <inheritdoc/>
         public FocusStatus FocusStatus => _cameraController.FocusStatus;
@@ -53,8 +63,8 @@ namespace Game.Interaction
         {
             _inputService = ServiceLocator.Get<IInputService>();
             var physicsItemService = ServiceLocator.Get<PhysicsItemService>();
-            _leftHand = new(physicsItemService);
-            _rightHand = new(physicsItemService);
+            _leftHand = new(physicsItemService, _leftSpawnPosition);
+            _rightHand = new(physicsItemService, _rightSpawnPosition);
         }
 
         private void Update()
@@ -70,9 +80,9 @@ namespace Game.Interaction
             _leftHand.SetVisible(visible);
 
             if (_inputService.DropLeft.Pressed)
-                _leftHand.TryDropItem(_leftSpawnPosition.position, Vector3.zero);
+                _leftHand.TryDropItem(Vector3.zero);
             if (_inputService.DropRight.Pressed)
-                _rightHand.TryDropItem(_rightSpawnPosition.position, Vector3.zero);
+                _rightHand.TryDropItem(Vector3.zero);
 
             if (_inputService.InteractLeft.Pressed)
                 CauseInteraction(_leftHand);
@@ -95,16 +105,16 @@ namespace Game.Interaction
                 return;
 
             var context = new InteractionContext(
-                _lookDirection.position, 
-                _lookDirection.forward, 
-                this, 
+                LookPosition,
+                LookForward,
+                this,
                 hand,
                 this);
 
             if (hand.TryStartInteractionWithItemInHand(in context))
                 return;
 
-            if (Physics.Raycast(_lookDirection.position, _lookDirection.forward, out var hit, _interactionDistance, _interactionLayer))
+            if (Physics.Raycast(LookPosition, LookForward, out var hit, _interactionDistance, _interactionLayer))
             {
                 Debug.Log($"Has hit object named {hit.collider.gameObject.name}");
                 var contextWithHit = context.WithHitInfo(in hit);
@@ -123,10 +133,10 @@ namespace Game.Interaction
                 return;
 
             var context = new InteractionContext(
-                _lookDirection.position, 
-                _lookDirection.forward, 
-                this, 
-                hand, 
+                LookPosition,
+                LookForward,
+                this,
+                hand,
                 this);
 
             if (hand.TryHoldInteractionWithItemInHand(in context, delta))
@@ -138,10 +148,10 @@ namespace Game.Interaction
             if (FocusStatus != FocusStatus.Unfocused)
                 return;
 
-            var context = new InteractionContext(_lookDirection.position, 
-                _lookDirection.forward, 
-                this, 
-                hand, 
+            var context = new InteractionContext(LookPosition,
+                LookForward,
+                this,
+                hand,
                 this);
 
             if (hand.TryEndInteractionWithItemInHand(in context))

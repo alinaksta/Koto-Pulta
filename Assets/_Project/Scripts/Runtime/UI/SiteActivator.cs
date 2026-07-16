@@ -3,19 +3,21 @@ using Game.Interaction;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using Game.Services;
 
 namespace Game.UI
 {
-    /// <summary>
-    /// Utilite for shuffling buttons on site 
-    /// </summary>
     public class SiteActivator: MonoBehaviour
     {
+        private ComputerInteractable _computer;
         [SerializeField] private List<GameObject> sites;
         private int activeSite;
         
         private void Start()
         {
+            _computer = GetComponent<ComputerInteractable>();
+            _computer.FocusEnded += OnFocusEnded;
+            _computer.FocusStarted += OnFocusStartes;
             if (sites.Count == 0)
             {
                 Debug.LogError("No Sites Added");
@@ -26,7 +28,7 @@ namespace Game.UI
             }
         }
 
-        public void StartInteraction()
+        public void OnFocusStartes()
         {
             if (sites.Count == 0)
             {
@@ -36,10 +38,10 @@ namespace Game.UI
             activeSite = Random.Range(0, sites.Count);
             sites[activeSite].SetActive(true);
             sites[activeSite].GetComponent<ScrollRect>().verticalNormalizedPosition=1f;
-            sites[activeSite].GetComponent<SiteButtonRandomizer>().OnInteraction();
+            sites[activeSite].GetComponent<SiteButtonRandomizer>().Randomize();
         }    
 
-        public void EndInteraction()
+        public void OnFocusEnded()
         {
             if (sites.Count == 0)
             {

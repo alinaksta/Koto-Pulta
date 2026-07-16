@@ -33,9 +33,9 @@ namespace Game.Characters
 
         private void OnContainerItemChanged(Item? item)
         {
-            if (item.HasValue && item.Value.Definition.TryGetProperty<SpriteProperty>(out var spriteProperty))
+            if (item.HasValue && item.Value.Definition.TryGetProperty<FoodProperty>(out var spriteProperty))
             {
-                _spriteRenderer.sprite = spriteProperty.Sprite;
+                _spriteRenderer.sprite = spriteProperty.WorldSprite;
             }
             else
             {

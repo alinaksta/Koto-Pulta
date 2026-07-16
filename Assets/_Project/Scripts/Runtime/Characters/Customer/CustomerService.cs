@@ -20,6 +20,8 @@ namespace Game.Characters
         private readonly Dictionary<int, Table> _tablesByNumber = new();
         private readonly List<Customer> _activeCustomers = new();
 
+        private IRandomItemDefinitionGiver _randomItemGiver;
+
         /// <summary>
         /// Raised after a customer is spawned and initialized.
         /// </summary>
@@ -131,6 +133,11 @@ namespace Game.Characters
             return true;
         }
 
+        public void SetRandomItemGiver(IRandomItemDefinitionGiver giver)
+        {
+            _randomItemGiver = giver;
+        }
+
         private void HandleCustomerWrongItem(Customer customer, Item item)
         {
             OnCustomerWrongItem.Invoke(customer, item);
@@ -146,12 +153,13 @@ namespace Game.Characters
         private void HandleCustomerServed(Customer customer)
         {
             OnCustomerServed.Invoke(customer);
+            Debug.Log("Customer Served");
             CleanUpCustomer(customer);
         }
 
         private ItemDefinition GetRandomOrder()
         {
-            return ItemRegistry.Instance.Get("dev_calculator"); // TODO: Add actual random
+            return _randomItemGiver.GetRandomItemDefinition();
         }
 
         private void CleanUpCustomer(Customer customer)

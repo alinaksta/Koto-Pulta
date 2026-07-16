@@ -13,7 +13,7 @@ namespace Game.UI
     {
         [SerializeField] private List<Button> buttonsToShuffle;
         
-        public void OnInteraction()
+        public void Randomize()
         {
             if (buttonsToShuffle == null)
             {
