@@ -1,4 +1,6 @@
+using Game.Interaction;
 using Game.Services;
+using Game.UI;
 using System;
 using TMPro;
 using UnityEngine;
@@ -29,6 +31,7 @@ namespace Game.Progression
         [SerializeField] private TextMeshProUGUI _angryCustomersText;
         [SerializeField] private TextMeshProUGUI _averageTimeText;
         [SerializeField] private TextMeshProUGUI _moneyEarnedText;
+        [SerializeField] private SiteActivator _computer;
 
         [Header("In Progress Panel Dependencies")]
         [SerializeField] private RectTransform _inProgressPanel;
@@ -73,6 +76,7 @@ namespace Game.Progression
         private void HandleShiftEnded()
         {
             _state = ComputerShiftState.Ended;
+            _computer.SetTab(0);
             UpdateUI();
         }
 
