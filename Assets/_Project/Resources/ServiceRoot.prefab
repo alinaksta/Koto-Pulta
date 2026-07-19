@@ -955,8 +955,9 @@ MonoBehaviour:
       m_Calls: []
   _defaultMarkerOffset: {x: 0, y: 1.5, z: 0}
   _pickupMarkerOffset: {x: 0, y: 1.6, z: 0}
-  _waiterMarkerOffset: {x: 0, y: 2.3, z: 0}
-  _computerMarkerOffset: {x: 0, y: 1.4, z: 0}
+  _throwWaiterMarkerOffset: {x: 0, y: 1.6, z: 0}
+  _giveMealWaiterMarkerOffset: {x: 0, y: 2.3, z: 0}
+  _computerMarkerOffset: {x: 0, y: 1.32, z: 0}
   _tableMarkerOffset: {x: 0, y: 1.8, z: 0}
 --- !u!1 &4936715561112648007
 GameObject:
