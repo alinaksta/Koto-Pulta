@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ThirdWalls
   m_EditorClassIdentifier: Assembly-CSharp::Game.Environment.WallCustomization
   _displayName: Ocean Motive
-  _price: 5
+  _price: 150
   _unlockedByDefault: 0
   _lockedSprite: {fileID: 21300000, guid: 770d44719eb2ebf4aa92588150ee7b61, type: 3}
   _unlockedSprite: {fileID: 21300000, guid: c24b539446ada50419b1ec2925f4e071, type: 3}
