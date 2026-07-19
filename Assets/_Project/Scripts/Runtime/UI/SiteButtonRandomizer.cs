@@ -47,7 +47,9 @@ namespace Game.UI
             foreach (var btn in buttonsToShuffle)
             {
                 positions.Add(btn._button.transform.position);
-                btn.SetUnlocked(btn.RequiredShift() != -1 && btn.RequiredShift() >= shiftId);
+                int requiredTier = btn.RequiredTier();
+                int unlockedTier = shiftId + 1;
+                btn.SetUnlocked(requiredTier != -1 && requiredTier <= unlockedTier);
             }
             for (int i = 0; i < positions.Count; i++)
             {
