@@ -582,7 +582,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: e9af80fda459f2f3bb0c6c6f84ca3930, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.503
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1578,9 +1578,8 @@ MonoBehaviour:
   _soundList:
   - _name: Walk
     _sounds:
-    - {fileID: 8300000, guid: ccc19d6567527852b853e8a3af839ae7, type: 3}
-    - {fileID: 8300000, guid: f947800ed7158bcfc8303d7b4a39a808, type: 3}
-    - {fileID: 8300000, guid: 6a3a583221d288d1c848e6236d62da6e, type: 3}
+    - {fileID: 8300000, guid: d61a42724af90394faf86c443b2ae568, type: 3}
+    - {fileID: 8300000, guid: cd45374894633794fb77cb93101048a4, type: 3}
   - _name: PickUp
     _sounds:
     - {fileID: 8300000, guid: 6313b38ee917784b6a9cb82f77adf9d7, type: 3}
@@ -1598,8 +1597,8 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 3d9aaeb74b405d24f84805c2c522e804, type: 3}
   - _name: WaiterWalk
     _sounds:
-    - {fileID: 8300000, guid: 75d2a267403e02b6ca7a996768e1fbc5, type: 3}
-    - {fileID: 8300000, guid: 3d0c8db7f643c8715b1579caf4128780, type: 3}
+    - {fileID: 8300000, guid: 153e040677490cc8880e297e15184289, type: 3}
+    - {fileID: 8300000, guid: f63a91ff7d3f2f7718bc4170bbce68bb, type: 3}
   - _name: WaiterSplat
     _sounds:
     - {fileID: 8300000, guid: 376ec1c4fe56893c38444ff68e76b3ce, type: 3}
