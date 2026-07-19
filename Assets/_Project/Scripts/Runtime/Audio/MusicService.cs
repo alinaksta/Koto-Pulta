@@ -6,7 +6,7 @@ using System;
 
 namespace Game.Audio
 {
-    [RequireComponent(typeof(AudioSource)), ExecuteInEditMode]
+    [RequireComponent(typeof(AudioSource))]
     public class MusicService : MonoBehaviour, IBootstrapable
     {
         private RunSessionService _runSessionService;
