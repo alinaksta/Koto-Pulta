@@ -2,6 +2,7 @@ using Game.Interaction;
 using Game.Items;
 using Game.Items.Components;
 using Game.Items.Properties;
+using Game.Progression;
 using Game.Services;
 using Game.Utils;
 using Itemworks.Core;
@@ -91,6 +92,8 @@ namespace Game.Characters
         private ItemInstance _itemInstance;
         private WaiterService _waiterService;
         private WaiterQueueService _waiterQueueService;
+        private UpgradeService _upgradeService;
+        private float _baseAgentSpeed;
 
         private Customer _assignedCustomer;
         private Table _currentTable;
@@ -279,6 +282,10 @@ namespace Game.Characters
 
             _waiterService = ServiceLocator.Get<WaiterService>();
             _waiterQueueService = ServiceLocator.Get<WaiterQueueService>();
+            _upgradeService = ServiceLocator.Get<UpgradeService>();
+            _baseAgentSpeed = _agent.speed;
+            ApplySpeedUpgrade();
+            _upgradeService.OnUpgradeChanged += HandleUpgradeChanged;
             _defaultWanderOrigin = transform.position;
 
             CreateItemInstance();
@@ -303,7 +310,25 @@ namespace Game.Characters
         private void OnDestroy()
         {
             CarryContainer.OnItemChanged -= OnCarryItemChanged;
+            if (_upgradeService != null)
+                _upgradeService.OnUpgradeChanged -= HandleUpgradeChanged;
+
+            if (_waiterQueueService != null)
+                _waiterQueueService.UnassignMealPoint(_mealPoint);
+
             _waiterService.UnregisterWaiter(this);
+        }
+
+        private void HandleUpgradeChanged(UpgradeType type, int level)
+        {
+            if (type == UpgradeType.WaiterSpeed)
+                ApplySpeedUpgrade();
+        }
+
+        private void ApplySpeedUpgrade()
+        {
+            if (_agent != null && _upgradeService != null)
+                _agent.speed = _baseAgentSpeed * _upgradeService.GetWaiterSpeedMultiplier();
         }
 
         private void Update()

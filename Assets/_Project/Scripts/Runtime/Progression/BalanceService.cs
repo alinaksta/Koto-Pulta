@@ -10,6 +10,8 @@ namespace Game.Progression
     /// </summary>
     public class BalanceService : MonoBehaviour, IBootstrapable
     {
+        private const string BalanceKey = "Progression.Balance";
+
         private int _balance;
 
         /// <summary>
@@ -28,6 +30,7 @@ namespace Game.Progression
                 return;
 
             _balance += amount;
+            Save();
             OnBalanceChanged.Invoke(_balance);
         }
 
@@ -40,14 +43,36 @@ namespace Game.Progression
                 return false;
 
             _balance -= amount;
+            Save();
             OnBalanceChanged.Invoke(_balance);
             return true;
+        }
+
+        /// <summary>
+        /// Sets the balance to an exact value.
+        /// </summary>
+        public void SetBalance(int amount)
+        {
+            int clampedAmount = Mathf.Max(0, amount);
+            if (_balance == clampedAmount)
+                return;
+
+            _balance = clampedAmount;
+            Save();
+            OnBalanceChanged.Invoke(_balance);
         }
 
         /// <inheritdoc/>
         public void Bootstrap()
         {
+            _balance = Mathf.Max(0, PlayerPrefs.GetInt(BalanceKey, 0));
             ServiceLocator.Register(this);
+        }
+
+        private void Save()
+        {
+            PlayerPrefs.SetInt(BalanceKey, _balance);
+            PlayerPrefs.Save();
         }
     }
 }

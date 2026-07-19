@@ -35,9 +35,10 @@ namespace Game.Items.Properties
     public class ShiftProperty : ItemProperty
     {
         /// <summary>
-        /// At which shift this item can be get using computer
+        /// One-based meal tier used for shift unlocking and order weighting.
         /// </summary>
-        public int RequiredShift = 0;
+        [FormerlySerializedAs("RequiredShift")]
+        [Range(1, 4)] public int Tier = 1;
     }
 
     /// <summary>

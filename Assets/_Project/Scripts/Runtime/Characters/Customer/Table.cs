@@ -16,6 +16,7 @@ namespace Game.Characters
         [SerializeField] private Seat[] _seats;
 
         private readonly List<Customer> _customers = new();
+        private CustomerService _registeredService;
 
         /// <summary>
         /// Gets the configured table number.
@@ -70,9 +71,34 @@ namespace Game.Characters
         private void Awake()
         {
             if (ServiceLocator.TryGet<CustomerService>(out var service) && _registerAutomatically)
+                Register(service);
+        }
+
+        private void OnDestroy()
+        {
+            if (_registeredService != null)
+                _registeredService.UnregisterTable(this);
+        }
+
+        /// <summary>
+        /// Assigns the runtime table number and registers the table for customer spawning.
+        /// </summary>
+        public void Initialize(int tableNumber, CustomerService service)
+        {
+            if (_registeredService != null)
             {
-                service.RegisterTable(this);
+                _registeredService.UnregisterTable(this);
+                _registeredService = null;
             }
+
+            _tableNumber = tableNumber;
+            Register(service);
+        }
+
+        private void Register(CustomerService service)
+        {
+            if (service != null && service.RegisterTable(this))
+                _registeredService = service;
         }
 
         /// <summary>

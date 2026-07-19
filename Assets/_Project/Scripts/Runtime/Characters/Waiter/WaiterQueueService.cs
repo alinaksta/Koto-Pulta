@@ -66,15 +66,15 @@ namespace Game.Characters
         public bool TryGetUnassignedMealPoint(out WaiterMealPoint point)
         {
             point = null;
-            int freePointsCount = _mealPoints.Count;
+            int freePointsCount = _unassignedMealPoints.Count;
 
             if (freePointsCount == 0)
                 return false;
 
             int lastIndex = freePointsCount - 1;
 
-            point = _mealPoints[lastIndex];
-            _mealPoints.RemoveAt(lastIndex);
+            point = _unassignedMealPoints[lastIndex];
+            _unassignedMealPoints.RemoveAt(lastIndex);
 
             return true;
         }
@@ -84,7 +84,7 @@ namespace Game.Characters
         /// </summary>
         public void UnassignMealPoint(WaiterMealPoint point)
         {
-            if (!_mealPoints.Contains(point) || _unassignedMealPoints.Contains(point)) 
+            if (point == null || !_mealPoints.Contains(point) || _unassignedMealPoints.Contains(point))
                 return;
 
             _unassignedMealPoints.Add(point);

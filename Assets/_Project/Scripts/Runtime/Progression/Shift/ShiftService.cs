@@ -177,8 +177,6 @@ namespace Game.Progression
 
             _context.Balance.OnBalanceChanged += HandleBalanceChanged;
 
-            _context.Customers.SetRandomItemGiver(GetShiftRandomItemGiver());
-
             _statisticsCollector?.Dispose();
             _statisticsCollector = new ShiftStatisticsCollector(context.Customers);
 
@@ -203,7 +201,8 @@ namespace Game.Progression
                 itemList.Add(definition);
             }
 
-            return new ShiftRandomItemDefinitionGiver(this, itemList);
+            int unlockedTier = Mathf.Clamp(ItemUnlockShiftIndex + 1, 1, 4);
+            return new ShiftRandomItemDefinitionGiver(itemList, unlockedTier, ServiceLocator.Get<UpgradeService>());
         }
 
         /// <inheritdoc/>
@@ -332,6 +331,7 @@ namespace Game.Progression
             _shiftTimer = Mathf.Max(0f, _activeShiftDuration);
             _modeActive = true;
             _spawnTimer = GetSpawnDelay();
+            _context.Customers.SetRandomItemGiver(GetShiftRandomItemGiver());
             OnShiftStarted.Invoke();
         }
 
@@ -346,6 +346,7 @@ namespace Game.Progression
             _shiftTimer = 0f;
             _modeActive = true;
             _spawnTimer = GetSpawnDelay();
+            _context.Customers.SetRandomItemGiver(GetShiftRandomItemGiver());
             OnShiftStarted.Invoke();
         }
 

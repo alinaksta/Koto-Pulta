@@ -52,16 +52,33 @@ namespace Game.Characters
         /// Registers a table so it can receive spawned customers.
         /// </summary>
         /// <param name="table">Table to register.</param>
-        public void RegisterTable(Table table)
+        public bool RegisterTable(Table table)
         {
             if (table == null || _tablesByNumber.ContainsKey(table.TableNumber))
-                return;
+                return false;
 
             _tables.Add(table);
-            _freeTables.Add(table);
+            if (table.IsFree)
+                _freeTables.Add(table);
             _tablesByNumber.Add(table.TableNumber, table);
 
             table.OnBecameFree += HandleTableFreed;
+            return true;
+        }
+
+        /// <summary>
+        /// Removes a table from customer spawning and lookup.
+        /// </summary>
+        public void UnregisterTable(Table table)
+        {
+            if (table == null || !_tables.Remove(table))
+                return;
+
+            _freeTables.Remove(table);
+            if (_tablesByNumber.TryGetValue(table.TableNumber, out var registered) && registered == table)
+                _tablesByNumber.Remove(table.TableNumber);
+
+            table.OnBecameFree -= HandleTableFreed;
         }
 
         /// <summary>
@@ -225,7 +242,8 @@ namespace Game.Characters
 
         private void HandleTableFreed(Table table)
         {
-            _freeTables.Add(table);
+            if (table != null && _tables.Contains(table) && !_freeTables.Contains(table))
+                _freeTables.Add(table);
         }
     }
 }
