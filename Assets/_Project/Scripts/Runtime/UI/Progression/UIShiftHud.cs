@@ -27,6 +27,7 @@ namespace Game.UI
         [SerializeField, Min(0f)] private float _timerWarningSeconds = 30f;
         [SerializeField, Min(0f)] private float _timerBlinkFrequency = 8f;
         [SerializeField] private Color _timerWarningColor = Color.red;
+        [SerializeField] private Color _revenueMetColor = Color.green;
 
         [Header("Shift End Message")]
         [SerializeField] private string _shiftEndedText = "Shift ended";
@@ -48,7 +49,9 @@ namespace Game.UI
         private Coroutine _slideCoroutine;
         private Coroutine _shiftEndedCoroutine;
         private Color _timerBaseColor = Color.white;
+        private Color _revenueBaseColor = Color.white;
         private bool _hasTimerBaseColor;
+        private bool _hasRevenueBaseColor;
 
         private void Awake()
         {
@@ -59,6 +62,12 @@ namespace Game.UI
             {
                 _timerBaseColor = _timerLabel.color;
                 _hasTimerBaseColor = true;
+            }
+
+            if (_revenueLabel != null)
+            {
+                _revenueBaseColor = _revenueLabel.color;
+                _hasRevenueBaseColor = true;
             }
 
             EnsureShiftEndedLabel();
@@ -176,6 +185,7 @@ namespace Game.UI
             if (_shiftService.IsEndlessShift)
             {
                 _revenueLabel.text = _endlessRevenueText;
+                ResetRevenueColor();
                 return;
             }
 
@@ -183,6 +193,8 @@ namespace Game.UI
                 _revenueFormat,
                 _shiftService.CurrentRevenue,
                 _shiftService.CurrentGoalRevenue);
+
+            UpdateRevenueColor();
         }
 
         private void UpdateShiftNumber()
@@ -328,6 +340,28 @@ namespace Game.UI
         {
             if (_timerLabel != null && _hasTimerBaseColor)
                 _timerLabel.color = _timerBaseColor;
+        }
+
+        private void UpdateRevenueColor()
+        {
+            if (_revenueLabel == null || _shiftService == null)
+                return;
+
+            if (!_hasRevenueBaseColor)
+            {
+                _revenueBaseColor = _revenueLabel.color;
+                _hasRevenueBaseColor = true;
+            }
+
+            bool revenueMet = _shiftService.CurrentGoalRevenue > 0 &&
+                              _shiftService.CurrentRevenue >= _shiftService.CurrentGoalRevenue;
+            _revenueLabel.color = revenueMet ? _revenueMetColor : _revenueBaseColor;
+        }
+
+        private void ResetRevenueColor()
+        {
+            if (_revenueLabel != null && _hasRevenueBaseColor)
+                _revenueLabel.color = _revenueBaseColor;
         }
 
         private void SetTimerColor(Color color)
