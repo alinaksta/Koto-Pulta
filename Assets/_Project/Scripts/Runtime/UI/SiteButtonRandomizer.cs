@@ -1,8 +1,10 @@
-using Game.Items;
 using Game.Interaction;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using Itemworks.UnityEngine;
+using Game.Progression;
+using Game.Services;
 
 namespace Game.UI
 {
@@ -12,11 +14,13 @@ namespace Game.UI
     public class SiteButtonRandomizer : MonoBehaviour
     {
         [SerializeField] private ComputerInteractable _computerInteractable;
-        [SerializeField] private List<Button> buttonsToShuffle;
+        [SerializeField] private List<SiteItemButton> buttonsToShuffle;
+        private int shiftId;
 
         private void OnEnable()
         {
             _computerInteractable.FocusStarted += HandleFocusStarted;
+            shiftId = ServiceLocator.Get<ShiftService>().ShiftIndex;
         }
 
         private void OnDisable()
@@ -40,9 +44,10 @@ namespace Game.UI
                 return;
             }
             List<Vector3> positions = new List<Vector3>();
-            foreach (Button btn in buttonsToShuffle)
+            foreach (var btn in buttonsToShuffle)
             {
-                positions.Add(btn.transform.position);
+                positions.Add(btn._button.transform.position);
+                btn.SetUnlocked(btn.RequiredShift() != -1 && btn.RequiredShift() >= shiftId);
             }
             for (int i = 0; i < positions.Count; i++)
             {
@@ -54,7 +59,7 @@ namespace Game.UI
 
             for (int i = 0; i < buttonsToShuffle.Count; i++)
             {
-                buttonsToShuffle[i].transform.position = positions[i];
+                buttonsToShuffle[i]._button.transform.position = positions[i];
             }
 
         }        
