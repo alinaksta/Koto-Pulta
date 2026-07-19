@@ -57,6 +57,7 @@ namespace Game.Progression
         private bool _practiceShiftActive;
         private bool _practiceCustomerSpawned;
         private bool _normalShiftStartLocked;
+        private bool _currentShiftFailed;
 
         private ShiftStatisticsCollector _statisticsCollector;
         private ShiftStatistics _lastShiftStatistics;
@@ -145,7 +146,8 @@ namespace Game.Progression
         /// <summary>
         /// Gets whether the computer shift-start button may currently start a shift.
         /// </summary>
-        public bool CanStartNextShift => _modeActive && !ShiftInProgress && (!_normalShiftStartLocked || _practiceShiftQueued);
+        public bool CanStartNextShift => !_modeActive && _currentShiftFailed && !_normalShiftStartLocked ||
+                                         _modeActive && !ShiftInProgress && (!_normalShiftStartLocked || _practiceShiftQueued);
 
         /// <summary>
         /// Raised after a shift starts.
@@ -198,6 +200,7 @@ namespace Game.Progression
             _practiceShiftQueued = false;
             _practiceShiftActive = false;
             _practiceCustomerSpawned = false;
+            _currentShiftFailed = false;
             OnShiftStartAvailabilityChanged.Invoke();
         }
 
@@ -276,6 +279,7 @@ namespace Game.Progression
             _practiceShiftActive = false;
             _practiceCustomerSpawned = false;
             _normalShiftStartLocked = false;
+            _currentShiftFailed = false;
             OnShiftStartAvailabilityChanged.Invoke();
             _context = null;
         }
@@ -313,6 +317,9 @@ namespace Game.Progression
         /// </summary>
         public bool TryStartNextShift()
         {
+            if (_currentShiftFailed)
+                return RetryCurrentShift();
+
             if (!_modeActive || ShiftInProgress)
                 return false;
 
@@ -328,6 +335,12 @@ namespace Game.Progression
         /// </summary>
         public void StartNextShift()
         {
+            if (_currentShiftFailed)
+            {
+                RetryCurrentShift();
+                return;
+            }
+
             if (!_modeActive || ShiftInProgress)
                 return;
 
@@ -342,6 +355,29 @@ namespace Game.Progression
 
             int nextShiftIndex = _shiftIndex + 1;
             _shiftIndex = nextShiftIndex;
+            StartSelectedNormalShift();
+        }
+
+        /// <summary>
+        /// Restarts the currently selected normal shift after it has failed.
+        /// </summary>
+        public bool RetryCurrentShift()
+        {
+            if (!_currentShiftFailed || ShiftInProgress || !HasNormalShift)
+                return false;
+
+            if (_normalShiftStartLocked)
+                return false;
+
+            _context.Session.ResetState();
+            _context.Session.StartRun();
+            StartSelectedNormalShift();
+            return true;
+        }
+
+        private void StartSelectedNormalShift()
+        {
+            _currentShiftFailed = false;
             _currentRevenue = 0;
             _lastKnownBalance = _context.Balance.Balance;
             _activeShiftDuration = _shiftDuration;
@@ -358,6 +394,7 @@ namespace Game.Progression
             _practiceShiftQueued = false;
             _practiceShiftActive = true;
             _practiceCustomerSpawned = false;
+            _currentShiftFailed = false;
             _currentRevenue = 0;
             _lastKnownBalance = _context.Balance.Balance;
             _activeShiftDuration = 0f;
@@ -424,8 +461,11 @@ namespace Game.Progression
             if (_practiceShiftActive)
             {
                 _practiceShiftActive = false;
+                _currentShiftFailed = false;
                 return;
             }
+
+            _currentShiftFailed = false;
 
         }
 
@@ -436,11 +476,14 @@ namespace Game.Progression
             if (_practiceShiftActive)
             {
                 _practiceShiftActive = false;
+                _currentShiftFailed = false;
                 return;
             }
 
+            _currentShiftFailed = true;
             _modeActive = false;
             _context.Session.MarkFailed();
+            OnShiftStartAvailabilityChanged.Invoke();
         }
 
         private void EndCurrentShift()
