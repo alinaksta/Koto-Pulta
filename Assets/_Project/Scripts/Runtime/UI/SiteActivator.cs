@@ -46,6 +46,7 @@ namespace Game.UI
 
         private readonly Dictionary<ComputerSiteTab, RectTransform> _tabRoots = new Dictionary<ComputerSiteTab, RectTransform>();
         private readonly Dictionary<Button, ColorBlock> _tabButtonColors = new Dictionary<Button, ColorBlock>();
+        private readonly HashSet<ComputerSiteTab> _disabledTabs = new HashSet<ComputerSiteTab>();
 
         private ComputerSiteTab _currentTab;
         private bool _hasCurrentTab;
@@ -58,6 +59,78 @@ namespace Game.UI
         public ComputerSiteTab CurrentTab => _currentTab;
         public bool HasCurrentTab => _hasCurrentTab;
         public bool IsFocused => _isFocused;
+
+        /// <summary>
+        /// Gets whether the tab can currently be selected.
+        /// </summary>
+        public bool IsTabEnabled(ComputerSiteTab tab)
+        {
+            return !_disabledTabs.Contains(tab);
+        }
+
+        /// <summary>
+        /// Enables or disables a computer tab.
+        /// </summary>
+        public void SetTabEnabled(ComputerSiteTab tab, bool enabled)
+        {
+            bool changed = enabled
+                ? _disabledTabs.Remove(tab)
+                : _disabledTabs.Add(tab);
+
+            if (!changed)
+                return;
+
+            RefreshTabButtonStates();
+
+            if (_hasCurrentTab && _currentTab == tab && !enabled)
+                SelectFirstEnabledTab();
+        }
+
+        /// <summary>
+        /// Enables or disables a computer tab by enum index.
+        /// </summary>
+        public void SetTabEnabled(int tab, bool enabled)
+        {
+            if (!Enum.IsDefined(typeof(ComputerSiteTab), tab))
+            {
+                Debug.LogWarning($"{nameof(SiteActivator)} on {name} received invalid tab index {tab}.");
+                return;
+            }
+
+            SetTabEnabled((ComputerSiteTab)tab, enabled);
+        }
+
+        /// <summary>
+        /// Enables a computer tab.
+        /// </summary>
+        public void EnableTab(ComputerSiteTab tab)
+        {
+            SetTabEnabled(tab, true);
+        }
+
+        /// <summary>
+        /// Enables a computer tab by enum index.
+        /// </summary>
+        public void EnableTab(int tab)
+        {
+            SetTabEnabled(tab, true);
+        }
+
+        /// <summary>
+        /// Disables a computer tab.
+        /// </summary>
+        public void DisableTab(ComputerSiteTab tab)
+        {
+            SetTabEnabled(tab, false);
+        }
+
+        /// <summary>
+        /// Disables a computer tab by enum index.
+        /// </summary>
+        public void DisableTab(int tab)
+        {
+            SetTabEnabled(tab, false);
+        }
 
         private void Awake()
         {
@@ -110,9 +183,9 @@ namespace Game.UI
         /// </summary>
         public void SetTab(ComputerSiteTab tab)
         {
-            if (!CanDisplayTab(tab))
+            if (!CanSelectTab(tab))
             {
-                Debug.LogWarning($"{nameof(SiteActivator)} on {name} has no site bound for tab {tab}.");
+                Debug.LogWarning($"{nameof(SiteActivator)} on {name} cannot select tab {tab} because it is disabled or has no site bound.");
                 return;
             }
 
@@ -120,8 +193,7 @@ namespace Game.UI
             _currentTab = tab;
             _hasCurrentTab = true;
 
-            if (_isFocused)
-                ShowCurrentTab();
+            ShowCurrentTab();
 
             if (changed)
             {
@@ -169,7 +241,9 @@ namespace Game.UI
             RefreshTabButtonStates();
             SetScreenInteractable(true);
             ShowCurrentTab();
-            OnTabViewed.Invoke(_currentTab);
+
+            if (_hasCurrentTab)
+                OnTabViewed.Invoke(_currentTab);
         }
 
         private void HandleFocusEnded()
@@ -182,7 +256,7 @@ namespace Game.UI
 
         private void InitializeCurrentTab()
         {
-            if (CanDisplayTab(_defaultTab))
+            if (CanSelectTab(_defaultTab))
             {
                 _currentTab = _defaultTab;
                 _hasCurrentTab = true;
@@ -206,6 +280,8 @@ namespace Game.UI
                 if (binding.Button == null)
                     continue;
 
+                binding.Button.interactable = IsTabEnabled(binding.Tab);
+
                 Graphic targetGraphic = binding.TargetGraphic != null
                     ? binding.TargetGraphic
                     : binding.Button.targetGraphic;
@@ -219,7 +295,7 @@ namespace Game.UI
                     _tabButtonColors.Add(binding.Button, originalColors);
                 }
 
-                bool isSelected = _hasCurrentTab && binding.Tab == _currentTab;
+                bool isSelected = IsTabEnabled(binding.Tab) && _hasCurrentTab && binding.Tab == _currentTab;
                 if (isSelected)
                 {
                     Color selectedColor = originalColors.selectedColor;
@@ -233,8 +309,23 @@ namespace Game.UI
                 }
 
                 binding.Button.colors = originalColors;
-                targetGraphic.color = originalColors.normalColor;
+                targetGraphic.color = IsTabEnabled(binding.Tab)
+                    ? originalColors.normalColor
+                    : originalColors.disabledColor;
             }
+        }
+
+        private void SelectFirstEnabledTab()
+        {
+            if (TryGetFirstAvailableTab(out var firstAvailableTab))
+            {
+                SetTab(firstAvailableTab);
+                return;
+            }
+
+            _hasCurrentTab = false;
+            RefreshTabButtonStates();
+            HideAllTabs();
         }
 
         private void SetScreenInteractable(bool interactable)
@@ -288,6 +379,11 @@ namespace Game.UI
             return TryGetRootForTab(tab, out var root) && root != null;
         }
 
+        private bool CanSelectTab(ComputerSiteTab tab)
+        {
+            return IsTabEnabled(tab) && CanDisplayTab(tab);
+        }
+
         private bool TryGetRootForTab(ComputerSiteTab tab, out RectTransform root)
         {
             if (_tabRoots.TryGetValue(tab, out root) && root != null)
@@ -314,7 +410,7 @@ namespace Game.UI
         {
             for (int i = 0; i < _tabs.Count; i++)
             {
-                if (_tabs[i].Root == null)
+                if (_tabs[i].Root == null || !IsTabEnabled(_tabs[i].Tab))
                     continue;
 
                 tab = _tabs[i].Tab;
@@ -323,6 +419,10 @@ namespace Game.UI
 
             if (sites.Count > 0)
             {
+                tab = default;
+                if (!IsTabEnabled(_defaultTab))
+                    return false;
+
                 tab = _defaultTab;
                 return true;
             }
