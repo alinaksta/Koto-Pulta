@@ -62,6 +62,11 @@ namespace Game.Interaction
         public bool Visible => _visible;
 
         /// <summary>
+        /// Gets whether the currently held item can be thrown by holding the interaction button.
+        /// </summary>
+        public bool HasThrowableItem => !IsEmpty && _throwable != null;
+
+        /// <summary>
         /// Raised when the hand visibility changes.
         /// </summary>
         public event Action<bool> OnSetVisible = delegate { };
