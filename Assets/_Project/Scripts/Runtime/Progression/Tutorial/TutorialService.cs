@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace Game.Progression
 {
@@ -79,7 +80,7 @@ namespace Game.Progression
         [Header("Marker Offsets")]
         [SerializeField] private Vector3 _defaultMarkerOffset = new Vector3(0f, 1.5f, 0f);
         [SerializeField] private Vector3 _pickupMarkerOffset = new Vector3(0f, 1.5f, 0f);
-        [SerializeField] private Vector3 _throwWaiterMarkerOffset = new Vector3(0f, 2.2f, 0f);
+        [SerializeField, FormerlySerializedAs("_waiterMarkerOffset")] private Vector3 _throwWaiterMarkerOffset = new Vector3(0f, 2.2f, 0f);
         [SerializeField] private Vector3 _giveMealWaiterMarkerOffset = new Vector3(0f, 2.2f, 0f);
         [SerializeField] private Vector3 _computerMarkerOffset = new Vector3(0f, 2.8f, 0f);
         [SerializeField] private Vector3 _tableMarkerOffset = new Vector3(0f, 2f, 0f);

@@ -15,20 +15,29 @@ namespace Game.UI
     {
         [SerializeField] private ComputerInteractable _computerInteractable;
         [SerializeField] private List<SiteItemButton> buttonsToShuffle;
-        private int shiftId;
+        private ShiftService _shiftService;
 
         private void OnEnable()
         {
             _computerInteractable.FocusStarted += HandleFocusStarted;
-            shiftId = ServiceLocator.Get<ShiftService>().ShiftIndex;
+            _shiftService = ServiceLocator.Get<ShiftService>();
+            _shiftService.OnShiftStarted += HandleShiftStarted;
         }
 
         private void OnDisable()
         {
             _computerInteractable.FocusStarted -= HandleFocusStarted;
+
+            if (_shiftService != null)
+                _shiftService.OnShiftStarted -= HandleShiftStarted;
         }
 
         private void HandleFocusStarted()
+        {
+            Randomize();
+        }
+
+        private void HandleShiftStarted()
         {
             Randomize();
         }
@@ -48,7 +57,7 @@ namespace Game.UI
             {
                 positions.Add(btn._button.transform.position);
                 int requiredTier = btn.RequiredTier();
-                int unlockedTier = shiftId + 1;
+                int unlockedTier = _shiftService.ItemUnlockShiftIndex + 1;
                 btn.SetUnlocked(requiredTier != -1 && requiredTier <= unlockedTier);
             }
             for (int i = 0; i < positions.Count; i++)
