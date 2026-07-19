@@ -8345,7 +8345,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1838343495394706037}
   m_Direction: 2
   m_Value: 0.00000011908524
-  m_Size: 0.37292007
+  m_Size: 0.0000002489199
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -15055,7 +15055,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 3160902168973996500}
   m_Direction: 2
   m_Value: -0.000000025542
-  m_Size: 0.27675548
+  m_Size: 0.00000011083867
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -26175,9 +26175,9 @@ MonoBehaviour:
   - {fileID: 5959649163078629442}
   - {fileID: 3527991905314196961}
   - {fileID: 1564701833650656904}
-  _backgroundImage: {fileID: 3339273561654164821}
-  _successSprite: {fileID: 21300000, guid: 11a61bc5cd13d654c93c9e3118145a84, type: 3}
-  _failSprite: {fileID: 21300000, guid: ee3be16eb5345564998174154ea3b7be, type: 3}
+  _backgroundImage: {fileID: 0}
+  _successSprite: {fileID: 0}
+  _failSprite: {fileID: 0}
   _customersServedText: {fileID: 1507242369927910069}
   _customersUnsatisfiedText: {fileID: 5927015484520843155}
   _deliveryTimeText: {fileID: 7453539167549204517}

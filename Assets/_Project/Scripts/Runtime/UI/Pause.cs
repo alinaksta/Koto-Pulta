@@ -2,7 +2,9 @@ using Game.Input;
 using Game.Services;
 using Game.Player;
 using Game.Audio;
+using Game.UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Game.Interaction
 {
@@ -14,25 +16,37 @@ namespace Game.Interaction
         [SerializeField] private SoundType _pauseSound = SoundType.Error;
         [Range(0f,1f)]
         [SerializeField] private float _volume = 1f;
+        [SerializeField] private int _mainMenuIndex = 0;
 
+        private LoadingService _loadingService;
 
-        private void Awake()
+        private void Start()
         {
+            _loadingService = ServiceLocator.Get<LoadingService>();
             _inputService = ServiceLocator.Get<IInputService>();
             _soundService = ServiceLocator.Get<SoundService>();
+        }
+
+        /// <summary>
+        /// Loads the configured gameplay scene from the main menu.
+        /// </summary>
+        public async void QuitToMainMenu()
+        {
+            SceneManager.LoadScene(_mainMenuIndex, LoadSceneMode.Single);
         }
 
         private void Update()
         {
             if (_inputService.Pause.Pressed && !_pauseCanvas.activeSelf)
                 InitiatePause();
-            if (_inputService.Pause.Pressed && _pauseCanvas.activeSelf)
+            else if (_inputService.Pause.Pressed && _pauseCanvas.activeSelf)
                 Continue();
         }
         private void InitiatePause()
         {
             _pauseCanvas.SetActive(true);
             CameraController.SetMouseLockedStatic(false);
+            CameraController.SetActiveRotationStatic(true);
             _soundService.PlaySound(_pauseSound, _volume);
             Debug.Log("This is a pause");
             Time.timeScale = 0f;
@@ -40,7 +54,8 @@ namespace Game.Interaction
         public void Continue()
         {
             CameraController.SetMouseLockedStatic(true);
-             Time.timeScale = 1f;
+            CameraController.SetActiveRotationStatic(false);
+            Time.timeScale = 1f;
             _pauseCanvas.SetActive(false);
         }
 

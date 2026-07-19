@@ -879,7 +879,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3902956317721573253}
   - component: {fileID: 4258236871007429867}
-  - component: {fileID: 7431573155734705687}
   m_Layer: 8
   m_Name: PR_ShiftStatisticsTab
   m_TagString: Untagged
@@ -931,30 +930,6 @@ MonoBehaviour:
   _averageTimeText: {fileID: 523986900980060539}
   _moneyEarnedText: {fileID: 5729530363772869377}
   _inProgressPanel: {fileID: 4028145081823754866}
---- !u!114 &7431573155734705687
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1956663207298358419}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb8e1b73648034c2e9946985033bc5ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Evaluation
-  _segments:
-  - {fileID: 6950744278984288649}
-  - {fileID: 8228648065582098062}
-  - {fileID: 3639247664390177052}
-  - {fileID: 5818695646408881343}
-  - {fileID: 8467656982684413910}
-  _customersServedText: {fileID: 8421473870008839147}
-  _customersUnsatisfiedText: {fileID: 3635851859811253965}
-  _deliveryTimeText: {fileID: 523986900980060539}
-  _moneyEarnedText: {fileID: 5729530363772869377}
-  _evaluateButton: {fileID: 8493396581506288130}
-  _nextShiftButton: {fileID: 5200403832261752164}
 --- !u!1 &2725781406783061189
 GameObject:
   m_ObjectHideFlags: 0
@@ -1126,8 +1101,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.7500458, y: 0}
-  m_SizeDelta: {x: 68.8, y: 35.4}
+  m_AnchoredPosition: {x: -3, y: 0.5}
+  m_SizeDelta: {x: 67, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2611393357729824024
 CanvasRenderer:
@@ -2049,7 +2024,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8235294, g: 0.6, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2110,7 +2085,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7431573155734705687}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Evaluation, Assembly-CSharp
         m_MethodName: ResetEvaluation
         m_Mode: 1
@@ -2518,8 +2493,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 68.34993, y: 0}
-  m_SizeDelta: {x: 68.8, y: 35.4}
+  m_AnchoredPosition: {x: 66.9, y: 0.5}
+  m_SizeDelta: {x: 67, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2736729939257702202
 CanvasRenderer:
@@ -2593,8 +2568,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -67.64995, y: 0}
-  m_SizeDelta: {x: 68.8, y: 35.4}
+  m_AnchoredPosition: {x: -72.9, y: 0.5}
+  m_SizeDelta: {x: 67, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6313582222094778269
 CanvasRenderer:
@@ -2691,6 +2666,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7812792838753111982}
   - component: {fileID: 4011541812306855685}
+  - component: {fileID: 1732061923136197302}
   m_Layer: 8
   m_Name: EndedPanel
   m_TagString: Untagged
@@ -2730,6 +2706,34 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7059095964656756974}
   m_CullTransparentMesh: 1
+--- !u!114 &1732061923136197302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7059095964656756974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb8e1b73648034c2e9946985033bc5ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Evaluation
+  _computerInteractable: {fileID: 0}
+  _segments:
+  - {fileID: 6950744278984288649}
+  - {fileID: 8228648065582098062}
+  - {fileID: 3639247664390177052}
+  - {fileID: 5818695646408881343}
+  - {fileID: 8467656982684413910}
+  _backgroundImage: {fileID: 5648255769017779211}
+  _successSprite: {fileID: 21300000, guid: 11a61bc5cd13d654c93c9e3118145a84, type: 3}
+  _failSprite: {fileID: 21300000, guid: ee3be16eb5345564998174154ea3b7be, type: 3}
+  _customersServedText: {fileID: 8421473870008839147}
+  _customersUnsatisfiedText: {fileID: 3635851859811253965}
+  _deliveryTimeText: {fileID: 523986900980060539}
+  _moneyEarnedText: {fileID: 5729530363772869377}
+  _evaluateButton: {fileID: 8493396581506288130}
+  _nextShiftButton: {fileID: 5200403832261752164}
 --- !u!1 &7481198667953929514
 GameObject:
   m_ObjectHideFlags: 0
@@ -2764,8 +2768,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 128.64996, y: 0}
-  m_SizeDelta: {x: 54, y: 35.4}
+  m_AnchoredPosition: {x: 124.8, y: 0.5}
+  m_SizeDelta: {x: 43.7, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2226693198234066673
 CanvasRenderer:
@@ -3025,7 +3029,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 133.05, y: 96.45015}
+  m_AnchoredPosition: {x: 133.05, y: 93.4}
   m_SizeDelta: {x: 311.29993, y: 35.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &7991137701195719261
@@ -3336,8 +3340,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -128.64996, y: 0}
-  m_SizeDelta: {x: 54, y: 35.4}
+  m_AnchoredPosition: {x: -131, y: 0.5}
+  m_SizeDelta: {x: 43.1, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7209373214126472167
 CanvasRenderer:
@@ -3437,7 +3441,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8233022, g: 0.59617877, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3498,7 +3502,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7431573155734705687}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Evaluation, Assembly-CSharp
         m_MethodName: StartEvaluation
         m_Mode: 1

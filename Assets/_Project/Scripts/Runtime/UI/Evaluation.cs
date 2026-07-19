@@ -1,5 +1,6 @@
 using Game.Services;
 using Game.Progression;
+using Game.Interaction;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -9,7 +10,15 @@ using System.Collections;
 public class Evaluation : MonoBehaviour
 {
     private ShiftService _shiftService;
+    private RunSessionService _runSessionService;
+    [SerializeField] ComputerInteractable _computerInteractable;
+    private bool _evaluatable = true;
     [SerializeField] private Image[] _segments;
+    [SerializeField] private Image _backgroundImage;
+    [SerializeField] private Sprite _successSprite;
+    [SerializeField] private Sprite _failSprite;
+
+
     [SerializeField] private TMP_Text _customersServedText;
     [SerializeField] private TMP_Text _customersUnsatisfiedText;
     [SerializeField] private TMP_Text _deliveryTimeText;
@@ -17,16 +26,20 @@ public class Evaluation : MonoBehaviour
     [SerializeField] private GameObject _evaluateButton;
     [SerializeField] private GameObject _nextShiftButton;
 
-
-
     private void Awake()
     {
         _shiftService = ServiceLocator.Get<ShiftService>();
+        _runSessionService = ServiceLocator.Get<RunSessionService>();
+    }
+    private void Update()
+    {
+        if(_computerInteractable.HasInteractor && _runSessionService.State != RunSessionState.Running && _evaluatable) StartEvaluation();
+        _backgroundImage.sprite = (_runSessionService.State != RunSessionState.Succeeded) ? _failSprite : _successSprite;
     }
     public void SetSegments(int segmentAmount)
     {
         for(int i = 0; i < _segments.Length; i++)
-            _segments[i].color = i < segmentAmount + 1 ? Color.green : Color.white;
+            _segments[i].color = i < segmentAmount + 1 ? Color.purple : Color.white;
     }
     public void ResetSegments()
     {
@@ -38,12 +51,14 @@ public class Evaluation : MonoBehaviour
         StartCoroutine(EvaluateGrade());
         _evaluateButton.SetActive(false);
         _nextShiftButton.SetActive(true);
+        _evaluatable = false;
     }
     public void ResetEvaluation()
     {
         ResetGrade();
         _evaluateButton.SetActive(true);
         _nextShiftButton.SetActive(false);
+        _evaluatable = true;
     }
     private IEnumerator EvaluateGrade()
     {

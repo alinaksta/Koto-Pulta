@@ -29,6 +29,7 @@ namespace Game.Player
         [SerializeField] private bool _lockMouseOnAwake = true;
 
         private IInputService _input;
+        private static bool _stop = false;
 
         private IFocusable _focusedObject;
         private FocusTransition? _focusTransition;
@@ -107,7 +108,7 @@ namespace Game.Player
 
         private void LateUpdate()
         {
-            if (_input == null || _target == null)
+            if (_input == null || _target == null || _stop == true)
                 return;
 
             Vector2 mouseDelta = _input.MouseDelta;
@@ -330,6 +331,10 @@ namespace Game.Player
                 angle += 360f;
 
             return angle;
+        }
+        public static void SetActiveRotationStatic(bool stop)
+        {
+            _stop = stop;
         }
     }
 }
