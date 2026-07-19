@@ -5593,7 +5593,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Game.Progression.TutorialSceneBindings
   _playerInteractor: {fileID: 2509352575665516850}
   _computerTabs: {fileID: 3866821625330271604}
-  _pickupTarget: {fileID: 1075129189}
+  _pickupTarget: {fileID: 731317191}
   _computerTarget: {fileID: 3866821625330271605}
   _shiftTabTarget: {fileID: 1549289570}
   _shopTabTarget: {fileID: 1199011067}
@@ -5809,11 +5809,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: a03a858d75cf6bc48b68f94723d83017, type: 3}
---- !u!4 &1075129189 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5325243197194466205, guid: a03a858d75cf6bc48b68f94723d83017, type: 3}
-  m_PrefabInstance: {fileID: 1075129188}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1075129190 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2181775631686005228, guid: a03a858d75cf6bc48b68f94723d83017, type: 3}
