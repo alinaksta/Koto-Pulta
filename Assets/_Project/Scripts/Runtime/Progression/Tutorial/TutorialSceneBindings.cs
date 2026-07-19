@@ -19,6 +19,11 @@ namespace Game.Progression
         [SerializeField] private Transform _pickupTarget;
         [SerializeField] private Transform _computerTarget;
 
+        [Header("UI Marker Targets")]
+        [SerializeField] private RectTransform _shiftTabTarget;
+        [SerializeField] private RectTransform _shopTabTarget;
+        [SerializeField] private RectTransform _mealsTabTarget;
+
         private TutorialService _tutorial;
         private Coroutine _bindRoutine;
 
@@ -28,6 +33,10 @@ namespace Game.Progression
         public Transform ComputerTarget => _computerTarget != null
             ? _computerTarget
             : _computerTabs != null ? _computerTabs.transform : null;
+
+        public RectTransform ShiftTabTarget => _shiftTabTarget;
+        public RectTransform ShopTabTarget => _shopTabTarget;
+        public RectTransform MealsTabTarget => _mealsTabTarget;
 
         private void OnEnable()
         {

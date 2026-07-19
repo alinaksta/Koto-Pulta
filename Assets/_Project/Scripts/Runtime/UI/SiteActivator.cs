@@ -51,7 +51,9 @@ namespace Game.UI
         private ComputerSiteTab _currentTab;
         private bool _hasCurrentTab;
         private bool _isFocused;
+        private bool _tabButtonsInteractable = true;
 
+        public event Action OnComputerEntered = delegate { };
         public event Action<ComputerSiteTab> OnTabChanged = delegate { };
         public event Action<ComputerSiteTab> OnTabViewed = delegate { };
         public event Action OnComputerExited = delegate { };
@@ -220,6 +222,18 @@ namespace Game.UI
         }
 
         /// <summary>
+        /// Enables or disables manual tab button input while keeping programmatic tab selection available.
+        /// </summary>
+        public void SetTabButtonsInteractable(bool interactable)
+        {
+            if (_tabButtonsInteractable == interactable)
+                return;
+
+            _tabButtonsInteractable = interactable;
+            RefreshTabButtonStates();
+        }
+
+        /// <summary>
         /// Hides every known computer site tab.
         /// </summary>
         public void HideAllTabs()
@@ -234,6 +248,7 @@ namespace Game.UI
         private void HandleFocusStarted()
         {
             _isFocused = true;
+            OnComputerEntered.Invoke();
 
             if (!_hasCurrentTab)
                 InitializeCurrentTab();
@@ -280,7 +295,7 @@ namespace Game.UI
                 if (binding.Button == null)
                     continue;
 
-                binding.Button.interactable = IsTabEnabled(binding.Tab);
+                binding.Button.interactable = _tabButtonsInteractable && IsTabEnabled(binding.Tab);
 
                 Graphic targetGraphic = binding.TargetGraphic != null
                     ? binding.TargetGraphic

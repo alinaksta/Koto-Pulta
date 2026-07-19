@@ -48,6 +48,7 @@ namespace Game.Progression
         {
             _shiftService.OnShiftStarted += HandleShiftStarted;
             _shiftService.OnShiftEnded += HandleShiftEnded;
+            _shiftService.OnShiftStartAvailabilityChanged += HandleShiftStartAvailabilityChanged;
 
             _beginFirstShiftButton.onClick.AddListener(HandleStartNextShiftButtonClick);
             _startNextShiftButton.onClick.AddListener(HandleStartNextShiftButtonClick);
@@ -68,6 +69,7 @@ namespace Game.Progression
         {
             _shiftService.OnShiftStarted -= HandleShiftStarted;
             _shiftService.OnShiftEnded -= HandleShiftEnded;
+            _shiftService.OnShiftStartAvailabilityChanged -= HandleShiftStartAvailabilityChanged;
 
             _beginFirstShiftButton.onClick.RemoveListener(HandleStartNextShiftButtonClick);
             _startNextShiftButton.onClick.RemoveListener(HandleStartNextShiftButtonClick);
@@ -86,6 +88,11 @@ namespace Game.Progression
             UpdateUI();
         }
 
+        private void HandleShiftStartAvailabilityChanged()
+        {
+            UpdateShiftButtonStates();
+        }
+
         private void UpdateUI()
         {
             if (_state == ComputerShiftState.Initial)
@@ -94,6 +101,19 @@ namespace Game.Progression
                 UpdateEndedUI();
             else
                 UpdateInProgressUI();
+
+            UpdateShiftButtonStates();
+        }
+
+        private void UpdateShiftButtonStates()
+        {
+            bool canStart = _shiftService != null && _shiftService.CanStartNextShift;
+
+            if (_beginFirstShiftButton != null)
+                _beginFirstShiftButton.interactable = canStart;
+
+            if (_startNextShiftButton != null)
+                _startNextShiftButton.interactable = canStart;
         }
 
         private void EnableSinglePanel(RectTransform panel)

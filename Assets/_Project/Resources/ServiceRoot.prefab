@@ -847,18 +847,18 @@ MonoBehaviour:
     _onCompleted:
       m_PersistentCalls:
         m_Calls: []
-  _mealsTabStep:
+  _shopTabStep:
     _lines:
-    - The Meals tab is where you select meals requested by customers.
+    - The Shop tab lets you unlock and manage upgrades.
     _onStarted:
       m_PersistentCalls:
         m_Calls: []
     _onCompleted:
       m_PersistentCalls:
         m_Calls: []
-  _shopTabStep:
+  _mealsTabStep:
     _lines:
-    - The Shop tab lets you unlock and manage upgrades.
+    - The Meals tab is where you select meals requested by customers.
     _onStarted:
       m_PersistentCalls:
         m_Calls: []
@@ -940,9 +940,19 @@ MonoBehaviour:
     _onCompleted:
       m_PersistentCalls:
         m_Calls: []
+  _statisticsComputerStep:
+    _lines:
+    - Shift statistics are shown on the Shift tab of the computer. Open the computer
+      to view them.
+    _onStarted:
+      m_PersistentCalls:
+        m_Calls: []
+    _onCompleted:
+      m_PersistentCalls:
+        m_Calls: []
   _finishStep:
     _lines:
-    - Shift statistics are shown on the Shift tab of the computer.
+    - Here you can see how well you performed on last shift.
     - You can start the next shift from that tab. You are ready to play!
     _onStarted:
       m_PersistentCalls:
@@ -954,11 +964,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _defaultMarkerOffset: {x: 0, y: 1.5, z: 0}
-  _pickupMarkerOffset: {x: 0, y: 1.6, z: 0}
-  _throwWaiterMarkerOffset: {x: 0, y: 1.6, z: 0}
+  _pickupMarkerOffset: {x: 0, y: 0.6, z: 0}
+  _throwWaiterMarkerOffset: {x: 0, y: 1.72, z: 0}
   _giveMealWaiterMarkerOffset: {x: 0, y: 2.3, z: 0}
   _computerMarkerOffset: {x: 0, y: 1.32, z: 0}
   _tableMarkerOffset: {x: 0, y: 1.8, z: 0}
+  _tabMarkerOffset: {x: 0, y: 0}
 --- !u!1 &4936715561112648007
 GameObject:
   m_ObjectHideFlags: 0

@@ -5469,8 +5469,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3331, y: 0.49798, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.9, y: 0.9, z: 0.9}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1785803307}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
@@ -5523,8 +5523,8 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
-  m_Color: {r: 1, g: 0.9269187, b: 0, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 1bb25adcadd1906489939c11a9f77842, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -5593,8 +5593,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Game.Progression.TutorialSceneBindings
   _playerInteractor: {fileID: 2509352575665516850}
   _computerTabs: {fileID: 3866821625330271604}
-  _pickupTarget: {fileID: 1075129189}
+  _pickupTarget: {fileID: 731317191}
   _computerTarget: {fileID: 3866821625330271605}
+  _shiftTabTarget: {fileID: 1549289570}
+  _shopTabTarget: {fileID: 1199011067}
+  _mealsTabTarget: {fileID: 1498434900}
 --- !u!1 &971319944
 GameObject:
   m_ObjectHideFlags: 0
@@ -5806,11 +5809,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: a03a858d75cf6bc48b68f94723d83017, type: 3}
---- !u!4 &1075129189 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5325243197194466205, guid: a03a858d75cf6bc48b68f94723d83017, type: 3}
-  m_PrefabInstance: {fileID: 1075129188}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1075129190 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2181775631686005228, guid: a03a858d75cf6bc48b68f94723d83017, type: 3}
@@ -6111,6 +6109,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1198766036}
   m_CullTransparentMesh: 1
+--- !u!224 &1199011067 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 816005504362033651, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
+  m_PrefabInstance: {fileID: 3866821625330271603}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1249300772
 GameObject:
   m_ObjectHideFlags: 0
@@ -6621,6 +6624,11 @@ Transform:
   - {fileID: 543450652521254157}
   m_Father: {fileID: 1687519135}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!224 &1498434900 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3960884883041004998, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
+  m_PrefabInstance: {fileID: 3866821625330271603}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1511495224
 GameObject:
   m_ObjectHideFlags: 0
@@ -6847,6 +6855,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.Characters.WaiterMealPoint
   _point: {fileID: 1530964852}
+--- !u!224 &1549289570 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6360153703501387457, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
+  m_PrefabInstance: {fileID: 3866821625330271603}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1584867693
 GameObject:
   m_ObjectHideFlags: 0
@@ -6946,6 +6959,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Game.Progression.TutorialMarkerView
   _visualRoot: {fileID: 1785803305}
   _worldOffset: {x: 0, y: 0, z: 0}
+  _bobAmplitude: 0.1
+  _bobFrequency: 6
   _faceCamera: 0
   _camera: {fileID: 0}
 --- !u!4 &1785803307
@@ -8129,6 +8144,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4360444085963506272, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4360444085963506272, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
+      propertyPath: m_AnchorMin.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4370518369199500757, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}

@@ -106,6 +106,7 @@ namespace Game.Characters
         private float _askCustomerTimer;
         private Vector3 _defaultWanderOrigin;
         private bool _mealPointEntered;
+        private bool _holdAtMealPoint;
 
         public float PatienceTimer => _patienceTimer;
         public float MaxPatienceTime => _maxPatienceTime;
@@ -166,6 +167,11 @@ namespace Game.Characters
         /// Gets whether the waiter currently has an assigned meal point.
         /// </summary>
         public bool HasMealPoint => _mealPoint != null;
+
+        /// <summary>
+        /// Gets whether the waiter is being held at its meal point instead of wandering.
+        /// </summary>
+        public bool HoldAtMealPoint => _holdAtMealPoint;
 
         /// <summary>
         /// Gets the remaining recovery time after ragdolling.
@@ -417,6 +423,13 @@ namespace Game.Characters
 
             if (_serviceState == WaiterServiceState.Unassigned)
             {
+                if (_holdAtMealPoint && HasMealPoint)
+                {
+                    EnterMealPoint();
+                    EnterIdleState();
+                    return;
+                }
+
                 StartWanderPause();
                 return;
             }
@@ -489,6 +502,14 @@ namespace Game.Characters
 
             if (_serviceState != WaiterServiceState.Unassigned)
                 return;
+
+            if (_holdAtMealPoint && HasMealPoint)
+            {
+                if (!AtMealPoint)
+                    StartGoingToMealPoint();
+
+                return;
+            }
 
             _idleTimer -= Time.deltaTime;
             if (_idleTimer > 0f)
@@ -689,6 +710,7 @@ namespace Game.Characters
         public void ThrowFromHand(Item selfItem, Vector3 position, Vector3 velocity)
         {
             ReleaseToWorld(selfItem, position, velocity);
+            SetHoldAtMealPoint(false);
             EnterRagdollState();
         }
 
@@ -714,6 +736,7 @@ namespace Game.Characters
 
         private void EnterHandState()
         {
+            SetHoldAtMealPoint(false);
             ExitMealPoint();
             _currentTable = null;
             _idleTimer = 0f;
@@ -853,6 +876,20 @@ namespace Game.Characters
                 return;
 
             NavigateTo(_assignedCustomer.Seat.CustomerAskOrigin);
+        }
+
+        /// <summary>
+        /// Keeps the waiter at its meal point instead of starting its unassigned wander loop.
+        /// </summary>
+        public void SetHoldAtMealPoint(bool hold)
+        {
+            _holdAtMealPoint = hold;
+
+            if (!hold || !HasMealPoint || !CanReactToServiceState())
+                return;
+
+            if (!AtMealPoint)
+                StartGoingToMealPoint();
         }
 
         /// <summary>
