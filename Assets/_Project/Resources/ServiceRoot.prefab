@@ -680,6 +680,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Game.Audio.MusicService
   _musList:
   - {fileID: 8300000, guid: e9af80fda459f2f3bb0c6c6f84ca3930, type: 3}
+  - {fileID: 8300000, guid: e9af80fda459f2f3bb0c6c6f84ca3930, type: 3}
 --- !u!1 &3113068626986869970
 GameObject:
   m_ObjectHideFlags: 0
