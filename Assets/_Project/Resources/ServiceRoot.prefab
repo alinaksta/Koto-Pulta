@@ -1016,13 +1016,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Game.Progression.ShiftService
   _shifts:
   - GoalRevenue: 50
-    CustomerAppearanceDelay: 5
+    CustomerAppearanceDelay: 25
     AvailableRecepies: 3
-  - GoalRevenue: 150
+  - GoalRevenue: 100
     CustomerAppearanceDelay: 20
     AvailableRecepies: 10
-  - GoalRevenue: 450
+  - GoalRevenue: 200
+    CustomerAppearanceDelay: 15
+    AvailableRecepies: 15
+  - GoalRevenue: 400
     CustomerAppearanceDelay: 10
+    AvailableRecepies: 15
+  - GoalRevenue: 800
+    CustomerAppearanceDelay: 5
     AvailableRecepies: 15
   _allowedItems:
   - {fileID: 11400000, guid: 7ee7bacff2389624794a47d801866f09, type: 2}
