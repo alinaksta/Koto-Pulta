@@ -28,13 +28,24 @@ namespace Game.UI
             public RectTransform Root;
         }
 
+        [Serializable]
+        private struct TabButtonBinding
+        {
+            public ComputerSiteTab Tab;
+            public Button Button;
+            public Graphic TargetGraphic;
+        }
+
         [SerializeField] private ComputerInteractable _computer;
         [SerializeField] private ComputerSiteTab _defaultTab = ComputerSiteTab.Meals;
         [SerializeField] private List<TabBinding> _tabs = new List<TabBinding>();
+        [SerializeField] private List<TabButtonBinding> _tabButtons = new List<TabButtonBinding>();
+        [SerializeField] private CanvasGroup _interactionGroup;
 
         [SerializeField, HideInInspector] private List<GameObject> sites = new List<GameObject>();
 
         private readonly Dictionary<ComputerSiteTab, RectTransform> _tabRoots = new Dictionary<ComputerSiteTab, RectTransform>();
+        private readonly Dictionary<Button, ColorBlock> _tabButtonColors = new Dictionary<Button, ColorBlock>();
 
         private ComputerSiteTab _currentTab;
         private bool _hasCurrentTab;
@@ -53,9 +64,17 @@ namespace Game.UI
             if (_computer == null)
                 _computer = GetComponent<ComputerInteractable>();
 
+            if (_interactionGroup == null)
+                _interactionGroup = GetComponent<CanvasGroup>();
+
+            if (_interactionGroup == null)
+                _interactionGroup = gameObject.AddComponent<CanvasGroup>();
+
             RebuildTabLookup();
             InitializeCurrentTab();
-            HideAllTabs();
+            RefreshTabButtonStates();
+            SetScreenInteractable(false);
+            ShowCurrentTab();
         }
 
         private void OnEnable()
@@ -82,6 +101,7 @@ namespace Game.UI
             }
 
             _isFocused = false;
+            SetScreenInteractable(false);
             HideAllTabs();
         }
 
@@ -104,7 +124,10 @@ namespace Game.UI
                 ShowCurrentTab();
 
             if (changed)
+            {
+                RefreshTabButtonStates();
                 OnTabChanged.Invoke(_currentTab);
+            }
 
             if (_isFocused)
                 OnTabViewed.Invoke(_currentTab);
@@ -143,6 +166,8 @@ namespace Game.UI
             if (!_hasCurrentTab)
                 InitializeCurrentTab();
 
+            RefreshTabButtonStates();
+            SetScreenInteractable(true);
             ShowCurrentTab();
             OnTabViewed.Invoke(_currentTab);
         }
@@ -150,7 +175,8 @@ namespace Game.UI
         private void HandleFocusEnded()
         {
             _isFocused = false;
-            HideAllTabs();
+            SetScreenInteractable(false);
+            ShowCurrentTab();
             OnComputerExited.Invoke();
         }
 
@@ -160,6 +186,7 @@ namespace Game.UI
             {
                 _currentTab = _defaultTab;
                 _hasCurrentTab = true;
+                RefreshTabButtonStates();
                 return;
             }
 
@@ -167,7 +194,56 @@ namespace Game.UI
             {
                 _currentTab = firstAvailableTab;
                 _hasCurrentTab = true;
+                RefreshTabButtonStates();
             }
+        }
+
+        private void RefreshTabButtonStates()
+        {
+            for (int i = 0; i < _tabButtons.Count; i++)
+            {
+                TabButtonBinding binding = _tabButtons[i];
+                if (binding.Button == null)
+                    continue;
+
+                Graphic targetGraphic = binding.TargetGraphic != null
+                    ? binding.TargetGraphic
+                    : binding.Button.targetGraphic;
+
+                if (targetGraphic == null)
+                    continue;
+
+                if (!_tabButtonColors.TryGetValue(binding.Button, out ColorBlock originalColors))
+                {
+                    originalColors = binding.Button.colors;
+                    _tabButtonColors.Add(binding.Button, originalColors);
+                }
+
+                bool isSelected = _hasCurrentTab && binding.Tab == _currentTab;
+                if (isSelected)
+                {
+                    Color selectedColor = originalColors.selectedColor;
+                    ColorBlock selectedColors = originalColors;
+                    selectedColors.normalColor = selectedColor;
+                    selectedColors.highlightedColor = selectedColor;
+                    selectedColors.pressedColor = selectedColor;
+                    binding.Button.colors = selectedColors;
+                    targetGraphic.color = selectedColor;
+                    continue;
+                }
+
+                binding.Button.colors = originalColors;
+                targetGraphic.color = originalColors.normalColor;
+            }
+        }
+
+        private void SetScreenInteractable(bool interactable)
+        {
+            if (_interactionGroup == null)
+                return;
+
+            _interactionGroup.interactable = interactable;
+            _interactionGroup.blocksRaycasts = interactable;
         }
 
         private void ShowCurrentTab()
