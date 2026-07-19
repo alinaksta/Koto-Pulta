@@ -1311,6 +1311,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 8476328124916772444}
+        m_TargetAssemblyTypeName: Game.UI.SiteButtonRandomizer, Assembly-CSharp
+        m_MethodName: Randomize
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8885068429638316461
 GameObject:
   m_ObjectHideFlags: 0
@@ -1590,11 +1602,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3885640181334625980, guid: 372ccd3bd70f0eb46b20c7ab5ace092b, type: 3}
       propertyPath: m_Size
-      value: 0.00000011083866
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3885640181334625980, guid: 372ccd3bd70f0eb46b20c7ab5ace092b, type: 3}
       propertyPath: m_Value
-      value: 0
+      value: -0.000000025542
       objectReference: {fileID: 0}
     - target: {fileID: 4087454248714620102, guid: 372ccd3bd70f0eb46b20c7ab5ace092b, type: 3}
       propertyPath: m_Size
@@ -1842,7 +1854,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8603218274019328773, guid: 372ccd3bd70f0eb46b20c7ab5ace092b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1194.7998
+      value: 1194.8
       objectReference: {fileID: 0}
     - target: {fileID: 8744813978913320894, guid: 372ccd3bd70f0eb46b20c7ab5ace092b, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -1992,7 +2004,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4095091925466162156, guid: 8ac9819291a45da438b619e82642a02d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 768.8001
+      value: 768.79956
       objectReference: {fileID: 0}
     - target: {fileID: 4618071488648361453, guid: 8ac9819291a45da438b619e82642a02d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2008,11 +2020,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6009765017003423150, guid: 8ac9819291a45da438b619e82642a02d, type: 3}
       propertyPath: m_Size
-      value: 0.00000029870387
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6009765017003423150, guid: 8ac9819291a45da438b619e82642a02d, type: 3}
       propertyPath: m_Value
-      value: -0.0000001984754
+      value: 0.00000051603604
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2024,6 +2036,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3071965775859436312, guid: 8ac9819291a45da438b619e82642a02d, type: 3}
   m_PrefabInstance: {fileID: 7799110722818175723}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8476328124916772444 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1845902334347271351, guid: 8ac9819291a45da438b619e82642a02d, type: 3}
+  m_PrefabInstance: {fileID: 7799110722818175723}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88f4c709f9f025748ba0888835a54138, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteButtonRandomizer
 --- !u!1001 &8289196861058465698
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2116,6 +2139,38 @@ PrefabInstance:
       propertyPath: m_Name
       value: PR_ShiftStatisticsTab
       objectReference: {fileID: 0}
+    - target: {fileID: 6392231587319277559, guid: 09a4a595b84f6c648a83c5d934d99879, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6392231587319277559, guid: 09a4a595b84f6c648a83c5d934d99879, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6392231587319277559, guid: 09a4a595b84f6c648a83c5d934d99879, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 861958276608096906}
+    - target: {fileID: 6392231587319277559, guid: 09a4a595b84f6c648a83c5d934d99879, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6392231587319277559, guid: 09a4a595b84f6c648a83c5d934d99879, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ExitComputer
+      objectReference: {fileID: 0}
+    - target: {fileID: 6392231587319277559, guid: 09a4a595b84f6c648a83c5d934d99879, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Game.Interaction.ComputerInteractable, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6392231587319277559, guid: 09a4a595b84f6c648a83c5d934d99879, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7014707896215479360, guid: 09a4a595b84f6c648a83c5d934d99879, type: 3}
+      propertyPath: _computer
+      value: 
+      objectReference: {fileID: 1646824362821949523}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

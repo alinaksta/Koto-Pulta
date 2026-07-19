@@ -301,6 +301,7 @@ MonoBehaviour:
   _itemAsset: {fileID: 11400000, guid: cf54fe7e9e036954384263cb4d5123d0, type: 2}
   lockedIcon: {fileID: 21300000, guid: 0914e7120330c334cb76dd53414f036e, type: 3}
   _isUnlocked: 0
+  _button: {fileID: 0}
 --- !u!1 &2426834603267439551
 GameObject:
   m_ObjectHideFlags: 0
@@ -437,6 +438,7 @@ MonoBehaviour:
   _itemAsset: {fileID: 11400000, guid: 761d8ffbb93096e4ea8ac868397dd0e8, type: 2}
   lockedIcon: {fileID: 21300000, guid: 0914e7120330c334cb76dd53414f036e, type: 3}
   _isUnlocked: 0
+  _button: {fileID: 0}
 --- !u!1 &2539485316718784936
 GameObject:
   m_ObjectHideFlags: 0
@@ -483,7 +485,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 768.80005}
+  m_AnchoredPosition: {x: 0, y: 768.79987}
   m_SizeDelta: {x: 0, y: 1226}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &2990955819550717586
@@ -579,19 +581,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.SiteButtonRandomizer
   _computerInteractable: {fileID: 0}
   buttonsToShuffle:
-  - {fileID: 5540550597571160057}
-  - {fileID: 8979333743570060244}
-  - {fileID: 844056166878326630}
-  - {fileID: 390319565857647556}
-  - {fileID: 584152649763612388}
-  - {fileID: 8961869864075674193}
-  - {fileID: 806590299455684972}
-  - {fileID: 8690200845636232604}
-  - {fileID: 1053812517461486950}
-  - {fileID: 7634829930974131679}
-  - {fileID: 4459274206911744911}
-  - {fileID: 2108728650714727038}
-  - {fileID: 7736103736573671790}
+  - {fileID: 1348650303327850670}
+  - {fileID: 5531427853498066082}
+  - {fileID: 5294198052004898047}
+  - {fileID: 4158096180071799151}
+  - {fileID: 5109793495231217515}
+  - {fileID: 8096110612009203349}
+  - {fileID: 4850322444839045686}
+  - {fileID: 6143781872492100822}
+  - {fileID: 6977874414118759054}
+  - {fileID: 4167298931857186197}
+  - {fileID: 1953060144482125553}
+  - {fileID: 8669324266820188867}
+  - {fileID: 4530390876106930233}
 --- !u!114 &2341900230115255394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -755,6 +757,7 @@ MonoBehaviour:
   _itemAsset: {fileID: 11400000, guid: f8bb92e7c221f964aa44a02cfcbc4592, type: 2}
   lockedIcon: {fileID: 21300000, guid: 0914e7120330c334cb76dd53414f036e, type: 3}
   _isUnlocked: 0
+  _button: {fileID: 0}
 --- !u!1 &3107564794148195676
 GameObject:
   m_ObjectHideFlags: 0
@@ -891,6 +894,7 @@ MonoBehaviour:
   _itemAsset: {fileID: 11400000, guid: 66da350420390434881d32f702e58aa8, type: 2}
   lockedIcon: {fileID: 21300000, guid: 0914e7120330c334cb76dd53414f036e, type: 3}
   _isUnlocked: 0
+  _button: {fileID: 0}
 --- !u!1 &3461711945944418446
 GameObject:
   m_ObjectHideFlags: 0
@@ -1063,6 +1067,7 @@ MonoBehaviour:
   _itemAsset: {fileID: 11400000, guid: b2c58796fc7c0c040866f9e1a0d1e4d1, type: 2}
   lockedIcon: {fileID: 21300000, guid: 0914e7120330c334cb76dd53414f036e, type: 3}
   _isUnlocked: 0
+  _button: {fileID: 0}
 --- !u!1 &4765055367780869197
 GameObject:
   m_ObjectHideFlags: 0
@@ -1199,6 +1204,7 @@ MonoBehaviour:
   _itemAsset: {fileID: 11400000, guid: d97aab6ea61c0b248959282a829c8f43, type: 2}
   lockedIcon: {fileID: 21300000, guid: 0914e7120330c334cb76dd53414f036e, type: 3}
   _isUnlocked: 1
+  _button: {fileID: 0}
 --- !u!1 &4982822590596164887
 GameObject:
   m_ObjectHideFlags: 0
@@ -1335,6 +1341,7 @@ MonoBehaviour:
   _itemAsset: {fileID: 11400000, guid: bf0cae3c28479ea4e925e2c41a1e5a60, type: 2}
   lockedIcon: {fileID: 21300000, guid: 0914e7120330c334cb76dd53414f036e, type: 3}
   _isUnlocked: 0
+  _button: {fileID: 0}
 --- !u!1 &5236972885283308347
 GameObject:
   m_ObjectHideFlags: 0
@@ -1455,7 +1462,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4702353950840605209}
   m_HandleRect: {fileID: 4618071488648361453}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 0.00000007939016
   m_Size: 0
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -1597,6 +1604,7 @@ MonoBehaviour:
   _itemAsset: {fileID: 11400000, guid: 05d7fe516a398d64482537063bb5183a, type: 2}
   lockedIcon: {fileID: 21300000, guid: 0914e7120330c334cb76dd53414f036e, type: 3}
   _isUnlocked: 0
+  _button: {fileID: 0}
 --- !u!1 &6709381747628120126
 GameObject:
   m_ObjectHideFlags: 0
@@ -1733,6 +1741,7 @@ MonoBehaviour:
   _itemAsset: {fileID: 11400000, guid: 1d7993a15afe54241870f0ec6ccbb0de, type: 2}
   lockedIcon: {fileID: 21300000, guid: 0914e7120330c334cb76dd53414f036e, type: 3}
   _isUnlocked: 0
+  _button: {fileID: 0}
 --- !u!1 &6989037841254027659
 GameObject:
   m_ObjectHideFlags: 0
@@ -1869,6 +1878,7 @@ MonoBehaviour:
   _itemAsset: {fileID: 11400000, guid: 6ae552bdcf52a284a81e5a995aeb6d29, type: 2}
   lockedIcon: {fileID: 21300000, guid: 0914e7120330c334cb76dd53414f036e, type: 3}
   _isUnlocked: 1
+  _button: {fileID: 0}
 --- !u!1 &7030727396894535290
 GameObject:
   m_ObjectHideFlags: 0
@@ -2005,6 +2015,7 @@ MonoBehaviour:
   _itemAsset: {fileID: 11400000, guid: 39ed9d28445c78b4eafc8ffa021450b6, type: 2}
   lockedIcon: {fileID: 21300000, guid: 0914e7120330c334cb76dd53414f036e, type: 3}
   _isUnlocked: 0
+  _button: {fileID: 0}
 --- !u!1 &7192225997312223647
 GameObject:
   m_ObjectHideFlags: 0
@@ -2141,6 +2152,7 @@ MonoBehaviour:
   _itemAsset: {fileID: 11400000, guid: 7ee7bacff2389624794a47d801866f09, type: 2}
   lockedIcon: {fileID: 21300000, guid: 0914e7120330c334cb76dd53414f036e, type: 3}
   _isUnlocked: 1
+  _button: {fileID: 0}
 --- !u!1 &7559406779849846764
 GameObject:
   m_ObjectHideFlags: 0
@@ -2277,6 +2289,7 @@ MonoBehaviour:
   _itemAsset: {fileID: 11400000, guid: cf77036787562b24190e838e4194cb6a, type: 2}
   lockedIcon: {fileID: 21300000, guid: 0914e7120330c334cb76dd53414f036e, type: 3}
   _isUnlocked: 0
+  _button: {fileID: 0}
 --- !u!1 &7679051601849202523
 GameObject:
   m_ObjectHideFlags: 0
