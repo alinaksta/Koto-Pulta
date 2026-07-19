@@ -1,8 +1,10 @@
-using Game.Items;
 using Game.Interaction;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using Itemworks.UnityEngine;
+using Game.Progression;
+using Game.Services;
 
 namespace Game.UI
 {
@@ -12,19 +14,30 @@ namespace Game.UI
     public class SiteButtonRandomizer : MonoBehaviour
     {
         [SerializeField] private ComputerInteractable _computerInteractable;
-        [SerializeField] private List<Button> buttonsToShuffle;
+        [SerializeField] private List<SiteItemButton> buttonsToShuffle;
+        private ShiftService _shiftService;
 
         private void OnEnable()
         {
             _computerInteractable.FocusStarted += HandleFocusStarted;
+            _shiftService = ServiceLocator.Get<ShiftService>();
+            _shiftService.OnShiftStarted += HandleShiftStarted;
         }
 
         private void OnDisable()
         {
             _computerInteractable.FocusStarted -= HandleFocusStarted;
+
+            if (_shiftService != null)
+                _shiftService.OnShiftStarted -= HandleShiftStarted;
         }
 
         private void HandleFocusStarted()
+        {
+            Randomize();
+        }
+
+        private void HandleShiftStarted()
         {
             Randomize();
         }
@@ -40,9 +53,12 @@ namespace Game.UI
                 return;
             }
             List<Vector3> positions = new List<Vector3>();
-            foreach (Button btn in buttonsToShuffle)
+            foreach (var btn in buttonsToShuffle)
             {
-                positions.Add(btn.transform.position);
+                positions.Add(btn._button.transform.position);
+                int requiredTier = btn.RequiredTier();
+                int unlockedTier = _shiftService.ItemUnlockShiftIndex + 1;
+                btn.SetUnlocked(requiredTier != -1 && requiredTier <= unlockedTier);
             }
             for (int i = 0; i < positions.Count; i++)
             {
@@ -54,7 +70,7 @@ namespace Game.UI
 
             for (int i = 0; i < buttonsToShuffle.Count; i++)
             {
-                buttonsToShuffle[i].transform.position = positions[i];
+                buttonsToShuffle[i]._button.transform.position = positions[i];
             }
 
         }        

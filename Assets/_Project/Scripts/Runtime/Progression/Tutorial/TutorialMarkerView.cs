@@ -11,6 +11,8 @@ namespace Game.Progression
     {
         [SerializeField] private GameObject _visualRoot;
         [SerializeField] private Vector3 _worldOffset = new Vector3(0f, 1.5f, 0f);
+        [SerializeField, Min(0f)] private float _bobAmplitude = 0.15f;
+        [SerializeField, Min(0f)] private float _bobFrequency = 2f;
         [SerializeField] private bool _faceCamera = true;
         [SerializeField] private Camera _camera;
 
@@ -32,7 +34,11 @@ namespace Game.Progression
             if (_target == null)
                 return;
 
-            transform.position = _target.position + _targetOffset;
+            float bob = _bobAmplitude > 0f && _bobFrequency > 0f
+                ? Mathf.Sin(Time.time * _bobFrequency) * _bobAmplitude
+                : 0f;
+
+            transform.position = _target.position + _targetOffset + Vector3.up * bob;
 
             gameObject.SetActive(_target.gameObject.activeSelf);
 

@@ -841,6 +841,7 @@ GameObject:
   m_Component:
   - component: {fileID: 494438713049448182}
   - component: {fileID: 6767342463133712699}
+  - component: {fileID: 8571246093864215031}
   m_Layer: 0
   m_Name: BalanceService
   m_TagString: Untagged
@@ -875,6 +876,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7616b0f0da9290f4f877696053cae60d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.Progression.BalanceService
+--- !u!114 &8571246093864215031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3506388391098946459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4a80cf0124f4b2db6a85503a63ac501, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Game.Progression.UpgradeService
 --- !u!1 &3995185287825558032
 GameObject:
   m_ObjectHideFlags: 0
@@ -980,18 +993,18 @@ MonoBehaviour:
     _onCompleted:
       m_PersistentCalls:
         m_Calls: []
-  _mealsTabStep:
+  _shopTabStep:
     _lines:
-    - The Meals tab is where you select meals requested by customers.
+    - The Shop tab lets you unlock and manage upgrades.
     _onStarted:
       m_PersistentCalls:
         m_Calls: []
     _onCompleted:
       m_PersistentCalls:
         m_Calls: []
-  _shopTabStep:
+  _mealsTabStep:
     _lines:
-    - The Shop tab lets you unlock and manage upgrades.
+    - The Meals tab is where you select meals requested by customers.
     _onStarted:
       m_PersistentCalls:
         m_Calls: []
@@ -1073,9 +1086,19 @@ MonoBehaviour:
     _onCompleted:
       m_PersistentCalls:
         m_Calls: []
+  _statisticsComputerStep:
+    _lines:
+    - Shift statistics are shown on the Shift tab of the computer. Open the computer
+      to view them.
+    _onStarted:
+      m_PersistentCalls:
+        m_Calls: []
+    _onCompleted:
+      m_PersistentCalls:
+        m_Calls: []
   _finishStep:
     _lines:
-    - Shift statistics are shown on the Shift tab of the computer.
+    - Here you can see how well you performed on last shift.
     - You can start the next shift from that tab. You are ready to play!
     _onStarted:
       m_PersistentCalls:
@@ -1087,10 +1110,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _defaultMarkerOffset: {x: 0, y: 1.5, z: 0}
-  _pickupMarkerOffset: {x: 0, y: 1.5, z: 0}
-  _waiterMarkerOffset: {x: 0, y: 2.2, z: 0}
-  _computerMarkerOffset: {x: 0, y: 1.5, z: 0}
+  _pickupMarkerOffset: {x: 0, y: 0.6, z: 0}
+  _throwWaiterMarkerOffset: {x: 0, y: 1.72, z: 0}
+  _giveMealWaiterMarkerOffset: {x: 0, y: 2.3, z: 0}
+  _computerMarkerOffset: {x: 0, y: 1.32, z: 0}
   _tableMarkerOffset: {x: 0, y: 1.8, z: 0}
+  _tabMarkerOffset: {x: 0, y: 0}
 --- !u!1 &4936715561112648007
 GameObject:
   m_ObjectHideFlags: 0
@@ -1137,13 +1162,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Game.Progression.ShiftService
   _shifts:
   - GoalRevenue: 50
-    CustomerAppearanceDelay: 5
+    CustomerAppearanceDelay: 25
     AvailableRecepies: 3
-  - GoalRevenue: 150
+  - GoalRevenue: 100
     CustomerAppearanceDelay: 20
     AvailableRecepies: 10
-  - GoalRevenue: 450
+  - GoalRevenue: 200
+    CustomerAppearanceDelay: 15
+    AvailableRecepies: 15
+  - GoalRevenue: 400
     CustomerAppearanceDelay: 10
+    AvailableRecepies: 15
+  - GoalRevenue: 800
+    CustomerAppearanceDelay: 5
     AvailableRecepies: 15
   _allowedItems:
   - {fileID: 11400000, guid: 7ee7bacff2389624794a47d801866f09, type: 2}

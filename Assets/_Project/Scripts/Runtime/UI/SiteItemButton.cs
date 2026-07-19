@@ -16,8 +16,24 @@ namespace Game.UI
         [SerializeField] private Sprite lockedIcon;
         [SerializeField] private bool _isUnlocked = false;
         public event System.Action<Item> OnItemChosen = delegate { };
-        private Button _button;
+        public Button _button;
         private Image _icon;
+
+        public int RequiredTier()
+        {
+            var definition = Item.FromId(_itemAsset.Id).Value.Definition;
+            if (definition.TryGetProperty<ShiftProperty>(out var shiftProperty))
+            {
+                return shiftProperty.Tier;
+            }
+            return -1;
+        }
+
+        public int RequiredShift()
+        {
+            int tier = RequiredTier();
+            return tier < 0 ? -1 : tier - 1;
+        }
 
 
         private void Awake()
@@ -32,18 +48,7 @@ namespace Game.UI
                 _button.onClick.AddListener(OnButtonClick);
             }
             if (_isUnlocked)
-            {
-                var definition = Item.FromId(_itemAsset.Id).Value.Definition;
-
-                if (definition.TryGetProperty<FoodProperty>(out var spriteProperty))
-                {
-                    _icon.sprite = spriteProperty.WorldSprite;
-                }
-                else
-                {
-                    _icon.sprite = null;
-                }
-            }
+                RefreshIcon();
         }
 
         private void OnDestroy()
@@ -80,6 +85,28 @@ namespace Game.UI
         }
 
         public bool isUnlocked() {return _isUnlocked;}
-        public void SetLocked(bool state) {_isUnlocked = state;}
+
+        public void SetUnlocked(bool state)
+        {
+            _isUnlocked = state;
+            RefreshIcon();
+        }
+
+        private void RefreshIcon()
+        {
+            if (_icon == null)
+                return;
+
+            if (!_isUnlocked)
+            {
+                _icon.sprite = lockedIcon;
+                return;
+            }
+
+            var definition = Item.FromId(_itemAsset.Id).Value.Definition;
+            _icon.sprite = definition.TryGetProperty<FoodProperty>(out var spriteProperty)
+                ? spriteProperty.WorldSprite
+                : null;
+        }
     }
 }

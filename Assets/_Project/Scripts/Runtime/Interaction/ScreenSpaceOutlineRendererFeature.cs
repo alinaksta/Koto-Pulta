@@ -91,6 +91,8 @@ namespace Game.Interaction
             private static readonly int FringeAlphaMaxId = Shader.PropertyToID("_FringeAlphaMax");
             private static readonly int FringeBlendStrengthId = Shader.PropertyToID("_FringeBlendStrength");
 
+            private static readonly GraphicsFormat MaskColorFormat = GetMaskColorFormat();
+
             private readonly List<ShaderTagId> _shaderTags = new()
             {
                 new ShaderTagId("UniversalForward"),
@@ -130,7 +132,7 @@ namespace Game.Interaction
 
                 var maskDescriptor = renderGraph.GetTextureDesc(resourceData.activeColorTexture);
                 maskDescriptor.name = "Screen Space Outline Mask";
-                maskDescriptor.colorFormat = GraphicsFormat.R8_UNorm;
+                maskDescriptor.colorFormat = MaskColorFormat;
                 maskDescriptor.depthBufferBits = DepthBits.None;
                 maskDescriptor.msaaSamples = MSAASamples.None;
                 maskDescriptor.clearBuffer = true;
@@ -162,6 +164,14 @@ namespace Game.Interaction
                 }
 
                 resourceData.cameraColor = destination;
+            }
+
+            private static GraphicsFormat GetMaskColorFormat()
+            {
+                if (SystemInfo.IsFormatSupported(GraphicsFormat.R8_UNorm, FormatUsage.Render))
+                    return GraphicsFormat.R8_UNorm;
+
+                return GraphicsFormat.R8G8B8A8_UNorm;
             }
 
             private void AddMaskPass(

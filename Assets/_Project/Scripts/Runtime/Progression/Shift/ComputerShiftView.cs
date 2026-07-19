@@ -1,4 +1,6 @@
+using Game.Interaction;
 using Game.Services;
+using Game.UI;
 using System;
 using TMPro;
 using UnityEngine;
@@ -29,6 +31,7 @@ namespace Game.Progression
         [SerializeField] private TextMeshProUGUI _angryCustomersText;
         [SerializeField] private TextMeshProUGUI _averageTimeText;
         [SerializeField] private TextMeshProUGUI _moneyEarnedText;
+        [SerializeField] private SiteActivator _computer;
 
         [Header("In Progress Panel Dependencies")]
         [SerializeField] private RectTransform _inProgressPanel;
@@ -45,6 +48,7 @@ namespace Game.Progression
         {
             _shiftService.OnShiftStarted += HandleShiftStarted;
             _shiftService.OnShiftEnded += HandleShiftEnded;
+            _shiftService.OnShiftStartAvailabilityChanged += HandleShiftStartAvailabilityChanged;
 
             _beginFirstShiftButton.onClick.AddListener(HandleStartNextShiftButtonClick);
             _startNextShiftButton.onClick.AddListener(HandleStartNextShiftButtonClick);
@@ -65,6 +69,7 @@ namespace Game.Progression
         {
             _shiftService.OnShiftStarted -= HandleShiftStarted;
             _shiftService.OnShiftEnded -= HandleShiftEnded;
+            _shiftService.OnShiftStartAvailabilityChanged -= HandleShiftStartAvailabilityChanged;
 
             _beginFirstShiftButton.onClick.RemoveListener(HandleStartNextShiftButtonClick);
             _startNextShiftButton.onClick.RemoveListener(HandleStartNextShiftButtonClick);
@@ -73,6 +78,7 @@ namespace Game.Progression
         private void HandleShiftEnded()
         {
             _state = ComputerShiftState.Ended;
+            _computer.SetTab(0);
             UpdateUI();
         }
 
@@ -80,6 +86,11 @@ namespace Game.Progression
         {
             _state = ComputerShiftState.InProgress;
             UpdateUI();
+        }
+
+        private void HandleShiftStartAvailabilityChanged()
+        {
+            UpdateShiftButtonStates();
         }
 
         private void UpdateUI()
@@ -90,6 +101,19 @@ namespace Game.Progression
                 UpdateEndedUI();
             else
                 UpdateInProgressUI();
+
+            UpdateShiftButtonStates();
+        }
+
+        private void UpdateShiftButtonStates()
+        {
+            bool canStart = _shiftService != null && _shiftService.CanStartNextShift;
+
+            if (_beginFirstShiftButton != null)
+                _beginFirstShiftButton.interactable = canStart;
+
+            if (_startNextShiftButton != null)
+                _startNextShiftButton.interactable = canStart;
         }
 
         private void EnableSinglePanel(RectTransform panel)

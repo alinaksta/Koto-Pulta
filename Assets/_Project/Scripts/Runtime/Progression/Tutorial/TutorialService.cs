@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace Game.Progression
 {
@@ -44,23 +45,23 @@ namespace Game.Progression
 
         [Header("Computer")]
         [SerializeField] private TutorialStep _computerStep = new(
-            "Use the computer and open each tab. I will explain them as you go.");
+            "Open the computer. I will explain the tabs from there.");
         [SerializeField] private TutorialStep _shiftTabStep = new(
             "The Shift tab starts shifts and shows statistics from the previous shift.");
-        [SerializeField] private TutorialStep _mealsTabStep = new(
-            "The Meals tab is where you select meals requested by customers.");
         [SerializeField] private TutorialStep _shopTabStep = new(
             "The Shop tab lets you unlock and manage upgrades.");
+        [SerializeField] private TutorialStep _mealsTabStep = new(
+            "The Meals tab is where you select meals requested by customers.");
         [SerializeField] private TutorialStep _exitComputerStep = new(
-            "You can exit the computer by pressing Z, Escape, or the exit button.");
+            "You can close the computer by pressing Z.");
 
         [Header("Practice Order")]
         [SerializeField] private TutorialStep _startShiftStep = new(
-            "Return to the Shift tab and start the next shift.");
+            "Open the Shift tab and start your first shift.");
         [SerializeField] private TutorialStep _waiterOrderStep = new(
             "A waiter will ask a customer for their order, then return and wait for you to provide that meal.");
         [SerializeField] private TutorialStep _giveMealStep = new(
-            "Get the requested meal and give it to the waiting waiter.");
+            "Open the Meals tab, get the requested meal, and give it to the waiting waiter.");
         [SerializeField] private TutorialStep _deliverStep = new(
             "The note above the waiter shows the table number. Throw the waiter to that table.");
         [SerializeField] private TutorialStep _successStep = new(
@@ -69,8 +70,9 @@ namespace Game.Progression
             "That delivery missed. Be more careful with the table number and your aim.");
         [SerializeField] private TutorialStep _retryStep = new(
             "If the meal is wrong or the waiter misses, the order remains active and the waiter will ask for the item again.");
+        [SerializeField] private TutorialStep _statisticsComputerStep = new(
+            "Shift statistics are shown on the Shift tab of the computer. Open the computer to view them.");
         [SerializeField] private TutorialStep _finishStep = new(
-            "Shift statistics are shown on the Shift tab of the computer.",
             "You can start the next shift from that tab. You are ready to play!");
 
         [Header("Events")]
@@ -79,12 +81,14 @@ namespace Game.Progression
         [Header("Marker Offsets")]
         [SerializeField] private Vector3 _defaultMarkerOffset = new Vector3(0f, 1.5f, 0f);
         [SerializeField] private Vector3 _pickupMarkerOffset = new Vector3(0f, 1.5f, 0f);
-        [SerializeField] private Vector3 _waiterMarkerOffset = new Vector3(0f, 2.2f, 0f);
+        [SerializeField, FormerlySerializedAs("_waiterMarkerOffset")] private Vector3 _throwWaiterMarkerOffset = new Vector3(0f, 2.2f, 0f);
+        [SerializeField] private Vector3 _giveMealWaiterMarkerOffset = new Vector3(0f, 2.2f, 0f);
         [SerializeField] private Vector3 _computerMarkerOffset = new Vector3(0f, 2.8f, 0f);
         [SerializeField] private Vector3 _tableMarkerOffset = new Vector3(0f, 2f, 0f);
 
-        private readonly HashSet<ComputerSiteTab> _visitedTabs = new();
-        private readonly HashSet<ComputerSiteTab> _tabsBeingExplained = new();
+        [Header("UI Marker Offsets")]
+        [SerializeField] private Vector2 _tabMarkerOffset = Vector2.zero;
+
         private readonly HashSet<TutorialSignal> _latchedSignals = new();
 
         private GameModeContext _context;
@@ -115,7 +119,18 @@ namespace Game.Progression
         /// </summary>
         public Vector3 TargetOffset { get; private set; }
 
+        /// <summary>
+        /// Gets the current canvas-space marker target.
+        /// </summary>
+        public RectTransform UiTarget { get; private set; }
+
+        /// <summary>
+        /// Gets the offset applied to the current canvas-space marker target.
+        /// </summary>
+        public Vector2 UiTargetOffset { get; private set; }
+
         public event Action<Transform, Vector3> OnTargetChanged = delegate { };
+        public event Action<RectTransform, Vector2> OnUiTargetChanged = delegate { };
 
         /// <inheritdoc/>
         public bool CanStart(GameModeContext context)
@@ -185,6 +200,7 @@ namespace Game.Progression
 
             _dialogue?.Hide();
             ClearTarget();
+            ClearUiTarget();
             _shifts?.Exit();
 
             _expectedSignal = TutorialSignal.None;
@@ -243,11 +259,40 @@ namespace Game.Progression
         }
 
         /// <summary>
+        /// Sets the UI object followed by the canvas tutorial marker view.
+        /// </summary>
+        public void SetUiTarget(RectTransform target)
+        {
+            SetUiTarget(target, Vector2.zero);
+        }
+
+        /// <summary>
+        /// Sets the UI object followed by the canvas tutorial marker view with a custom offset.
+        /// </summary>
+        public void SetUiTarget(RectTransform target, Vector2 offset)
+        {
+            if (UiTarget == target && UiTargetOffset == offset)
+                return;
+
+            UiTarget = target;
+            UiTargetOffset = offset;
+            OnUiTargetChanged.Invoke(UiTarget, UiTargetOffset);
+        }
+
+        /// <summary>
         /// Clears the current tutorial marker target.
         /// </summary>
         public void ClearTarget()
         {
             SetTarget(null, _defaultMarkerOffset);
+        }
+
+        /// <summary>
+        /// Clears the current canvas-space tutorial marker target.
+        /// </summary>
+        public void ClearUiTarget()
+        {
+            SetUiTarget(null, Vector2.zero);
         }
 
         /// <summary>
@@ -296,34 +341,30 @@ namespace Game.Progression
                 await RunSignalStepAsync(_dropStep, TutorialSignal.DroppedObject, null, cancellationToken);
 
                 Waiter availableWaiter = await WaitForAnyWaiterAsync(cancellationToken);
-                await RunSignalStepAsync(_throwWaiterStep, TutorialSignal.ThrewWaiter, availableWaiter.transform, _waiterMarkerOffset, cancellationToken);
+                availableWaiter.SetHoldAtMealPoint(true);
+                availableWaiter.StartGoingToMealPoint();
+                await WaitForWaiterMealPointAsync(availableWaiter, cancellationToken);
+                await RunSignalStepAsync(_throwWaiterStep, TutorialSignal.ThrewWaiter, availableWaiter.transform, _throwWaiterMarkerOffset, cancellationToken);
 
-                await RunComputerStepAsync(cancellationToken);
+                await RunComputerIntroStepAsync(cancellationToken);
+                await RunComputerTabsStepAsync(cancellationToken);
+                await RunComputerCloseInstructionAsync(cancellationToken);
 
-                await RunExitComputerStepAsync(cancellationToken);
+                if (_scene.ComputerTabs != null)
+                    _scene.ComputerTabs.SetTabButtonsInteractable(true);
 
                 _shifts.QueuePracticeShift(_practiceShift, _practiceCustomerWaitDuration);
 
-                await RunSignalStepAsync(
-                    _startShiftStep,
-                    TutorialSignal.StartedPracticeShift,
-                    _scene.ComputerTarget,
-                    _computerMarkerOffset,
-                    cancellationToken);
+                await RunStartShiftStepAsync(cancellationToken);
 
                 await RunSignalStepAsync(
                     _waiterOrderStep,
                     TutorialSignal.WaiterAskedCustomer,
                     _tutorialWaiter != null ? _tutorialWaiter.transform : null,
-                    _waiterMarkerOffset,
+                    _giveMealWaiterMarkerOffset,
                     cancellationToken);
 
-                await RunSignalStepAsync(
-                    _giveMealStep,
-                    TutorialSignal.GaveMealToWaiter,
-                    _tutorialWaiter != null ? _tutorialWaiter.transform : null,
-                    _waiterMarkerOffset,
-                    cancellationToken);
+                await RunGiveMealStepAsync(cancellationToken);
 
                 Transform tableTarget = _tutorialWaiter != null && _tutorialWaiter.AssignedCustomer != null
                     ? _tutorialWaiter.AssignedCustomer.Table.transform
@@ -337,11 +378,15 @@ namespace Game.Progression
 
                 if (!_customerServed)
                 {
-                    SetTarget(_tutorialWaiter != null ? _tutorialWaiter.transform : null, _waiterMarkerOffset);
+                    SetTarget(_tutorialWaiter != null ? _tutorialWaiter.transform : null, _giveMealWaiterMarkerOffset);
                     await WaitForSignalAsync(TutorialSignal.CustomerServed, cancellationToken);
                 }
 
-                await RunDialogueStepAsync(_finishStep, cancellationToken);
+                if (_scene.ComputerTabs != null)
+                    _scene.ComputerTabs.SetTab(ComputerSiteTab.ShiftStatistics);
+
+                await RunStatisticsComputerStepAsync(cancellationToken);
+                await RunDialogueStepAsync(_finishStep, _scene.ComputerTarget, _computerMarkerOffset, cancellationToken);
                 CompleteTutorial();
             }
             catch (OperationCanceledException)
@@ -367,6 +412,7 @@ namespace Game.Progression
             CancellationToken cancellationToken)
         {
             SetTarget(target, markerOffset);
+            ClearUiTarget();
             step.InvokeStarted();
             await _dialogue.DisplayLinesAsync(step.Lines, cancellationToken, false);
             await WaitForSignalAsync(signal, cancellationToken);
@@ -376,71 +422,120 @@ namespace Game.Progression
         private async Task RunDialogueStepAsync(TutorialStep step, CancellationToken cancellationToken)
         {
             ClearTarget();
+            ClearUiTarget();
             step.InvokeStarted();
             await _dialogue.DisplayLinesAsync(step.Lines, cancellationToken);
             step.InvokeCompleted();
         }
 
-        private async Task RunComputerStepAsync(CancellationToken cancellationToken)
+        private async Task RunDialogueStepAsync(
+            TutorialStep step,
+            Transform target,
+            Vector3 markerOffset,
+            CancellationToken cancellationToken)
         {
-            _visitedTabs.Clear();
-            _tabsBeingExplained.Clear();
+            SetTarget(target, markerOffset);
+            ClearUiTarget();
+            step.InvokeStarted();
+            await _dialogue.DisplayLinesAsync(step.Lines, cancellationToken);
+            step.InvokeCompleted();
+        }
+
+        private async Task RunStartShiftStepAsync(CancellationToken cancellationToken)
+        {
+            ClearTarget();
+            SetUiTarget(_scene.ShiftTabTarget, _tabMarkerOffset);
+
+            if (_scene.ShiftTabTarget == null)
+                SetTarget(_scene.ComputerTarget, _computerMarkerOffset);
+
+            _startShiftStep.InvokeStarted();
+            await _dialogue.DisplayLinesAsync(_startShiftStep.Lines, cancellationToken, false);
+            await WaitForSignalAsync(TutorialSignal.StartedPracticeShift, cancellationToken);
+            _startShiftStep.InvokeCompleted();
+            ClearUiTarget();
+        }
+
+        private async Task RunGiveMealStepAsync(CancellationToken cancellationToken)
+        {
+            SetTarget(_scene.ComputerTarget, _computerMarkerOffset);
+            SetUiTarget(_scene.MealsTabTarget, _tabMarkerOffset);
+
+            if (_scene.MealsTabTarget == null)
+                ClearUiTarget();
+
+            _giveMealStep.InvokeStarted();
+            await _dialogue.DisplayLinesAsync(_giveMealStep.Lines, cancellationToken, false);
+            await WaitForSignalAsync(TutorialSignal.GaveMealToWaiter, cancellationToken);
+            _giveMealStep.InvokeCompleted();
+            ClearUiTarget();
+        }
+
+        private async Task RunStatisticsComputerStepAsync(CancellationToken cancellationToken)
+        {
+            _latchedSignals.Remove(TutorialSignal.OpenedComputer);
+            SetTarget(_scene.ComputerTarget, _computerMarkerOffset);
+            ClearUiTarget();
+            _statisticsComputerStep.InvokeStarted();
+            await _dialogue.DisplayLinesAsync(_statisticsComputerStep.Lines, cancellationToken, false);
+
+            if (_scene.ComputerTabs != null && !_scene.ComputerTabs.IsFocused)
+                await WaitForSignalAsync(TutorialSignal.OpenedComputer, cancellationToken);
+
+            _statisticsComputerStep.InvokeCompleted();
+        }
+
+        private async Task RunComputerIntroStepAsync(CancellationToken cancellationToken)
+        {
             await RunSignalStepAsync(
                 _computerStep,
-                TutorialSignal.VisitedComputerTabs,
+                TutorialSignal.OpenedComputer,
                 _scene.ComputerTarget,
                 _computerMarkerOffset,
                 cancellationToken);
         }
 
-        private async Task RunExitComputerStepAsync(CancellationToken cancellationToken)
+        private async Task RunComputerTabsStepAsync(CancellationToken cancellationToken)
         {
-            SetTarget(_scene.ComputerTarget, _computerMarkerOffset);
-            _exitComputerStep.InvokeStarted();
-            await _dialogue.DisplayLinesAsync(_exitComputerStep.Lines, cancellationToken, false);
-
-            if (_scene.ComputerTabs != null && _scene.ComputerTabs.IsFocused)
-                await WaitForSignalAsync(TutorialSignal.ExitedComputer, cancellationToken);
-
-            _exitComputerStep.InvokeCompleted();
-        }
-
-        private async Task ExplainTabAsync(ComputerSiteTab tab, CancellationToken cancellationToken)
-        {
-            if (_visitedTabs.Contains(tab) || !_tabsBeingExplained.Add(tab))
+            if (_scene.ComputerTabs == null)
                 return;
 
-            TutorialStep step = tab switch
-            {
-                ComputerSiteTab.ShiftStatistics => _shiftTabStep,
-                ComputerSiteTab.Meals => _mealsTabStep,
-                ComputerSiteTab.Shop => _shopTabStep,
-                _ => null
-            };
-
-            if (step == null)
-                return;
+            _scene.ComputerTabs.SetTabButtonsInteractable(false);
 
             try
             {
-                bool isLastRequiredTab = _visitedTabs.Count == 2;
-
-                step.InvokeStarted();
-                await _dialogue.DisplayLinesAsync(step.Lines, cancellationToken, isLastRequiredTab);
-                _visitedTabs.Add(tab);
-                step.InvokeCompleted();
-
-                if (_visitedTabs.Count == 3)
-                    ReportSignal(TutorialSignal.VisitedComputerTabs);
-            }
-            catch (OperationCanceledException)
-            {
-                // The tutorial or scene was exited while this tab was being explained.
+                await ExplainTabAsync(ComputerSiteTab.ShiftStatistics, _scene.ShiftTabTarget, _shiftTabStep, cancellationToken);
+                await ExplainTabAsync(ComputerSiteTab.Shop, _scene.ShopTabTarget, _shopTabStep, cancellationToken);
+                await ExplainTabAsync(ComputerSiteTab.Meals, _scene.MealsTabTarget, _mealsTabStep, cancellationToken);
             }
             finally
             {
-                _tabsBeingExplained.Remove(tab);
+                ClearUiTarget();
             }
+        }
+
+        private async Task RunComputerCloseInstructionAsync(CancellationToken cancellationToken)
+        {
+            SetTarget(_scene.ComputerTarget, _computerMarkerOffset);
+            ClearUiTarget();
+            _exitComputerStep.InvokeStarted();
+            await _dialogue.DisplayLinesAsync(_exitComputerStep.Lines, cancellationToken);
+            _exitComputerStep.InvokeCompleted();
+        }
+
+        private async Task ExplainTabAsync(
+            ComputerSiteTab tab,
+            RectTransform markerTarget,
+            TutorialStep step,
+            CancellationToken cancellationToken)
+        {
+            ClearTarget();
+            ClearUiTarget();
+            _scene.ComputerTabs.SetTab(tab);
+
+            step.InvokeStarted();
+            await _dialogue.DisplayLinesAsync(step.Lines, cancellationToken);
+            step.InvokeCompleted();
         }
 
         private async Task WaitForSignalAsync(TutorialSignal signal, CancellationToken cancellationToken)
@@ -497,6 +592,18 @@ namespace Game.Progression
             return waiter;
         }
 
+        private async Task WaitForWaiterMealPointAsync(Waiter waiter, CancellationToken cancellationToken)
+        {
+            if (waiter == null || !waiter.HasMealPoint)
+                return;
+
+            while (!waiter.AtMealPoint)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                await Task.Yield();
+            }
+        }
+
         private void SubscribeServices()
         {
             _shifts.OnShiftStarted += HandleShiftStarted;
@@ -544,8 +651,10 @@ namespace Game.Progression
 
             if (_scene.ComputerTabs != null)
             {
+                _scene.ComputerTabs.OnComputerEntered -= HandleComputerEntered;
                 _scene.ComputerTabs.OnTabViewed -= HandleTabViewed;
                 _scene.ComputerTabs.OnComputerExited -= HandleComputerExited;
+                _scene.ComputerTabs.OnComputerEntered += HandleComputerEntered;
                 _scene.ComputerTabs.OnTabViewed += HandleTabViewed;
                 _scene.ComputerTabs.OnComputerExited += HandleComputerExited;
             }
@@ -567,15 +676,26 @@ namespace Game.Progression
 
             if (_scene?.ComputerTabs != null)
             {
+                _scene.ComputerTabs.OnComputerEntered -= HandleComputerEntered;
                 _scene.ComputerTabs.OnTabViewed -= HandleTabViewed;
                 _scene.ComputerTabs.OnComputerExited -= HandleComputerExited;
+                _scene.ComputerTabs.SetTabButtonsInteractable(true);
             }
         }
 
         private void HandleHandItemChanged(Item? item)
         {
-            if (item.HasValue)
-                ReportSignal(TutorialSignal.PickedUpObject);
+            if (!item.HasValue)
+                return;
+
+            if (_expectedSignal == TutorialSignal.GaveMealToWaiter)
+            {
+                ClearUiTarget();
+                SetTarget(_tutorialWaiter != null ? _tutorialWaiter.transform : null, _giveMealWaiterMarkerOffset);
+                return;
+            }
+
+            ReportSignal(TutorialSignal.PickedUpObject);
         }
 
         private void HandleItemDropped(Item item)
@@ -589,10 +709,17 @@ namespace Game.Progression
                 ReportSignal(TutorialSignal.ThrewWaiter);
         }
 
+        private void HandleComputerEntered()
+        {
+            ReportSignal(TutorialSignal.OpenedComputer);
+        }
+
         private void HandleTabViewed(ComputerSiteTab tab)
         {
-            if (_expectedSignal == TutorialSignal.VisitedComputerTabs)
-                _ = ExplainTabAsync(tab, _tutorialCancellation.Token);
+            if (tab == ComputerSiteTab.ShiftStatistics && UiTarget == _scene.ShiftTabTarget)
+                ClearUiTarget();
+            else if (tab == ComputerSiteTab.Meals && UiTarget == _scene.MealsTabTarget)
+                ClearUiTarget();
         }
 
         private void HandleComputerExited()
@@ -669,8 +796,8 @@ namespace Game.Progression
         {
             PlayerPrefs.SetInt(_completionKey, 1);
             PlayerPrefs.Save();
-            _onTutorialCompleted.Invoke();
             _shifts.SetNormalShiftStartLocked(false);
+            _onTutorialCompleted.Invoke();
             _context.GameModes.TrySetGameMode("shift");
         }
     }

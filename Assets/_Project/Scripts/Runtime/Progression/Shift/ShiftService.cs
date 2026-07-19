@@ -38,6 +38,8 @@ namespace Game.Progression
     /// </summary>
     public class ShiftService : MonoBehaviour, IBootstrapable, IGameMode
     {
+        private const float InitialCustomerSpawnDelay = 4f;
+
         [SerializeField] private List<Shift> _shifts;
         [SerializeField] private List<ItemDefinitionAsset> _allowedItems;
         [SerializeField] private float _shiftDuration = 180f;
@@ -57,6 +59,7 @@ namespace Game.Progression
         private bool _practiceShiftActive;
         private bool _practiceCustomerSpawned;
         private bool _normalShiftStartLocked;
+        private bool _currentShiftFailed;
 
         private ShiftStatisticsCollector _statisticsCollector;
         private ShiftStatistics _lastShiftStatistics;
@@ -143,6 +146,12 @@ namespace Game.Progression
         public ShiftStatistics LastStatistics => _lastShiftStatistics;
 
         /// <summary>
+        /// Gets whether the computer shift-start button may currently start a shift.
+        /// </summary>
+        public bool CanStartNextShift => !_modeActive && _currentShiftFailed && !_normalShiftStartLocked ||
+                                         _modeActive && !ShiftInProgress && (!_normalShiftStartLocked || _practiceShiftQueued);
+
+        /// <summary>
         /// Raised after a shift starts.
         /// </summary>
         public event Action OnShiftStarted = delegate { };
@@ -151,6 +160,11 @@ namespace Game.Progression
         /// Raised after a shift ends.
         /// </summary>
         public event Action OnShiftEnded = delegate { };
+
+        /// <summary>
+        /// Raised when the computer shift-start button availability may have changed.
+        /// </summary>
+        public event Action OnShiftStartAvailabilityChanged = delegate { };
 
         /// <inheritdoc/>
         public bool CanStart(GameModeContext context)
@@ -177,8 +191,6 @@ namespace Game.Progression
 
             _context.Balance.OnBalanceChanged += HandleBalanceChanged;
 
-            _context.Customers.SetRandomItemGiver(GetShiftRandomItemGiver());
-
             _statisticsCollector?.Dispose();
             _statisticsCollector = new ShiftStatisticsCollector(context.Customers);
 
@@ -190,6 +202,8 @@ namespace Game.Progression
             _practiceShiftQueued = false;
             _practiceShiftActive = false;
             _practiceCustomerSpawned = false;
+            _currentShiftFailed = false;
+            OnShiftStartAvailabilityChanged.Invoke();
         }
 
         private IRandomItemDefinitionGiver GetShiftRandomItemGiver()
@@ -203,7 +217,8 @@ namespace Game.Progression
                 itemList.Add(definition);
             }
 
-            return new ShiftRandomItemDefinitionGiver(this, itemList);
+            int unlockedTier = Mathf.Clamp(ItemUnlockShiftIndex + 1, 1, 4);
+            return new ShiftRandomItemDefinitionGiver(itemList, unlockedTier, ServiceLocator.Get<UpgradeService>());
         }
 
         /// <inheritdoc/>
@@ -266,6 +281,8 @@ namespace Game.Progression
             _practiceShiftActive = false;
             _practiceCustomerSpawned = false;
             _normalShiftStartLocked = false;
+            _currentShiftFailed = false;
+            OnShiftStartAvailabilityChanged.Invoke();
             _context = null;
         }
 
@@ -282,6 +299,7 @@ namespace Game.Progression
             _practiceShiftQueued = true;
             _practiceCustomerSpawned = false;
             _normalShiftStartLocked = true;
+            OnShiftStartAvailabilityChanged.Invoke();
         }
 
         /// <summary>
@@ -289,7 +307,11 @@ namespace Game.Progression
         /// </summary>
         public void SetNormalShiftStartLocked(bool locked)
         {
+            if (_normalShiftStartLocked == locked)
+                return;
+
             _normalShiftStartLocked = locked;
+            OnShiftStartAvailabilityChanged.Invoke();
         }
 
         /// <summary>
@@ -297,6 +319,9 @@ namespace Game.Progression
         /// </summary>
         public bool TryStartNextShift()
         {
+            if (_currentShiftFailed)
+                return RetryCurrentShift();
+
             if (!_modeActive || ShiftInProgress)
                 return false;
 
@@ -312,6 +337,12 @@ namespace Game.Progression
         /// </summary>
         public void StartNextShift()
         {
+            if (_currentShiftFailed)
+            {
+                RetryCurrentShift();
+                return;
+            }
+
             if (!_modeActive || ShiftInProgress)
                 return;
 
@@ -326,13 +357,38 @@ namespace Game.Progression
 
             int nextShiftIndex = _shiftIndex + 1;
             _shiftIndex = nextShiftIndex;
+            StartSelectedNormalShift();
+        }
+
+        /// <summary>
+        /// Restarts the currently selected normal shift after it has failed.
+        /// </summary>
+        public bool RetryCurrentShift()
+        {
+            if (!_currentShiftFailed || ShiftInProgress || !HasNormalShift)
+                return false;
+
+            if (_normalShiftStartLocked)
+                return false;
+
+            _context.Session.ResetState();
+            _context.Session.StartRun();
+            StartSelectedNormalShift();
+            return true;
+        }
+
+        private void StartSelectedNormalShift()
+        {
+            _currentShiftFailed = false;
             _currentRevenue = 0;
             _lastKnownBalance = _context.Balance.Balance;
             _activeShiftDuration = _shiftDuration;
             _shiftTimer = Mathf.Max(0f, _activeShiftDuration);
             _modeActive = true;
-            _spawnTimer = GetSpawnDelay();
+            _spawnTimer = InitialCustomerSpawnDelay;
+            _context.Customers.SetRandomItemGiver(GetShiftRandomItemGiver());
             OnShiftStarted.Invoke();
+            OnShiftStartAvailabilityChanged.Invoke();
         }
 
         private void StartPracticeShift()
@@ -340,13 +396,16 @@ namespace Game.Progression
             _practiceShiftQueued = false;
             _practiceShiftActive = true;
             _practiceCustomerSpawned = false;
+            _currentShiftFailed = false;
             _currentRevenue = 0;
             _lastKnownBalance = _context.Balance.Balance;
             _activeShiftDuration = 0f;
             _shiftTimer = 0f;
             _modeActive = true;
-            _spawnTimer = GetSpawnDelay();
+            _spawnTimer = InitialCustomerSpawnDelay;
+            _context.Customers.SetRandomItemGiver(GetShiftRandomItemGiver());
             OnShiftStarted.Invoke();
+            OnShiftStartAvailabilityChanged.Invoke();
         }
 
         /// <inheritdoc/>
@@ -404,8 +463,11 @@ namespace Game.Progression
             if (_practiceShiftActive)
             {
                 _practiceShiftActive = false;
+                _currentShiftFailed = false;
                 return;
             }
+
+            _currentShiftFailed = false;
 
         }
 
@@ -416,11 +478,14 @@ namespace Game.Progression
             if (_practiceShiftActive)
             {
                 _practiceShiftActive = false;
+                _currentShiftFailed = false;
                 return;
             }
 
+            _currentShiftFailed = true;
             _modeActive = false;
             _context.Session.MarkFailed();
+            OnShiftStartAvailabilityChanged.Invoke();
         }
 
         private void EndCurrentShift()
@@ -434,6 +499,7 @@ namespace Game.Progression
             _lastShiftStatistics = _statisticsCollector.GetStatistics();
             _statisticsCollector.Reset();
             OnShiftEnded.Invoke();
+            OnShiftStartAvailabilityChanged.Invoke();
         }
 
         private void HandleBalanceChanged(int newBalance)

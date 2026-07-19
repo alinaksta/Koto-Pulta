@@ -24,8 +24,8 @@ MonoBehaviour:
       data:
         WorldSprite: {fileID: 21300000, guid: a5f8bea69a4f8904baf27cd4bec2348e, type: 3}
         DialogueSprite: {fileID: 21300000, guid: f78380e7ac8a9354192e7e45a77796ec, type: 3}
-        UnitPrice: 5
+        UnitPrice: 20
     - rid: 6891364640889241675
       type: {class: ShiftProperty, ns: Game.Items.Properties, asm: Assembly-CSharp}
       data:
-        RequiredShift: 0
+        Tier: 1
