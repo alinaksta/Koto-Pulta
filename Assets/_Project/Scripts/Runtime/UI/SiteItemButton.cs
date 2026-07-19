@@ -16,8 +16,18 @@ namespace Game.UI
         [SerializeField] private Sprite lockedIcon;
         [SerializeField] private bool _isUnlocked = false;
         public event System.Action<Item> OnItemChosen = delegate { };
-        private Button _button;
+        public Button _button;
         private Image _icon;
+
+        public int RequiredShift()
+        {
+            var definition = Item.FromId(_itemAsset.Id).Value.Definition;
+            if (definition.TryGetProperty<ShiftProperty>(out var shiftProperty))
+            {
+                return shiftProperty.RequiredShift;
+            }
+            return -1;
+        }
 
 
         private void Awake()
@@ -80,6 +90,6 @@ namespace Game.UI
         }
 
         public bool isUnlocked() {return _isUnlocked;}
-        public void SetLocked(bool state) {_isUnlocked = state;}
+        public void SetUnlocked(bool state) {_isUnlocked = state;}
     }
 }
