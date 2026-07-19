@@ -3,6 +3,7 @@ Shader "Hidden/Game/ScreenSpaceOutlineMask"
     Properties
     {
         [PerRendererData] _MainTex ("Texture", 2D) = "white" {}
+        [HideInInspector] _Flip ("Flip", Vector) = (1, 1, 1, 1)
     }
 
     SubShader
@@ -35,11 +36,14 @@ Shader "Hidden/Game/ScreenSpaceOutlineMask"
 
             TEXTURE2D(_MainTex);
             SAMPLER(sampler_MainTex);
+            float4 _Flip;
 
             Varyings Vert(Attributes input)
             {
                 Varyings output;
-                output.positionCS = TransformObjectToHClip(input.positionOS.xyz);
+                float3 positionOS = input.positionOS.xyz;
+                positionOS.xy *= _Flip.xy;
+                output.positionCS = TransformObjectToHClip(positionOS);
                 output.uv = input.uv;
                 return output;
             }

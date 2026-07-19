@@ -28,4 +28,4 @@ MonoBehaviour:
     - rid: 6891364640889241675
       type: {class: ShiftProperty, ns: Game.Items.Properties, asm: Assembly-CSharp}
       data:
-        RequiredShift: 4
+        Tier: 4

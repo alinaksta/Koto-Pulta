@@ -362,17 +362,6 @@ namespace Game.Input.Generated
                 },
                 {
                     ""name"": """",
-                    ""id"": ""e9cd2799-8f29-4dfb-a620-6233ba94bc3f"",
-                    ""path"": ""<Keyboard>/escape"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Cancel"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""992b8f34-5b58-475d-accf-33004b956241"",
                     ""path"": ""<Mouse>/position"",
                     ""interactions"": """",
@@ -385,7 +374,7 @@ namespace Game.Input.Generated
                 {
                     ""name"": """",
                     ""id"": ""aa69598f-d6bf-4434-8836-c177bd17c3c2"",
-                    ""path"": ""<Keyboard>/escape"",
+                    ""path"": ""<Keyboard>/z"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

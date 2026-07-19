@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace Game.Progression
 {
@@ -79,7 +80,8 @@ namespace Game.Progression
         [Header("Marker Offsets")]
         [SerializeField] private Vector3 _defaultMarkerOffset = new Vector3(0f, 1.5f, 0f);
         [SerializeField] private Vector3 _pickupMarkerOffset = new Vector3(0f, 1.5f, 0f);
-        [SerializeField] private Vector3 _waiterMarkerOffset = new Vector3(0f, 2.2f, 0f);
+        [SerializeField, FormerlySerializedAs("_waiterMarkerOffset")] private Vector3 _throwWaiterMarkerOffset = new Vector3(0f, 2.2f, 0f);
+        [SerializeField] private Vector3 _giveMealWaiterMarkerOffset = new Vector3(0f, 2.2f, 0f);
         [SerializeField] private Vector3 _computerMarkerOffset = new Vector3(0f, 2.8f, 0f);
         [SerializeField] private Vector3 _tableMarkerOffset = new Vector3(0f, 2f, 0f);
 
@@ -296,7 +298,7 @@ namespace Game.Progression
                 await RunSignalStepAsync(_dropStep, TutorialSignal.DroppedObject, null, cancellationToken);
 
                 Waiter availableWaiter = await WaitForAnyWaiterAsync(cancellationToken);
-                await RunSignalStepAsync(_throwWaiterStep, TutorialSignal.ThrewWaiter, availableWaiter.transform, _waiterMarkerOffset, cancellationToken);
+                await RunSignalStepAsync(_throwWaiterStep, TutorialSignal.ThrewWaiter, availableWaiter.transform, _throwWaiterMarkerOffset, cancellationToken);
 
                 await RunComputerStepAsync(cancellationToken);
 
@@ -315,14 +317,14 @@ namespace Game.Progression
                     _waiterOrderStep,
                     TutorialSignal.WaiterAskedCustomer,
                     _tutorialWaiter != null ? _tutorialWaiter.transform : null,
-                    _waiterMarkerOffset,
+                    _giveMealWaiterMarkerOffset,
                     cancellationToken);
 
                 await RunSignalStepAsync(
                     _giveMealStep,
                     TutorialSignal.GaveMealToWaiter,
                     _tutorialWaiter != null ? _tutorialWaiter.transform : null,
-                    _waiterMarkerOffset,
+                    _giveMealWaiterMarkerOffset,
                     cancellationToken);
 
                 Transform tableTarget = _tutorialWaiter != null && _tutorialWaiter.AssignedCustomer != null
@@ -337,7 +339,7 @@ namespace Game.Progression
 
                 if (!_customerServed)
                 {
-                    SetTarget(_tutorialWaiter != null ? _tutorialWaiter.transform : null, _waiterMarkerOffset);
+                    SetTarget(_tutorialWaiter != null ? _tutorialWaiter.transform : null, _giveMealWaiterMarkerOffset);
                     await WaitForSignalAsync(TutorialSignal.CustomerServed, cancellationToken);
                 }
 
