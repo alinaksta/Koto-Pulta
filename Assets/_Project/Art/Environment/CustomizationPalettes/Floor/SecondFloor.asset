@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SecondFloor
   m_EditorClassIdentifier: Assembly-CSharp::Game.Environment.FloorCustomization
   _displayName: Dark Blue
-  _price: 5
+  _price: 100
   _unlockedByDefault: 0
   _lockedSprite: {fileID: 21300000, guid: 089b0c9b05c775f4181196a76ed66cf3, type: 3}
   _unlockedSprite: {fileID: 21300000, guid: ccbd308644e1ede458d282e0243f6cc3, type: 3}

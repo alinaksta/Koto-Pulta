@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ThirdPanorama
   m_EditorClassIdentifier: Assembly-CSharp::Game.Environment.PanoramaCustomization
   _displayName: Seaside Vibes
-  _price: 5
+  _price: 150
   _unlockedByDefault: 0
   _lockedSprite: {fileID: 21300000, guid: babbe07c1c181d744b7748f5ca7ff741, type: 3}
   _unlockedSprite: {fileID: 21300000, guid: ec19e7971646c4549aa2748b1bd6e0a3, type: 3}
