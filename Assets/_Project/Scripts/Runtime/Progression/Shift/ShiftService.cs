@@ -38,6 +38,8 @@ namespace Game.Progression
     /// </summary>
     public class ShiftService : MonoBehaviour, IBootstrapable, IGameMode
     {
+        private const float InitialCustomerSpawnDelay = 4f;
+
         [SerializeField] private List<Shift> _shifts;
         [SerializeField] private List<ItemDefinitionAsset> _allowedItems;
         [SerializeField] private float _shiftDuration = 180f;
@@ -383,7 +385,7 @@ namespace Game.Progression
             _activeShiftDuration = _shiftDuration;
             _shiftTimer = Mathf.Max(0f, _activeShiftDuration);
             _modeActive = true;
-            _spawnTimer = GetSpawnDelay();
+            _spawnTimer = InitialCustomerSpawnDelay;
             _context.Customers.SetRandomItemGiver(GetShiftRandomItemGiver());
             OnShiftStarted.Invoke();
             OnShiftStartAvailabilityChanged.Invoke();
@@ -400,7 +402,7 @@ namespace Game.Progression
             _activeShiftDuration = 0f;
             _shiftTimer = 0f;
             _modeActive = true;
-            _spawnTimer = GetSpawnDelay();
+            _spawnTimer = InitialCustomerSpawnDelay;
             _context.Customers.SetRandomItemGiver(GetShiftRandomItemGiver());
             OnShiftStarted.Invoke();
             OnShiftStartAvailabilityChanged.Invoke();
