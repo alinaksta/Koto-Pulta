@@ -7487,10 +7487,11 @@ MonoBehaviour:
   _revenueLabel: {fileID: 350758204}
   _shiftNumberLabel: {fileID: 1198766038}
   _shiftEndedLabel: {fileID: 816215906}
+  _moneyIcon: {fileID: 642674777}
   _timerWarningSeconds: 30
   _timerBlinkFrequency: 8
-  _timerWarningColor: {r: 1, g: 0, b: 0, a: 1}
-  _revenueMetColor: {r: 0, g: 1, b: 0, a: 1}
+  _timerWarningColor: {r: 0.7660377, g: 0.06793161, b: 0.06793161, a: 1}
+  _revenueMetColor: {r: 0.04959049, g: 0.7509433, b: 0.04959049, a: 1}
   _shiftEndedText: Shift ended
   _shiftEndedFadeInDuration: 0.35
   _shiftEndedVisibleDuration: 2

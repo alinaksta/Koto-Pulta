@@ -3,6 +3,7 @@ using Game.Services;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Game.UI
 {
@@ -22,6 +23,7 @@ namespace Game.UI
         [SerializeField] private TMP_Text _revenueLabel;
         [SerializeField] private TMP_Text _shiftNumberLabel;
         [SerializeField] private TMP_Text _shiftEndedLabel;
+        [SerializeField] private Image _moneyIcon;
 
         [Header("Timer Warning")]
         [SerializeField, Min(0f)] private float _timerWarningSeconds = 30f;
@@ -356,6 +358,7 @@ namespace Game.UI
             bool revenueMet = _shiftService.CurrentGoalRevenue > 0 &&
                               _shiftService.CurrentRevenue >= _shiftService.CurrentGoalRevenue;
             _revenueLabel.color = revenueMet ? _revenueMetColor : _revenueBaseColor;
+            _moneyIcon.color = revenueMet ? _revenueMetColor : _revenueBaseColor;
         }
 
         private void ResetRevenueColor()
