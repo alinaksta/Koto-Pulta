@@ -343,7 +343,6 @@ namespace Game.Progression
                 Waiter availableWaiter = await WaitForAnyWaiterAsync(cancellationToken);
                 availableWaiter.SetHoldAtMealPoint(true);
                 availableWaiter.StartGoingToMealPoint();
-                await WaitForWaiterMealPointAsync(availableWaiter, cancellationToken);
                 await RunSignalStepAsync(_throwWaiterStep, TutorialSignal.ThrewWaiter, availableWaiter.transform, _throwWaiterMarkerOffset, cancellationToken);
 
                 await RunComputerIntroStepAsync(cancellationToken);
@@ -698,7 +697,12 @@ namespace Game.Progression
         private void HandleHandItemChanged(Item? item)
         {
             if (!item.HasValue)
+            {
+                if (_expectedSignal == TutorialSignal.DroppedObject)
+                    ReportSignal(TutorialSignal.DroppedObject);
+
                 return;
+            }
 
             if (_expectedSignal == TutorialSignal.GaveMealToWaiter)
             {
