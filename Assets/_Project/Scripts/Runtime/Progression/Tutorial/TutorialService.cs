@@ -110,6 +110,11 @@ namespace Game.Progression
         public string Id => "tutorial";
 
         /// <summary>
+        /// Gets whether the tutorial mode is currently running.
+        /// </summary>
+        public bool IsActive => _active;
+
+        /// <summary>
         /// Gets the current world-space marker target.
         /// </summary>
         public Transform Target { get; private set; }
@@ -202,6 +207,7 @@ namespace Game.Progression
             ClearTarget();
             ClearUiTarget();
             SetComputerInputBlockerVisible(false);
+            _scene?.ComputerTabs?.RefreshTabAvailability();
             _shifts?.Exit();
 
             _expectedSignal = TutorialSignal.None;
