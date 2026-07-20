@@ -11,7 +11,7 @@ public class ProgressionAudio : MonoBehaviour
     private SoundService _soundService;
     private BalanceService _balanceService;
     private ShiftService _shiftService;
-    private float _timerValue;
+    private int _timerValue;
 
     [SerializeField] private SoundType _moneySound = SoundType.Money;
     [SerializeField] private SoundType _timerSound = SoundType.ClockTick;
@@ -39,10 +39,10 @@ public class ProgressionAudio : MonoBehaviour
     }
     private void LateUpdate()
     {
-        if(_shiftService.ShiftTimer != _timerValue)
+        if((int)_shiftService.ShiftTimer != _timerValue)
         {
             Play(_timerSound, (int)_shiftService.ShiftTimer % 2);
-            _timerValue = _shiftService.ShiftTimer;
+            _timerValue = (int)_shiftService.ShiftTimer;
         }
     }
     private void PlayMoneySound (int _)

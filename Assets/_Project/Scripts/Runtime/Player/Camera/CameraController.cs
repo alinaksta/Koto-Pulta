@@ -29,6 +29,7 @@ namespace Game.Player
         [SerializeField] private bool _lockMouseOnAwake = true;
 
         private IInputService _input;
+        private static bool _stop = false;
 
         private IFocusable _focusedObject;
         private FocusTransition? _focusTransition;
@@ -40,7 +41,7 @@ namespace Game.Player
         private Vector2 _smoothedMouseDelta;
         private Vector2 _mouseDeltaVelocity;
 
-        private bool _mouseLocked;
+        private static bool _mouseLocked;
 
         /// <inheritdoc/>
         public Quaternion RotationFlat => Quaternion.Euler(0f, _yaw, 0f);
@@ -107,7 +108,7 @@ namespace Game.Player
 
         private void LateUpdate()
         {
-            if (_input == null || _target == null)
+            if (_input == null || _target == null || _stop == true)
                 return;
 
             Vector2 mouseDelta = _input.MouseDelta;
@@ -210,6 +211,12 @@ namespace Game.Player
         }
 
         /// <inheritdoc/>
+        public static void SetMouseLockedStatic(bool locked = true)
+        {
+            Cursor.lockState = locked ? CursorLockMode.Locked : CursorLockMode.None;
+            Cursor.visible = !locked;
+            _mouseLocked = locked;
+        }
         public void SetMouseLocked(bool locked = true)
         {
             Cursor.lockState = locked ? CursorLockMode.Locked : CursorLockMode.None;
@@ -324,6 +331,10 @@ namespace Game.Player
                 angle += 360f;
 
             return angle;
+        }
+        public static void SetActiveRotationStatic(bool stop)
+        {
+            _stop = stop;
         }
     }
 }

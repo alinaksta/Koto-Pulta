@@ -37,6 +37,7 @@ public class WaiterAudio : MonoBehaviour
     private void OnEnable()
     {
         _flag = true;
+        _previous = SoundType.WaiterWalk;
     }
     private IEnumerator Play(SoundType snd, bool noRepeats = false)
     {
@@ -44,7 +45,7 @@ public class WaiterAudio : MonoBehaviour
         if(snd == _previous && noRepeats) yield break;
         _flag = false;
         _soundService.PlaySound(snd, _volume);
-        Debug.Log(snd);
+        //Debug.Log(snd);
         yield return new WaitForSeconds(_interval);
         _previous = snd;
         _flag = true;

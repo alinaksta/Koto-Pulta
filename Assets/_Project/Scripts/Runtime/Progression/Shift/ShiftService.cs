@@ -146,6 +146,11 @@ namespace Game.Progression
         public ShiftStatistics LastStatistics => _lastShiftStatistics;
 
         /// <summary>
+        /// Gets whether the current normal shift ended in failure and can be retried.
+        /// </summary>
+        public bool CurrentShiftFailed => _currentShiftFailed;
+
+        /// <summary>
         /// Gets whether the computer shift-start button may currently start a shift.
         /// </summary>
         public bool CanStartNextShift => !_modeActive && _currentShiftFailed && !_normalShiftStartLocked ||
@@ -371,8 +376,6 @@ namespace Game.Progression
             if (_normalShiftStartLocked)
                 return false;
 
-            _context.Session.ResetState();
-            _context.Session.StartRun();
             StartSelectedNormalShift();
             return true;
         }
@@ -386,6 +389,8 @@ namespace Game.Progression
             _shiftTimer = Mathf.Max(0f, _activeShiftDuration);
             _modeActive = true;
             _spawnTimer = InitialCustomerSpawnDelay;
+            _context.Session.ResetState();
+            _context.Session.StartRun();
             _context.Customers.SetRandomItemGiver(GetShiftRandomItemGiver());
             OnShiftStarted.Invoke();
             OnShiftStartAvailabilityChanged.Invoke();
@@ -458,33 +463,44 @@ namespace Game.Progression
 
         private void CompleteCurrentShift()
         {
+            bool wasPracticeShift = _practiceShiftActive;
+
+            if (!wasPracticeShift)
+            {
+                _currentShiftFailed = false;
+                _context.Session.MarkSucceeded();
+            }
+
             EndCurrentShift();
 
-            if (_practiceShiftActive)
+            if (wasPracticeShift)
             {
                 _practiceShiftActive = false;
                 _currentShiftFailed = false;
                 return;
             }
-
-            _currentShiftFailed = false;
-
         }
 
         private void FailCurrentShift()
         {
+            bool wasPracticeShift = _practiceShiftActive;
+
+            if (!wasPracticeShift)
+            {
+                _currentShiftFailed = true;
+                _modeActive = false;
+                _context.Session.MarkFailed();
+            }
+
             EndCurrentShift();
 
-            if (_practiceShiftActive)
+            if (wasPracticeShift)
             {
                 _practiceShiftActive = false;
                 _currentShiftFailed = false;
                 return;
             }
 
-            _currentShiftFailed = true;
-            _modeActive = false;
-            _context.Session.MarkFailed();
             OnShiftStartAvailabilityChanged.Invoke();
         }
 

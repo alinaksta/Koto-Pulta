@@ -473,6 +473,7 @@ Transform:
   - {fileID: 7151745986545422564}
   - {fileID: 1653448605052216241}
   - {fileID: 5092670579620456100}
+  - {fileID: 1984773858436362047}
   - {fileID: 7200266363971847497}
   - {fileID: 2698784608536426749}
   - {fileID: 6648812989959282272}
@@ -535,6 +536,151 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 286763947b96f164c9a2234e309d879f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.Characters.WaiterQueueService
+--- !u!1 &2940126185379355979
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1984773858436362047}
+  - component: {fileID: 3815666061153226176}
+  - component: {fileID: 2666068379728519663}
+  m_Layer: 0
+  m_Name: MusicService
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1984773858436362047
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2940126185379355979}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3041218814896205459}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &3815666061153226176
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2940126185379355979}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 1045897292088626996, guid: 4b65db46c6d36551f97512195e0898ea, type: 2}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: e9af80fda459f2f3bb0c6c6f84ca3930, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 0.503
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &2666068379728519663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2940126185379355979}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b22d9d3bb7d2c7c8eacef0efef789b99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Game.Audio.MusicService
+  _musList:
+  - {fileID: 8300000, guid: e9af80fda459f2f3bb0c6c6f84ca3930, type: 3}
+  - {fileID: 8300000, guid: e9af80fda459f2f3bb0c6c6f84ca3930, type: 3}
 --- !u!1 &3113068626986869970
 GameObject:
   m_ObjectHideFlags: 0
@@ -1044,7 +1190,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f8bb92e7c221f964aa44a02cfcbc4592, type: 2}
   - {fileID: 11400000, guid: bf0cae3c28479ea4e925e2c41a1e5a60, type: 2}
   - {fileID: 11400000, guid: 05d7fe516a398d64482537063bb5183a, type: 2}
-  _shiftDuration: 180
+  _shiftDuration: 30
 --- !u!1 &5000988726738573637
 GameObject:
   m_ObjectHideFlags: 0
@@ -1361,7 +1507,7 @@ AudioSource:
   m_GameObject: {fileID: 6278022106044683132}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 8243827070597175502, guid: 4b65db46c6d36551f97512195e0898ea, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
@@ -1464,9 +1610,8 @@ MonoBehaviour:
   _soundList:
   - _name: Walk
     _sounds:
-    - {fileID: 8300000, guid: ccc19d6567527852b853e8a3af839ae7, type: 3}
-    - {fileID: 8300000, guid: f947800ed7158bcfc8303d7b4a39a808, type: 3}
-    - {fileID: 8300000, guid: 6a3a583221d288d1c848e6236d62da6e, type: 3}
+    - {fileID: 8300000, guid: d61a42724af90394faf86c443b2ae568, type: 3}
+    - {fileID: 8300000, guid: cd45374894633794fb77cb93101048a4, type: 3}
   - _name: PickUp
     _sounds:
     - {fileID: 8300000, guid: 6313b38ee917784b6a9cb82f77adf9d7, type: 3}
@@ -1484,14 +1629,15 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 3d9aaeb74b405d24f84805c2c522e804, type: 3}
   - _name: WaiterWalk
     _sounds:
-    - {fileID: 8300000, guid: 75d2a267403e02b6ca7a996768e1fbc5, type: 3}
-    - {fileID: 8300000, guid: 3d0c8db7f643c8715b1579caf4128780, type: 3}
+    - {fileID: 8300000, guid: 153e040677490cc8880e297e15184289, type: 3}
+    - {fileID: 8300000, guid: f63a91ff7d3f2f7718bc4170bbce68bb, type: 3}
   - _name: WaiterSplat
     _sounds:
     - {fileID: 8300000, guid: 376ec1c4fe56893c38444ff68e76b3ce, type: 3}
   - _name: ClockTick
     _sounds:
-    - {fileID: 8300000, guid: 28eededc63bc4e987b67e54345613ed5, type: 3}
+    - {fileID: 8300000, guid: 1ff6e863a5f77951684449e009d06570, type: 3}
+    - {fileID: 8300000, guid: c6b12e245c1d12ce3b80d3049a7b0b7f, type: 3}
   - _name: Alarm
     _sounds:
     - {fileID: 8300000, guid: b4350152871b6c1769b1dd55a9260ca6, type: 3}

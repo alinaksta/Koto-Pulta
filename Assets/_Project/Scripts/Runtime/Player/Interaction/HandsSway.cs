@@ -25,6 +25,7 @@ namespace Game.Interaction
 
         private void Update()
         {
+            if (Time.timeScale == 0f) return;
             float dt = Time.deltaTime;
 
             float yawVelocity = _camera.AngularVelocity.x;
@@ -37,7 +38,7 @@ namespace Game.Interaction
             targetSway = Vector2.ClampMagnitude(targetSway, _maxDistance);
 
             _currentSway = Vector2.Lerp(_currentSway, targetSway, dt * _acceleration);
-
+            if(float.IsNaN(_currentSway.x) || float.IsNaN(_currentSway.y)) _currentSway = Vector2.zero;
             _target.anchoredPosition = _restingPosition + _currentSway;
         }
     }

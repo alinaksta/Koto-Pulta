@@ -173,7 +173,7 @@ namespace Game.Interaction
                 return;
 
             float deltaTime = Time.deltaTime;
-            if (deltaTime <= 0f)
+            if (deltaTime <= 0f || deltaTime > 2f)
                 return;
 
             UpdateNote();
@@ -240,6 +240,9 @@ namespace Game.Interaction
                 part.RotationVelocity = 0f;
                 part.OffsetVelocity = Vector2.zero;
             }
+            
+            if(float.IsNaN(part.Offset.x) || float.IsNaN(part.Offset.y)) part.Offset = Vector2.zero;
+            if(float.IsNaN(part.Rotation)) part.Rotation = 0f;
 
             part.RectTransform.anchoredPosition = part.RestPosition + _baseOffset + part.Offset;
             part.RectTransform.localRotation = part.RestRotation * Quaternion.Euler(0f, 0f, part.Rotation);
