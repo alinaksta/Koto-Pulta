@@ -126,6 +126,7 @@ namespace Game.Characters
             {
                 customer.transform.position = seat.CustomerSpawnOrigin;
                 customer.transform.rotation = Quaternion.identity; // We rotate using SpriteRotator, so it doesn't matter
+                customer.transform.SetParent(seat.transform, true);
             }
             else
             {
