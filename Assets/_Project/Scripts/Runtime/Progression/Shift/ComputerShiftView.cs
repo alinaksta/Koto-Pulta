@@ -87,7 +87,7 @@ namespace Game.Progression
         {
             if (_shiftService.ShiftInProgress)
                 _state = ComputerShiftState.InProgress;
-            else if (_shiftService.HasCurrentShift)
+            else if (_shiftService.HasCompletedShiftResults)
                 _state = ComputerShiftState.Ended;
             else
                 _state = ComputerShiftState.Initial;

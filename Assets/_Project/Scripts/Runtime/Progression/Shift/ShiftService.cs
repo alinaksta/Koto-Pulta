@@ -63,6 +63,7 @@ namespace Game.Progression
 
         private ShiftStatisticsCollector _statisticsCollector;
         private ShiftStatistics _lastShiftStatistics;
+        private bool _hasCompletedShiftResults;
 
         /// <inheritdoc/>
         public string Id => "shift";
@@ -146,6 +147,11 @@ namespace Game.Progression
         public ShiftStatistics LastStatistics => _lastShiftStatistics;
 
         /// <summary>
+        /// Gets whether statistics from a completed shift are available for display.
+        /// </summary>
+        public bool HasCompletedShiftResults => _hasCompletedShiftResults;
+
+        /// <summary>
         /// Gets whether the current normal shift ended in failure and can be retried.
         /// </summary>
         public bool CurrentShiftFailed => _currentShiftFailed;
@@ -199,9 +205,6 @@ namespace Game.Progression
             _statisticsCollector = new ShiftStatisticsCollector(context.Customers);
 
             _context.Customers.OnCustomerServed += HandleCustomerServed;
-
-            _context.Session.ResetState();
-            _context.Session.StartRun();
 
             _practiceShiftQueued = false;
             _practiceShiftActive = false;
@@ -387,6 +390,7 @@ namespace Game.Progression
             _currentShiftFailed = false;
             _currentRevenue = 0;
             _lastKnownBalance = _context.Balance.Balance;
+            _hasCompletedShiftResults = false;
             _activeShiftDuration = _shiftDuration;
             _shiftTimer = Mathf.Max(0f, _activeShiftDuration);
             _modeActive = true;
@@ -406,10 +410,13 @@ namespace Game.Progression
             _currentShiftFailed = false;
             _currentRevenue = 0;
             _lastKnownBalance = _context.Balance.Balance;
+            _hasCompletedShiftResults = false;
             _activeShiftDuration = 0f;
             _shiftTimer = 0f;
             _modeActive = true;
             _spawnTimer = InitialCustomerSpawnDelay;
+            _context.Session.ResetState();
+            _context.Session.StartRun();
             _context.Customers.SetRandomItemGiver(GetShiftRandomItemGiver());
             OnShiftStarted.Invoke();
             OnShiftStartAvailabilityChanged.Invoke();
@@ -467,11 +474,10 @@ namespace Game.Progression
         {
             bool wasPracticeShift = _practiceShiftActive;
 
+            _context.Session.MarkSucceeded();
+
             if (!wasPracticeShift)
-            {
                 _currentShiftFailed = false;
-                _context.Session.MarkSucceeded();
-            }
 
             EndCurrentShift();
 
@@ -515,6 +521,7 @@ namespace Game.Progression
             _spawnTimer = 0f;
             _statisticsCollector.SetMoneyEarned(CurrentRevenue);
             _lastShiftStatistics = _statisticsCollector.GetStatistics();
+            _hasCompletedShiftResults = true;
             _statisticsCollector.Reset();
             OnShiftEnded.Invoke();
             OnShiftStartAvailabilityChanged.Invoke();

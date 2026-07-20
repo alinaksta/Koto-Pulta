@@ -48,7 +48,7 @@ public class Evaluation : MonoBehaviour
         if (_computerInteractable != null)
             _computerInteractable.FocusStarted += HandleComputerFocusStarted;
 
-        if (_shiftService.HasCurrentShift && !_shiftService.ShiftInProgress && _runSessionService.State != RunSessionState.Running)
+        if (_shiftService.HasCompletedShiftResults && !_shiftService.ShiftInProgress && _runSessionService.State != RunSessionState.Running)
         {
             if (_shiftService.ShiftIndex != _evaluatedShiftIndex)
                 _evaluatable = true;
