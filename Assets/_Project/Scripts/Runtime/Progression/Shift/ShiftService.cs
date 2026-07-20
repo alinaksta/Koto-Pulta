@@ -184,7 +184,6 @@ namespace Game.Progression
         /// <inheritdoc/>
         public void Enter(GameModeContext context)
         {
-            Debug.Log(context == null);
             _context = context;
             _modeActive = true;
             _shiftIndex = -1;
@@ -270,7 +269,10 @@ namespace Game.Progression
                 _context.Balance.OnBalanceChanged -= HandleBalanceChanged;
 
             if (_context?.Customers != null)
+            {
                 _context.Customers.OnCustomerServed -= HandleCustomerServed;
+                _context.Customers.ClearActiveCustomers();
+            }
 
             if (ShiftInProgress)
                 EndCurrentShift();
@@ -532,7 +534,6 @@ namespace Game.Progression
             if (customer.Order.TryGetProperty(out FoodProperty food))
             {
                 _context.Balance.Add(food.UnitPrice);
-                Debug.Log("Here");
             }
 
             if (_practiceShiftActive)

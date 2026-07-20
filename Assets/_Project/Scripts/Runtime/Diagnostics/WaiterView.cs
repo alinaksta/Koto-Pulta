@@ -60,11 +60,6 @@ namespace Game.Diagnostics
         private void Update()
         {
             UpdatePatienceIndicator();
-            
-            if (_animator != null)
-            {
-                _animator.SetFloat(PatienceHash, _waiter.WaitTimer);
-            }
         }
 
         private void UpdatePatienceIndicator()

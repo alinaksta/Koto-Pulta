@@ -2228,14 +2228,6 @@ PrefabInstance:
       propertyPath: m_AnchorMin.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6156525289250309481, guid: 2e9a2104bc8dd264f9750980ccf94d2d, type: 3}
-      propertyPath: m_Size
-      value: 0.37292007
-      objectReference: {fileID: 0}
-    - target: {fileID: 6156525289250309481, guid: 2e9a2104bc8dd264f9750980ccf94d2d, type: 3}
-      propertyPath: m_Value
-      value: -0.00000007939016
-      objectReference: {fileID: 0}
     - target: {fileID: 7987160137341753212, guid: 2e9a2104bc8dd264f9750980ccf94d2d, type: 3}
       propertyPath: m_Name
       value: PR_Scrollbar

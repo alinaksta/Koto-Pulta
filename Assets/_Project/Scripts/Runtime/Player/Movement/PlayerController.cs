@@ -1,5 +1,5 @@
 using Game.Input;
-using Game.Interaction;
+using Game.Player;
 using Game.Services;
 using Game.Utils;
 using UnityEngine;
@@ -83,7 +83,7 @@ namespace Game.Movement
             if (_input == null)
                 return;
 
-            if (ComputerInteractable.AnyComputerInUse)
+            if (!CameraController.IsUnfocused)
             {
                 _move = Vector2.zero;
                 _jumpQueued = false;

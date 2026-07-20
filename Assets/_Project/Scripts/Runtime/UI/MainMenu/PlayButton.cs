@@ -12,6 +12,7 @@ namespace Game.UI
         [SerializeField] private int _nextSceneIndex = 1;
 
         private LoadingService _loadingService;
+        private bool _isLoading;
 
         private void Start()
         {
@@ -23,6 +24,10 @@ namespace Game.UI
         /// </summary>
         public async void EnterNextScene()
         {
+            if (_isLoading)
+                return;
+
+            _isLoading = true;
             await _loadingService.StartLoadingAsync();
 
             await Awaitable.WaitForSecondsAsync(0.8f);

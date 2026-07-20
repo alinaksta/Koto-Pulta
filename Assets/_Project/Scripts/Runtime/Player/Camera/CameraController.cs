@@ -43,6 +43,16 @@ namespace Game.Player
 
         private static bool _mouseLocked;
 
+        /// <summary>
+        /// Gets the global focus status for the active camera controller.
+        /// </summary>
+        public static FocusStatus CurrentFocusStatus { get; private set; } = FocusStatus.Unfocused;
+
+        /// <summary>
+        /// Gets whether the active camera controller is fully unfocused.
+        /// </summary>
+        public static bool IsUnfocused => CurrentFocusStatus == FocusStatus.Unfocused;
+
         /// <inheritdoc/>
         public Quaternion RotationFlat => Quaternion.Euler(0f, _yaw, 0f);
 
@@ -104,6 +114,12 @@ namespace Game.Player
 
             InitializeRotation();
             SetMouseLocked(_lockMouseOnAwake);
+            RefreshCurrentFocusStatus();
+        }
+
+        private void OnDisable()
+        {
+            CurrentFocusStatus = FocusStatus.Unfocused;
         }
 
         private void LateUpdate()
@@ -188,7 +204,15 @@ namespace Game.Player
         private void HandleFocusTransitionTime()
         {
             if (_focusTransition.HasValue && Time.time >= _focusTransition.Value.EndTime)
+            {
                 _focusTransition = null;
+                RefreshCurrentFocusStatus();
+            }
+        }
+
+        private void RefreshCurrentFocusStatus()
+        {
+            CurrentFocusStatus = FocusStatus;
         }
 
         /// <inheritdoc/>
@@ -259,6 +283,7 @@ namespace Game.Player
                     Time.time);
 
                 _focusTransition = transition;
+                RefreshCurrentFocusStatus();
 
                 return true;
             }
@@ -282,6 +307,7 @@ namespace Game.Player
                     Time.time);
 
             _focusTransition = transition;
+            RefreshCurrentFocusStatus();
         }
 
         private CameraSnapshot GetCurrentCameraSnapshot()

@@ -25,9 +25,14 @@ public class Evaluation : MonoBehaviour
     [SerializeField] private GameObject _evaluateButton;
     [SerializeField] private GameObject _nextShiftButton;
 
+    [Header("Animation")]
+    [SerializeField, Min(0f)] private float _countAnimationDuration = 1.5f;
+    [SerializeField, Min(1)] private int _countAnimationSteps = 30;
+
     private Coroutine _evaluationCoroutine;
     private bool _evaluationPending;
     private int _evaluatedShiftIndex = -1;
+    private RunSessionState _displayedSessionState = (RunSessionState)(-1);
 
     private void Awake()
     {
@@ -64,6 +69,10 @@ public class Evaluation : MonoBehaviour
 
     private void Update()
     {
+        if (_displayedSessionState == _runSessionService.State)
+            return;
+
+        _displayedSessionState = _runSessionService.State;
         _backgroundImage.sprite = (_runSessionService.State != RunSessionState.Succeeded) ? _failSprite : _successSprite;
     }
 
@@ -139,29 +148,50 @@ public class Evaluation : MonoBehaviour
     private IEnumerator EvaluateGrade()
     {
         var stats = _shiftService.LastStatistics;
-        float interval = 0.2f;
-        for (int i = 0; i < Mathf.Max(stats.CustomersServed, stats.CustomersUnsatisfied, stats.MoneyEarned, (int)stats.AverageDeliveryTime); i++) {
-            _customersServedText.text = $"{Mathf.Min(i, stats.CustomersServed)}";
-            _customersUnsatisfiedText.text = $"{Mathf.Min(i, stats.CustomersUnsatisfied)}";
-            _moneyEarnedText.text = $"{Mathf.Min(i, stats.MoneyEarned)}";
-            _deliveryTimeText.text = $"{Mathf.Min(i, (int)stats.AverageDeliveryTime)}";
+        int largestValue = Mathf.Max(
+            stats.CustomersServed,
+            stats.CustomersUnsatisfied,
+            stats.MoneyEarned,
+            (int)stats.AverageDeliveryTime);
 
-            yield return new WaitForSeconds(interval);
-            interval -= 0.005f;
+        int stepCount = Mathf.Min(Mathf.Max(1, _countAnimationSteps), Mathf.Max(1, largestValue));
+        if (largestValue > 0 && _countAnimationDuration > 0f)
+        {
+            var stepDelay = new WaitForSeconds(_countAnimationDuration / stepCount);
+            for (int step = 1; step <= stepCount; step++)
+            {
+                float progress = (float)step / stepCount;
+                SetStatText(
+                    Mathf.RoundToInt(stats.CustomersServed * progress),
+                    Mathf.RoundToInt(stats.CustomersUnsatisfied * progress),
+                    Mathf.RoundToInt(stats.MoneyEarned * progress),
+                    Mathf.RoundToInt(stats.AverageDeliveryTime * progress));
+                yield return stepDelay;
+            }
         }
 
-        _customersServedText.text = $"{stats.CustomersServed}";
-        _customersUnsatisfiedText.text = $"{stats.CustomersUnsatisfied}";
-        _moneyEarnedText.text = $"{stats.MoneyEarned}";
-        _deliveryTimeText.text = $"{(int)stats.AverageDeliveryTime}";
+        SetStatText(
+            stats.CustomersServed,
+            stats.CustomersUnsatisfied,
+            stats.MoneyEarned,
+            (int)stats.AverageDeliveryTime);
 
+        var segmentDelay = new WaitForSeconds(0.4f);
         for (int i = 0; i <= _shiftService.ShiftIndex; i++)
         {
             SetSegments(i);
-            yield return new WaitForSeconds(0.4f);
+            yield return segmentDelay;
         }
 
         _evaluationCoroutine = null;
+    }
+
+    private void SetStatText(int customersServed, int customersUnsatisfied, int moneyEarned, int deliveryTime)
+    {
+        _customersServedText.SetText("{0}", customersServed);
+        _customersUnsatisfiedText.SetText("{0}", customersUnsatisfied);
+        _moneyEarnedText.SetText("{0}", moneyEarned);
+        _deliveryTimeText.SetText("{0}", deliveryTime);
     }
     private void ResetGrade()
     {
