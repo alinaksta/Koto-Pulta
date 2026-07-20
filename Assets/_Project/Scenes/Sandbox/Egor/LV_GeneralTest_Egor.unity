@@ -316,7 +316,6 @@ GameObject:
   - component: {fileID: 311160942}
   - component: {fileID: 311160941}
   - component: {fileID: 311160940}
-  - component: {fileID: 311160939}
   - component: {fileID: 311160938}
   m_Layer: 5
   m_Name: BalanceCanvas
@@ -339,23 +338,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Game.UI.UIBalanceLabel
   _label: {fileID: 471082525}
   _format: '{0}'
---- !u!114 &311160939
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 311160937}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &311160940
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7493,7 +7475,6 @@ GameObject:
   - component: {fileID: 1946674751}
   - component: {fileID: 1946674750}
   - component: {fileID: 1946674749}
-  - component: {fileID: 1946674748}
   - component: {fileID: 1946674747}
   m_Layer: 5
   m_Name: ShiftHudCanvas
@@ -7560,23 +7541,6 @@ MonoBehaviour:
   _endlessRevenueText: No revenue goal
   _shiftNumberFormat: Shift {0}
   _endlessShiftNumberFormat: Shift {0}
---- !u!114 &1946674748
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1946674746}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &1946674749
 MonoBehaviour:
   m_ObjectHideFlags: 0
