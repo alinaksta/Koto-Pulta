@@ -23,6 +23,8 @@ namespace Game.Characters
         [SerializeField] private Animator _animator;
         [SerializeField] private Customer _customer;
 
+        private bool _destroyed;
+
         
         
         private void Awake()
@@ -32,6 +34,9 @@ namespace Game.Characters
 
         private void Update()
         {
+            if (!CanUseAnimator())
+                return;
+
             _animator.SetFloat(PatienceHash, _customer.GetCurrentWaitTimer());
         }
 
@@ -49,6 +54,8 @@ namespace Game.Characters
 
         private void OnDestroy()
         {
+            _destroyed = true;
+
             _customer.OnTimedOut -= HandleTimedOut;
             _customer.OnWaiterStartedAsking -= HandleWaiterStartedAsking;
             _customer.OnServed -= HandleServed;
@@ -60,7 +67,9 @@ namespace Game.Characters
         #region Event handlers
         private void HandleServed(Customer customer)
         {
-            _animator.SetTrigger(ServedHash);
+            if (CanUseAnimator())
+                _animator.SetTrigger(ServedHash);
+
             AnimateDespawn(customer.DespawnDuration);
         }
 
@@ -71,15 +80,20 @@ namespace Game.Characters
 
         private async void HandleWaiterStartedAsking(Customer customer, float duration)
         {
-            _animator.SetTrigger(StartedAskingHash);
+            if (CanUseAnimator())
+                _animator.SetTrigger(StartedAskingHash);
 
             await Awaitable.WaitForSecondsAsync(duration);
 
-            _animator.SetTrigger(StoppedAskingHash);
+            if (CanUseAnimator())
+                _animator.SetTrigger(StoppedAskingHash);
         }
         #endregion
 
         #region Helpers
+        private bool CanUseAnimator()
+            => !_destroyed && _animator != null;
+
         private void SetSpriteAlpha(float alpha)
         {
             var color = _bodyRenderer.color;
