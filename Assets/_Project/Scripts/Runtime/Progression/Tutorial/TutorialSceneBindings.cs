@@ -62,6 +62,9 @@ namespace Game.Progression
             while (!ServiceLocator.TryGet(out _tutorial))
                 yield return null;
 
+            while (_playerInteractor == null || _playerInteractor.LeftHand == null || _playerInteractor.RightHand == null)
+                yield return null;
+
             _tutorial.BindScene(this);
             _bindRoutine = null;
         }

@@ -629,7 +629,7 @@ namespace Game.Progression
 
         private void SubscribeScene()
         {
-            if (_scene?.PlayerInteractor == null)
+            if (_scene?.PlayerInteractor == null || _scene.PlayerInteractor.LeftHand == null || _scene.PlayerInteractor.RightHand == null)
                 return;
 
             Hand leftHand = _scene.PlayerInteractor.LeftHand;
@@ -662,7 +662,7 @@ namespace Game.Progression
 
         private void UnsubscribeScene()
         {
-            if (_scene?.PlayerInteractor != null)
+            if (_scene?.PlayerInteractor != null && _scene.PlayerInteractor.LeftHand != null && _scene.PlayerInteractor.RightHand != null)
             {
                 Hand leftHand = _scene.PlayerInteractor.LeftHand;
                 Hand rightHand = _scene.PlayerInteractor.RightHand;
