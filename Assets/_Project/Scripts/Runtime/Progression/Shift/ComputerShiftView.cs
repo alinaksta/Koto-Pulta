@@ -87,7 +87,7 @@ namespace Game.Progression
         {
             if (_shiftService.ShiftInProgress)
                 _state = ComputerShiftState.InProgress;
-            else if (_shiftService.HasCurrentShift)
+            else if (_shiftService.HasCompletedShiftResults)
                 _state = ComputerShiftState.Ended;
             else
                 _state = ComputerShiftState.Initial;
@@ -115,9 +115,6 @@ namespace Game.Progression
         {
             _state = ComputerShiftState.Ended;
             UpdateUI();
-
-            if (_computer != null)
-                _computer.SetTab(0);
         }
 
         private void HandleShiftStarted()

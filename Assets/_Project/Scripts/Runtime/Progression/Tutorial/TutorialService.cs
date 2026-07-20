@@ -110,6 +110,11 @@ namespace Game.Progression
         public string Id => "tutorial";
 
         /// <summary>
+        /// Gets whether the tutorial mode is currently running.
+        /// </summary>
+        public bool IsActive => _active;
+
+        /// <summary>
         /// Gets the current world-space marker target.
         /// </summary>
         public Transform Target { get; private set; }
@@ -201,6 +206,8 @@ namespace Game.Progression
             _dialogue?.Hide();
             ClearTarget();
             ClearUiTarget();
+            SetComputerInputBlockerVisible(false);
+            _scene?.ComputerTabs?.RefreshTabAvailability();
             _shifts?.Exit();
 
             _expectedSignal = TutorialSignal.None;
@@ -316,6 +323,8 @@ namespace Game.Progression
             if (_active)
                 SubscribeScene();
 
+            SetComputerInputBlockerVisible(false);
+
             _sceneSource?.TrySetResult(_scene);
         }
 
@@ -343,12 +352,20 @@ namespace Game.Progression
                 Waiter availableWaiter = await WaitForAnyWaiterAsync(cancellationToken);
                 availableWaiter.SetHoldAtMealPoint(true);
                 availableWaiter.StartGoingToMealPoint();
-                await WaitForWaiterMealPointAsync(availableWaiter, cancellationToken);
                 await RunSignalStepAsync(_throwWaiterStep, TutorialSignal.ThrewWaiter, availableWaiter.transform, _throwWaiterMarkerOffset, cancellationToken);
 
                 await RunComputerIntroStepAsync(cancellationToken);
-                await RunComputerTabsStepAsync(cancellationToken);
-                await RunComputerCloseInstructionAsync(cancellationToken);
+
+                SetComputerInputBlockerVisible(true);
+                try
+                {
+                    await RunComputerTabsStepAsync(cancellationToken);
+                    await RunComputerCloseInstructionAsync(cancellationToken);
+                }
+                finally
+                {
+                    SetComputerInputBlockerVisible(false);
+                }
 
                 if (_scene.ComputerTabs != null)
                     _scene.ComputerTabs.SetTabButtonsInteractable(true);
@@ -383,7 +400,10 @@ namespace Game.Progression
                 }
 
                 if (_scene.ComputerTabs != null)
+                {
                     _scene.ComputerTabs.SetTab(ComputerSiteTab.ShiftStatistics);
+                    ShowTutorialEvaluationResults();
+                }
 
                 await RunStatisticsComputerStepAsync(cancellationToken);
                 await RunDialogueStepAsync(_finishStep, _scene.ComputerTarget, _computerMarkerOffset, cancellationToken);
@@ -414,9 +434,21 @@ namespace Game.Progression
             SetTarget(target, markerOffset);
             ClearUiTarget();
             step.InvokeStarted();
-            await _dialogue.DisplayLinesAsync(step.Lines, cancellationToken, false);
+            _dialogue.DisplayInstruction(GetInstructionText(step));
             await WaitForSignalAsync(signal, cancellationToken);
             step.InvokeCompleted();
+        }
+
+        private string GetInstructionText(TutorialStep step)
+        {
+            IReadOnlyList<string> lines = step.Lines;
+            if (lines == null || lines.Count == 0)
+                return string.Empty;
+
+            if (lines.Count == 1)
+                return lines[0];
+
+            return string.Join("\n", lines);
         }
 
         private async Task RunDialogueStepAsync(TutorialStep step, CancellationToken cancellationToken)
@@ -536,6 +568,22 @@ namespace Game.Progression
             step.InvokeStarted();
             await _dialogue.DisplayLinesAsync(step.Lines, cancellationToken);
             step.InvokeCompleted();
+        }
+
+        private void SetComputerInputBlockerVisible(bool visible)
+        {
+            if (_scene?.ComputerInputBlockerPanel != null)
+                _scene.ComputerInputBlockerPanel.SetActive(visible);
+        }
+
+        private void ShowTutorialEvaluationResults()
+        {
+            global::Evaluation evaluation = _scene?.ComputerTabs != null
+                ? _scene.ComputerTabs.GetComponentInChildren<global::Evaluation>(true)
+                : null;
+
+            if (evaluation != null)
+                evaluation.ShowCurrentResultsImmediate();
         }
 
         private async Task WaitForSignalAsync(TutorialSignal signal, CancellationToken cancellationToken)
@@ -681,12 +729,19 @@ namespace Game.Progression
                 _scene.ComputerTabs.OnComputerExited -= HandleComputerExited;
                 _scene.ComputerTabs.SetTabButtonsInteractable(true);
             }
+
+            SetComputerInputBlockerVisible(false);
         }
 
         private void HandleHandItemChanged(Item? item)
         {
             if (!item.HasValue)
+            {
+                if (_expectedSignal == TutorialSignal.DroppedObject)
+                    ReportSignal(TutorialSignal.DroppedObject);
+
                 return;
+            }
 
             if (_expectedSignal == TutorialSignal.GaveMealToWaiter)
             {

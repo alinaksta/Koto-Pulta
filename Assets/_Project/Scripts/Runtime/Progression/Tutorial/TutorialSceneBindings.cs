@@ -14,6 +14,7 @@ namespace Game.Progression
         [Header("Dependencies")]
         [SerializeField] private DualHandInteractor _playerInteractor;
         [SerializeField] private SiteActivator _computerTabs;
+        [SerializeField] private GameObject _computerInputBlockerPanel;
 
         [Header("Marker Targets")]
         [SerializeField] private Transform _pickupTarget;
@@ -29,6 +30,7 @@ namespace Game.Progression
 
         public DualHandInteractor PlayerInteractor => _playerInteractor;
         public SiteActivator ComputerTabs => _computerTabs;
+        public GameObject ComputerInputBlockerPanel => _computerInputBlockerPanel;
         public Transform PickupTarget => _pickupTarget;
         public Transform ComputerTarget => _computerTarget != null
             ? _computerTarget

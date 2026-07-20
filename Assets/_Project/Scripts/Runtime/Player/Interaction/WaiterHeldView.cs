@@ -298,7 +298,8 @@ namespace Game.Interaction
                 return;
             }
 
-            if (!_noteVisible && _noteImage != null)
+            bool wasVisible = _noteVisible;
+            if (!wasVisible && _noteImage != null)
             {
                 _noteImage.rectTransform.anchoredPosition = _noteRestPosition + _baseOffset;
                 _noteImage.gameObject.SetActive(true);
@@ -309,7 +310,7 @@ namespace Game.Interaction
             if (_tableNumberLabel == null)
                 return;
 
-            if (!_noteVisible)
+            if (!_tableNumberLabel.gameObject.activeSelf)
                 _tableNumberLabel.gameObject.SetActive(true);
 
             int tableNumber = _waiter.AssignedCustomer.Table.TableNumber;

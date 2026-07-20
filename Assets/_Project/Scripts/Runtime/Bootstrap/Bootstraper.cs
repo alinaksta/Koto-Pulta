@@ -20,6 +20,9 @@ namespace Game.Lifecycle
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void Bootstrap()
         {
+            PlayerPrefs.DeleteAll();
+            PlayerPrefs.Save();
+
             if (ServiceLocator.TryGet<IBootstrapService>(out _))
                 return;
 
