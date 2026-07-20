@@ -4,7 +4,6 @@ using Game.Interaction;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System;
 using System.Collections;
 
 public class Evaluation : MonoBehaviour
@@ -26,16 +25,79 @@ public class Evaluation : MonoBehaviour
     [SerializeField] private GameObject _evaluateButton;
     [SerializeField] private GameObject _nextShiftButton;
 
+    private Coroutine _evaluationCoroutine;
+    private bool _evaluationPending;
+    private int _evaluatedShiftIndex = -1;
+
     private void Awake()
     {
         _shiftService = ServiceLocator.Get<ShiftService>();
         _runSessionService = ServiceLocator.Get<RunSessionService>();
     }
+
+    private void OnEnable()
+    {
+        _shiftService.OnShiftStarted += HandleShiftStarted;
+        _shiftService.OnShiftEnded += HandleShiftEnded;
+
+        if (_computerInteractable != null)
+            _computerInteractable.FocusStarted += HandleComputerFocusStarted;
+
+        if (_shiftService.HasCurrentShift && !_shiftService.ShiftInProgress && _runSessionService.State != RunSessionState.Running)
+        {
+            if (_shiftService.ShiftIndex != _evaluatedShiftIndex)
+                _evaluatable = true;
+
+            _evaluationPending = true;
+            TryStartPendingEvaluation();
+        }
+    }
+
+    private void OnDisable()
+    {
+        _shiftService.OnShiftStarted -= HandleShiftStarted;
+        _shiftService.OnShiftEnded -= HandleShiftEnded;
+
+        if (_computerInteractable != null)
+            _computerInteractable.FocusStarted -= HandleComputerFocusStarted;
+    }
+
     private void Update()
     {
-        if(_computerInteractable.HasInteractor && _runSessionService.State != RunSessionState.Running && _evaluatable) StartEvaluation();
         _backgroundImage.sprite = (_runSessionService.State != RunSessionState.Succeeded) ? _failSprite : _successSprite;
     }
+
+    private void HandleShiftStarted()
+    {
+        _evaluationPending = false;
+        ResetEvaluation();
+    }
+
+    private void HandleShiftEnded()
+    {
+        _evaluationPending = true;
+        TryStartPendingEvaluation();
+    }
+
+    private void HandleComputerFocusStarted()
+    {
+        TryStartPendingEvaluation();
+    }
+
+    private void TryStartPendingEvaluation()
+    {
+        if (!_evaluationPending || !_evaluatable)
+            return;
+
+        if (_computerInteractable == null || !_computerInteractable.HasInteractor)
+            return;
+
+        if (_runSessionService.State == RunSessionState.Running)
+            return;
+
+        StartEvaluation();
+    }
+
     public void SetSegments(int segmentAmount)
     {
         for(int i = 0; i < _segments.Length; i++)
@@ -48,13 +110,27 @@ public class Evaluation : MonoBehaviour
     }
     public void StartEvaluation()
     {
-        StartCoroutine(EvaluateGrade());
+        if (_runSessionService.State == RunSessionState.Running)
+            return;
+
+        if (_evaluationCoroutine != null)
+            StopCoroutine(_evaluationCoroutine);
+
+        _evaluationCoroutine = StartCoroutine(EvaluateGrade());
         _evaluateButton.SetActive(false);
         _nextShiftButton.SetActive(true);
         _evaluatable = false;
+        _evaluationPending = false;
+        _evaluatedShiftIndex = _shiftService.ShiftIndex;
     }
     public void ResetEvaluation()
     {
+        if (_evaluationCoroutine != null)
+        {
+            StopCoroutine(_evaluationCoroutine);
+            _evaluationCoroutine = null;
+        }
+
         ResetGrade();
         _evaluateButton.SetActive(true);
         _nextShiftButton.SetActive(false);
@@ -73,11 +149,19 @@ public class Evaluation : MonoBehaviour
             yield return new WaitForSeconds(interval);
             interval -= 0.005f;
         }
+
+        _customersServedText.text = $"{stats.CustomersServed}";
+        _customersUnsatisfiedText.text = $"{stats.CustomersUnsatisfied}";
+        _moneyEarnedText.text = $"{stats.MoneyEarned}";
+        _deliveryTimeText.text = $"{(int)stats.AverageDeliveryTime}";
+
         for (int i = 0; i <= _shiftService.ShiftIndex; i++)
         {
             SetSegments(i);
             yield return new WaitForSeconds(0.4f);
         }
+
+        _evaluationCoroutine = null;
     }
     private void ResetGrade()
     {
@@ -85,6 +169,5 @@ public class Evaluation : MonoBehaviour
         _customersUnsatisfiedText.text = "";
         _moneyEarnedText.text = "";
         _deliveryTimeText.text = "";
-        ResetSegments();
     }
 }

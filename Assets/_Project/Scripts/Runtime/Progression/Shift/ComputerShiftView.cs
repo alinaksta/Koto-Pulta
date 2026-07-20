@@ -52,6 +52,15 @@ namespace Game.Progression
             CacheButtonTextReferences();
         }
 
+        private void OnEnable()
+        {
+            if (_shiftService == null)
+                return;
+
+            RefreshStateFromShiftService();
+            UpdateUI();
+        }
+
         private void CacheButtonTextReferences()
         {
             if (_beginFirstShiftButtonText == null && _beginFirstShiftButton != null)
@@ -70,8 +79,18 @@ namespace Game.Progression
             _beginFirstShiftButton.onClick.AddListener(HandleStartNextShiftButtonClick);
             _startNextShiftButton.onClick.AddListener(HandleStartNextShiftButtonClick);
 
-            _state = ComputerShiftState.Initial;
+            RefreshStateFromShiftService();
             UpdateUI();
+        }
+
+        private void RefreshStateFromShiftService()
+        {
+            if (_shiftService.ShiftInProgress)
+                _state = ComputerShiftState.InProgress;
+            else if (_shiftService.HasCurrentShift)
+                _state = ComputerShiftState.Ended;
+            else
+                _state = ComputerShiftState.Initial;
         }
 
         private void HandleStartNextShiftButtonClick()
@@ -95,8 +114,10 @@ namespace Game.Progression
         private void HandleShiftEnded()
         {
             _state = ComputerShiftState.Ended;
-            _computer.SetTab(0);
             UpdateUI();
+
+            if (_computer != null)
+                _computer.SetTab(0);
         }
 
         private void HandleShiftStarted()
@@ -161,6 +182,20 @@ namespace Game.Progression
         private void UpdateEndedUI()
         {
             EnableSinglePanel(_endedPanel);
+
+            ShiftStatistics stats = _shiftService.LastStatistics;
+
+            if (_happyCustomersText != null)
+                _happyCustomersText.text = stats.CustomersServed.ToString();
+
+            if (_angryCustomersText != null)
+                _angryCustomersText.text = stats.CustomersUnsatisfied.ToString();
+
+            if (_averageTimeText != null)
+                _averageTimeText.text = ((int)stats.AverageDeliveryTime).ToString();
+
+            if (_moneyEarnedText != null)
+                _moneyEarnedText.text = stats.MoneyEarned.ToString();
         }
 
         private void UpdateInitialUI()
