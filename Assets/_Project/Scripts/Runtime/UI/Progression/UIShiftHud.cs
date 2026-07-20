@@ -54,6 +54,14 @@ namespace Game.UI
         private Color _revenueBaseColor = Color.white;
         private bool _hasTimerBaseColor;
         private bool _hasRevenueBaseColor;
+        private int _displayedTimerSeconds = int.MinValue;
+        private int _displayedRevenue = int.MinValue;
+        private int _displayedGoalRevenue = int.MinValue;
+        private int _displayedShiftNumber = int.MinValue;
+        private int _displayedShiftAmount = int.MinValue;
+        private bool _displayedPracticeShift;
+        private bool _displayedEndlessRevenue;
+        private bool _displayedEndlessShift;
 
         private void Awake()
         {
@@ -156,9 +164,22 @@ namespace Game.UI
 
         private void RefreshAll()
         {
+            InvalidateDisplayCache();
             UpdateTimer();
             UpdateRevenue();
             UpdateShiftNumber();
+        }
+
+        private void InvalidateDisplayCache()
+        {
+            _displayedTimerSeconds = int.MinValue;
+            _displayedRevenue = int.MinValue;
+            _displayedGoalRevenue = int.MinValue;
+            _displayedShiftNumber = int.MinValue;
+            _displayedShiftAmount = int.MinValue;
+            _displayedPracticeShift = false;
+            _displayedEndlessRevenue = false;
+            _displayedEndlessShift = false;
         }
 
         private void UpdateTimer()
@@ -168,14 +189,24 @@ namespace Game.UI
 
             if (_shiftService.IsPracticeShift)
             {
-                _timerLabel.text = _untimedTimerText;
+                if (!_displayedPracticeShift)
+                    _timerLabel.text = _untimedTimerText;
+
+                _displayedPracticeShift = true;
+                _displayedTimerSeconds = int.MinValue;
                 return;
             }
 
             int totalSeconds = Mathf.Max(0, Mathf.CeilToInt(_shiftService.ShiftTimer));
-            int minutes = totalSeconds / 60;
-            int seconds = totalSeconds % 60;
-            _timerLabel.text = string.Format(_timerFormat, minutes, seconds);
+            if (_displayedPracticeShift || totalSeconds != _displayedTimerSeconds)
+            {
+                int minutes = totalSeconds / 60;
+                int seconds = totalSeconds % 60;
+                _timerLabel.text = string.Format(_timerFormat, minutes, seconds);
+                _displayedTimerSeconds = totalSeconds;
+                _displayedPracticeShift = false;
+            }
+
             UpdateTimerColor(totalSeconds);
         }
 
@@ -186,17 +217,29 @@ namespace Game.UI
 
             if (_shiftService.IsEndlessShift)
             {
-                _revenueLabel.text = _endlessRevenueText;
-                ResetRevenueColor();
+                if (!_displayedEndlessRevenue)
+                {
+                    _revenueLabel.text = _endlessRevenueText;
+                    ResetRevenueColor();
+                }
+
+                _displayedEndlessRevenue = true;
+                _displayedRevenue = int.MinValue;
+                _displayedGoalRevenue = int.MinValue;
                 return;
             }
 
-            _revenueLabel.text = string.Format(
-                _revenueFormat,
-                _shiftService.CurrentRevenue,
-                _shiftService.CurrentGoalRevenue);
+            int revenue = _shiftService.CurrentRevenue;
+            int goalRevenue = _shiftService.CurrentGoalRevenue;
+            if (_displayedEndlessRevenue || revenue != _displayedRevenue || goalRevenue != _displayedGoalRevenue)
+            {
+                _revenueLabel.text = string.Format(_revenueFormat, revenue, goalRevenue);
+                _displayedRevenue = revenue;
+                _displayedGoalRevenue = goalRevenue;
+                _displayedEndlessRevenue = false;
+                UpdateRevenueColor();
+            }
 
-            UpdateRevenueColor();
         }
 
         private void UpdateShiftNumber()
@@ -208,13 +251,23 @@ namespace Game.UI
                 ? _shiftService.ShiftIndex + 1
                 : 0;
 
-            string format = _shiftService.IsEndlessShift
+            bool endlessShift = _shiftService.IsEndlessShift;
+            int shiftAmount = _shiftService.ShiftAmount;
+            if (displayedShiftNumber == _displayedShiftNumber &&
+                shiftAmount == _displayedShiftAmount &&
+                endlessShift == _displayedEndlessShift)
+                return;
+
+            string format = endlessShift
                 ? _endlessShiftNumberFormat
                 : _shiftNumberFormat;
             _shiftNumberLabel.text = string.Format(
                 format,
                 displayedShiftNumber,
-                _shiftService.ShiftAmount);
+                shiftAmount);
+            _displayedShiftNumber = displayedShiftNumber;
+            _displayedShiftAmount = shiftAmount;
+            _displayedEndlessShift = endlessShift;
         }
 
         private bool TryResolveService()

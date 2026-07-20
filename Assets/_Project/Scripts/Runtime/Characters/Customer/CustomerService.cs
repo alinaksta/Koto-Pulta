@@ -188,15 +188,38 @@ namespace Game.Characters
         /// </summary>
         public void TimeoutAllActiveCustomers()
         {
-            var customers = _activeCustomers.ToArray();
-            for (int i = 0; i < customers.Length; i++)
+            for (int i = _activeCustomers.Count - 1; i >= 0; i--)
             {
-                var customer = customers[i];
+                Customer customer = _activeCustomers[i];
                 if (customer == null || !customer.IsWaiting)
                     continue;
 
                 customer.ForceTimeout();
             }
+        }
+
+        /// <summary>
+        /// Immediately removes all active customers when leaving gameplay.
+        /// </summary>
+        public void ClearActiveCustomers()
+        {
+            for (int i = _activeCustomers.Count - 1; i >= 0; i--)
+            {
+                Customer customer = _activeCustomers[i];
+                if (customer == null)
+                    continue;
+
+                customer.OnServed -= HandleCustomerServed;
+                customer.OnTimedOut -= HandleCustomerTimedOut;
+                customer.OnWrongItemGiven -= HandleCustomerWrongItem;
+
+                if (customer.Table != null)
+                    customer.Table.RemoveCustomer(customer);
+
+                Destroy(customer.gameObject);
+            }
+
+            _activeCustomers.Clear();
         }
 
         private void HandleCustomerWrongItem(Customer customer, Item item)
@@ -213,7 +236,6 @@ namespace Game.Characters
         private void HandleCustomerServed(Customer customer)
         {
             OnCustomerServed.Invoke(customer);
-            Debug.Log("Customer Served");
             DespawnCustomer(customer);
         }
 
@@ -231,7 +253,10 @@ namespace Game.Characters
             customer.OnWrongItemGiven -= HandleCustomerWrongItem;
 
             await Awaitable.WaitForSecondsAsync(customer.DespawnDuration);
-            
+
+            if (customer == null)
+                return;
+
             _activeCustomers.Remove(customer);
 
             if (customer.Table != null)

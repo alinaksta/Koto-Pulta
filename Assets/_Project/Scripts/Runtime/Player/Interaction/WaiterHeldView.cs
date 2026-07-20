@@ -125,6 +125,8 @@ namespace Game.Interaction
         private readonly PartBinding[] _partBindings = new PartBinding[4];
         private RuntimePart[] _parts;
         private Waiter _waiter;
+        private int _displayedTableNumber = int.MinValue;
+        private bool _noteVisible;
         private Vector2 _baseOffset;
         private Vector2 _noteRestPosition;
 
@@ -134,6 +136,8 @@ namespace Game.Interaction
             if (_noteImage != null)
                 _noteRestPosition = _noteImage.rectTransform.anchoredPosition;
 
+            _noteVisible = (_noteImage != null && _noteImage.gameObject.activeSelf) ||
+                           (_tableNumberLabel != null && _tableNumberLabel.gameObject.activeSelf);
             HideNote();
             SetPartsVisible(false);
         }
@@ -294,16 +298,26 @@ namespace Game.Interaction
                 return;
             }
 
-            if (_noteImage != null)
+            if (!_noteVisible && _noteImage != null)
             {
                 _noteImage.rectTransform.anchoredPosition = _noteRestPosition + _baseOffset;
                 _noteImage.gameObject.SetActive(true);
             }
 
-            if (_tableNumberLabel != null)
+            _noteVisible = true;
+
+            if (_tableNumberLabel == null)
+                return;
+
+            if (!_noteVisible)
                 _tableNumberLabel.gameObject.SetActive(true);
 
-            _tableNumberLabel.text = _waiter.AssignedCustomer.Table.TableNumber.ToString();
+            int tableNumber = _waiter.AssignedCustomer.Table.TableNumber;
+            if (tableNumber == _displayedTableNumber)
+                return;
+
+            _tableNumberLabel.SetText("{0}", tableNumber);
+            _displayedTableNumber = tableNumber;
         }
 
         private bool ShouldShowNote()
@@ -315,6 +329,9 @@ namespace Game.Interaction
 
         private void HideNote()
         {
+            if (!_noteVisible)
+                return;
+
             if (_noteImage != null)
                 _noteImage.gameObject.SetActive(false);
 
@@ -323,6 +340,9 @@ namespace Game.Interaction
                 _tableNumberLabel.gameObject.SetActive(false);
                 _tableNumberLabel.text = string.Empty;
             }
+
+            _displayedTableNumber = int.MinValue;
+            _noteVisible = false;
         }
     }
 }

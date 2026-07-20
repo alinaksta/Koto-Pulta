@@ -2,6 +2,7 @@ using Game.Input;
 using Game.Services;
 using Game.Player;
 using Game.Audio;
+using Game.Progression;
 using Game.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -18,11 +19,8 @@ namespace Game.Interaction
         [SerializeField] private float _volume = 1f;
         [SerializeField] private int _mainMenuIndex = 0;
 
-        private LoadingService _loadingService;
-
         private void Start()
         {
-            _loadingService = ServiceLocator.Get<LoadingService>();
             _inputService = ServiceLocator.Get<IInputService>();
             _soundService = ServiceLocator.Get<SoundService>();
         }
@@ -30,8 +28,13 @@ namespace Game.Interaction
         /// <summary>
         /// Loads the configured gameplay scene from the main menu.
         /// </summary>
-        public async void QuitToMainMenu()
+        public void QuitToMainMenu()
         {
+            Time.timeScale = 1f;
+
+            if (ServiceLocator.TryGet<GameModeService>(out var gameModes))
+                gameModes.ClearGameMode();
+
             SceneManager.LoadScene(_mainMenuIndex, LoadSceneMode.Single);
         }
 
@@ -48,7 +51,6 @@ namespace Game.Interaction
             CameraController.SetMouseLockedStatic(false);
             CameraController.SetActiveRotationStatic(true);
             _soundService.PlaySound(_pauseSound, _volume);
-            Debug.Log("This is a pause");
             Time.timeScale = 0f;
         }
         public void Continue()

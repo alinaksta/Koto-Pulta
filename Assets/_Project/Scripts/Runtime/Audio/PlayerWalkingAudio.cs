@@ -2,8 +2,6 @@ using Game.Services;
 using Game.Audio;
 using Game.Movement;
 using UnityEngine;
-using System;
-using System.Collections;
 
 
 public class PlayerWalkingAudio : MonoBehaviour
@@ -17,6 +15,8 @@ public class PlayerWalkingAudio : MonoBehaviour
     [Min(0f)]
     [SerializeField] private float _interval = 0.3f;
 
+    private float _cooldown;
+
     private void Awake()
     {
         _soundService = ServiceLocator.Get<SoundService>(); 
@@ -24,18 +24,16 @@ public class PlayerWalkingAudio : MonoBehaviour
 
     private void LateUpdate()
     {
-        if(_playerController.Velocity != Vector3.zero && _playerController.IsGrounded) StartCoroutine(Play());
-    }
+        _cooldown = Mathf.Max(0f, _cooldown - Time.deltaTime);
+        Vector3 velocity = _playerController.Velocity;
+        bool moving = velocity.x * velocity.x + velocity.z * velocity.z > 0.01f;
 
-    private bool _flag = true;
-    private IEnumerator Play()
-    {
-        if(!_flag) yield break;
-        _flag = false;
+        if (_cooldown > 0f || !moving || !_playerController.IsGrounded)
+            return;
+
         _soundService.PlaySound(_sound, _volume);
-        yield return new WaitForSeconds(_interval);
-        _flag = true;
-    } 
+        _cooldown = _interval;
+    }
 
 
 }

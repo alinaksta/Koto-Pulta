@@ -63,8 +63,6 @@ namespace Game.Audio
             if(clips.Length == 0 || _audioSource == null) return;
             AudioClip selectedClip = (order > -1 && order < clips.Length) ? clips[order] :
                                      (clips.Length > 1) ? clips[UnityEngine.Random.Range(0, clips.Length)] : clips[0];
-            if (sound == SoundType.PickUp) Debug.Log(_audioSource); 
-            Debug.Log(selectedClip);
             _audioSource.PlayOneShot(selectedClip, volume);
         }
     }
