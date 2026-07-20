@@ -53,6 +53,8 @@ namespace Game.Characters
     /// </summary>
     public class Waiter : MonoBehaviour, IInteractable
     {
+        private static bool _sameLayerCollisionIgnored;
+
         [Header("Item Identification")]
         [SerializeField] private ItemDefinitionAsset _waiterDefinition;
 
@@ -285,6 +287,14 @@ namespace Game.Characters
             _agent = GetComponent<NavMeshAgent>();
             if (_agent == null)
                 throw new MissingComponentException($"{nameof(Waiter)} on {name} requires a {nameof(NavMeshAgent)}.");
+
+            _agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
+
+            if (!_sameLayerCollisionIgnored)
+            {
+                _sameLayerCollisionIgnored = true;
+                Physics.IgnoreLayerCollision(gameObject.layer, gameObject.layer, true);
+            }
 
             _waiterService = ServiceLocator.Get<WaiterService>();
             _waiterQueueService = ServiceLocator.Get<WaiterQueueService>();
