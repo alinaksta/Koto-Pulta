@@ -64,6 +64,7 @@ namespace Game.Progression
         private ShiftStatisticsCollector _statisticsCollector;
         private ShiftStatistics _lastShiftStatistics;
         private bool _hasCompletedShiftResults;
+        private int _completedShiftResultVersion;
 
         /// <inheritdoc/>
         public string Id => "shift";
@@ -150,6 +151,11 @@ namespace Game.Progression
         /// Gets whether statistics from a completed shift are available for display.
         /// </summary>
         public bool HasCompletedShiftResults => _hasCompletedShiftResults;
+
+        /// <summary>
+        /// Gets a value that changes every time new completed shift statistics are recorded.
+        /// </summary>
+        public int CompletedShiftResultVersion => _completedShiftResultVersion;
 
         /// <summary>
         /// Gets whether the current normal shift ended in failure and can be retried.
@@ -522,6 +528,7 @@ namespace Game.Progression
             _statisticsCollector.SetMoneyEarned(CurrentRevenue);
             _lastShiftStatistics = _statisticsCollector.GetStatistics();
             _hasCompletedShiftResults = true;
+            _completedShiftResultVersion++;
             _statisticsCollector.Reset();
             OnShiftEnded.Invoke();
             OnShiftStartAvailabilityChanged.Invoke();

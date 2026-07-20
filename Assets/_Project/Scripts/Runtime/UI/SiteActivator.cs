@@ -4,6 +4,7 @@ using Game.Services;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Game.UI
@@ -54,6 +55,7 @@ namespace Game.UI
         private ComputerSiteTab _currentTab;
         private ShiftService _shiftService;
         private TutorialService _tutorialService;
+        private global::Evaluation _evaluationView;
         private bool _hasCurrentTab;
         private bool _isFocused;
         private bool _tabButtonsInteractable = true;
@@ -151,6 +153,7 @@ namespace Game.UI
                 _interactionGroup = gameObject.AddComponent<CanvasGroup>();
 
             RebuildTabLookup();
+            CacheEvaluationView();
             InitializeCurrentTab();
             RefreshTabButtonStates();
             SetScreenInteractable(false);
@@ -170,6 +173,7 @@ namespace Game.UI
 
             _computer.FocusStarted += HandleFocusStarted;
             _computer.FocusEnded += HandleFocusEnded;
+            CacheEvaluationView();
             RefreshTabAvailability();
         }
 
@@ -203,6 +207,8 @@ namespace Game.UI
                 Debug.LogWarning($"{nameof(SiteActivator)} on {name} cannot select tab {tab} because it is disabled or has no site bound.");
                 return;
             }
+
+            ClearTabButtonSelection();
 
             bool changed = !_hasCurrentTab || _currentTab != tab;
             _currentTab = tab;
@@ -271,6 +277,11 @@ namespace Game.UI
         {
             _isFocused = true;
             OnComputerEntered.Invoke();
+            ResolveServices();
+
+            if (_shiftService != null && !_shiftService.ShiftInProgress && _shiftService.HasCompletedShiftResults)
+                SetTab(ComputerSiteTab.ShiftStatistics);
+
             RefreshTabAvailability();
 
             if (!_hasCurrentTab)
@@ -294,7 +305,28 @@ namespace Game.UI
 
         private void HandleShiftStateChanged()
         {
+            if (_isFocused && _shiftService != null && !_shiftService.ShiftInProgress && _shiftService.HasCompletedShiftResults)
+            {
+                SetTab(ComputerSiteTab.ShiftStatistics);
+                RefreshMealsTabAvailability();
+                RefreshEvaluationView();
+                return;
+            }
+
             RefreshMealsTabAvailability();
+        }
+
+        private void CacheEvaluationView()
+        {
+            if (_evaluationView == null)
+                _evaluationView = GetComponentInChildren<global::Evaluation>(true);
+        }
+
+        private void RefreshEvaluationView()
+        {
+            CacheEvaluationView();
+            if (_evaluationView != null)
+                _evaluationView.RefreshPendingEvaluation();
         }
 
         private void ResolveServices()
@@ -363,7 +395,7 @@ namespace Game.UI
                     _tabButtonColors.Add(binding.Button, originalColors);
                 }
 
-                bool isSelected = IsTabEnabled(binding.Tab) && _hasCurrentTab && binding.Tab == _currentTab;
+                bool isSelected = _hasCurrentTab && binding.Tab == _currentTab;
                 if (isSelected)
                 {
                     Color selectedColor = originalColors.selectedColor;
@@ -380,6 +412,38 @@ namespace Game.UI
                 targetGraphic.color = IsTabEnabled(binding.Tab)
                     ? originalColors.normalColor
                     : originalColors.disabledColor;
+            }
+        }
+
+        private void ClearTabButtonSelection()
+        {
+            for (int i = 0; i < _tabButtons.Count; i++)
+            {
+                TabButtonBinding binding = _tabButtons[i];
+                if (binding.Button == null)
+                    continue;
+
+                if (EventSystem.current != null && EventSystem.current.currentSelectedGameObject == binding.Button.gameObject)
+                    EventSystem.current.SetSelectedGameObject(null);
+
+                Graphic targetGraphic = binding.TargetGraphic != null
+                    ? binding.TargetGraphic
+                    : binding.Button.targetGraphic;
+
+                if (!_tabButtonColors.TryGetValue(binding.Button, out ColorBlock originalColors))
+                {
+                    originalColors = binding.Button.colors;
+                    _tabButtonColors.Add(binding.Button, originalColors);
+                }
+
+                binding.Button.colors = originalColors;
+
+                if (targetGraphic != null)
+                {
+                    targetGraphic.color = IsTabEnabled(binding.Tab)
+                        ? originalColors.normalColor
+                        : originalColors.disabledColor;
+                }
             }
         }
 

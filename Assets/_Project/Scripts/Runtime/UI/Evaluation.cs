@@ -1,16 +1,19 @@
 using Game.Services;
 using Game.Progression;
 using Game.Interaction;
+using Game.UI;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using Game.Player;
 
 public class Evaluation : MonoBehaviour
 {
     private ShiftService _shiftService;
     private RunSessionService _runSessionService;
     [SerializeField] ComputerInteractable _computerInteractable;
+    [SerializeField] private SiteActivator _computerTabs;
     private bool _evaluatable = true;
     [SerializeField] private Image[] _segments;
     [SerializeField] private Image _backgroundImage;
@@ -31,13 +34,21 @@ public class Evaluation : MonoBehaviour
 
     private Coroutine _evaluationCoroutine;
     private bool _evaluationPending;
-    private int _evaluatedShiftIndex = -1;
+    private int _evaluatedResultVersion;
+    private int _displayedSegmentIndex = -1;
     private RunSessionState _displayedSessionState = (RunSessionState)(-1);
 
     private void Awake()
     {
         _shiftService = ServiceLocator.Get<ShiftService>();
         _runSessionService = ServiceLocator.Get<RunSessionService>();
+        _evaluateButton.SetActive(false);
+
+        if (_computerTabs == null && _computerInteractable != null)
+            _computerTabs = _computerInteractable.GetComponentInParent<SiteActivator>();
+
+        if (_computerTabs == null && _computerInteractable != null)
+            _computerTabs = _computerInteractable.GetComponentInChildren<SiteActivator>(true);
     }
 
     private void OnEnable()
@@ -48,14 +59,10 @@ public class Evaluation : MonoBehaviour
         if (_computerInteractable != null)
             _computerInteractable.FocusStarted += HandleComputerFocusStarted;
 
-        if (_shiftService.HasCompletedShiftResults && !_shiftService.ShiftInProgress && _runSessionService.State != RunSessionState.Running)
-        {
-            if (_shiftService.ShiftIndex != _evaluatedShiftIndex)
-                _evaluatable = true;
+        if (_computerTabs != null)
+            _computerTabs.OnTabViewed += HandleTabViewed;
 
-            _evaluationPending = true;
-            TryStartPendingEvaluation();
-        }
+        RefreshPendingEvaluation();
     }
 
     private void OnDisable()
@@ -65,6 +72,9 @@ public class Evaluation : MonoBehaviour
 
         if (_computerInteractable != null)
             _computerInteractable.FocusStarted -= HandleComputerFocusStarted;
+
+        if (_computerTabs != null)
+            _computerTabs.OnTabViewed -= HandleTabViewed;
     }
 
     private void Update()
@@ -84,25 +94,44 @@ public class Evaluation : MonoBehaviour
 
     private void HandleShiftEnded()
     {
-        _evaluationPending = true;
-        TryStartPendingEvaluation();
+        _computerTabs.DisableTab(ComputerSiteTab.Shop);
+        _computerTabs.SetTab(ComputerSiteTab.ShiftStatistics);
+        _computerTabs.EnableTab(ComputerSiteTab.Shop);
+        RefreshPendingEvaluation();
     }
 
     private void HandleComputerFocusStarted()
     {
+        StartEvaluation();
+    }
+
+    private void HandleTabViewed(ComputerSiteTab tab)
+    {
+        if (tab == ComputerSiteTab.ShiftStatistics)
+            RefreshPendingEvaluation();
+    }
+
+    public void RefreshPendingEvaluation()
+    {
+        //if (!_shiftService.HasCompletedShiftResults || _shiftService.ShiftInProgress || _runSessionService.State == RunSessionState.Running)
+        //    return;
+
+        //if (_shiftService.CompletedShiftResultVersion != _evaluatedResultVersion)
+        _evaluatable = true;
+
+        _evaluationPending = true;
         TryStartPendingEvaluation();
     }
 
     private void TryStartPendingEvaluation()
     {
-        if (!_evaluationPending || !_evaluatable)
+        //if (!_evaluationPending || !_evaluatable)
+        //    return;
+        if (!IsComputerFocused())
             return;
 
-        if (_computerInteractable == null || !_computerInteractable.HasInteractor)
-            return;
-
-        if (_runSessionService.State == RunSessionState.Running)
-            return;
+        //if (_runSessionService.State == RunSessionState.Running)
+        //    return;
 
         StartEvaluation();
     }
@@ -111,27 +140,50 @@ public class Evaluation : MonoBehaviour
     {
         for(int i = 0; i < _segments.Length; i++)
             _segments[i].color = i < segmentAmount + 1 ? Color.purple : Color.white;
+
+        _displayedSegmentIndex = segmentAmount;
     }
     public void ResetSegments()
     {
         for(int i = 0; i < _segments.Length; i++)
             _segments[i].color = Color.white;
+
+        _displayedSegmentIndex = -1;
     }
     public void StartEvaluation()
     {
-        if (_runSessionService.State == RunSessionState.Running)
-            return;
-
         if (_evaluationCoroutine != null)
             StopCoroutine(_evaluationCoroutine);
 
+        Debug.Log("Started evaluation");
         _evaluationCoroutine = StartCoroutine(EvaluateGrade());
-        _evaluateButton.SetActive(false);
         _nextShiftButton.SetActive(true);
         _evaluatable = false;
         _evaluationPending = false;
-        _evaluatedShiftIndex = _shiftService.ShiftIndex;
+        _evaluatedResultVersion = _shiftService.CompletedShiftResultVersion;
     }
+
+    public void ShowCurrentResultsImmediate()
+    {
+        if (_evaluationCoroutine != null)
+        {
+            StopCoroutine(_evaluationCoroutine);
+            _evaluationCoroutine = null;
+        }
+
+        var stats = _shiftService.LastStatistics;
+        SetStatText(
+            stats.CustomersServed,
+            stats.CustomersUnsatisfied,
+            stats.MoneyEarned,
+            (int)stats.AverageDeliveryTime);
+
+        _nextShiftButton.SetActive(true);
+        _evaluatable = false;
+        _evaluationPending = false;
+        _evaluatedResultVersion = _shiftService.CompletedShiftResultVersion;
+    }
+
     public void ResetEvaluation()
     {
         if (_evaluationCoroutine != null)
@@ -141,7 +193,6 @@ public class Evaluation : MonoBehaviour
         }
 
         ResetGrade();
-        _evaluateButton.SetActive(true);
         _nextShiftButton.SetActive(false);
         _evaluatable = true;
     }
@@ -176,14 +227,21 @@ public class Evaluation : MonoBehaviour
             stats.MoneyEarned,
             (int)stats.AverageDeliveryTime);
 
+        int shiftIndex = _runSessionService.State == RunSessionState.Failed ? _shiftService.ShiftIndex - 1 : _shiftService.ShiftIndex;
+        int targetSegmentIndex = Mathf.Min(shiftIndex, _segments.Length - 1);
         var segmentDelay = new WaitForSeconds(0.4f);
-        for (int i = 0; i <= _shiftService.ShiftIndex; i++)
+        for (int i = _displayedSegmentIndex + 1; i <= targetSegmentIndex; i++)
         {
             SetSegments(i);
             yield return segmentDelay;
         }
 
         _evaluationCoroutine = null;
+    }
+
+    private bool IsComputerFocused()
+    {
+        return CameraController.CurrentFocusStatus == FocusStatus.InTransition || CameraController.CurrentFocusStatus == FocusStatus.Focused;
     }
 
     private void SetStatText(int customersServed, int customersUnsatisfied, int moneyEarned, int deliveryTime)

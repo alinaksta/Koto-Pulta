@@ -400,7 +400,10 @@ namespace Game.Progression
                 }
 
                 if (_scene.ComputerTabs != null)
+                {
                     _scene.ComputerTabs.SetTab(ComputerSiteTab.ShiftStatistics);
+                    ShowTutorialEvaluationResults();
+                }
 
                 await RunStatisticsComputerStepAsync(cancellationToken);
                 await RunDialogueStepAsync(_finishStep, _scene.ComputerTarget, _computerMarkerOffset, cancellationToken);
@@ -571,6 +574,16 @@ namespace Game.Progression
         {
             if (_scene?.ComputerInputBlockerPanel != null)
                 _scene.ComputerInputBlockerPanel.SetActive(visible);
+        }
+
+        private void ShowTutorialEvaluationResults()
+        {
+            global::Evaluation evaluation = _scene?.ComputerTabs != null
+                ? _scene.ComputerTabs.GetComponentInChildren<global::Evaluation>(true)
+                : null;
+
+            if (evaluation != null)
+                evaluation.ShowCurrentResultsImmediate();
         }
 
         private async Task WaitForSignalAsync(TutorialSignal signal, CancellationToken cancellationToken)

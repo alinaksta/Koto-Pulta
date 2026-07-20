@@ -115,9 +115,6 @@ namespace Game.Progression
         {
             _state = ComputerShiftState.Ended;
             UpdateUI();
-
-            if (_computer != null)
-                _computer.SetTab(0);
         }
 
         private void HandleShiftStarted()
