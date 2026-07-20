@@ -414,9 +414,21 @@ namespace Game.Progression
             SetTarget(target, markerOffset);
             ClearUiTarget();
             step.InvokeStarted();
-            await _dialogue.DisplayLinesAsync(step.Lines, cancellationToken, false);
+            _dialogue.DisplayInstruction(GetInstructionText(step));
             await WaitForSignalAsync(signal, cancellationToken);
             step.InvokeCompleted();
+        }
+
+        private string GetInstructionText(TutorialStep step)
+        {
+            IReadOnlyList<string> lines = step.Lines;
+            if (lines == null || lines.Count == 0)
+                return string.Empty;
+
+            if (lines.Count == 1)
+                return lines[0];
+
+            return string.Join("\n", lines);
         }
 
         private async Task RunDialogueStepAsync(TutorialStep step, CancellationToken cancellationToken)
