@@ -9,7 +9,7 @@ namespace Game.Audio
     [RequireComponent(typeof(AudioSource))]
     public class MusicService : MonoBehaviour, IBootstrapable
     {
-        private RunSessionService _runSessionService;
+        private ShiftService _shiftService;
         [SerializeField] private AudioClip[] _musList;
         private AudioSource _audioSource;
 
@@ -20,14 +20,22 @@ namespace Game.Audio
 
         private void Start()
         {
-            _runSessionService = ServiceLocator.Get<RunSessionService>();
             _audioSource = gameObject.GetComponent<AudioSource>();
         }
         private void Update()
         {
+            if (!_shiftService) _shiftService = ServiceLocator.Get<ShiftService>();
+            Debug.Log(_shiftService.ShiftInProgress);
+            Debug.Log(_audioSource.clip);
+            Debug.Log(_shiftService.ShiftInProgress != _audioSource.clip == _musList[1]);
+            
+            if(_shiftService.ShiftInProgress != (_audioSource.clip == _musList[1]))
+            {
+                _audioSource.clip = _musList[_shiftService.ShiftInProgress ? 1 : 0];
+                _audioSource.Play();
+            }
             if (!_audioSource.isPlaying)
-            { 
-                _audioSource.clip = _runSessionService.State != RunSessionState.Running ? _musList[0] : _musList[1];
+            {
                 _audioSource.Play();
             }
         }
