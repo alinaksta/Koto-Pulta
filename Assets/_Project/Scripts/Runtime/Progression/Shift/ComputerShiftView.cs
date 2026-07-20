@@ -23,15 +23,22 @@ namespace Game.Progression
         [Header("Initial Panel Dependencies")]
         [SerializeField] private RectTransform _initialPanel;
         [SerializeField] private Button _beginFirstShiftButton;
+        [SerializeField] private TextMeshProUGUI _beginFirstShiftButtonText;
 
         [Header("Ended Panel Dependencies")]
         [SerializeField] private RectTransform _endedPanel;
         [SerializeField] private Button _startNextShiftButton;
+        [SerializeField] private TextMeshProUGUI _startNextShiftButtonText;
         [SerializeField] private TextMeshProUGUI _happyCustomersText;
         [SerializeField] private TextMeshProUGUI _angryCustomersText;
         [SerializeField] private TextMeshProUGUI _averageTimeText;
         [SerializeField] private TextMeshProUGUI _moneyEarnedText;
         [SerializeField] private SiteActivator _computer;
+
+        [Header("Button Labels")]
+        [SerializeField] private string _beginShiftButtonLabel = "Begin Shift";
+        [SerializeField] private string _retryShiftButtonLabel = "Retry";
+        [SerializeField] private string _beginNextShiftButtonLabel = "Begin Next Shift";
 
         [Header("In Progress Panel Dependencies")]
         [SerializeField] private RectTransform _inProgressPanel;
@@ -42,6 +49,16 @@ namespace Game.Progression
         private void Awake()
         {
             _shiftService = ServiceLocator.Get<ShiftService>();
+            CacheButtonTextReferences();
+        }
+
+        private void CacheButtonTextReferences()
+        {
+            if (_beginFirstShiftButtonText == null && _beginFirstShiftButton != null)
+                _beginFirstShiftButtonText = _beginFirstShiftButton.GetComponentInChildren<TextMeshProUGUI>(true);
+
+            if (_startNextShiftButtonText == null && _startNextShiftButton != null)
+                _startNextShiftButtonText = _startNextShiftButton.GetComponentInChildren<TextMeshProUGUI>(true);
         }
 
         private void Start()
@@ -114,6 +131,21 @@ namespace Game.Progression
 
             if (_startNextShiftButton != null)
                 _startNextShiftButton.interactable = canStart;
+
+            UpdateShiftButtonLabels();
+        }
+
+        private void UpdateShiftButtonLabels()
+        {
+            if (_beginFirstShiftButtonText != null)
+                _beginFirstShiftButtonText.text = _beginShiftButtonLabel;
+
+            if (_startNextShiftButtonText == null)
+                return;
+
+            _startNextShiftButtonText.text = _shiftService != null && _shiftService.CurrentShiftFailed
+                ? _retryShiftButtonLabel
+                : _beginNextShiftButtonLabel;
         }
 
         private void EnableSinglePanel(RectTransform panel)

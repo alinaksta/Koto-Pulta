@@ -146,6 +146,11 @@ namespace Game.Progression
         public ShiftStatistics LastStatistics => _lastShiftStatistics;
 
         /// <summary>
+        /// Gets whether the current normal shift ended in failure and can be retried.
+        /// </summary>
+        public bool CurrentShiftFailed => _currentShiftFailed;
+
+        /// <summary>
         /// Gets whether the computer shift-start button may currently start a shift.
         /// </summary>
         public bool CanStartNextShift => !_modeActive && _currentShiftFailed && !_normalShiftStartLocked ||
