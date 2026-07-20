@@ -201,6 +201,7 @@ namespace Game.Progression
             _dialogue?.Hide();
             ClearTarget();
             ClearUiTarget();
+            SetComputerInputBlockerVisible(false);
             _shifts?.Exit();
 
             _expectedSignal = TutorialSignal.None;
@@ -316,6 +317,8 @@ namespace Game.Progression
             if (_active)
                 SubscribeScene();
 
+            SetComputerInputBlockerVisible(false);
+
             _sceneSource?.TrySetResult(_scene);
         }
 
@@ -346,8 +349,17 @@ namespace Game.Progression
                 await RunSignalStepAsync(_throwWaiterStep, TutorialSignal.ThrewWaiter, availableWaiter.transform, _throwWaiterMarkerOffset, cancellationToken);
 
                 await RunComputerIntroStepAsync(cancellationToken);
-                await RunComputerTabsStepAsync(cancellationToken);
-                await RunComputerCloseInstructionAsync(cancellationToken);
+
+                SetComputerInputBlockerVisible(true);
+                try
+                {
+                    await RunComputerTabsStepAsync(cancellationToken);
+                    await RunComputerCloseInstructionAsync(cancellationToken);
+                }
+                finally
+                {
+                    SetComputerInputBlockerVisible(false);
+                }
 
                 if (_scene.ComputerTabs != null)
                     _scene.ComputerTabs.SetTabButtonsInteractable(true);
@@ -549,6 +561,12 @@ namespace Game.Progression
             step.InvokeCompleted();
         }
 
+        private void SetComputerInputBlockerVisible(bool visible)
+        {
+            if (_scene?.ComputerInputBlockerPanel != null)
+                _scene.ComputerInputBlockerPanel.SetActive(visible);
+        }
+
         private async Task WaitForSignalAsync(TutorialSignal signal, CancellationToken cancellationToken)
         {
             if (_latchedSignals.Remove(signal))
@@ -692,6 +710,8 @@ namespace Game.Progression
                 _scene.ComputerTabs.OnComputerExited -= HandleComputerExited;
                 _scene.ComputerTabs.SetTabButtonsInteractable(true);
             }
+
+            SetComputerInputBlockerVisible(false);
         }
 
         private void HandleHandItemChanged(Item? item)

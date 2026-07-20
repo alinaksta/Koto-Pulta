@@ -5940,6 +5940,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Game.Progression.TutorialSceneBindings
   _playerInteractor: {fileID: 2509352575665516850}
   _computerTabs: {fileID: 3866821625330271604}
+  _computerInputBlockerPanel: {fileID: 3866821625330271606}
   _pickupTarget: {fileID: 731317191}
   _computerTarget: {fileID: 3866821625330271605}
   _shiftTabTarget: {fileID: 1549289570}
@@ -8609,6 +8610,14 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4827916660052561291, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4827916660052561291, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4889863835696989216, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -8916,6 +8925,11 @@ MonoBehaviour:
 --- !u!4 &3866821625330271605 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7396098681005940394, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
+  m_PrefabInstance: {fileID: 3866821625330271603}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3866821625330271606 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9178875985304530207, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
   m_PrefabInstance: {fileID: 3866821625330271603}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8895413298887766300
