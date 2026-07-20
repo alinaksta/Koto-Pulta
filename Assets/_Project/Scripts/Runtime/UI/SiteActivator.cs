@@ -216,9 +216,10 @@ namespace Game.UI
 
             ShowCurrentTab();
 
+            RefreshTabButtonStates();
+
             if (changed)
             {
-                RefreshTabButtonStates();
                 OnTabChanged.Invoke(_currentTab);
             }
 
