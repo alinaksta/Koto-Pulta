@@ -40,7 +40,7 @@ namespace Game.Interaction
 
         private void Update()
         {
-            if (_inputService.Pause.Pressed && !_pauseCanvas.activeSelf && !ComputerInteractable.AnyComputerInUse)
+            if (_inputService.Pause.Pressed && !_pauseCanvas.activeSelf && CameraController.IsUnfocused)
                 InitiatePause();
             else if (_inputService.Pause.Pressed && _pauseCanvas.activeSelf)
                 Continue();
