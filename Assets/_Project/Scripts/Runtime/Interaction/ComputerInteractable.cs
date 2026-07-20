@@ -14,6 +14,10 @@ namespace Game.Interaction
         [SerializeField] private float _startFocusDuration = 2f;
         [SerializeField] private float _endFocusDuration = 2f;
 
+        private static int _activeComputerUsers;
+
+        private bool _isFocused;
+
 
         /// <summary>
         /// Raised when the player enters focus on this computer.
@@ -38,6 +42,11 @@ namespace Game.Interaction
         /// </summary>
         public bool HasInteractor => CurrentInteractor != null;
 
+        /// <summary>
+        /// Gets whether any computer is currently being used.
+        /// </summary>
+        public static bool AnyComputerInUse => _activeComputerUsers > 0;
+
         /// <inheritdoc/>
         public float StartFocusTransitionDuration => _startFocusDuration;
 
@@ -45,6 +54,11 @@ namespace Game.Interaction
         public float EndFocusTransitionDuration => _endFocusDuration;
 
         private IFocusHandler _focusHandler;
+
+        private void OnDisable()
+        {
+            ClearFocusedComputerUser();
+        }
 
 
         /// <inheritdoc/>
@@ -61,6 +75,7 @@ namespace Game.Interaction
         {
             _focusHandler.ClearMouseLocked();
             FocusEnded.Invoke();
+            ClearFocusedComputerUser();
             CurrentInteractor = null;
             _focusHandler = null;
             Debug.Log("Exited computer");
@@ -76,8 +91,23 @@ namespace Game.Interaction
         public void OnFocusStarted()
         {
             _focusHandler.SetMouseLocked(false);
+            if (!_isFocused)
+            {
+                _isFocused = true;
+                _activeComputerUsers++;
+            }
+
             FocusStarted.Invoke();
             Debug.Log("Entered computer");
+        }
+
+        private void ClearFocusedComputerUser()
+        {
+            if (!_isFocused)
+                return;
+
+            _isFocused = false;
+            _activeComputerUsers = Mathf.Max(0, _activeComputerUsers - 1);
         }
 
         /// <summary>

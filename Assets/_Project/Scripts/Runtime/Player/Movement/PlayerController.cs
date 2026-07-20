@@ -1,4 +1,5 @@
 using Game.Input;
+using Game.Interaction;
 using Game.Services;
 using Game.Utils;
 using UnityEngine;
@@ -81,6 +82,13 @@ namespace Game.Movement
         {
             if (_input == null)
                 return;
+
+            if (ComputerInteractable.AnyComputerInUse)
+            {
+                _move = Vector2.zero;
+                _jumpQueued = false;
+                return;
+            }
 
             _move = Vector2.ClampMagnitude(_input.Move, 1f);
 

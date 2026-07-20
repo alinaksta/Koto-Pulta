@@ -37,7 +37,7 @@ namespace Game.Interaction
 
         private void Update()
         {
-            if (_inputService.Pause.Pressed && !_pauseCanvas.activeSelf)
+            if (_inputService.Pause.Pressed && !_pauseCanvas.activeSelf && !ComputerInteractable.AnyComputerInUse)
                 InitiatePause();
             else if (_inputService.Pause.Pressed && _pauseCanvas.activeSelf)
                 Continue();
