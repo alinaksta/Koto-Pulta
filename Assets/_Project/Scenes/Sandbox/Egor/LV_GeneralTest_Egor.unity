@@ -243,6 +243,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.Characters.WaiterMealPoint
   _point: {fileID: 230856485}
+  _priority: 9
 --- !u!1001 &249348349
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5615,6 +5616,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.Characters.WaiterMealPoint
   _point: {fileID: 848424060}
+  _priority: 7
 --- !u!1001 &859609813
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5729,7 +5731,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 30.099976, y: -61.799988}
+  m_AnchoredPosition: {x: 30.100098, y: -61.80005}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &872772434
@@ -6012,6 +6014,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.Characters.WaiterMealPoint
   _point: {fileID: 982531614}
+  _priority: 5
 --- !u!1 &992365937
 GameObject:
   m_ObjectHideFlags: 0
@@ -6303,6 +6306,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.Characters.WaiterMealPoint
   _point: {fileID: 1107328172}
+  _priority: 8
 --- !u!1 &1198766036
 GameObject:
   m_ObjectHideFlags: 0
@@ -6774,6 +6778,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.Characters.WaiterMealPoint
   _point: {fileID: 1384654059}
+  _priority: 4
 --- !u!1 &1390156115
 GameObject:
   m_ObjectHideFlags: 0
@@ -7005,6 +7010,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.Characters.WaiterMealPoint
   _point: {fileID: 1511495225}
+  _priority: 6
 --- !u!1 &1520406259
 GameObject:
   m_ObjectHideFlags: 0
@@ -7141,6 +7147,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.Characters.WaiterMealPoint
   _point: {fileID: 1526091975}
+  _priority: 1
 --- !u!1 &1530964851
 GameObject:
   m_ObjectHideFlags: 0
@@ -7167,7 +7174,7 @@ Transform:
   m_GameObject: {fileID: 1530964851}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.85, y: 0, z: -0.42}
+  m_LocalPosition: {x: -2.84, y: 0, z: -0.352}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7186,6 +7193,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.Characters.WaiterMealPoint
   _point: {fileID: 1530964852}
+  _priority: 3
 --- !u!224 &1549289570 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6360153703501387457, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
@@ -7419,6 +7427,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.Characters.WaiterMealPoint
   _point: {fileID: 1875043658}
+  _priority: 2
 --- !u!1 &1888612482
 GameObject:
   m_ObjectHideFlags: 0
@@ -7464,6 +7473,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.Characters.WaiterMealPoint
   _point: {fileID: 1888612483}
+  _priority: 10
 --- !u!1 &1946674746
 GameObject:
   m_ObjectHideFlags: 0
@@ -8692,7 +8702,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6118335297202639111, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 768.7999
+      value: 768.8002
       objectReference: {fileID: 0}
     - target: {fileID: 6367435225239670965, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
       propertyPath: m_AnchoredPosition.y

@@ -13,7 +13,8 @@ namespace Game.Characters
         private Transform _serviceCounterOrigin;
 
         private List<WaiterMealPoint> _mealPoints = new();
-        private List<WaiterMealPoint> _unassignedMealPoints = new();
+        private readonly Dictionary<WaiterMealPoint, Waiter> _waiterByMealPoint = new();
+        private readonly Dictionary<Waiter, WaiterMealPoint> _mealPointByWaiter = new();
 
         /// <summary>
         /// Gets the world position of the registered service counter origin.
@@ -39,11 +40,10 @@ namespace Game.Characters
         /// </summary>
         public void AddPoint(WaiterMealPoint point)
         {
-            if (_mealPoints.Contains(point))
+            if (point == null || _mealPoints.Contains(point))
                 return;
 
             _mealPoints.Add(point);
-            _unassignedMealPoints.Add(point);
         }
 
         /// <summary>
@@ -55,39 +55,78 @@ namespace Game.Characters
                 return;
 
             _mealPoints.Remove(point);
-
-            if (_unassignedMealPoints.Contains(point))
-                _unassignedMealPoints.Remove(point);
+            ReleaseMealPoint(point);
         }
 
         /// <summary>
-        /// Tries to get an unassigned waiter meal point.
+        /// Reserves the highest-priority free meal point for a waiter.
         /// </summary>
-        public bool TryGetUnassignedMealPoint(out WaiterMealPoint point)
+        public bool TryReserveMealPoint(Waiter waiter, out WaiterMealPoint point)
         {
             point = null;
-            int freePointsCount = _unassignedMealPoints.Count;
 
-            if (freePointsCount == 0)
+            if (waiter == null)
                 return false;
 
-            int lastIndex = freePointsCount - 1;
+            if (_mealPointByWaiter.TryGetValue(waiter, out var reservedPoint))
+            {
+                if (reservedPoint != null && _mealPoints.Contains(reservedPoint))
+                {
+                    point = reservedPoint;
+                    return true;
+                }
 
-            point = _unassignedMealPoints[lastIndex];
-            _unassignedMealPoints.RemoveAt(lastIndex);
+                ReleaseMealPoint(waiter);
+            }
+
+            int bestIndex = -1;
+            int bestPriority = int.MinValue;
+            for (int i = 0; i < _mealPoints.Count; i++)
+            {
+                WaiterMealPoint candidate = _mealPoints[i];
+                if (candidate == null || _waiterByMealPoint.ContainsKey(candidate))
+                    continue;
+
+                if (bestIndex >= 0 && candidate.Priority <= bestPriority)
+                    continue;
+
+                bestIndex = i;
+                bestPriority = candidate.Priority;
+            }
+
+            if (bestIndex < 0)
+                return false;
+
+            point = _mealPoints[bestIndex];
+            _waiterByMealPoint[point] = waiter;
+            _mealPointByWaiter[waiter] = point;
 
             return true;
         }
 
         /// <summary>
-        /// Clears the current waiter assignment for the supplied meal point.
+        /// Clears the current meal point reservation for the supplied waiter.
         /// </summary>
-        public void UnassignMealPoint(WaiterMealPoint point)
+        public void ReleaseMealPoint(Waiter waiter)
         {
-            if (point == null || !_mealPoints.Contains(point) || _unassignedMealPoints.Contains(point))
+            if (waiter == null || !_mealPointByWaiter.TryGetValue(waiter, out var point))
                 return;
 
-            _unassignedMealPoints.Add(point);
+            _mealPointByWaiter.Remove(waiter);
+
+            if (point != null && _waiterByMealPoint.TryGetValue(point, out var owner) && owner == waiter)
+                _waiterByMealPoint.Remove(point);
+        }
+
+        private void ReleaseMealPoint(WaiterMealPoint point)
+        {
+            if (point == null || !_waiterByMealPoint.TryGetValue(point, out var waiter))
+                return;
+
+            _waiterByMealPoint.Remove(point);
+
+            if (waiter != null && _mealPointByWaiter.TryGetValue(waiter, out var reservedPoint) && reservedPoint == point)
+                _mealPointByWaiter.Remove(waiter);
         }
     }
 }

@@ -147,6 +147,7 @@ namespace Game.Diagnostics
         private bool ShouldShowOrderSprite()
             => ShouldShowOrderNote() &&
                _waiter.ServiceState == WaiterServiceState.AwaitingMeal &&
+               _waiter.HasMealPoint &&
                (_waiter.AtMealPoint || _waiter.LocomotionState == WaiterLocomotionState.Idle);
 
         private void ShowOrderNote(Customer customer)

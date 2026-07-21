@@ -163,7 +163,7 @@ namespace Game.Characters
         /// <summary>
         /// Gets whether the waiter is currently at the active meal point.
         /// </summary>
-        public bool AtMealPoint => HasMealPoint && Vector3.Distance(transform.position, _mealPoint.Position) <= GetArrivalDistance();
+        public bool AtMealPoint => HasMealPoint && (_mealPointEntered || Vector3.Distance(transform.position, _mealPoint.Position) <= GetArrivalDistance());
 
         /// <summary>
         /// Gets whether the waiter currently has an assigned meal point.
@@ -314,13 +314,6 @@ namespace Game.Characters
         {
             _waiterService.RegisterWaiter(this);
             RefreshServiceState();
-            GetMealPoint();
-        }
-
-        private void GetMealPoint()
-        {
-            if (!_waiterQueueService.TryGetUnassignedMealPoint(out _mealPoint))
-                throw new NullReferenceException($"No free {nameof(WaiterMealPoint)} awailable in {nameof(WaiterQueueService)}! Try adding more points to the scene.");
         }
 
         private void OnDestroy()
@@ -330,7 +323,7 @@ namespace Game.Characters
                 _upgradeService.OnUpgradeChanged -= HandleUpgradeChanged;
 
             if (_waiterQueueService != null)
-                _waiterQueueService.UnassignMealPoint(_mealPoint);
+                ReleaseMealPoint();
 
             _waiterService.UnregisterWaiter(this);
         }
@@ -488,10 +481,9 @@ namespace Game.Characters
                     return;
                 }
 
-                if (HasMealPoint)
+                if (!HasMealPoint || !AtMealPoint)
                 {
-                    if (!AtMealPoint)
-                        StartGoingToMealPoint();
+                    StartGoingToMealPoint();
                 }
 
                 return;
@@ -513,9 +505,9 @@ namespace Game.Characters
             if (_serviceState != WaiterServiceState.Unassigned)
                 return;
 
-            if (_holdAtMealPoint && HasMealPoint)
+            if (_holdAtMealPoint)
             {
-                if (!AtMealPoint)
+                if (!HasMealPoint || !AtMealPoint)
                     StartGoingToMealPoint();
 
                 return;
@@ -895,7 +887,7 @@ namespace Game.Characters
         {
             _holdAtMealPoint = hold;
 
-            if (!hold || !HasMealPoint || !CanReactToServiceState())
+            if (!hold || !CanReactToServiceState())
                 return;
 
             if (!AtMealPoint)
@@ -981,19 +973,42 @@ namespace Game.Characters
         /// </summary>
         public void StartGoingToMealPoint()
         {
-            if (_mealPoint == null)
-            {
-                EnterIdleState();
-                return;
-            }
-
             if (!gameObject.activeInHierarchy)
             {
                 EnterIdleState();
                 return;
             }
 
+            if (!TryReserveMealPoint())
+            {
+                EnterIdleState();
+                return;
+            }
+
             NavigateTo(_mealPoint.Position);
+        }
+
+        private bool TryReserveMealPoint()
+        {
+            if (_waiterQueueService == null)
+                return false;
+
+            if (!_waiterQueueService.TryReserveMealPoint(this, out var mealPoint))
+            {
+                _mealPoint = null;
+                return false;
+            }
+
+            _mealPoint = mealPoint;
+            return true;
+        }
+
+        private void ReleaseMealPoint()
+        {
+            if (_waiterQueueService != null)
+                _waiterQueueService.ReleaseMealPoint(this);
+
+            _mealPoint = null;
         }
 
         private void EnterDeliveringState()
@@ -1004,7 +1019,9 @@ namespace Game.Characters
                 return;
             }
 
-            ExitMealPoint();
+            if (!AtMealPoint)
+                ExitMealPoint();
+
             SetServiceState(WaiterServiceState.Delivering);
             _askCustomerTimer = 0f;
 
@@ -1067,10 +1084,14 @@ namespace Game.Characters
         private void ExitMealPoint()
         {
             if (!_mealPointEntered)
+            {
+                ReleaseMealPoint();
                 return;
+            }
 
             _mealPointEntered = false;
             OnMealPointExited.Invoke();
+            ReleaseMealPoint();
         }
 
         private void LookAtServiceCounter()
