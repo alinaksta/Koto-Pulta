@@ -1014,7 +1014,7 @@ MonoBehaviour:
         m_Calls: []
   _exitComputerStep:
     _lines:
-    - You can exit the computer by pressing Z, Escape, or the exit button.
+    - You can exit the computer by pressing Z or the exit button.
     _onStarted:
       m_PersistentCalls:
         m_Calls: []
