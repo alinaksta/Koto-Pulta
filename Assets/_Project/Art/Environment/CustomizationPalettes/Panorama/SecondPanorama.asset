@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SecondPanorama
   m_EditorClassIdentifier: Assembly-CSharp::Game.Environment.PanoramaCustomization
   _displayName: Blueberry Dream
-  _price: 150
+  _price: 135
   _unlockedByDefault: 0
   _lockedSprite: {fileID: 21300000, guid: 2ffa4b7305595604fb3d1cbfc22e4cca, type: 3}
   _unlockedSprite: {fileID: 21300000, guid: 0fcca778ee715084b8dfeac9106fc180, type: 3}

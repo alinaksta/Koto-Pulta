@@ -681,7 +681,6 @@ MonoBehaviour:
   _musList:
   - {fileID: 8300000, guid: 54ba03a89219a61b8b911b2ac26db532, type: 3}
   - {fileID: 8300000, guid: e9af80fda459f2f3bb0c6c6f84ca3930, type: 3}
-  _pick: {fileID: 8300000, guid: 54ba03a89219a61b8b911b2ac26db532, type: 3}
 --- !u!1 &3113068626986869970
 GameObject:
   m_ObjectHideFlags: 0
@@ -1163,16 +1162,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Game.Progression.ShiftService
   _shifts:
   - GoalRevenue: 50
-    CustomerAppearanceDelay: 25
+    CustomerAppearanceDelay: 15
     AvailableRecepies: 3
   - GoalRevenue: 100
-    CustomerAppearanceDelay: 20
+    CustomerAppearanceDelay: 12
     AvailableRecepies: 10
   - GoalRevenue: 200
-    CustomerAppearanceDelay: 15
+    CustomerAppearanceDelay: 10
     AvailableRecepies: 15
   - GoalRevenue: 400
-    CustomerAppearanceDelay: 10
+    CustomerAppearanceDelay: 8
     AvailableRecepies: 15
   - GoalRevenue: 800
     CustomerAppearanceDelay: 5
