@@ -153,7 +153,7 @@ namespace Game.Characters
         /// <summary>
         /// Gets whether this waiter is currently eligible for a new assignment.
         /// </summary>
-        public bool CanAcceptAssignment => gameObject.activeInHierarchy && _locomotionState != WaiterLocomotionState.InHand && _locomotionState != WaiterLocomotionState.Ragdoll && _locomotionState != WaiterLocomotionState.Recovering && !IsAssigned;
+        public bool CanAcceptAssignment => gameObject.activeInHierarchy && _locomotionState != WaiterLocomotionState.InHand && _locomotionState != WaiterLocomotionState.Ragdoll && !IsAssigned;
 
         /// <summary>
         /// Gets whether the waiter is currently idle.
