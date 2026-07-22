@@ -30,7 +30,8 @@ namespace Game.Interaction
         /// </summary>
         public void QuitToMainMenu()
         {
-            Time.timeScale = 1f;
+            ResumeTime();
+            CameraController.SetActiveRotationStatic(false);
 
             if (ServiceLocator.TryGet<GameModeService>(out var gameModes))
                 gameModes.ClearGameMode();
@@ -57,9 +58,25 @@ namespace Game.Interaction
         {
             CameraController.SetMouseLockedStatic(true);
             CameraController.SetActiveRotationStatic(false);
-            Time.timeScale = 1f;
+            ResumeTime();
             _pauseCanvas.SetActive(false);
         }
 
+        private void OnDisable()
+        {
+            ResumeTime();
+            CameraController.SetActiveRotationStatic(false);
+        }
+
+        private void OnDestroy()
+        {
+            ResumeTime();
+            CameraController.SetActiveRotationStatic(false);
+        }
+
+        private static void ResumeTime()
+        {
+            Time.timeScale = 1f;
+        }
     }
 }

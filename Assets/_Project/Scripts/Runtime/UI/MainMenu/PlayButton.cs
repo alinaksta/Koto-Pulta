@@ -27,10 +27,11 @@ namespace Game.UI
             if (_isLoading)
                 return;
 
+            Time.timeScale = 1f;
             _isLoading = true;
             await _loadingService.StartLoadingAsync();
 
-            await Awaitable.WaitForSecondsAsync(0.8f);
+            await WaitForSecondsUnscaledAsync(0.8f);
 
             AsyncOperation sceneLoad = SceneManager.LoadSceneAsync(_nextSceneIndex, LoadSceneMode.Single);
 
@@ -44,9 +45,17 @@ namespace Game.UI
             while (!sceneLoad.isDone)
                 await Awaitable.NextFrameAsync();
 
-            await Awaitable.WaitForSecondsAsync(0.8f);
+            await WaitForSecondsUnscaledAsync(0.8f);
 
             await _loadingService.StopLoadingAsync();
+        }
+
+        private static async Awaitable WaitForSecondsUnscaledAsync(float seconds)
+        {
+            float endTime = Time.unscaledTime + Mathf.Max(0f, seconds);
+
+            while (Time.unscaledTime < endTime)
+                await Awaitable.NextFrameAsync();
         }
     }
 }

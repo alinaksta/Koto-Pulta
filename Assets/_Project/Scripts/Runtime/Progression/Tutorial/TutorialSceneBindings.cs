@@ -68,6 +68,10 @@ namespace Game.Progression
                 yield return null;
 
             _tutorial.BindScene(this);
+
+            if (ServiceLocator.TryGet<GameModeService>(out var gameModes))
+                gameModes.TryAutoStartDefaultMode();
+
             _bindRoutine = null;
         }
     }

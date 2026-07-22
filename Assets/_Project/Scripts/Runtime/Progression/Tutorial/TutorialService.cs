@@ -167,7 +167,7 @@ namespace Game.Progression
             _shifts.Enter(context);
             _shifts.SetNormalShiftStartLocked(true);
             SubscribeServices();
-            _ = RunTutorialAsync(_tutorialCancellation.Token);
+            _ = RunTutorialAsync(_tutorialCancellation);
         }
 
         /// <inheritdoc/>
@@ -185,23 +185,13 @@ namespace Game.Progression
         /// <inheritdoc/>
         public void Exit()
         {
-            _active = false;
-            _tutorialCancellation?.Cancel();
-            _tutorialCancellation?.Dispose();
-            _tutorialCancellation = null;
-            _signalSource?.TrySetCanceled();
-            _sceneSource?.TrySetCanceled();
+            bool completed = IsCompleted;
+
+            CancelTutorial();
 
             UnsubscribeScene();
             UnsubscribeServices();
             UnsubscribeWaiter();
-
-            if (_tutorialCustomer != null && _tutorialCustomer.IsWaiting)
-            {
-                _tutorialCustomer.SetTimeoutEnabled(true);
-                _tutorialCustomer.SetDirectDeliveryEnabled(true);
-                _tutorialCustomer.ForceTimeout();
-            }
 
             _dialogue?.Hide();
             ClearTarget();
@@ -210,7 +200,14 @@ namespace Game.Progression
             _scene?.ComputerTabs?.RefreshTabAvailability();
             _shifts?.Exit();
 
+            if (!completed)
+                _context?.Balance?.SetBalance(0);
+
             _expectedSignal = TutorialSignal.None;
+            _latchedSignals.Clear();
+            _tutorialCustomer = null;
+            _customerServed = false;
+            _landingResult = default;
             _context = null;
         }
 
@@ -339,8 +336,24 @@ namespace Game.Progression
 
         private bool IsCompleted => PlayerPrefs.GetInt(_completionKey, 0) != 0;
 
-        private async Task RunTutorialAsync(CancellationToken cancellationToken)
+        private void CancelTutorial()
         {
+            _active = false;
+
+            CancellationTokenSource cancellation = _tutorialCancellation;
+            _tutorialCancellation = null;
+
+            if (cancellation != null && !cancellation.IsCancellationRequested)
+                cancellation.Cancel();
+
+            _signalSource?.TrySetCanceled();
+            _sceneSource?.TrySetCanceled();
+        }
+
+        private async Task RunTutorialAsync(CancellationTokenSource cancellationSource)
+        {
+            CancellationToken cancellationToken = cancellationSource.Token;
+
             try
             {
                 await WaitForSceneAsync(cancellationToken);
@@ -356,16 +369,8 @@ namespace Game.Progression
 
                 await RunComputerIntroStepAsync(cancellationToken);
 
-                SetComputerInputBlockerVisible(true);
-                try
-                {
-                    await RunComputerTabsStepAsync(cancellationToken);
-                    await RunComputerCloseInstructionAsync(cancellationToken);
-                }
-                finally
-                {
-                    SetComputerInputBlockerVisible(false);
-                }
+                await RunComputerTabsStepAsync(cancellationToken);
+                await RunComputerCloseInstructionAsync(cancellationToken);
 
                 if (_scene.ComputerTabs != null)
                     _scene.ComputerTabs.SetTabButtonsInteractable(true);
@@ -412,6 +417,18 @@ namespace Game.Progression
             catch (OperationCanceledException)
             {
                 // Exiting the game mode cancels the active tutorial sequence.
+            }
+            catch (Exception exception)
+            {
+                if (!cancellationToken.IsCancellationRequested)
+                    Debug.LogException(exception);
+            }
+            finally
+            {
+                if (ReferenceEquals(_tutorialCancellation, cancellationSource))
+                    _tutorialCancellation = null;
+
+                cancellationSource.Dispose();
             }
         }
 
@@ -481,8 +498,19 @@ namespace Game.Progression
             if (_scene.ShiftTabTarget == null)
                 SetTarget(_scene.ComputerTarget, _computerMarkerOffset);
 
-            _startShiftStep.InvokeStarted();
-            await _dialogue.DisplayLinesAsync(_startShiftStep.Lines, cancellationToken, false);
+            await WaitForShiftTabViewedAsync(cancellationToken);
+
+            SetComputerInputBlockerVisible(true);
+            try
+            {
+                _startShiftStep.InvokeStarted();
+                await _dialogue.DisplayLinesAsync(_startShiftStep.Lines, cancellationToken);
+            }
+            finally
+            {
+                SetComputerInputBlockerVisible(false);
+            }
+
             await WaitForSignalAsync(TutorialSignal.StartedPracticeShift, cancellationToken);
             _startShiftStep.InvokeCompleted();
             ClearUiTarget();
@@ -555,6 +583,16 @@ namespace Game.Progression
             _exitComputerStep.InvokeCompleted();
         }
 
+        private async Task WaitForShiftTabViewedAsync(CancellationToken cancellationToken)
+        {
+            _latchedSignals.Remove(TutorialSignal.ViewedShiftTab);
+
+            if (_scene.ComputerTabs == null || _scene.ComputerTabs.CurrentTab == ComputerSiteTab.ShiftStatistics)
+                return;
+
+            await WaitForSignalAsync(TutorialSignal.ViewedShiftTab, cancellationToken);
+        }
+
         private async Task ExplainTabAsync(
             ComputerSiteTab tab,
             RectTransform markerTarget,
@@ -588,6 +626,8 @@ namespace Game.Progression
 
         private async Task WaitForSignalAsync(TutorialSignal signal, CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             if (_latchedSignals.Remove(signal))
                 return;
 
@@ -595,19 +635,27 @@ namespace Game.Progression
             var signalSource = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
             _signalSource = signalSource;
 
-            using CancellationTokenRegistration registration = cancellationToken.Register(
-                () => signalSource.TrySetCanceled());
+            try
+            {
+                using CancellationTokenRegistration registration = cancellationToken.Register(
+                    () => signalSource.TrySetCanceled());
 
-            await signalSource.Task;
+                await signalSource.Task;
+            }
+            finally
+            {
+                if (ReferenceEquals(_signalSource, signalSource))
+                    _signalSource = null;
 
-            if (ReferenceEquals(_signalSource, signalSource))
-                _signalSource = null;
-
-            _expectedSignal = TutorialSignal.None;
+                if (_expectedSignal == signal)
+                    _expectedSignal = TutorialSignal.None;
+            }
         }
 
         private async Task<TutorialSceneBindings> WaitForSceneAsync(CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             if (_scene != null)
             {
                 SubscribeScene();
@@ -616,28 +664,35 @@ namespace Game.Progression
 
             var sceneSource = new TaskCompletionSource<TutorialSceneBindings>(TaskCreationOptions.RunContinuationsAsynchronously);
             _sceneSource = sceneSource;
-            using CancellationTokenRegistration registration = cancellationToken.Register(
-                () => sceneSource.TrySetCanceled());
 
-            TutorialSceneBindings scene = await sceneSource.Task;
+            try
+            {
+                using CancellationTokenRegistration registration = cancellationToken.Register(
+                    () => sceneSource.TrySetCanceled());
 
-            if (ReferenceEquals(_sceneSource, sceneSource))
-                _sceneSource = null;
+                TutorialSceneBindings scene = await sceneSource.Task;
 
-            SubscribeScene();
-            return scene;
+                SubscribeScene();
+                return scene;
+            }
+            finally
+            {
+                if (ReferenceEquals(_sceneSource, sceneSource))
+                    _sceneSource = null;
+            }
         }
 
         private async Task<Waiter> WaitForAnyWaiterAsync(CancellationToken cancellationToken)
         {
-            Waiter waiter;
-            while (!_context.Waiters.TryGetAnyWaiter(out waiter))
+            while (true)
             {
                 cancellationToken.ThrowIfCancellationRequested();
+
+                if (_context?.Waiters != null && _context.Waiters.TryGetAnyWaiter(out Waiter waiter))
+                    return waiter;
+
                 await Task.Yield();
             }
-
-            return waiter;
         }
 
         private async Task WaitForWaiterMealPointAsync(Waiter waiter, CancellationToken cancellationToken)
@@ -771,10 +826,17 @@ namespace Game.Progression
 
         private void HandleTabViewed(ComputerSiteTab tab)
         {
-            if (tab == ComputerSiteTab.ShiftStatistics && UiTarget == _scene.ShiftTabTarget)
-                ClearUiTarget();
+            if (tab == ComputerSiteTab.ShiftStatistics)
+            {
+                if (UiTarget == _scene.ShiftTabTarget)
+                    ClearUiTarget();
+
+                ReportSignal(TutorialSignal.ViewedShiftTab);
+            }
             else if (tab == ComputerSiteTab.Meals && UiTarget == _scene.MealsTabTarget)
+            {
                 ClearUiTarget();
+            }
         }
 
         private void HandleComputerExited()

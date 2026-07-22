@@ -25,9 +25,6 @@ namespace Game.Audio
         private void Update()
         {
             if (!_shiftService) _shiftService = ServiceLocator.Get<ShiftService>();
-            Debug.Log(_shiftService.ShiftInProgress);
-            Debug.Log(_audioSource.clip);
-            Debug.Log(_shiftService.ShiftInProgress != _audioSource.clip == _musList[1]);
             
             if(_shiftService.ShiftInProgress != (_audioSource.clip == _musList[1]))
             {
