@@ -36,6 +36,15 @@ public class MixerUpdate : MonoBehaviour
         SetMixerValue(MusicParameter, MusicPrefsKey, val);
     }
 
+    public static void ApplySavedValues(AudioMixer targetMixer)
+    {
+        if (targetMixer == null)
+            return;
+
+        ApplySavedValue(targetMixer, SfxParameter, SfxPrefsKey);
+        ApplySavedValue(targetMixer, MusicParameter, MusicPrefsKey);
+    }
+
     private void CacheSliders()
     {
         if (_sfxSlider != null && _musicSlider != null)
@@ -56,17 +65,16 @@ public class MixerUpdate : MonoBehaviour
         if (mixer == null)
             return;
 
-        ApplyValue(SfxParameter, SfxPrefsKey);
-        ApplyValue(MusicParameter, MusicPrefsKey);
+        ApplySavedValues(mixer);
         RefreshSliderValues();
     }
 
-    private void ApplyValue(string parameter, string prefsKey)
+    private static void ApplySavedValue(AudioMixer targetMixer, string parameter, string prefsKey)
     {
         if (!PlayerPrefs.HasKey(prefsKey))
             return;
 
-        mixer.SetFloat(parameter, PlayerPrefs.GetFloat(prefsKey));
+        targetMixer.SetFloat(parameter, PlayerPrefs.GetFloat(prefsKey));
     }
 
     private void RefreshSliderValues()

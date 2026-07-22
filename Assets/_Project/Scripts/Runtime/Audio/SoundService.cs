@@ -44,6 +44,8 @@ namespace Game.Audio
         private void Start()
         {
             _audioSource = gameObject.GetComponent<AudioSource>();
+            if (_audioSource.outputAudioMixerGroup != null)
+                MixerUpdate.ApplySavedValues(_audioSource.outputAudioMixerGroup.audioMixer);
         }
 
 
