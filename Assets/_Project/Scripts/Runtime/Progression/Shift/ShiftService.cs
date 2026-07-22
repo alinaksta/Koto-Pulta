@@ -39,6 +39,7 @@ namespace Game.Progression
     public class ShiftService : MonoBehaviour, IBootstrapable, IGameMode
     {
         private const float InitialCustomerSpawnDelay = 4f;
+        private const string ShiftIndexKey = "Progression.ShiftIndex";
 
         [SerializeField] private List<Shift> _shifts;
         [SerializeField] private List<ItemDefinitionAsset> _allowedItems;
@@ -198,12 +199,14 @@ namespace Game.Progression
         {
             _context = context;
             _modeActive = true;
-            _shiftIndex = -1;
+            _shiftIndex = PlayerPrefs.GetInt(ShiftIndexKey, -1);
             _shiftTimer = 0f;
             _spawnTimer = 0f;
             _activeShiftDuration = _shiftDuration;
             _currentRevenue = 0;
             _lastKnownBalance = _context.Balance.Balance;
+            _lastShiftStatistics = default;
+            _hasCompletedShiftResults = false;
 
             _context.Balance.OnBalanceChanged += HandleBalanceChanged;
 
@@ -283,8 +286,7 @@ namespace Game.Progression
                 _context.Customers.ClearActiveCustomers();
             }
 
-            if (ShiftInProgress)
-                EndCurrentShift();
+            AbortCurrentShiftAttempt();
 
             _statisticsCollector?.Dispose();
             _statisticsCollector = null;
@@ -298,6 +300,8 @@ namespace Game.Progression
             _practiceCustomerSpawned = false;
             _normalShiftStartLocked = false;
             _currentShiftFailed = false;
+            _hasCompletedShiftResults = false;
+            _lastShiftStatistics = default;
             OnShiftStartAvailabilityChanged.Invoke();
             _context = null;
         }
@@ -483,7 +487,10 @@ namespace Game.Progression
             _context.Session.MarkSucceeded();
 
             if (!wasPracticeShift)
+            {
                 _currentShiftFailed = false;
+                SaveShiftProgress();
+            }
 
             EndCurrentShift();
 
@@ -532,6 +539,31 @@ namespace Game.Progression
             _statisticsCollector.Reset();
             OnShiftEnded.Invoke();
             OnShiftStartAvailabilityChanged.Invoke();
+        }
+
+        private void AbortCurrentShiftAttempt()
+        {
+            if (!HasCurrentShift && !_practiceShiftQueued)
+                return;
+
+            _context?.Session?.ResetState();
+            _shiftTimer = 0f;
+            _spawnTimer = 0f;
+            _activeShiftDuration = _shiftDuration;
+            _currentRevenue = 0;
+            _practiceShiftQueued = false;
+            _practiceShiftActive = false;
+            _practiceCustomerSpawned = false;
+            _currentShiftFailed = false;
+            _hasCompletedShiftResults = false;
+            _lastShiftStatistics = default;
+            _statisticsCollector?.Reset();
+        }
+
+        private void SaveShiftProgress()
+        {
+            PlayerPrefs.SetInt(ShiftIndexKey, _shiftIndex);
+            PlayerPrefs.Save();
         }
 
         private void HandleBalanceChanged(int newBalance)
