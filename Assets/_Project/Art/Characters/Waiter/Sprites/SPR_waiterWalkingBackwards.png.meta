@@ -6,7 +6,7 @@ TextureImporter:
   serializedVersion: 13
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 1
+    enableMipMap: 0
     sRGBTexture: 1
     linearTexture: 0
     fadeOut: 0
@@ -37,24 +37,24 @@ TextureImporter:
     filterMode: 1
     aniso: 1
     mipBias: 0
-    wrapU: 0
-    wrapV: 0
+    wrapU: 1
+    wrapV: 1
     wrapW: 0
-  nPOTScale: 1
+  nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 0
+  spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 384
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 1
+  spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
-  alphaIsTransparency: 0
+  alphaIsTransparency: 1
   spriteTessellationDetail: -1
-  textureType: 0
+  textureType: 8
   textureShape: 1
   singleChannelComponent: 0
   flipbookRows: 1
@@ -73,8 +73,8 @@ TextureImporter:
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
+    compressionQuality: 100
+    crunchedCompression: 1
     allowsAlphaSplitting: 0
     overridden: 0
     ignorePlatformSupport: 0
@@ -93,14 +93,555 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: SPR_waiterWalkingBackwards_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1027
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 95803c5f1200182fd860174b5e001700
+      internalID: -1028594208
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingBackwards_1
+      rect:
+        serializedVersion: 2
+        x: 513
+        y: 1027
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2714d1de8f4d76717bdfe1b2956a0e3a
+      internalID: -595109952
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingBackwards_2
+      rect:
+        serializedVersion: 2
+        x: 1026
+        y: 1027
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 68571f4a4f5b81d85a0153154f6a147f
+      internalID: 2115223071
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingBackwards_3
+      rect:
+        serializedVersion: 2
+        x: 1539
+        y: 1027
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fd0a338d8391cc09cb187896e3cfb039
+      internalID: -750007287
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingBackwards_4
+      rect:
+        serializedVersion: 2
+        x: 2052
+        y: 1027
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8d38b76d6f54e862ab8a35372e0457fb
+      internalID: -741827714
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingBackwards_5
+      rect:
+        serializedVersion: 2
+        x: 2565
+        y: 1027
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7917a15b7333fe1e881471f0892607a1
+      internalID: 263099660
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingBackwards_6
+      rect:
+        serializedVersion: 2
+        x: 3078
+        y: 1027
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 88e308c74acce64e0a8c2c152e40f38c
+      internalID: -1283794514
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingBackwards_7
+      rect:
+        serializedVersion: 2
+        x: 3591
+        y: 1027
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3171635bdf6efa720afad606bdfa5405
+      internalID: -238645791
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingBackwards_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 514
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f44aec555083e0d0ba28710058ec15d7
+      internalID: 1533890852
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingBackwards_9
+      rect:
+        serializedVersion: 2
+        x: 513
+        y: 514
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cb1fd9d5a142f212e8cf59d9f1c234e6
+      internalID: -711879473
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingBackwards_10
+      rect:
+        serializedVersion: 2
+        x: 1026
+        y: 514
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a7021ecd800c6b48c9f27f6b9cec3a1c
+      internalID: -1688220321
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingBackwards_11
+      rect:
+        serializedVersion: 2
+        x: 1539
+        y: 514
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 774c4941d60f0162cb2b69921c4ec96f
+      internalID: -27676373
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingBackwards_12
+      rect:
+        serializedVersion: 2
+        x: 2052
+        y: 514
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 91139944f723ba5e4af74397f262f986
+      internalID: -1946795023
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingBackwards_13
+      rect:
+        serializedVersion: 2
+        x: 2565
+        y: 514
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cd3c305e9cd27895284b09381845fa21
+      internalID: -1397672890
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingBackwards_14
+      rect:
+        serializedVersion: 2
+        x: 3078
+        y: 514
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b286949eea9f0c980b872ff839e3197e
+      internalID: -1317355510
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingBackwards_15
+      rect:
+        serializedVersion: 2
+        x: 3591
+        y: 514
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a7a1b354af698bbc5804397d2099899b
+      internalID: -2067983797
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingBackwards_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 18cade420a1edeb20b915366d3cc81b1
+      internalID: -2051315176
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingBackwards_17
+      rect:
+        serializedVersion: 2
+        x: 513
+        y: 1
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b72e8d25169ec76178c8c48d75ac8e50
+      internalID: -600597990
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingBackwards_18
+      rect:
+        serializedVersion: 2
+        x: 1026
+        y: 1
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bab36b09d3ff07160a962edd97abb1e9
+      internalID: 675467195
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingBackwards_19
+      rect:
+        serializedVersion: 2
+        x: 1539
+        y: 1
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 271a15fb2b82e395c97ed579cff46d4d
+      internalID: 973956936
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingBackwards_20
+      rect:
+        serializedVersion: 2
+        x: 2052
+        y: 1
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 52e3eb6e8f1ed6e4eaa807633ba8fb05
+      internalID: 1592376284
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingBackwards_21
+      rect:
+        serializedVersion: 2
+        x: 2565
+        y: 1
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 799d7e742b294a662b54734d597a1787
+      internalID: -1543143010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingBackwards_22
+      rect:
+        serializedVersion: 2
+        x: 3078
+        y: 1
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d62e32109f1d05344b6142d2ac15c98d
+      internalID: 1915946366
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterWalkingBackwards_23
+      rect:
+        serializedVersion: 2
+        x: 3591
+        y: 1
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e30f2b6c80e28a30fbb063e02391e143
+      internalID: 1642991207
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5b7d79e77e1d20e4db7fc49ca42e6215
     internalID: 0
     vertices: []
     indices: 
@@ -108,8 +649,34 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
-    nameFileIdTable: {}
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":8.0,"y":3.0},"gridSpriteSize":{"x":513.0,"y":513.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.0},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":7,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      SPR_waiterWalkingBackwards_0: -1028594208
+      SPR_waiterWalkingBackwards_1: -595109952
+      SPR_waiterWalkingBackwards_10: -1688220321
+      SPR_waiterWalkingBackwards_11: -27676373
+      SPR_waiterWalkingBackwards_12: -1946795023
+      SPR_waiterWalkingBackwards_13: -1397672890
+      SPR_waiterWalkingBackwards_14: -1317355510
+      SPR_waiterWalkingBackwards_15: -2067983797
+      SPR_waiterWalkingBackwards_16: -2051315176
+      SPR_waiterWalkingBackwards_17: -600597990
+      SPR_waiterWalkingBackwards_18: 675467195
+      SPR_waiterWalkingBackwards_19: 973956936
+      SPR_waiterWalkingBackwards_2: 2115223071
+      SPR_waiterWalkingBackwards_20: 1592376284
+      SPR_waiterWalkingBackwards_21: -1543143010
+      SPR_waiterWalkingBackwards_22: 1915946366
+      SPR_waiterWalkingBackwards_23: 1642991207
+      SPR_waiterWalkingBackwards_3: -750007287
+      SPR_waiterWalkingBackwards_4: -741827714
+      SPR_waiterWalkingBackwards_5: 263099660
+      SPR_waiterWalkingBackwards_6: -1283794514
+      SPR_waiterWalkingBackwards_7: -238645791
+      SPR_waiterWalkingBackwards_8: 1533890852
+      SPR_waiterWalkingBackwards_9: -711879473
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -17,6 +17,14 @@ This document reflects current runtime code under `Assets/_Project/Scripts/Runti
   * [How services work](#how-services-work)
   * [Current bootstrapped services](#current-bootstrapped-services)
   * [Practical rule](#practical-rule)
+* [Progression and Shift Flow](#progression-and-shift-flow)
+
+  * [Core runtime roles](#core-runtime-roles)
+  * [Current shift flow](#current-shift-flow)
+* [Main Menu and Loading Flow](#main-menu-and-loading-flow)
+
+  * [Main menu runtime pieces](#main-menu-runtime-pieces)
+  * [Scene transition flow](#scene-transition-flow)
 * [Input Flow](#input-flow)
 
   * [How it works](#how-it-works)
@@ -83,11 +91,14 @@ This document reflects current runtime code under `Assets/_Project/Scripts/Runti
 The project is built around a few simple runtime ideas:
 
 - Global services are created during startup and resolved through `ServiceLocator`.
+- A persistent `ServiceRoot` survives scene loads and now also owns shared UI such as the loading screen.
 - Player input is polled every frame and routed into movement, camera, and interaction systems.
 - Interactions are driven by `DualHandInteractor`, which treats both hands as item containers.
 - Items use the local `Itemworks` framework: definitions are authored as assets, registered at startup, and optionally instantiated with runtime components.
 - Most gameplay is expressed as item transfers between containers.
 - Focus interactions, such as computers, temporarily switch the camera into a dedicated focused mode.
+- Progression is organized around runtime services (`RunSessionService`, `BalanceService`, `GameModeService`) plus game-mode implementations such as `ShiftService`.
+- Main menu flow is now a first-class runtime path with its own loading screen service and scene transition scripts.
 
 ## Important Runtime Areas
 
@@ -98,6 +109,8 @@ The project is built around a few simple runtime ideas:
 - Interactions: `Assets/_Project/Scripts/Runtime/Interaction`
 - Items and containers: `Assets/_Project/Scripts/Runtime/Items`
 - Waiters/customers/tables: `Assets/_Project/Scripts/Runtime/Characters`
+- Progression and shift systems: `Assets/_Project/Scripts/Runtime/Progression`
+- UI and main menu flow: `Assets/_Project/Scripts/Runtime/UI`
 - Itemworks framework: `Assets/Itemworks`
 
 ## Bootstrap Flow
@@ -141,6 +154,12 @@ The current runtime relies on these bootstrapable systems:
 - `PhysicsItemService`: spawns pooled physics items into the world
 - `CustomerService`: tracks tables and customer spawning
 - `WaiterService`: tracks waiter registration and assignments
+- `WaiterQueueService`: tracks meal points and the service counter origin used by waiters
+- `BalanceService`: stores runtime money/progression balance
+- `RunSessionService`: tracks whether the current run is idle, running, succeeded, or failed
+- `GameModeService`: owns the active runtime game mode and ticks it every frame
+- `ShiftService`: implements the current `shift` game mode and shift progression loop
+- `LoadingService`: exposes the persistent curtain-style loading screen
 - `ItemRegistryBootstrap`: loads item definitions into `ItemRegistry`
 
 ### Practical rule
@@ -150,6 +169,64 @@ If you add a new global gameplay system, it should usually:
 1. implement `IBootstrapable`
 2. live on the `ServiceRoot` prefab or one of its immediate children
 3. register itself inside `Bootstrap()`
+
+## Progression and Shift Flow
+
+Progression is no longer just a couple of counters. It is a service-driven layer that sits on top of the customer/waiter loop.
+
+### Core runtime roles
+
+- `RunSessionService`: owns the high-level run state (`None`, `Running`, `Succeeded`, `Failed`)
+- `BalanceService`: stores current money and raises change events
+- `GameModeService`: owns the currently active runtime mode, builds a `GameModeContext`, and ticks the active mode every frame
+- `ShiftService`: the current gameplay mode implementation with id `shift`
+- `ShiftStatisticsCollector`: aggregates served/unsatisfied customer counts, money earned, and average delivery time for the active shift
+- `ComputerShiftView`: presents shift start, in-progress, and end-of-shift statistics on the computer UI
+
+### Current shift flow
+
+At runtime, the current progression loop works like this:
+
+1. `GameModeService` activates `ShiftService`
+2. `ShiftService.Enter(...)` resets mode-local state, hooks balance/customer events, installs a shift-aware random order giver, and starts the run session
+3. `TryStartNextShift()` starts the next configured shift, resets revenue tracking, and starts the shift timer/spawn timer
+4. While a shift is active, `ShiftService.Tick(...)`:
+   - decreases the remaining shift timer
+   - spawns customers on a repeating delay
+5. Served customers increase balance through `FoodProperty.UnitPrice`, and shift revenue is derived from balance deltas
+6. When the timer expires, `ShiftService` first forces all still-waiting customers to time out, then resolves shift success/failure and computes final statistics
+7. `OnShiftEnded` exposes the finished statistics to UI such as `ComputerShiftView`
+
+Important current detail:
+
+- `ShiftService` installs a `ShiftRandomItemDefinitionGiver`, so customer orders are now filtered by the current shift index instead of using a hardcoded item id.
+
+## Main Menu and Loading Flow
+
+The project now has a dedicated main menu scene plus a persistent loading screen that survives scene changes.
+
+### Main menu runtime pieces
+
+- `LV_MainMenu` is the authored main menu scene
+- `LoadingService` lives on `ServiceRoot`, not in the menu scene, so it survives scene transitions
+- `LoadingScreenUI` animates the curtain-style loading screen and exposes awaitable show/hide transitions
+- `PlayButton` starts a scene transition into gameplay
+- `ExitButton` quits the application
+- `UIVerticalLoopMotion`, `UIHorizontalLoopMotion`, and `UIContinuousSpin` are lightweight reusable UI motion scripts used by menu presentation
+
+### Scene transition flow
+
+The current scene loading path is:
+
+1. `PlayButton.EnterNextScene()` awaits `LoadingService.StartLoadingAsync()`
+2. the curtain closes before the actual scene activation begins
+3. `SceneManager.LoadSceneAsync(..., LoadSceneMode.Single)` loads the target scene
+4. `allowSceneActivation` is held until the async operation reaches `0.9`
+5. after activation and a small delay, `LoadingService.StopLoadingAsync()` reopens the curtain
+
+Important current limitation:
+
+- scene activation still happens on Unity's main thread, so a heavy gameplay scene can still briefly freeze the spinning loading icon even though the loading service itself persists correctly across scenes.
 
 ## Input Flow
 
@@ -290,6 +367,15 @@ Main files:
 3. computer asks the focus handler to begin focus
 4. camera unlocks the cursor while focused
 5. cancel exits focus and restores locked mouse behavior
+
+Current important computer-specific UI pieces built on top of that flow:
+
+- `SiteActivator` now acts as a tab controller, not a random site picker
+- tabs are represented by the `ComputerSiteTab` enum (`ShiftStatistics`, `Shop`, `Website`)
+- the active tab is restored when the player reopens the computer
+- all tabs are hidden when focus ends
+- `ComputerController` handles item distribution from shop-style computer screens
+- `ComputerShiftView` handles shift start/end presentation on the progression computer
 
 ### Important side effects
 
@@ -444,10 +530,11 @@ Static data stored on the definition.
 
 Current project properties include:
 
-- `SpriteProperty`
+- `FoodProperty`
 - `HandSpriteProperty`
 - `ThrowableProperty`
 - `WaiterProperty`
+- `ShiftProperty`
 
 #### `ItemInstance`
 
@@ -528,6 +615,8 @@ These systems are tightly connected and are worth understanding together.
 - chooses an order
 - subscribes to customer outcome events
 - asks `WaiterService` to assign a free waiter when possible
+- can query the next seated customer who still needs a waiter
+- can force all active waiting customers to time out at shift end
 
 ### Table flow
 
@@ -545,7 +634,13 @@ These systems are tightly connected and are worth understanding together.
 - tracks registered waiters
 - assigns customers to unassigned waiters
 - keeps waiter/customer lookup maps
-- tracks the active meal point
+- immediately reassigns newly freed waiters to already seated unassigned customers when possible
+
+`WaiterQueueService`:
+
+- tracks waiter meal points
+- tracks the service counter origin used by waiter routing
+- provides free meal points to waiters
 
 ### Waiter as both character and item
 
@@ -590,11 +685,12 @@ That means the waiter gameplay model has two different item concepts:
 The current waiter service flow is roughly:
 
 1. customer is spawned
-2. free waiter is assigned
+2. free waiter is assigned if one is available
 3. waiter goes to the customer
 4. waiter waits through an ask duration
-5. waiter goes to the meal point
+5. waiter transitions into meal-point/service-counter logic
 6. once carrying an item, waiter tries to deliver it to the assigned table
+7. when a waiter is freed by delivery, timeout, or wrong-item flow, the service immediately tries to rematch that waiter to the next waiting customer
 
 ## How to Extend the Current Project
 
@@ -643,8 +739,9 @@ These are important when modifying the current codebase:
 - `ItemDefinitionAssetSerializer.Serialize(...)` is not a well-tested runtime path and should be treated carefully.
 - World interactables mainly receive `OnInteractionStarted(...)`; held/stop routing is not fully implemented yet.
 - `Hand.TryStartInteractionWithItemInHand(...)` is still effectively a placeholder.
-- `CustomerService` currently uses a hardcoded item id for random orders.
-- Customer flow skips a more complete "awaiting waiter" phase and goes straight into delivery waiting.
+- `CustomerService` depends on a valid `IRandomItemDefinitionGiver` being installed before spawning customers.
+- Heavy scene activation still freezes the loading icon briefly because Unity scene activation blocks the main thread.
+- `SiteActivator` keeps a compatibility fallback for its legacy `sites` list while the newer enum-tab binding system is phased in.
 - Some debug and prototype systems exist alongside production code, so always confirm whether a class is gameplay-critical before extending it.
 
 ## Suggested Mental Model

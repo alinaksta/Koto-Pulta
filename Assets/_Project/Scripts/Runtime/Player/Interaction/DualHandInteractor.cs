@@ -32,6 +32,15 @@ namespace Game.Interaction
         private Hand _leftHand;
         private Hand _rightHand;
 
+        private GameObject _hoveredObject;
+        private IHoverable _hovered;
+        private RaycastHit? _hoverHit;
+
+        private IInteractable _leftInteraction;
+        private IInteractable _rightInteraction;
+        private RaycastHit? _leftInteractionHit;
+        private RaycastHit? _rightInteractionHit;
+
         /// <summary>
         /// Gets the left hand controller.
         /// </summary>
@@ -41,6 +50,19 @@ namespace Game.Interaction
         /// Gets the right hand controller.
         /// </summary>
         public Hand RightHand => _rightHand;
+
+        /// <inheritdoc/>
+        public GameObject HoveredObject => _hoveredObject;
+
+        /// <summary>
+        /// Gets the current world-space look direction.
+        /// </summary>
+        public Vector3 LookForward => _lookDirection != null ? _lookDirection.forward : transform.forward;
+
+        /// <summary>
+        /// Gets the current world-space look origin.
+        /// </summary>
+        public Vector3 LookPosition => _lookDirection != null ? _lookDirection.position : transform.position;
 
 
         /// <inheritdoc/>
@@ -53,8 +75,8 @@ namespace Game.Interaction
         {
             _inputService = ServiceLocator.Get<IInputService>();
             var physicsItemService = ServiceLocator.Get<PhysicsItemService>();
-            _leftHand = new(physicsItemService);
-            _rightHand = new(physicsItemService);
+            _leftHand = new(physicsItemService, _leftSpawnPosition);
+            _rightHand = new(physicsItemService, _rightSpawnPosition);
         }
 
         private void Update()
@@ -69,10 +91,15 @@ namespace Game.Interaction
             _rightHand.SetVisible(visible);
             _leftHand.SetVisible(visible);
 
+            if (visible)
+                UpdateHover(Time.deltaTime);
+            else
+                ClearHover();
+
             if (_inputService.DropLeft.Pressed)
-                _leftHand.TryDropItem(_leftSpawnPosition.position, Vector3.zero);
+                _leftHand.TryDropItem(Vector3.zero);
             if (_inputService.DropRight.Pressed)
-                _rightHand.TryDropItem(_rightSpawnPosition.position, Vector3.zero);
+                _rightHand.TryDropItem(Vector3.zero);
 
             if (_inputService.InteractLeft.Pressed)
                 CauseInteraction(_leftHand);
@@ -95,26 +122,28 @@ namespace Game.Interaction
                 return;
 
             var context = new InteractionContext(
-                _lookDirection.position, 
-                _lookDirection.forward, 
-                this, 
+                LookPosition,
+                LookForward,
+                this,
                 hand,
                 this);
 
             if (hand.TryStartInteractionWithItemInHand(in context))
                 return;
 
-            if (Physics.Raycast(_lookDirection.position, _lookDirection.forward, out var hit, _interactionDistance, _interactionLayer))
-            {
-                Debug.Log($"Has hit object named {hit.collider.gameObject.name}");
-                var contextWithHit = context.WithHitInfo(in hit);
-                hand.OnInteractionStarted(in contextWithHit);
-                if (hit.collider.TryGetComponent<IInteractable>(out var interactable))
-                {
-                    if (interactable.CanInteract(in contextWithHit))
-                        interactable.OnInteractionStarted(in contextWithHit);
-                }
-            }
+            if (!_hoverHit.HasValue)
+                return;
+
+            var hit = _hoverHit.Value;
+            var contextWithHit = context.WithHitInfo(in hit);
+            hand.OnInteractionStarted(in contextWithHit);
+
+            if (!hit.collider.TryGetComponent<IInteractable>(out var interactable) ||
+                !interactable.CanInteract(in contextWithHit))
+                return;
+
+            interactable.OnInteractionStarted(in contextWithHit);
+            SetActiveInteraction(hand, interactable, in hit);
         }
 
         private void HoldInteraction(Hand hand, float delta)
@@ -123,30 +152,110 @@ namespace Game.Interaction
                 return;
 
             var context = new InteractionContext(
-                _lookDirection.position, 
-                _lookDirection.forward, 
-                this, 
-                hand, 
+                LookPosition,
+                LookForward,
+                this,
+                hand,
                 this);
 
             if (hand.TryHoldInteractionWithItemInHand(in context, delta))
                 return;
+
+            if (TryGetActiveInteraction(hand, out var interactable, out var hit))
+            {
+                var contextWithHit = context.WithHitInfo(in hit);
+                interactable.OnInteractionHeld(in contextWithHit, delta);
+            }
         }
 
         private void EndInteraction(Hand hand)
         {
-            if (FocusStatus != FocusStatus.Unfocused)
-                return;
-
-            var context = new InteractionContext(_lookDirection.position, 
-                _lookDirection.forward, 
-                this, 
-                hand, 
+            var context = new InteractionContext(LookPosition,
+                LookForward,
+                this,
+                hand,
                 this);
 
-            if (hand.TryEndInteractionWithItemInHand(in context))
-                return;
+            hand.TryEndInteractionWithItemInHand(in context);
+
+            if (TryGetActiveInteraction(hand, out var interactable, out var hit))
+            {
+                var contextWithHit = context.WithHitInfo(in hit);
+                interactable.OnInteractionStopped(in contextWithHit);
+                ClearActiveInteraction(hand);
+            }
         }
+
+        private void UpdateHover(float delta)
+        {
+            GameObject nextObject = null;
+            IHoverable nextHoverable = null;
+            RaycastHit? nextHit = null;
+
+            if (Physics.Raycast(LookPosition, LookForward, out var hit, _interactionDistance, _interactionLayer))
+            {
+                nextObject = hit.collider.gameObject;
+                nextObject.TryGetComponent(out nextHoverable);
+                nextHit = hit;
+            }
+
+            if (nextObject != _hoveredObject)
+            {
+                _hovered?.OnHoverExit();
+                _hoveredObject = nextObject;
+                _hovered = nextHoverable;
+                _hovered?.OnHoverEnter();
+            }
+
+            _hoverHit = nextHit;
+            _hovered?.OnHoverStay(delta);
+        }
+
+        private void ClearHover()
+        {
+            _hovered?.OnHoverExit();
+            _hoveredObject = null;
+            _hovered = null;
+            _hoverHit = null;
+        }
+
+        private void SetActiveInteraction(Hand hand, IInteractable interactable, in RaycastHit hit)
+        {
+            if (hand == _leftHand)
+            {
+                _leftInteraction = interactable;
+                _leftInteractionHit = hit;
+            }
+            else
+            {
+                _rightInteraction = interactable;
+                _rightInteractionHit = hit;
+            }
+        }
+
+        private bool TryGetActiveInteraction(Hand hand, out IInteractable interactable, out RaycastHit hit)
+        {
+            interactable = hand == _leftHand ? _leftInteraction : _rightInteraction;
+            var interactionHit = hand == _leftHand ? _leftInteractionHit : _rightInteractionHit;
+            hit = interactionHit.GetValueOrDefault();
+            return interactable != null && interactionHit.HasValue;
+        }
+
+        private void ClearActiveInteraction(Hand hand)
+        {
+            if (hand == _leftHand)
+            {
+                _leftInteraction = null;
+                _leftInteractionHit = null;
+            }
+            else
+            {
+                _rightInteraction = null;
+                _rightInteractionHit = null;
+            }
+        }
+
+        private void OnDisable() => ClearHover();
 
         /// <inheritdoc/>
         public Hand GetHand(HandType handType)

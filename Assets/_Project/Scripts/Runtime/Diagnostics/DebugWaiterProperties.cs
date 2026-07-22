@@ -38,6 +38,7 @@ namespace Game.Diagnostics
                 $"Locomotion: {_waiter.LocomotionState}\n" +
                 $"Assigned: {_waiter.IsAssigned}\n" +
                 $"Idle: {_waiter.IsIdle}\n" +
+                $"Grounded: {_waiter.IsGrounded}\n" +
                 $"At Meal Point: {_waiter.AtMealPoint}\n" +
                 $"Recovery: {_waiter.RecoveryTimer:0.00}\n" +
                 $"Table: {tableNumber}\n" +

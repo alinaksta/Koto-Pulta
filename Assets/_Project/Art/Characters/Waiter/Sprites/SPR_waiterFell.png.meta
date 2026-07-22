@@ -6,7 +6,7 @@ TextureImporter:
   serializedVersion: 13
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 1
+    enableMipMap: 0
     sRGBTexture: 1
     linearTexture: 0
     fadeOut: 0
@@ -37,24 +37,24 @@ TextureImporter:
     filterMode: 1
     aniso: 1
     mipBias: 0
-    wrapU: 0
-    wrapV: 0
+    wrapU: 1
+    wrapV: 1
     wrapW: 0
-  nPOTScale: 1
+  nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 0
+  spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 424
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 1
+  spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
-  alphaIsTransparency: 0
+  alphaIsTransparency: 1
   spriteTessellationDetail: -1
-  textureType: 0
+  textureType: 8
   textureShape: 1
   singleChannelComponent: 0
   flipbookRows: 1
@@ -73,8 +73,8 @@ TextureImporter:
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
+    compressionQuality: 100
+    crunchedCompression: 1
     allowsAlphaSplitting: 0
     overridden: 0
     ignorePlatformSupport: 0
@@ -93,14 +93,819 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: SPR_waiterFell_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2053
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9927dae31d9ae60c994620a3935b62a6
+      internalID: -911025472
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterFell_1
+      rect:
+        serializedVersion: 2
+        x: 513
+        y: 2053
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e5b3a4f374d3fda89a4a2d3a752420cf
+      internalID: 623013123
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterFell_2
+      rect:
+        serializedVersion: 2
+        x: 1026
+        y: 2053
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2460cf29f542ab1eda52d77dfa5d3893
+      internalID: 1193780435
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterFell_3
+      rect:
+        serializedVersion: 2
+        x: 1539
+        y: 2053
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bca0f3b4f27479b7db75bf5404cd2f26
+      internalID: -1697717255
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterFell_4
+      rect:
+        serializedVersion: 2
+        x: 2052
+        y: 2053
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 78be821d2b0674018b99c9f8794487b7
+      internalID: -646579426
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterFell_5
+      rect:
+        serializedVersion: 2
+        x: 2565
+        y: 2053
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cacea9ded5343f6c2a15bcda0f4ee241
+      internalID: 318960243
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterFell_6
+      rect:
+        serializedVersion: 2
+        x: 3078
+        y: 2053
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5559bee2e72de52769fdbe58f72a186e
+      internalID: 437024654
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterFell_7
+      rect:
+        serializedVersion: 2
+        x: 3591
+        y: 2053
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7c2c2b49d0f3bf01ba3413bc86298402
+      internalID: 852709977
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterFell_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1540
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c58cee22b58942bef86bd4aacfaa2fec
+      internalID: 1000470856
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterFell_9
+      rect:
+        serializedVersion: 2
+        x: 513
+        y: 1540
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6573a0a9c02832559abb9129c9647e9c
+      internalID: -701893701
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterFell_10
+      rect:
+        serializedVersion: 2
+        x: 1026
+        y: 1540
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1786c920cc9b6eb4aa18b741f96fb57e
+      internalID: -1995508940
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterFell_11
+      rect:
+        serializedVersion: 2
+        x: 1539
+        y: 1540
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5e5d5660c34233871888980b14f7e588
+      internalID: -1046191783
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterFell_12
+      rect:
+        serializedVersion: 2
+        x: 2052
+        y: 1540
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2595cb0adbb9f41459cdc7dbc4813a6c
+      internalID: 701123562
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterFell_13
+      rect:
+        serializedVersion: 2
+        x: 2565
+        y: 1540
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 30fb7948f5e4839b997b9f2e2b2b64c3
+      internalID: -1091184321
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterFell_14
+      rect:
+        serializedVersion: 2
+        x: 3078
+        y: 1540
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e9d701505d1812e77b6b9415e0d43985
+      internalID: 1416847246
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterFell_15
+      rect:
+        serializedVersion: 2
+        x: 3591
+        y: 1540
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f0739eede2a24bca18dc450b83d1d627
+      internalID: -280910896
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterFell_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1027
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 53d0ba5e4fea348e8ba496ef01c07f4e
+      internalID: 1913097333
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterFell_17
+      rect:
+        serializedVersion: 2
+        x: 513
+        y: 1027
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e17788955d6494caea1e5c81a69fe044
+      internalID: -747378257
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterFell_18
+      rect:
+        serializedVersion: 2
+        x: 1026
+        y: 1027
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 276442e5d8cddb8b5a0904f8ecde6bcb
+      internalID: 1454101352
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterFell_19
+      rect:
+        serializedVersion: 2
+        x: 1539
+        y: 1027
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cfb3dd0cedec2d69993ae9d19b5ed461
+      internalID: 1311507182
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterFell_20
+      rect:
+        serializedVersion: 2
+        x: 2052
+        y: 1027
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 75e366f3b53a2cf319b4ea7d0fc17bea
+      internalID: 419484317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterFell_21
+      rect:
+        serializedVersion: 2
+        x: 2565
+        y: 1027
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7fb1d20a2dcafda8b9c888f26454ec93
+      internalID: 239798720
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterFell_22
+      rect:
+        serializedVersion: 2
+        x: 3078
+        y: 1027
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b2314f1fbf88a3683b22fbde73ea016a
+      internalID: -488303044
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterFell_23
+      rect:
+        serializedVersion: 2
+        x: 3591
+        y: 1027
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 59c9c27fbdfa305a2bbadb1b46acff29
+      internalID: -1318322092
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterFell_24
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 514
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a9424a1020e2169b7a4ebd5e25ebb198
+      internalID: -1014834919
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterFell_25
+      rect:
+        serializedVersion: 2
+        x: 513
+        y: 514
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f1bdbb9a411ea191c86c8d32b8505677
+      internalID: -30805664
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterFell_26
+      rect:
+        serializedVersion: 2
+        x: 1026
+        y: 514
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b5b417000081daecfbb44ab2d5a52b47
+      internalID: 355956705
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterFell_27
+      rect:
+        serializedVersion: 2
+        x: 1539
+        y: 514
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 30ce31ef9d688d85e85ca21544d1ca7b
+      internalID: 1304868492
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterFell_28
+      rect:
+        serializedVersion: 2
+        x: 2052
+        y: 514
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 64c8eb6d6063cca44ac8dcd44aefc5a9
+      internalID: -309516424
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterFell_29
+      rect:
+        serializedVersion: 2
+        x: 2565
+        y: 514
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 51d82a8b100e5f397b0fa72b2819eafc
+      internalID: -2045277255
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterFell_30
+      rect:
+        serializedVersion: 2
+        x: 3078
+        y: 514
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 74768c367d6710f588acb9a389e62018
+      internalID: -1357633700
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterFell_31
+      rect:
+        serializedVersion: 2
+        x: 3591
+        y: 514
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0a3d0d1a38eb335f7a7ea11127d3ef38
+      internalID: -1512274030
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterFell_32
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e73b494a9c6cb3cc6b12cda02789bb87
+      internalID: 1266795555
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterFell_33
+      rect:
+        serializedVersion: 2
+        x: 513
+        y: 1
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 85bd5b979275aab6bb8129083587e442
+      internalID: 725029821
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterFell_34
+      rect:
+        serializedVersion: 2
+        x: 1026
+        y: 1
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 99806f3f1da1cdac1b09f9ad197e44d8
+      internalID: -471790176
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SPR_waiterFell_35
+      rect:
+        serializedVersion: 2
+        x: 1539
+        y: 1
+        width: 513
+        height: 513
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 06485bec5f50594ee8d1fa2c5a21d786
+      internalID: -546855242
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 59ba98c404320a82aa6ced123be41766
     internalID: 0
     vertices: []
     indices: 
@@ -108,8 +913,50 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
-    nameFileIdTable: {}
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":8.0,"y":5.0},"gridSpriteSize":{"x":513.0,"y":513.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.0},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":7,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      SPR_waiterFell_0: -911025472
+      SPR_waiterFell_1: 623013123
+      SPR_waiterFell_10: -1995508940
+      SPR_waiterFell_11: -1046191783
+      SPR_waiterFell_12: 701123562
+      SPR_waiterFell_13: -1091184321
+      SPR_waiterFell_14: 1416847246
+      SPR_waiterFell_15: -280910896
+      SPR_waiterFell_16: 1913097333
+      SPR_waiterFell_17: -747378257
+      SPR_waiterFell_18: 1454101352
+      SPR_waiterFell_19: 1311507182
+      SPR_waiterFell_2: 1193780435
+      SPR_waiterFell_20: 419484317
+      SPR_waiterFell_21: 239798720
+      SPR_waiterFell_22: -488303044
+      SPR_waiterFell_23: -1318322092
+      SPR_waiterFell_24: -1014834919
+      SPR_waiterFell_25: -30805664
+      SPR_waiterFell_26: 355956705
+      SPR_waiterFell_27: 1304868492
+      SPR_waiterFell_28: -309516424
+      SPR_waiterFell_29: -2045277255
+      SPR_waiterFell_3: -1697717255
+      SPR_waiterFell_30: -1357633700
+      SPR_waiterFell_31: -1512274030
+      SPR_waiterFell_32: 1266795555
+      SPR_waiterFell_33: 725029821
+      SPR_waiterFell_34: -471790176
+      SPR_waiterFell_35: -546855242
+      SPR_waiterFell_36: 1156943930
+      SPR_waiterFell_37: -1633397785
+      SPR_waiterFell_38: 1946662923
+      SPR_waiterFell_39: -83251825
+      SPR_waiterFell_4: -646579426
+      SPR_waiterFell_5: 318960243
+      SPR_waiterFell_6: 437024654
+      SPR_waiterFell_7: 852709977
+      SPR_waiterFell_8: 1000470856
+      SPR_waiterFell_9: -701893701
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

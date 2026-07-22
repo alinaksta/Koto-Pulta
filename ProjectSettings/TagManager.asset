@@ -15,8 +15,8 @@ TagManager:
   - Player
   - Interactable
   - 
-  - 
-  - 
+  - WaiterCollision
+  - Entities
   - 
   - 
   - 

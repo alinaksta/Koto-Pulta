@@ -73,8 +73,8 @@ namespace Game.Items
         {
             gameObject.SetActive(true);
 
-            if (_item.Value.Definition.TryGetProperty<SpriteProperty>(out var property))
-                _spriteRenderer.sprite = property.Sprite;
+            if (_item.Value.Definition.TryGetProperty<FoodProperty>(out var property))
+                _spriteRenderer.sprite = property.WorldSprite;
         }
 
         /// <inheritdoc/>

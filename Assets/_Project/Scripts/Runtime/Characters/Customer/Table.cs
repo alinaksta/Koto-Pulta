@@ -13,9 +13,10 @@ namespace Game.Characters
     {
         [SerializeField] private int _tableNumber;
         [SerializeField] private bool _registerAutomatically = false;
-        [SerializeField] private Transform[] _seatPoints;
+        [SerializeField] private Seat[] _seats;
 
         private readonly List<Customer> _customers = new();
+        private CustomerService _registeredService;
 
         /// <summary>
         /// Gets the configured table number.
@@ -30,7 +31,7 @@ namespace Game.Characters
         /// <summary>
         /// Gets the number of seat points configured on the table.
         /// </summary>
-        public int SeatCount => _seatPoints.Length;
+        public int SeatCount => _seats.Length;
 
         /// <summary>
         /// Gets whether the table currently has no customers.
@@ -70,9 +71,34 @@ namespace Game.Characters
         private void Awake()
         {
             if (ServiceLocator.TryGet<CustomerService>(out var service) && _registerAutomatically)
+                Register(service);
+        }
+
+        private void OnDestroy()
+        {
+            if (_registeredService != null)
+                _registeredService.UnregisterTable(this);
+        }
+
+        /// <summary>
+        /// Assigns the runtime table number and registers the table for customer spawning.
+        /// </summary>
+        public void Initialize(int tableNumber, CustomerService service)
+        {
+            if (_registeredService != null)
             {
-                service.RegisterTable(this);
+                _registeredService.UnregisterTable(this);
+                _registeredService = null;
             }
+
+            _tableNumber = tableNumber;
+            Register(service);
+        }
+
+        private void Register(CustomerService service)
+        {
+            if (service != null && service.RegisterTable(this))
+                _registeredService = service;
         }
 
         /// <summary>
@@ -86,16 +112,34 @@ namespace Game.Characters
         /// Tries to add a customer and assign the next free seat transform.
         /// </summary>
         /// <param name="customer">Customer to seat.</param>
-        /// <param name="seat">Receives the assigned seat transform.</param>
+        /// <param name="seat">Receives the assigned seat.</param>
         /// <returns><see langword="true"/> when the customer was seated.</returns>
-        public bool TryAddCustomer(Customer customer, out Transform seat)
+        public bool TryAddCustomer(Customer customer, out Seat seat)
         {
             seat = null;
 
             if (customer == null || !HasFreeSeat)
                 return false;
 
-            seat = _seatPoints[_customers.Count];
+            seat = _seats[_customers.Count];
+            _customers.Add(customer);
+            OnCustomerAdded.Invoke(this, customer);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Tries to assign the customer to a random free seat on the table.
+        /// </summary>
+        public bool TryAddCustomerAtRandomSeat(Customer customer, out Seat seat)
+        {
+            seat = null;
+
+            if (customer == null || !IsFree)
+                return false;
+
+            int randomIndex = UnityEngine.Random.Range(0, _seats.Length);
+            seat = _seats[randomIndex];
             _customers.Add(customer);
             OnCustomerAdded.Invoke(this, customer);
 

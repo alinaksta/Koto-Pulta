@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65dec6dc6bb991845b520950c9f9e84c, type: 3}
+  m_Name: Notebook
+  m_EditorClassIdentifier: Assembly-CSharp::Itemworks.Samples.BasicInventory.ItemDefinitionAsset
+  Id: guide_notebook
+  Properties:
+  - rid: 6891364640889241684
+  - rid: 6891364640889241685
+  - rid: 6891364640889241686
+  references:
+    version: 2
+    RefIds:
+    - rid: 6891364640889241684
+      type: {class: FoodProperty, ns: Game.Items.Properties, asm: Assembly-CSharp}
+      data:
+        WorldSprite: {fileID: 21300000, guid: 99a896813b8ab4d44a1313a1ba9c3d26, type: 3}
+        DialogueSprite: {fileID: 21300000, guid: 99a896813b8ab4d44a1313a1ba9c3d26, type: 3}
+        UnitPrice: 4
+    - rid: 6891364640889241685
+      type: {class: HandSpriteProperty, ns: Game.Items.Properties, asm: Assembly-CSharp}
+      data:
+        HandSprite: {fileID: 21300000, guid: 7872ff2102fa0c94fa4d0da43b561799, type: 3}
+    - rid: 6891364640889241686
+      type: {class: ThrowableProperty, ns: Game.Items.Properties, asm: Assembly-CSharp}
+      data:
+        HoldTime: 0.8
+        ForwardForce: 6

@@ -183,6 +183,15 @@ namespace Game.Input.Generated
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""157bbf8a-8085-403b-8fe9-bafcb53ca379"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -361,6 +370,17 @@ namespace Game.Input.Generated
                     ""action"": ""MousePosition"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""aa69598f-d6bf-4434-8836-c177bd17c3c2"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -396,6 +416,7 @@ namespace Game.Input.Generated
             m_Gameplay_DropLeft = m_Gameplay.FindAction("DropLeft", throwIfNotFound: true);
             m_Gameplay_DropRight = m_Gameplay.FindAction("DropRight", throwIfNotFound: true);
             m_Gameplay_Cancel = m_Gameplay.FindAction("Cancel", throwIfNotFound: true);
+            m_Gameplay_Pause = m_Gameplay.FindAction("Pause", throwIfNotFound: true);
         }
 
         ~@InputActions()
@@ -486,6 +507,7 @@ namespace Game.Input.Generated
         private readonly InputAction m_Gameplay_DropLeft;
         private readonly InputAction m_Gameplay_DropRight;
         private readonly InputAction m_Gameplay_Cancel;
+        private readonly InputAction m_Gameplay_Pause;
         /// <summary>
         /// Provides access to input actions defined in input action map "Gameplay".
         /// </summary>
@@ -537,6 +559,10 @@ namespace Game.Input.Generated
             /// Provides access to the underlying input action "Gameplay/Cancel".
             /// </summary>
             public InputAction @Cancel => m_Wrapper.m_Gameplay_Cancel;
+            /// <summary>
+            /// Provides access to the underlying input action "Gameplay/Pause".
+            /// </summary>
+            public InputAction @Pause => m_Wrapper.m_Gameplay_Pause;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -593,6 +619,9 @@ namespace Game.Input.Generated
                 @Cancel.started += instance.OnCancel;
                 @Cancel.performed += instance.OnCancel;
                 @Cancel.canceled += instance.OnCancel;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
             }
 
             /// <summary>
@@ -634,6 +663,9 @@ namespace Game.Input.Generated
                 @Cancel.started -= instance.OnCancel;
                 @Cancel.performed -= instance.OnCancel;
                 @Cancel.canceled -= instance.OnCancel;
+                @Pause.started -= instance.OnPause;
+                @Pause.performed -= instance.OnPause;
+                @Pause.canceled -= instance.OnPause;
             }
 
             /// <summary>
@@ -757,6 +789,13 @@ namespace Game.Input.Generated
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnCancel(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "Pause" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnPause(InputAction.CallbackContext context);
         }
     }
 }

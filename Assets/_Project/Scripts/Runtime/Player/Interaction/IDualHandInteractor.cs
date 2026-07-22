@@ -1,4 +1,5 @@
 using Game.Items;
+using UnityEngine;
 
 namespace Game.Interaction
 {
@@ -7,6 +8,11 @@ namespace Game.Interaction
     /// </summary>
     public interface IDualHandInteractor
     {
+        /// <summary>
+        /// Gets the object currently targeted by the interaction ray.
+        /// </summary>
+        GameObject HoveredObject { get; }
+
         /// <summary>
         /// Gets a hand by side.
         /// </summary>
