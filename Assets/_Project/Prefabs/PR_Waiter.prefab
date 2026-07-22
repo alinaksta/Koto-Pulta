@@ -694,7 +694,7 @@ MonoBehaviour:
   _groundCheckRadius: 0.2
   _groundCheckOffset: 0.35
   _wanderOrigin: {fileID: 0}
-  _wanderRadius: 16
+  _wanderRadius: 7
   _wanderPauseMin: 2
   _wanderPauseMax: 4
   _wanderArrivalDistance: 0.35
@@ -758,8 +758,8 @@ NavMeshAgent:
   m_GameObject: {fileID: 2204201829867112283}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 5.6
+  m_Radius: 0.4
+  m_Speed: 6.2
   m_Acceleration: 56
   avoidancePriority: 0
   m_AngularSpeed: 960
@@ -770,7 +770,7 @@ NavMeshAgent:
   m_Height: 2
   m_BaseOffset: -0.05
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 2
+  m_ObstacleAvoidanceType: 0
 --- !u!54 &6839888440025666666
 Rigidbody:
   m_ObjectHideFlags: 0
