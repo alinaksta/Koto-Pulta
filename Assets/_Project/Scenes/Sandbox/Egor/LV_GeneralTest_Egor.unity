@@ -6530,18 +6530,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PR_Waiter
       objectReference: {fileID: 0}
-    - target: {fileID: 2650628544443303349, guid: a03a858d75cf6bc48b68f94723d83017, type: 3}
-      propertyPath: m_Speed
-      value: 6.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2650628544443303349, guid: a03a858d75cf6bc48b68f94723d83017, type: 3}
-      propertyPath: m_Radius
-      value: 0.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2650628544443303349, guid: a03a858d75cf6bc48b68f94723d83017, type: 3}
-      propertyPath: m_ObstacleAvoidanceType
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5325243197194466205, guid: a03a858d75cf6bc48b68f94723d83017, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5.823839

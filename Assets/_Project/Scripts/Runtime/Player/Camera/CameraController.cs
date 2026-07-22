@@ -107,6 +107,7 @@ namespace Game.Player
 
         private void Awake()
         {
+            _stop = false;
             _input = ServiceLocator.Get<IInputService>();
 
             if (_target == null)

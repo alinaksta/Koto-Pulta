@@ -48,25 +48,17 @@ namespace Game.Progression
 
         private void Start()
         {
-            if (!_autoStart || _activeMode != null)
-                return;
-
-            if (!string.IsNullOrWhiteSpace(_startingModeId) && TrySetGameMode(_startingModeId))
-                return;
-
-            if (!string.IsNullOrWhiteSpace(_fallbackModeId) && TrySetGameMode(_fallbackModeId))
-                return;
-
-            foreach (var mode in _modesById.Values)
-            {
-                if (TrySetGameMode(mode))
-                    return;
-            }
+            TryAutoStartDefaultMode();
         }
 
         private void Update()
         {
             _activeMode?.Tick(Time.deltaTime);
+        }
+
+        private void OnDestroy()
+        {
+            ClearGameMode();
         }
 
         /// <summary>
@@ -83,6 +75,29 @@ namespace Game.Progression
                 return false;
 
             return TrySetGameMode(mode);
+        }
+
+        /// <summary>
+        /// Starts the configured default mode when automatic startup is enabled and no mode is active.
+        /// </summary>
+        public bool TryAutoStartDefaultMode()
+        {
+            if (!_autoStart || _activeMode != null)
+                return false;
+
+            if (!string.IsNullOrWhiteSpace(_startingModeId) && TrySetGameMode(_startingModeId))
+                return true;
+
+            if (!string.IsNullOrWhiteSpace(_fallbackModeId) && TrySetGameMode(_fallbackModeId))
+                return true;
+
+            foreach (var mode in _modesById.Values)
+            {
+                if (TrySetGameMode(mode))
+                    return true;
+            }
+
+            return false;
         }
 
         /// <summary>
