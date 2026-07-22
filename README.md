@@ -31,7 +31,7 @@ In **Koto Pulta**, you manage a cafe with a **jelly cat** waiters and customers.
 
 ## Key Features
 
-
+| Features | Description |
 |---------|-------------|
 | **Movement** | WASD walking with collision on a single restaurant map. |
 | **Interaction** | Interact with computer, cat, and customers using mouse buttons (LMB/RMB). |
@@ -40,6 +40,7 @@ In **Koto Pulta**, you manage a cafe with a **jelly cat** waiters and customers.
 | **Delivery** | Hit the right customer with the cat holding correct food. |
 | **Audio & UI** | SFX , HUD. |
 
+---
 
 ## Tech Stack
 
