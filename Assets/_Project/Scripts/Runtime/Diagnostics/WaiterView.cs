@@ -59,6 +59,7 @@ namespace Game.Diagnostics
 
         private void Update()
         {
+            RefreshVisuals();
             UpdatePatienceIndicator();
         }
 
@@ -146,7 +147,8 @@ namespace Game.Diagnostics
         private bool ShouldShowOrderSprite()
             => ShouldShowOrderNote() &&
                _waiter.ServiceState == WaiterServiceState.AwaitingMeal &&
-               _waiter.AtMealPoint;
+               _waiter.HasMealPoint &&
+               (_waiter.AtMealPoint || _waiter.LocomotionState == WaiterLocomotionState.Idle);
 
         private void ShowOrderNote(Customer customer)
         {

@@ -9,6 +9,7 @@ namespace Game.Characters
     public class WaiterMealPoint : MonoBehaviour
     {
         [SerializeField] private Transform _point;
+        [SerializeField] private int _priority;
 
         /// <summary>
         /// Gets the transform waiters should navigate to for meals.
@@ -19,6 +20,11 @@ namespace Game.Characters
         /// Gets the world position of this waiter meal point.
         /// </summary>
         public Vector3 Position => _point.position;
+
+        /// <summary>
+        /// Gets this point's selection priority. Higher values are selected first.
+        /// </summary>
+        public int Priority => _priority;
 
         private void Awake()
         {
