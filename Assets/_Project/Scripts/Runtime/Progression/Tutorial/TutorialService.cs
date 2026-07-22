@@ -369,16 +369,8 @@ namespace Game.Progression
 
                 await RunComputerIntroStepAsync(cancellationToken);
 
-                SetComputerInputBlockerVisible(true);
-                try
-                {
-                    await RunComputerTabsStepAsync(cancellationToken);
-                    await RunComputerCloseInstructionAsync(cancellationToken);
-                }
-                finally
-                {
-                    SetComputerInputBlockerVisible(false);
-                }
+                await RunComputerTabsStepAsync(cancellationToken);
+                await RunComputerCloseInstructionAsync(cancellationToken);
 
                 if (_scene.ComputerTabs != null)
                     _scene.ComputerTabs.SetTabButtonsInteractable(true);
@@ -506,8 +498,19 @@ namespace Game.Progression
             if (_scene.ShiftTabTarget == null)
                 SetTarget(_scene.ComputerTarget, _computerMarkerOffset);
 
-            _startShiftStep.InvokeStarted();
-            await _dialogue.DisplayLinesAsync(_startShiftStep.Lines, cancellationToken, false);
+            await WaitForShiftTabViewedAsync(cancellationToken);
+
+            SetComputerInputBlockerVisible(true);
+            try
+            {
+                _startShiftStep.InvokeStarted();
+                await _dialogue.DisplayLinesAsync(_startShiftStep.Lines, cancellationToken);
+            }
+            finally
+            {
+                SetComputerInputBlockerVisible(false);
+            }
+
             await WaitForSignalAsync(TutorialSignal.StartedPracticeShift, cancellationToken);
             _startShiftStep.InvokeCompleted();
             ClearUiTarget();
@@ -578,6 +581,16 @@ namespace Game.Progression
             _exitComputerStep.InvokeStarted();
             await _dialogue.DisplayLinesAsync(_exitComputerStep.Lines, cancellationToken);
             _exitComputerStep.InvokeCompleted();
+        }
+
+        private async Task WaitForShiftTabViewedAsync(CancellationToken cancellationToken)
+        {
+            _latchedSignals.Remove(TutorialSignal.ViewedShiftTab);
+
+            if (_scene.ComputerTabs == null || _scene.ComputerTabs.CurrentTab == ComputerSiteTab.ShiftStatistics)
+                return;
+
+            await WaitForSignalAsync(TutorialSignal.ViewedShiftTab, cancellationToken);
         }
 
         private async Task ExplainTabAsync(
@@ -813,10 +826,17 @@ namespace Game.Progression
 
         private void HandleTabViewed(ComputerSiteTab tab)
         {
-            if (tab == ComputerSiteTab.ShiftStatistics && UiTarget == _scene.ShiftTabTarget)
-                ClearUiTarget();
+            if (tab == ComputerSiteTab.ShiftStatistics)
+            {
+                if (UiTarget == _scene.ShiftTabTarget)
+                    ClearUiTarget();
+
+                ReportSignal(TutorialSignal.ViewedShiftTab);
+            }
             else if (tab == ComputerSiteTab.Meals && UiTarget == _scene.MealsTabTarget)
+            {
                 ClearUiTarget();
+            }
         }
 
         private void HandleComputerExited()

@@ -22,7 +22,8 @@ namespace Game.Progression
         GaveMealToWaiter,
         WaiterLanded,
         CustomerServed,
-        OpenedComputer
+        OpenedComputer,
+        ViewedShiftTab
     }
 
     /// <summary>
