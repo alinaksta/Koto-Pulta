@@ -932,7 +932,7 @@ MonoBehaviour:
   _averageTimeText: {fileID: 523986900980060539}
   _moneyEarnedText: {fileID: 5729530363772869377}
   _computer: {fileID: 0}
-  _beginShiftButtonLabel: Begin First Shift :D
+  _beginShiftButtonLabel: Begin The Shift
   _retryShiftButtonLabel: Retry
   _beginNextShiftButtonLabel: Begin Next Shift
   _inProgressPanel: {fileID: 4028145081823754866}
@@ -1516,7 +1516,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Begin next shift
+  m_text: Begin the shift
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 20751f002bc6ea94da23fca70192c6f1, type: 2}
   m_sharedMaterial: {fileID: -2087214075127781217, guid: 20751f002bc6ea94da23fca70192c6f1, type: 2}
@@ -2725,6 +2725,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Evaluation
   _computerInteractable: {fileID: 0}
+  _computerTabs: {fileID: 0}
   _segments:
   - {fileID: 6950744278984288649}
   - {fileID: 8228648065582098062}
@@ -2740,6 +2741,8 @@ MonoBehaviour:
   _moneyEarnedText: {fileID: 5729530363772869377}
   _evaluateButton: {fileID: 8493396581506288130}
   _nextShiftButton: {fileID: 5200403832261752164}
+  _countAnimationDuration: 1.5
+  _countAnimationSteps: 30
 --- !u!1 &7481198667953929514
 GameObject:
   m_ObjectHideFlags: 0
@@ -2880,7 +2883,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Welcome to Koto Pulta cafe! \n\nAre you ready to start your first shift?"
+  m_text: "Welcome to Koto Pulta cafe! \n\nAre you ready to start the shift?"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 20751f002bc6ea94da23fca70192c6f1, type: 2}
   m_sharedMaterial: {fileID: -2087214075127781217, guid: 20751f002bc6ea94da23fca70192c6f1, type: 2}
@@ -2968,7 +2971,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7288625019555661093
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3240,7 +3243,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Begin first shift :D
+  m_text: Begin the shift
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 20751f002bc6ea94da23fca70192c6f1, type: 2}
   m_sharedMaterial: {fileID: -2087214075127781217, guid: 20751f002bc6ea94da23fca70192c6f1, type: 2}
