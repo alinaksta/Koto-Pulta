@@ -29,6 +29,7 @@ namespace Game.Player
         [SerializeField] private bool _lockMouseOnAwake = true;
 
         private IInputService _input;
+        private static bool _stop = false;
 
         private IFocusable _focusedObject;
         private FocusTransition? _focusTransition;
@@ -40,7 +41,17 @@ namespace Game.Player
         private Vector2 _smoothedMouseDelta;
         private Vector2 _mouseDeltaVelocity;
 
-        private bool _mouseLocked;
+        private static bool _mouseLocked;
+
+        /// <summary>
+        /// Gets the global focus status for the active camera controller.
+        /// </summary>
+        public static FocusStatus CurrentFocusStatus { get; private set; } = FocusStatus.Unfocused;
+
+        /// <summary>
+        /// Gets whether the active camera controller is fully unfocused.
+        /// </summary>
+        public static bool IsUnfocused => CurrentFocusStatus == FocusStatus.Unfocused;
 
         /// <inheritdoc/>
         public Quaternion RotationFlat => Quaternion.Euler(0f, _yaw, 0f);
@@ -96,6 +107,7 @@ namespace Game.Player
 
         private void Awake()
         {
+            _stop = false;
             _input = ServiceLocator.Get<IInputService>();
 
             if (_target == null)
@@ -103,11 +115,17 @@ namespace Game.Player
 
             InitializeRotation();
             SetMouseLocked(_lockMouseOnAwake);
+            RefreshCurrentFocusStatus();
+        }
+
+        private void OnDisable()
+        {
+            CurrentFocusStatus = FocusStatus.Unfocused;
         }
 
         private void LateUpdate()
         {
-            if (_input == null || _target == null)
+            if (_input == null || _target == null || _stop == true)
                 return;
 
             Vector2 mouseDelta = _input.MouseDelta;
@@ -187,7 +205,15 @@ namespace Game.Player
         private void HandleFocusTransitionTime()
         {
             if (_focusTransition.HasValue && Time.time >= _focusTransition.Value.EndTime)
+            {
                 _focusTransition = null;
+                RefreshCurrentFocusStatus();
+            }
+        }
+
+        private void RefreshCurrentFocusStatus()
+        {
+            CurrentFocusStatus = FocusStatus;
         }
 
         /// <inheritdoc/>
@@ -210,6 +236,12 @@ namespace Game.Player
         }
 
         /// <inheritdoc/>
+        public static void SetMouseLockedStatic(bool locked = true)
+        {
+            Cursor.lockState = locked ? CursorLockMode.Locked : CursorLockMode.None;
+            Cursor.visible = !locked;
+            _mouseLocked = locked;
+        }
         public void SetMouseLocked(bool locked = true)
         {
             Cursor.lockState = locked ? CursorLockMode.Locked : CursorLockMode.None;
@@ -252,6 +284,7 @@ namespace Game.Player
                     Time.time);
 
                 _focusTransition = transition;
+                RefreshCurrentFocusStatus();
 
                 return true;
             }
@@ -275,6 +308,7 @@ namespace Game.Player
                     Time.time);
 
             _focusTransition = transition;
+            RefreshCurrentFocusStatus();
         }
 
         private CameraSnapshot GetCurrentCameraSnapshot()
@@ -324,6 +358,10 @@ namespace Game.Player
                 angle += 360f;
 
             return angle;
+        }
+        public static void SetActiveRotationStatic(bool stop)
+        {
+            _stop = stop;
         }
     }
 }

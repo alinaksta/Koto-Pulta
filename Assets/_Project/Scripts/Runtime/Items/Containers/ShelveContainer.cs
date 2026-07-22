@@ -42,9 +42,9 @@ public class ShelveContainer : MonoBehaviour, IInteractable, IContainerHolder
         {
             var definition = item.Value.Definition;
 
-            if (definition.TryGetProperty<SpriteProperty>(out var spriteProperty))
+            if (definition.TryGetProperty<FoodProperty>(out var spriteProperty))
             {
-                _spriteRenderer.sprite = spriteProperty.Sprite;
+                _spriteRenderer.sprite = spriteProperty.WorldSprite;
             }
             else
             {

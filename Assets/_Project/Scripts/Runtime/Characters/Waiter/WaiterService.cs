@@ -16,8 +16,6 @@ namespace Game.Characters
         private readonly Dictionary<Waiter, Customer> _customerByWaiter = new();
         private readonly Dictionary<Customer, Waiter> _waiterByCustomer = new();
 
-        private WaiterMealPoint _mealPoint;
-
         /// <summary>
         /// Raised after a customer is assigned to a waiter.
         /// </summary>
@@ -33,16 +31,6 @@ namespace Game.Characters
         /// </summary>
         public event Action<Waiter> OnWaiterSentToMealPoint = delegate { };
 
-        /// <summary>
-        /// Gets whether a meal point is currently registered.
-        /// </summary>
-        public bool HasMealPoint => _mealPoint != null;
-
-        /// <summary>
-        /// Gets the transform used as the current meal point destination.
-        /// </summary>
-        public Transform MealPointTransform => _mealPoint.Point;
-
         /// <inheritdoc/>
         public void Bootstrap()
         {
@@ -56,7 +44,11 @@ namespace Game.Characters
         public void RegisterWaiter(Waiter waiter)
         {
             if (waiter != null)
+            {
                 _waiters.Add(waiter);
+
+                TryAssignNextWaitingCustomerToWaiter(waiter);
+            }
         }
 
         /// <summary>
@@ -68,27 +60,8 @@ namespace Game.Characters
             if (waiter == null)
                 return;
 
-            ClearAssignmentForWaiter(waiter, false, false);
             _waiters.Remove(waiter);
-        }
-
-        /// <summary>
-        /// Sets the active meal point used by waiters awaiting meals.
-        /// </summary>
-        /// <param name="mealPoint">Meal point to use.</param>
-        public void SetMealPoint(WaiterMealPoint mealPoint)
-        {
-            _mealPoint = mealPoint;
-        }
-
-        /// <summary>
-        /// Clears the active meal point when it matches the supplied instance.
-        /// </summary>
-        /// <param name="mealPoint">Meal point to clear.</param>
-        public void ClearMealPoint(WaiterMealPoint mealPoint)
-        {
-            if (_mealPoint == mealPoint)
-                _mealPoint = null;
+            ClearAssignmentForWaiter(waiter, false, false);
         }
 
         /// <summary>
@@ -115,6 +88,24 @@ namespace Game.Characters
         }
 
         /// <summary>
+        /// Tries to get any currently registered waiter.
+        /// </summary>
+        public bool TryGetAnyWaiter(out Waiter waiter)
+        {
+            foreach (Waiter candidate in _waiters)
+            {
+                if (candidate == null)
+                    continue;
+
+                waiter = candidate;
+                return true;
+            }
+
+            waiter = null;
+            return false;
+        }
+
+        /// <summary>
         /// Tries to assign a customer to an available waiter.
         /// </summary>
         /// <param name="customer">Customer that needs service.</param>
@@ -124,7 +115,7 @@ namespace Game.Characters
         {
             waiter = null;
 
-            if (customer == null)
+            if (customer == null || !customer.NeedsWaiter)
                 return false;
 
             if (_waiterByCustomer.ContainsKey(customer))
@@ -133,16 +124,7 @@ namespace Game.Characters
             if (!TryGetUnassignedWaiter(out waiter))
                 return false;
 
-            waiter.AssignCustomer(customer);
-
-            _customerByWaiter[waiter] = customer;
-            _waiterByCustomer[customer] = waiter;
-
-            customer.OnServed += HandleCustomerServed;
-            customer.OnTimedOut += HandleCustomerTimedOut;
-            customer.OnWrongItemGiven += HandleCustomerWrongItem;
-
-            OnCustomerAssignedToWaiter.Invoke(waiter, customer);
+            AssignCustomerToWaiter(waiter, customer);
             return true;
         }
 
@@ -170,31 +152,6 @@ namespace Game.Characters
             => waiter != null && _waiters.Contains(waiter);
 
         /// <summary>
-        /// Sends a waiter to the active meal point, or idles it if none is available.
-        /// </summary>
-        /// <param name="waiter">Waiter to redirect.</param>
-        public void SendWaiterToMealPoint(Waiter waiter)
-        {
-            if (waiter == null)
-                return;
-
-            if (_mealPoint == null)
-            {
-                waiter.EnterIdleState();
-                return;
-            }
-
-            if (!waiter.gameObject.activeInHierarchy)
-            {
-                waiter.EnterIdleState();
-                return;
-            }
-
-            waiter.NavigateTo(_mealPoint.Point.position);
-            OnWaiterSentToMealPoint.Invoke(waiter);
-        }
-
-        /// <summary>
         /// Gets the number of currently registered waiters.
         /// </summary>
         /// <returns>Registered waiter count.</returns>
@@ -218,6 +175,23 @@ namespace Game.Characters
             return count;
         }
 
+        /// <summary>
+        /// Tries to assign the supplied waiter to the next active customer that still needs service.
+        /// </summary>
+        /// <param name="waiter">Waiter to assign.</param>
+        /// <returns><see langword="true"/> when a new customer assignment was made.</returns>
+        public bool TryAssignNextWaitingCustomerToWaiter(Waiter waiter)
+        {
+            if (waiter == null || !IsWaiterRegistered(waiter) || !waiter.CanAcceptAssignment)
+                return false;
+
+            if (!TryGetNextUnassignedCustomerNeedingWaiter(out var customer))
+                return false;
+
+            AssignCustomerToWaiter(waiter, customer);
+            return true;
+        }
+
         private void HandleCustomerServed(Customer customer)
         {
             ClearAssignmentForCustomer(customer, true, false);
@@ -230,7 +204,11 @@ namespace Game.Characters
 
         private void HandleCustomerWrongItem(Customer customer, Item item)
         {
-            ClearAssignmentForCustomer(customer, true, false);
+            if (customer == null || !_waiterByCustomer.TryGetValue(customer, out Waiter waiter))
+                return;
+
+            waiter.ClearCarriedItem();
+            waiter.StartGoingToMealPoint();
         }
 
         private void ClearAssignmentForCustomer(Customer customer, bool clearCarriedItem, bool sendToMealPoint)
@@ -252,8 +230,11 @@ namespace Game.Characters
 
             OnCustomerUnassignedFromWaiter.Invoke(waiter, customer);
 
+            if (TryAssignNextWaitingCustomerToWaiter(waiter))
+                return;
+
             if (sendToMealPoint)
-                SendWaiterToMealPoint(waiter);
+                waiter.StartGoingToMealPoint();
             else
                 waiter.EnterIdleState();
         }
@@ -277,10 +258,37 @@ namespace Game.Characters
 
             OnCustomerUnassignedFromWaiter.Invoke(waiter, customer);
 
+            if (TryAssignNextWaitingCustomerToWaiter(waiter))
+                return;
+
             if (sendToMealPoint)
-                SendWaiterToMealPoint(waiter);
+                waiter.StartGoingToMealPoint();
             else
                 waiter.EnterIdleState();
+        }
+
+        private bool TryGetNextUnassignedCustomerNeedingWaiter(out Customer customer)
+        {
+            customer = null;
+
+            if (!ServiceLocator.TryGet<CustomerService>(out var customerService))
+                return false;
+
+            return customerService.TryGetNextCustomerNeedingWaiter(out customer, candidate => !_waiterByCustomer.ContainsKey(candidate));
+        }
+
+        private void AssignCustomerToWaiter(Waiter waiter, Customer customer)
+        {
+            waiter.AssignCustomer(customer);
+
+            _customerByWaiter[waiter] = customer;
+            _waiterByCustomer[customer] = waiter;
+
+            customer.OnServed += HandleCustomerServed;
+            customer.OnTimedOut += HandleCustomerTimedOut;
+            customer.OnWrongItemGiven += HandleCustomerWrongItem;
+
+            OnCustomerAssignedToWaiter.Invoke(waiter, customer);
         }
     }
 }

@@ -7,6 +7,35 @@ using UnityEngine;
 namespace Game.Interaction
 {
     /// <summary>
+    /// Represents throw preview data for a hand action.
+    /// </summary>
+    public readonly struct ThrowPreviewData
+    {
+        /// <summary>
+        /// Creates throw preview data from the supplied launch values.
+        /// </summary>
+        public ThrowPreviewData(Vector3 start, Vector3 direction, float force)
+        {
+            Start = start;
+            Direction = direction;
+            Force = force;
+        }
+
+        /// <summary>
+        /// Gets the preview start position.
+        /// </summary>
+        public Vector3 Start { get; }
+        /// <summary>
+        /// Gets the preview direction.
+        /// </summary>
+        public Vector3 Direction { get; }
+        /// <summary>
+        /// Gets the preview force.
+        /// </summary>
+        public float Force { get; }
+    }
+
+    /// <summary>
     /// Represents one player hand as a single-item container.
     /// </summary>
     public class Hand : IContainer
@@ -14,6 +43,12 @@ namespace Game.Interaction
         private Item? _item = null;
         private bool _visible = true;
         private float _holdTime = 0f;
+
+        private readonly Transform _spawnPoint;
+        private readonly PhysicsItemService _physicsItemService;
+
+        private Vector3 _aimDirection;
+        private ThrowableProperty _throwable;
 
         /// <inheritdoc/>
         public Item? Item => _item;
@@ -27,9 +62,9 @@ namespace Game.Interaction
         public bool Visible => _visible;
 
         /// <summary>
-        /// Event hook for custom hand interaction notifications.
+        /// Gets whether the currently held item can be thrown by holding the interaction button.
         /// </summary>
-        public event Action OnInteracted = delegate { };
+        public bool HasThrowableItem => !IsEmpty && _throwable != null;
 
         /// <summary>
         /// Raised when the hand visibility changes.
@@ -39,15 +74,48 @@ namespace Game.Interaction
         /// <inheritdoc/>
         public event Action<Item?> OnItemChanged = delegate { };
 
-        private PhysicsItemService _physicsItemService;
+        /// <summary>
+        /// Raised after an item is dropped from this hand without throw velocity.
+        /// </summary>
+        public event Action<Item> OnItemDropped = delegate { };
+
+        /// <summary>
+        /// Raised after an item is thrown from this hand.
+        /// </summary>
+        public event Action<Item> OnItemThrown = delegate { };
 
         /// <summary>
         /// Creates a hand backed by the supplied physics item service.
         /// </summary>
         /// <param name="physicsItemService">Service used when dropping items into the world.</param>
-        public Hand(PhysicsItemService physicsItemService)
+        /// <param name="spawnPoint">Where the item spawns after getting dropped or thrown.</param>
+        public Hand(PhysicsItemService physicsItemService, Transform spawnPoint)
         {
             _physicsItemService = physicsItemService;
+            _spawnPoint = spawnPoint;
+        }
+
+        /// <summary>
+        /// Tries to describe the current throw preview for the held item.
+        /// </summary>
+        /// <param name="aimDirection">Current world-space aim direction.</param>
+        /// <param name="preview">Current throw preview data.</param>
+        /// <returns><see langword="true"/> when the held item should show a throw preview.</returns>
+        public bool TryGetThrowPreview(Vector3 aimDirection, out ThrowPreviewData preview)
+        {
+            preview = default;
+
+            if (IsEmpty || _throwable == null)
+                return false;
+
+            if (_holdTime < _throwable.HoldTime)
+                return false;
+
+            if (aimDirection.sqrMagnitude <= Mathf.Epsilon)
+                return false;
+
+            preview = new ThrowPreviewData(_spawnPoint.position, aimDirection, _throwable.ForwardForce);
+            return true;
         }
 
         /// <summary>
@@ -81,6 +149,7 @@ namespace Game.Interaction
                 return false;
 
             // TODO: Add some interaction logic
+            _aimDirection = context.HeadForward;
 
             return false;
         }
@@ -98,6 +167,8 @@ namespace Game.Interaction
 
             _holdTime += delta;
 
+            _aimDirection = context.HeadForward;
+
             return true;
         }
 
@@ -111,11 +182,12 @@ namespace Game.Interaction
             if (IsEmpty)
                 return false;
 
-            var definition = Item.Value.Definition;
-            if (definition.TryGetProperty<ThrowableProperty>(out var throwable) && _holdTime > throwable.HoldTime)
+            _aimDirection = context.HeadForward;
+
+            if (_throwable != null && _holdTime >= _throwable.HoldTime)
             {
                 _holdTime = 0f;
-                return TryDropItem(context.HeadPosition + context.HeadForward, context.HeadForward * throwable.ForwardForce);
+                return TryDropItem(_aimDirection * _throwable.ForwardForce);
             }
 
             _holdTime = 0f;
@@ -173,6 +245,9 @@ namespace Game.Interaction
         public void Insert(Item item)
         {
             _item = item;
+            _holdTime = 0f;
+            _aimDirection = Vector3.zero;
+            CacheThrowable(item);
             OnItemChanged.Invoke(_item);
         }
 
@@ -181,20 +256,30 @@ namespace Game.Interaction
         {
             var removed = _item;
             _item = null;
+            _holdTime = 0f;
+            _aimDirection = Vector3.zero;
+            _throwable = null;
             OnItemChanged.Invoke(_item);
             return removed;
+        }
+
+        private void CacheThrowable(Item item)
+        {
+            _throwable = null;
+            item.Definition.TryGetProperty(out _throwable);
         }
 
         /// <summary>
         /// Tries to drop the held item into the world.
         /// </summary>
-        /// <param name="point">Spawn point for the dropped item.</param>
         /// <param name="velocity">Initial velocity to apply.</param>
         /// <returns><see langword="true"/> when an item was released.</returns>
-        public bool TryDropItem(Vector3 point, Vector3 velocity)
+        public bool TryDropItem(Vector3 velocity)
         {
             if (IsEmpty)
                 return false;
+
+            Vector3 point = _spawnPoint.position;
 
             var item = _item.Value;
             if (item.TryGetComponent<WaiterComponent>(out var waiterComponent))
@@ -202,14 +287,29 @@ namespace Game.Interaction
                 var removed = Remove();
 
                 if (velocity.sqrMagnitude > 0f)
+                {
                     waiterComponent.Waiter.ThrowFromHand(removed.Value, point, velocity);
+                    OnItemThrown.Invoke(item);
+                }
                 else
+                {
                     waiterComponent.Waiter.DropFromHand(removed.Value, point);
+                    OnItemDropped.Invoke(item);
+                }
 
                 return true;
             }
 
-            return _physicsItemService.TrySpawnFromContainer(point, velocity, this);
+            bool released = _physicsItemService.TrySpawnFromContainer(point, velocity, this);
+            if (!released)
+                return false;
+
+            if (velocity.sqrMagnitude > 0f)
+                OnItemThrown.Invoke(item);
+            else
+                OnItemDropped.Invoke(item);
+
+            return true;
         }
     }
 }

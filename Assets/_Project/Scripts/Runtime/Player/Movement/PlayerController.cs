@@ -1,7 +1,9 @@
 using Game.Input;
+using Game.Player;
 using Game.Services;
 using Game.Utils;
 using UnityEngine;
+using System;
 
 namespace Game.Movement
 {
@@ -65,6 +67,7 @@ namespace Game.Movement
         /// </summary>
         public IOrientation Orientation => _orientation;
 
+
         private void Awake()
         {
             _controller = GetComponent<CharacterController>();
@@ -79,6 +82,13 @@ namespace Game.Movement
         {
             if (_input == null)
                 return;
+
+            if (!CameraController.IsUnfocused)
+            {
+                _move = Vector2.zero;
+                _jumpQueued = false;
+                return;
+            }
 
             _move = Vector2.ClampMagnitude(_input.Move, 1f);
 

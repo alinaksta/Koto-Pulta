@@ -47,6 +47,11 @@ namespace Game.Input
         public Vector2 Move { get; }
 
         /// <summary>
+        /// Gets whether gameplay input is currently suppressed by a modal UI.
+        /// </summary>
+        public bool GameplaySuppressed { get; }
+
+        /// <summary>
         /// Gets the mouse delta since the previous frame.
         /// </summary>
         public Vector2 MouseDelta { get; }
@@ -90,5 +95,20 @@ namespace Game.Input
         /// Gets the current cancel button state.
         /// </summary>
         public ButtonState Cancel { get; }
+
+        /// <summary>
+        /// Gets the current cancel button state.
+        /// </summary>
+        public ButtonState Pause { get; }
+
+        /// Gets the unsuppressed input used to advance modal dialogue.
+        /// </summary>
+        public ButtonState DialogueAdvance { get; }
+
+        /// <summary>
+        /// Enables or disables input routed to gameplay systems.
+        /// </summary>
+        /// <param name="suppressed">Whether gameplay input should be suppressed.</param>
+        public void SetGameplaySuppressed(bool suppressed);
     }
 }

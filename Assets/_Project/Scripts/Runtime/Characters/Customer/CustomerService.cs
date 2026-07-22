@@ -20,6 +20,8 @@ namespace Game.Characters
         private readonly Dictionary<int, Table> _tablesByNumber = new();
         private readonly List<Customer> _activeCustomers = new();
 
+        private IRandomItemDefinitionGiver _randomItemGiver;
+
         /// <summary>
         /// Raised after a customer is spawned and initialized.
         /// </summary>
@@ -50,16 +52,33 @@ namespace Game.Characters
         /// Registers a table so it can receive spawned customers.
         /// </summary>
         /// <param name="table">Table to register.</param>
-        public void RegisterTable(Table table)
+        public bool RegisterTable(Table table)
         {
             if (table == null || _tablesByNumber.ContainsKey(table.TableNumber))
-                return;
+                return false;
 
             _tables.Add(table);
-            _freeTables.Add(table);
+            if (table.IsFree)
+                _freeTables.Add(table);
             _tablesByNumber.Add(table.TableNumber, table);
 
             table.OnBecameFree += HandleTableFreed;
+            return true;
+        }
+
+        /// <summary>
+        /// Removes a table from customer spawning and lookup.
+        /// </summary>
+        public void UnregisterTable(Table table)
+        {
+            if (table == null || !_tables.Remove(table))
+                return;
+
+            _freeTables.Remove(table);
+            if (_tablesByNumber.TryGetValue(table.TableNumber, out var registered) && registered == table)
+                _tablesByNumber.Remove(table.TableNumber);
+
+            table.OnBecameFree -= HandleTableFreed;
         }
 
         /// <summary>
@@ -75,7 +94,7 @@ namespace Game.Characters
         /// Tries to spawn a customer at a random currently free table.
         /// </summary>
         /// <returns><see langword="true"/> when a customer was spawned.</returns>
-        public bool TrySpawnCustomerAtRandomFreeTable()
+        public bool TrySpawnCustomerAtRandomFreeTable(float? waitTimerOverride = null)
         {
             if (_freeTables.Count == 0)
                 return false;
@@ -83,7 +102,7 @@ namespace Game.Characters
             int randomIndex = UnityEngine.Random.Range(0, _freeTables.Count);
             Table table = _freeTables[randomIndex];
 
-            bool spawned = TrySpawnCustomerAtTable(table);
+            bool spawned = TrySpawnCustomerAtTable(table, waitTimerOverride);
 
             if (spawned)
                 _freeTables.RemoveAt(randomIndex);
@@ -96,17 +115,18 @@ namespace Game.Characters
         /// </summary>
         /// <param name="table">Table to seat the customer at.</param>
         /// <returns><see langword="true"/> when the customer was spawned and seated.</returns>
-        public bool TrySpawnCustomerAtTable(Table table)
+        public bool TrySpawnCustomerAtTable(Table table, float? waitTimerOverride = null)
         {
             if (table == null || !table.HasFreeSeat)
                 return false;
 
             var customer = Instantiate(_customerPrefab);
 
-            if (table.TryAddCustomer(customer, out var seat))
+            if (table.TryAddCustomerAtRandomSeat(customer, out var seat))
             {
-                customer.transform.position = seat.position;
-                customer.transform.rotation = seat.rotation;
+                customer.transform.position = seat.CustomerSpawnOrigin;
+                customer.transform.rotation = Quaternion.identity; // We rotate using SpriteRotator, so it doesn't matter
+                customer.transform.SetParent(seat.transform, true);
             }
             else
             {
@@ -115,7 +135,7 @@ namespace Game.Characters
             }
 
             ItemDefinition order = GetRandomOrder();
-            customer.Initialize(table, order);
+            customer.Initialize(table, seat, order, waitTimerOverride);
 
             customer.OnServed += HandleCustomerServed;
             customer.OnTimedOut += HandleCustomerTimedOut;
@@ -123,44 +143,120 @@ namespace Game.Characters
 
             _activeCustomers.Add(customer);
 
+            OnCustomerSpawned.Invoke(customer);
+
             if (ServiceLocator.TryGet<WaiterService>(out var waiterService))
                 waiterService.TryAssignCustomerToUnassignedWaiter(customer);
 
-            OnCustomerSpawned.Invoke(customer);
-
             return true;
+        }
+
+        /// <summary>
+        /// Sets the random item source used when creating customer orders.
+        /// </summary>
+        public void SetRandomItemGiver(IRandomItemDefinitionGiver giver)
+        {
+            _randomItemGiver = giver;
+        }
+
+        /// <summary>
+        /// Tries to get the next active customer who is still waiting for a waiter.
+        /// </summary>
+        /// <param name="customer">Receives the matching customer when found.</param>
+        /// <param name="predicate">Optional extra filter for candidate customers.</param>
+        /// <returns><see langword="true"/> when a matching customer is found.</returns>
+        public bool TryGetNextCustomerNeedingWaiter(out Customer customer, Func<Customer, bool> predicate = null)
+        {
+            for (int i = 0; i < _activeCustomers.Count; i++)
+            {
+                var candidate = _activeCustomers[i];
+                if (candidate == null || !candidate.NeedsWaiter)
+                    continue;
+
+                if (predicate != null && !predicate(candidate))
+                    continue;
+
+                customer = candidate;
+                return true;
+            }
+
+            customer = null;
+            return false;
+        }
+
+        /// <summary>
+        /// Forces every currently waiting active customer to time out.
+        /// </summary>
+        public void TimeoutAllActiveCustomers()
+        {
+            for (int i = _activeCustomers.Count - 1; i >= 0; i--)
+            {
+                Customer customer = _activeCustomers[i];
+                if (customer == null || !customer.IsWaiting)
+                    continue;
+
+                customer.ForceTimeout();
+            }
+        }
+
+        /// <summary>
+        /// Immediately removes all active customers when leaving gameplay.
+        /// </summary>
+        public void ClearActiveCustomers()
+        {
+            for (int i = _activeCustomers.Count - 1; i >= 0; i--)
+            {
+                Customer customer = _activeCustomers[i];
+                if (customer == null)
+                    continue;
+
+                customer.OnServed -= HandleCustomerServed;
+                customer.OnTimedOut -= HandleCustomerTimedOut;
+                customer.OnWrongItemGiven -= HandleCustomerWrongItem;
+
+                if (customer.Table != null)
+                    customer.Table.RemoveCustomer(customer);
+
+                Destroy(customer.gameObject);
+            }
+
+            _activeCustomers.Clear();
         }
 
         private void HandleCustomerWrongItem(Customer customer, Item item)
         {
             OnCustomerWrongItem.Invoke(customer, item);
-            CleanUpCustomer(customer);
         }
 
         private void HandleCustomerTimedOut(Customer customer)
         {
             OnCustomerTimedOut.Invoke(customer);
-            CleanUpCustomer(customer);
+            DespawnCustomer(customer);
         }
 
         private void HandleCustomerServed(Customer customer)
         {
             OnCustomerServed.Invoke(customer);
-            CleanUpCustomer(customer);
+            DespawnCustomer(customer);
         }
 
         private ItemDefinition GetRandomOrder()
         {
-            return ItemRegistry.Instance.Get("dev_calculator"); // TODO: Add actual random
+            return _randomItemGiver.GetRandomItemDefinition();
         }
 
-        private void CleanUpCustomer(Customer customer)
+        private async void DespawnCustomer(Customer customer)
         {
             if (customer == null) return;
 
             customer.OnServed -= HandleCustomerServed;
             customer.OnTimedOut -= HandleCustomerTimedOut;
             customer.OnWrongItemGiven -= HandleCustomerWrongItem;
+
+            await Awaitable.WaitForSecondsAsync(customer.DespawnDuration);
+
+            if (customer == null)
+                return;
 
             _activeCustomers.Remove(customer);
 
@@ -172,7 +268,8 @@ namespace Game.Characters
 
         private void HandleTableFreed(Table table)
         {
-            _freeTables.Add(table);
+            if (table != null && _tables.Contains(table) && !_freeTables.Contains(table))
+                _freeTables.Add(table);
         }
     }
 }
