@@ -140,6 +140,118 @@ namespace Game.Prototype
         }
 
         /// <summary>
+        /// Creates a labelled horizontal slider row.
+        /// </summary>
+        public static Slider CreateSlider(string name, Transform parent, string label, TMP_FontAsset font,
+            float min, float max, float value, UnityAction<float> onChanged)
+        {
+            RectTransform row = CreateRow(name, parent, 70f);
+
+            TMP_Text text = CreateText("Label", row, label, font, 34f, TextAlignmentOptions.MidlineLeft);
+            SetLayoutSize(text, 260f, 60f);
+
+            RectTransform sliderRect = CreateRect("Slider", row);
+            SetLayoutSize(sliderRect, -1f, 40f, 1f);
+
+            RectTransform background = CreateRect("Background", sliderRect);
+            background.anchorMin = new Vector2(0f, 0.3f);
+            background.anchorMax = new Vector2(1f, 0.7f);
+            background.offsetMin = background.offsetMax = Vector2.zero;
+            background.gameObject.AddComponent<Image>().color = new Color(1f, 1f, 1f, 0.2f);
+
+            RectTransform fillArea = CreateRect("Fill Area", sliderRect);
+            fillArea.anchorMin = new Vector2(0f, 0.3f);
+            fillArea.anchorMax = new Vector2(1f, 0.7f);
+            fillArea.offsetMin = fillArea.offsetMax = Vector2.zero;
+            RectTransform fill = CreateRect("Fill", fillArea);
+            fill.offsetMin = fill.offsetMax = Vector2.zero;
+            fill.gameObject.AddComponent<Image>().color = StarColor;
+
+            RectTransform handleArea = CreateRect("Handle Slide Area", sliderRect);
+            Stretch(handleArea);
+            RectTransform handle = CreateRect("Handle", handleArea);
+            handle.sizeDelta = new Vector2(30f, 0f);
+            handle.anchorMin = new Vector2(0f, 0f);
+            handle.anchorMax = new Vector2(0f, 1f);
+            var handleImage = handle.gameObject.AddComponent<Image>();
+            handleImage.color = Color.white;
+
+            var slider = sliderRect.gameObject.AddComponent<Slider>();
+            slider.fillRect = fill;
+            slider.handleRect = handle;
+            slider.targetGraphic = handleImage;
+            slider.direction = Slider.Direction.LeftToRight;
+            slider.minValue = min;
+            slider.maxValue = max;
+            slider.SetValueWithoutNotify(value);
+            if (onChanged != null)
+                slider.onValueChanged.AddListener(onChanged);
+            return slider;
+        }
+
+        /// <summary>
+        /// Creates a labelled checkbox row.
+        /// </summary>
+        public static Toggle CreateToggle(string name, Transform parent, string label, TMP_FontAsset font, bool value,
+            UnityAction<bool> onChanged)
+        {
+            RectTransform row = CreateRow(name, parent, 70f);
+
+            RectTransform box = CreateRect("Box", row);
+            SetLayoutSize(box, 50f, 50f);
+            var boxImage = box.gameObject.AddComponent<Image>();
+            boxImage.color = new Color(1f, 1f, 1f, 0.25f);
+
+            RectTransform check = CreateRect("Checkmark", box);
+            check.anchorMin = new Vector2(0.2f, 0.2f);
+            check.anchorMax = new Vector2(0.8f, 0.8f);
+            check.offsetMin = check.offsetMax = Vector2.zero;
+            var checkImage = check.gameObject.AddComponent<Image>();
+            checkImage.color = StarColor;
+
+            TMP_Text text = CreateText("Label", row, label, font, 34f, TextAlignmentOptions.MidlineLeft);
+            SetLayoutSize(text, -1f, 60f, 1f);
+
+            var toggle = box.gameObject.AddComponent<Toggle>();
+            toggle.targetGraphic = boxImage;
+            toggle.graphic = checkImage;
+            toggle.SetIsOnWithoutNotify(value);
+            if (onChanged != null)
+                toggle.onValueChanged.AddListener(onChanged);
+            return toggle;
+        }
+
+        private static RectTransform CreateRow(string name, Transform parent, float height)
+        {
+            RectTransform row = CreateRect(name, parent);
+            SetLayoutSize(row, -1f, height);
+            var layout = row.gameObject.AddComponent<HorizontalLayoutGroup>();
+            layout.spacing = 20f;
+            layout.childAlignment = TextAnchor.MiddleLeft;
+            layout.childControlWidth = true;
+            layout.childControlHeight = true;
+            layout.childForceExpandWidth = false;
+            layout.childForceExpandHeight = false;
+            return row;
+        }
+
+        /// <summary>
+        /// Adds a vertical layout to a panel.
+        /// </summary>
+        public static VerticalLayoutGroup AddVerticalLayout(RectTransform panel, int padding, float spacing)
+        {
+            var layout = panel.gameObject.AddComponent<VerticalLayoutGroup>();
+            layout.padding = new RectOffset(padding, padding, padding, padding);
+            layout.spacing = spacing;
+            layout.childAlignment = TextAnchor.MiddleCenter;
+            layout.childControlWidth = true;
+            layout.childControlHeight = true;
+            layout.childForceExpandWidth = true;
+            layout.childForceExpandHeight = false;
+            return layout;
+        }
+
+        /// <summary>
         /// Formats a star rating, using star glyphs when the font has them.
         /// </summary>
         public static string FormatStars(int stars, int maxStars, TMP_FontAsset font)

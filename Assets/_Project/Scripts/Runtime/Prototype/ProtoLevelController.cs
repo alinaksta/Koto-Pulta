@@ -3,7 +3,9 @@ using Game.Progression;
 using Game.Services;
 using Game.UI;
 using System.Collections;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Audio;
 
 namespace Game.Prototype
 {
@@ -26,6 +28,18 @@ namespace Game.Prototype
         [Tooltip("Show the stars/Retry/Level select screen when the shift ends.")]
         [SerializeField] private bool _showResultsScreen = true;
 
+        [Header("HUD")]
+        [Tooltip("Hide the persistent money counter, hide the shift number and move the quota label into the money's corner.")]
+        [SerializeField] private bool _simplifyHud = true;
+        [SerializeField] private string _moneyLabelName = "BalanceText";
+        [SerializeField] private string _quotaLabelName = "RevenueLabel";
+        [SerializeField] private string _shiftNumberLabelName = "ShiftNumberLabel";
+
+        [Header("Pause")]
+        [SerializeField] private AudioMixer _audioMixer;
+
+        private ProtoPauseMenu _pauseMenu;
+
         private ShiftService _shiftService;
 
         private void Awake()
@@ -35,6 +49,59 @@ namespace Game.Prototype
 
             if (_disableWaiters)
                 DisableWaiters();
+
+            ProtoAudioSettings.ApplyMaster();
+
+            if (_simplifyHud)
+                SimplifyHud();
+
+            _pauseMenu = gameObject.AddComponent<ProtoPauseMenu>();
+            _pauseMenu.SetMixer(_audioMixer);
+        }
+
+        private void SimplifyHud()
+        {
+            TMP_Text money = FindLabel(_moneyLabelName);
+            TMP_Text quota = FindLabel(_quotaLabelName);
+            TMP_Text shiftNumber = FindLabel(_shiftNumberLabelName);
+
+            if (shiftNumber != null)
+                shiftNumber.gameObject.SetActive(false);
+
+            if (quota != null && money != null)
+            {
+                // Take over the money label's spot (top-left corner) on the shift HUD's own canvas.
+                RectTransform from = money.rectTransform;
+                RectTransform to = quota.rectTransform;
+                to.SetParent(quota.canvas.rootCanvas.transform, false);
+                to.anchorMin = from.anchorMin;
+                to.anchorMax = from.anchorMax;
+                to.pivot = from.pivot;
+                to.sizeDelta = new Vector2(Mathf.Max(from.sizeDelta.x, 420f), from.sizeDelta.y);
+                to.anchoredPosition = from.anchoredPosition;
+                quota.alignment = money.alignment;
+            }
+
+            if (money != null)
+            {
+                Canvas moneyCanvas = money.canvas != null ? money.canvas.rootCanvas : null;
+                bool sharedCanvas = quota != null && moneyCanvas == quota.canvas.rootCanvas;
+                if (moneyCanvas != null && !sharedCanvas)
+                    moneyCanvas.gameObject.SetActive(false);
+                else
+                    money.gameObject.SetActive(false);
+            }
+        }
+
+        private static TMP_Text FindLabel(string objectName)
+        {
+            foreach (var label in FindObjectsByType<TMP_Text>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            {
+                if (label.name == objectName && label.gameObject.scene.IsValid())
+                    return label;
+            }
+
+            return null;
         }
 
         private IEnumerator Start()
@@ -92,6 +159,12 @@ namespace Game.Prototype
 
             if (_showResultsScreen && _shiftService != null)
             {
+                if (_pauseMenu != null)
+                {
+                    _pauseMenu.Resume();
+                    _pauseMenu.CanPause = false;
+                }
+
                 var results = gameObject.AddComponent<ProtoShiftResultsScreen>();
                 results.Show(ProtoProgress.SelectedLevelIndex, _shiftService.CurrentRevenue, _shiftService.CurrentGoalRevenue);
             }

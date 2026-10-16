@@ -27,11 +27,15 @@ namespace Game.Characters
         [SerializeField] private float _resetAnimatorDelayAfterVisit = 1f;
 
         private bool _destroyed;
+        private RuntimeAnimatorController _customerController;
 
         
         
         private void Awake()
         {
+            if (_animator != null)
+                _customerController = _animator.runtimeAnimatorController;
+
             SetSpriteAlpha(NoAlpha);
         }
 
@@ -136,8 +140,9 @@ namespace Game.Characters
         #endregion
 
         #region Helpers
+        // The animator may temporarily run another controller (e.g. waiter sprites while walking in the queue flow).
         private bool CanUseAnimator()
-            => !_destroyed && _animator != null;
+            => !_destroyed && _animator != null && _animator.runtimeAnimatorController == _customerController;
 
         private void SetSpriteAlpha(float alpha)
         {

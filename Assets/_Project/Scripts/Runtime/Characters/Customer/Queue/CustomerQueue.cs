@@ -46,6 +46,8 @@ namespace Game.Characters
         [SerializeField] private float _walkSpeed = 2.5f;
 
         [Header("Visuals")]
+        [Tooltip("Animator controller used for the customer body while it is not seated (waiter sprites).")]
+        [SerializeField] private RuntimeAnimatorController _standingAnimator;
         [SerializeField] private float _bubbleHeight = 2.1f;
         [Tooltip("Optional material for the order bubble sprites. Leave empty to use the default sprite material.")]
         [SerializeField] private Material _bubbleMaterial;
@@ -59,6 +61,12 @@ namespace Game.Characters
         private float _frontPatience;
         private int _agentTypeId;
 
+        /// <summary>
+        /// Debug switch: when true, no customer loses patience (queue or table).
+        /// </summary>
+        public static bool PatienceTimersDisabled { get; set; }
+
+        public RuntimeAnimatorController StandingAnimator => _standingAnimator;
         public float WalkSpeed => _walkSpeed;
         public float QueuePatience => _queuePatience;
         public float FrontPatience => _frontPatience;
@@ -260,7 +268,7 @@ namespace Game.Characters
             for (int i = 0; i < _line.Count; i++)
                 _line[i].Customer.SetIdlePatience(i == 0 ? _frontPatience : _queuePatience);
 
-            if (front == null || !front.ArrivedAtSpot || front.Phase != QueuedCustomerPhase.InQueue)
+            if (front == null || !front.ArrivedAtSpot || front.Phase != QueuedCustomerPhase.InQueue || PatienceTimersDisabled)
                 return;
 
             _frontPatience = Mathf.Max(0f, _frontPatience - Time.deltaTime);

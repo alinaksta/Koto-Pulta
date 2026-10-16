@@ -8078,6 +8078,7 @@ MonoBehaviour:
   _disableWaiters: 1
   _autoStartShift: 1
   _shiftModeId: shift
+  _audioMixer: {fileID: 24100000, guid: 4b65db46c6d36551f97512195e0898ea, type: 2}
 --- !u!1 &138500658711294028
 GameObject:
   m_ObjectHideFlags: 0
@@ -8132,6 +8133,7 @@ MonoBehaviour:
   _orderDuration: 1.2
   _leaveTableDelay: 1.2
   _walkSpeed: 2.5
+  _standingAnimator: {fileID: 9100000, guid: 30ffcbc1b4883382a8fa8f3eb0d6f14f, type: 2}
   _bubbleHeight: 2.1
   _bubbleMaterial: {fileID: 0}
 --- !u!1660057539 &9223372036854775807

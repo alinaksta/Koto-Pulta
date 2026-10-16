@@ -28,6 +28,9 @@ namespace Game.Characters
     {
         private const float ArrivalDistanceSqr = 0.0025f;
 
+        private static readonly int AngleHash = Animator.StringToHash("angle");
+        private static readonly int IsMovingHash = Animator.StringToHash("isMoving");
+
         private readonly List<Vector3> _waypoints = new();
 
         private Customer _customer;
@@ -48,6 +51,15 @@ namespace Game.Characters
         private Seat _reservedSeat;
         private float _tableWaitTime;
 
+        // Body visuals: seated customers use their own animator, standing/walking ones use the waiter animator.
+        private Animator _bodyAnimator;
+        private SpriteRenderer _bodyRenderer;
+        private RuntimeAnimatorController _seatedController;
+        private Vector3 _seatedBodyLocalPosition;
+        private bool _standingVisuals;
+        private Vector3 _lastMoveDirection = Vector3.back;
+        private Transform _cameraTransform;
+
         public Customer Customer => _customer;
         public QueuedCustomerPhase Phase => _phase;
         public int QueueIndex => _queueIndex;
@@ -61,6 +73,14 @@ namespace Game.Characters
             _queue = queue;
             _customer.SetInteractionOverride(this);
             _bubble = CustomerOrderBubble.Create(transform, queue.BubbleHeight, queue.BubbleMaterial);
+
+            _bodyAnimator = customer.GetComponentInChildren<Animator>(true);
+            if (_bodyAnimator != null)
+            {
+                _bodyRenderer = _bodyAnimator.GetComponent<SpriteRenderer>();
+                _seatedController = _bodyAnimator.runtimeAnimatorController;
+                _seatedBodyLocalPosition = _bodyAnimator.transform.localPosition;
+            }
         }
 
         private void OnDestroy()
@@ -71,10 +91,98 @@ namespace Game.Characters
 
         private void Update()
         {
+            _customer.SetTimeoutEnabled(!CustomerQueue.PatienceTimersDisabled);
+
             UpdateMovement();
             UpdatePhase();
             UpdateBubble();
         }
+
+        private void LateUpdate()
+        {
+            UpdateBodyVisuals();
+        }
+
+        #region Body visuals
+        private bool ShouldUseStandingVisuals
+            => _phase != QueuedCustomerPhase.AtTable && _phase != QueuedCustomerPhase.LeavingTable;
+
+        private void UpdateBodyVisuals()
+        {
+            if (_bodyAnimator == null || _queue.StandingAnimator == null)
+                return;
+
+            bool standing = ShouldUseStandingVisuals;
+            if (standing != _standingVisuals)
+                SetStandingVisuals(standing);
+
+            if (!standing)
+                return;
+
+            _bodyAnimator.SetBool(IsMovingHash, _moving);
+            UpdateFacing();
+            AlignFeetToGround();
+        }
+
+        private void SetStandingVisuals(bool standing)
+        {
+            _standingVisuals = standing;
+            _bodyAnimator.runtimeAnimatorController = standing ? _queue.StandingAnimator : _seatedController;
+
+            if (!standing)
+            {
+                _bodyAnimator.transform.localPosition = _seatedBodyLocalPosition;
+                _bodyAnimator.Rebind();
+                _bodyAnimator.Update(0f);
+            }
+        }
+
+        private void UpdateFacing()
+        {
+            if (_cameraTransform == null)
+            {
+                if (Camera.main == null)
+                    return;
+                _cameraTransform = Camera.main.transform;
+            }
+
+            Vector3 forward = _lastMoveDirection;
+            Vector3 toCamera = _cameraTransform.position - transform.position;
+            forward.y = 0f;
+            toCamera.y = 0f;
+
+            float angle = Vector3.SignedAngle(forward, toCamera, Vector3.up);
+            float absolute = Mathf.Abs(angle);
+
+            // Same thresholds/values as the waiter's AngleAnimator: 0 = front, 1 = side, 2 = back.
+            if (absolute < 45f)
+            {
+                _bodyAnimator.SetFloat(AngleHash, 0f);
+                if (_bodyRenderer != null) _bodyRenderer.flipX = false;
+            }
+            else if (absolute < 135f)
+            {
+                _bodyAnimator.SetFloat(AngleHash, 1f);
+                if (_bodyRenderer != null) _bodyRenderer.flipX = angle >= 0f;
+            }
+            else
+            {
+                _bodyAnimator.SetFloat(AngleHash, 2f);
+                if (_bodyRenderer != null) _bodyRenderer.flipX = false;
+            }
+        }
+
+        private void AlignFeetToGround()
+        {
+            if (_bodyRenderer == null || _bodyRenderer.sprite == null)
+                return;
+
+            // Keep the bottom of the waiter sprite on the floor regardless of its pivot.
+            Transform body = _bodyAnimator.transform;
+            float bottom = _bodyRenderer.sprite.bounds.min.y * body.localScale.y;
+            body.localPosition = new Vector3(_seatedBodyLocalPosition.x, -bottom, _seatedBodyLocalPosition.z);
+        }
+        #endregion
 
         #region Loop steps (called by CustomerQueue)
         public void EnterLine()
@@ -173,6 +281,10 @@ namespace Game.Characters
                 return;
             }
 
+            _phase = QueuedCustomerPhase.AtTable;
+            if (_standingVisuals && _bodyAnimator != null)
+                SetStandingVisuals(false);
+
             transform.position = _reservedSeat.CustomerSpawnOrigin;
             transform.rotation = Quaternion.identity;
             transform.SetParent(_reservedSeat.transform, true);
@@ -206,6 +318,11 @@ namespace Game.Characters
                 return;
 
             Vector3 target = _waypoints[_waypointIndex];
+            Vector3 step = target - transform.position;
+            step.y = 0f;
+            if (step.sqrMagnitude > 0.0001f)
+                _lastMoveDirection = step.normalized;
+
             Vector3 next = Vector3.MoveTowards(transform.position, target, _queue.WalkSpeed * Time.deltaTime);
             transform.position = next;
 
