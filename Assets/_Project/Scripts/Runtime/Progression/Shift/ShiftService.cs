@@ -61,6 +61,7 @@ namespace Game.Progression
         private bool _practiceCustomerSpawned;
         private bool _normalShiftStartLocked;
         private bool _currentShiftFailed;
+        private bool _saveProgressOnComplete = true;
 
         private ShiftStatisticsCollector _statisticsCollector;
         private ShiftStatistics _lastShiftStatistics;
@@ -377,7 +378,28 @@ namespace Game.Progression
 
             int nextShiftIndex = _shiftIndex + 1;
             _shiftIndex = nextShiftIndex;
+            _saveProgressOnComplete = true;
             StartSelectedNormalShift();
+        }
+
+        /// <summary>
+        /// Starts a specific configured shift (used by level select).
+        /// </summary>
+        /// <param name="shiftIndex">Zero-based shift index.</param>
+        /// <param name="saveProgress">Whether completing it should advance the saved shift progression.</param>
+        /// <returns><see langword="true"/> when the shift was started.</returns>
+        public bool TryStartShiftAt(int shiftIndex, bool saveProgress)
+        {
+            if (!_modeActive || ShiftInProgress || shiftIndex < 0 || shiftIndex >= ShiftAmount)
+                return false;
+
+            _practiceShiftQueued = false;
+            _practiceShiftActive = false;
+            _currentShiftFailed = false;
+            _shiftIndex = shiftIndex;
+            _saveProgressOnComplete = saveProgress;
+            StartSelectedNormalShift();
+            return true;
         }
 
         /// <summary>
@@ -489,7 +511,8 @@ namespace Game.Progression
             if (!wasPracticeShift)
             {
                 _currentShiftFailed = false;
-                SaveShiftProgress();
+                if (_saveProgressOnComplete)
+                    SaveShiftProgress();
             }
 
             EndCurrentShift();

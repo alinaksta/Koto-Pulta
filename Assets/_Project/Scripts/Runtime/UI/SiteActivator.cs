@@ -110,6 +110,23 @@ namespace Game.UI
         }
 
         /// <summary>
+        /// Disables a computer tab and hides its tab button entirely.
+        /// </summary>
+        public void HideTab(ComputerSiteTab tab)
+        {
+            SetTabEnabled(tab, false);
+
+            for (int i = 0; i < _tabButtons.Count; i++)
+            {
+                if (_tabButtons[i].Tab == tab && _tabButtons[i].Button != null)
+                    _tabButtons[i].Button.gameObject.SetActive(false);
+            }
+
+            if (_tabRoots.TryGetValue(tab, out RectTransform root) && root != null)
+                root.gameObject.SetActive(false);
+        }
+
+        /// <summary>
         /// Enables a computer tab.
         /// </summary>
         public void EnableTab(ComputerSiteTab tab)
