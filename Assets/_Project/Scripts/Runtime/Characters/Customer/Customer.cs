@@ -15,6 +15,22 @@ namespace Game.Characters
         AwaitingWaiter,
         AwaitingDelivery
     }
+
+    /// <summary>
+    /// Optional handler that can take over interaction with a customer (e.g. order taking at the cashier).
+    /// </summary>
+    public interface ICustomerInteractionOverride
+    {
+        /// <summary>
+        /// Returns <see langword="true"/> when the override wants to handle this interaction.
+        /// </summary>
+        bool CanHandleInteraction(Customer customer, in InteractionContext context);
+
+        /// <summary>
+        /// Handles an interaction previously accepted by <see cref="CanHandleInteraction"/>.
+        /// </summary>
+        void HandleInteraction(Customer customer, in InteractionContext context);
+    }
     
     /// <summary>
     /// Represents a seated customer waiting for an order.
@@ -34,6 +50,9 @@ namespace Game.Characters
         private CustomerState _state;
         private bool _timeoutEnabled = true;
         private bool _directDeliveryEnabled = true;
+        private bool _selfTickPatience;
+        private bool _persistent;
+        private ICustomerInteractionOverride _interactionOverride;
 
         /// <summary>
         /// Gets the table this customer belongs to.
@@ -95,6 +114,16 @@ namespace Game.Characters
         /// </summary>
         public float InitialWaitTime => _initialWaitTime;
 
+        /// <summary>
+        /// Gets whether this customer stays alive after a visit ends (queue/recycle flow) instead of despawning.
+        /// </summary>
+        public bool IsPersistent => _persistent;
+
+        /// <summary>
+        /// Gets whether the customer is currently seated at a table.
+        /// </summary>
+        public bool IsSeated => _seat != null;
+
         public float GetCurrentWaitTimer() => _waitTimer;
 
         public void SetWaitTimer(float value)
@@ -121,7 +150,40 @@ namespace Game.Characters
         /// <summary>
         /// Gets the current wait timer normalized to the initial wait time.
         /// </summary>
-        public float NormalizedWaitTimer => Mathf.Clamp01(_waitTimer / _initialWaitTime);
+        public float NormalizedWaitTimer => _initialWaitTime > 0f ? Mathf.Clamp01(_waitTimer / _initialWaitTime) : 0f;
+
+        /// <summary>
+        /// Makes the customer tick its own table patience timer (used when no waiter drives it).
+        /// </summary>
+        public void SetSelfTickPatience(bool enabled)
+        {
+            _selfTickPatience = enabled;
+        }
+
+        /// <summary>
+        /// Marks the customer as persistent, so services recycle it instead of despawning it.
+        /// </summary>
+        public void SetPersistent(bool persistent)
+        {
+            _persistent = persistent;
+        }
+
+        /// <summary>
+        /// Installs a handler that may take over interaction before the default delivery logic.
+        /// </summary>
+        public void SetInteractionOverride(ICustomerInteractionOverride interactionOverride)
+        {
+            _interactionOverride = interactionOverride;
+        }
+
+        /// <summary>
+        /// Sets the patience value shown by visuals while the customer has no active order (e.g. in the queue).
+        /// </summary>
+        public void SetIdlePatience(float seconds)
+        {
+            if (_state == CustomerState.None)
+                _waitTimer = Mathf.Max(0f, seconds);
+        }
 
         /// <summary>
         /// Raised when a new order starts.
@@ -146,6 +208,11 @@ namespace Game.Characters
         public event Action<Customer, float> OnWaiterStartedAsking = delegate { };
 
         /// <summary>
+        /// Raised when a visit (table + order) of a persistent customer ends.
+        /// </summary>
+        public event Action<Customer> OnVisitEnded = delegate { };
+
+        /// <summary>
         /// Sets the table, order, and wait timer for this customer.
         /// </summary>
         /// <param name="table">Table the customer belongs to.</param>
@@ -165,6 +232,42 @@ namespace Game.Characters
         }
 
         /// <summary>
+        /// Starts a table visit directly in the awaiting-delivery state (order was already taken at the cashier).
+        /// </summary>
+        public void BeginVisit(Table table, Seat seat, ItemDefinition order, float waitTime)
+        {
+            _table = table;
+            _seat = seat;
+            _order = order;
+            _initialWaitTime = Mathf.Max(0.01f, waitTime);
+            _waitTimer = _initialWaitTime;
+            _waiterHasArrived = true;
+            _state = CustomerState.AwaitingDelivery;
+            OnOrderStarted.Invoke(this);
+        }
+
+        /// <summary>
+        /// Clears table, seat and order after a visit so the customer can be reused.
+        /// </summary>
+        public void EndVisit()
+        {
+            _table = null;
+            _seat = null;
+            _order = null;
+            _state = CustomerState.None;
+            _waiterHasArrived = false;
+            OnVisitEnded.Invoke(this);
+        }
+
+        /// <summary>
+        /// Plays the ordering animation without changing the order state.
+        /// </summary>
+        public void PlayOrderingAnimation(float duration)
+        {
+            OnWaiterStartedAsking.Invoke(this, duration);
+        }
+
+        /// <summary>
         /// Plays the customer order-taking interaction.
         /// </summary>
         public async void TakeOrder(float duration)
@@ -178,6 +281,9 @@ namespace Game.Characters
 
         private void Update()
         {
+            if (_selfTickPatience && _timeoutEnabled && _state == CustomerState.AwaitingDelivery && _waitTimer > 0f)
+                _waitTimer = Mathf.Max(0f, _waitTimer - Time.deltaTime);
+
             if (_timeoutEnabled && _waitTimer <= 0f && _state != CustomerState.None)
                 ForceTimeout();
         }
@@ -213,12 +319,22 @@ namespace Game.Characters
         /// Customers only accept direct interaction when the active hand is holding an item.
         /// </remarks>
         public bool CanInteract(in InteractionContext context)
-            => _directDeliveryEnabled && !context.ActiveHand.IsEmpty;
+            => (_interactionOverride != null && _interactionOverride.CanHandleInteraction(this, in context)) ||
+               CanReceiveDirectDelivery(in context);
+
+        private bool CanReceiveDirectDelivery(in InteractionContext context)
+            => _directDeliveryEnabled && !context.ActiveHand.IsEmpty && _state != CustomerState.None && _order != null;
 
         /// <inheritdoc/>
         public void OnInteractionStarted(in InteractionContext context)
         {
-            if (!CanInteract(in context)) return;
+            if (_interactionOverride != null && _interactionOverride.CanHandleInteraction(this, in context))
+            {
+                _interactionOverride.HandleInteraction(this, in context);
+                return;
+            }
+
+            if (!CanReceiveDirectDelivery(in context)) return;
 
             var heldItem = context.ActiveHand.Item.Value;
 

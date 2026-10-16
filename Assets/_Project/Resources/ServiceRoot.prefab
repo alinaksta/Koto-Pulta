@@ -1418,7 +1418,6 @@ MonoBehaviour:
   _autoStart: 1
   _gameModeBehaviours:
   - {fileID: 2196754816056920650}
-  - {fileID: 3316044591206511386}
 --- !u!1 &6116514134262119062
 GameObject:
   m_ObjectHideFlags: 0

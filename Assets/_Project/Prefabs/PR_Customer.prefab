@@ -305,6 +305,9 @@ MonoBehaviour:
   _bodyRenderer: {fileID: 1760449533518082515}
   _animator: {fileID: 8855399747693176042}
   _customer: {fileID: 5406570592058842523}
+  _seatedOnlyVisuals:
+  - {fileID: 1896882673844090607}
+  _resetAnimatorDelayAfterVisit: 1
 --- !u!114 &5013564494514049194
 MonoBehaviour:
   m_ObjectHideFlags: 0

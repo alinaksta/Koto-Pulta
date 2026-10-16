@@ -411,7 +411,8 @@ namespace Game.UI
             bool revenueMet = _shiftService.CurrentGoalRevenue > 0 &&
                               _shiftService.CurrentRevenue >= _shiftService.CurrentGoalRevenue;
             _revenueLabel.color = revenueMet ? _revenueMetColor : _revenueBaseColor;
-            _moneyIcon.color = revenueMet ? _revenueMetColor : _revenueBaseColor;
+            if (_moneyIcon != null)
+                _moneyIcon.color = revenueMet ? _revenueMetColor : _revenueBaseColor;
         }
 
         private void ResetRevenueColor()

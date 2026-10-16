@@ -21,6 +21,17 @@ namespace Game.Characters
         private readonly List<Customer> _activeCustomers = new();
 
         private IRandomItemDefinitionGiver _randomItemGiver;
+        private CustomerQueue _queue;
+
+        /// <summary>
+        /// Gets the active cashier queue, when the current scene uses the queue flow.
+        /// </summary>
+        public CustomerQueue Queue => _queue;
+
+        /// <summary>
+        /// Gets whether the current scene routes customers through a cashier queue.
+        /// </summary>
+        public bool UsesQueue => _queue != null && _queue.isActiveAndEnabled;
 
         /// <summary>
         /// Raised after a customer is spawned and initialized.
@@ -96,6 +107,10 @@ namespace Game.Characters
         /// <returns><see langword="true"/> when a customer was spawned.</returns>
         public bool TrySpawnCustomerAtRandomFreeTable(float? waitTimerOverride = null)
         {
+            // Queue flow: customers enter the restaurant and line up at the cashier instead of appearing at tables.
+            if (UsesQueue)
+                return _queue.TrySpawnCustomer();
+
             if (_freeTables.Count == 0)
                 return false;
 
@@ -150,6 +165,107 @@ namespace Game.Characters
 
             return true;
         }
+
+        #region Queue flow
+        /// <summary>
+        /// Registers the scene's cashier queue. While registered, spawn requests are routed into the queue.
+        /// </summary>
+        public void RegisterQueue(CustomerQueue queue)
+        {
+            _queue = queue;
+        }
+
+        /// <summary>
+        /// Unregisters the scene's cashier queue.
+        /// </summary>
+        public void UnregisterQueue(CustomerQueue queue)
+        {
+            if (_queue == queue)
+                _queue = null;
+        }
+
+        /// <summary>
+        /// Instantiates a persistent customer that is tracked by this service but not seated yet.
+        /// </summary>
+        public Customer CreatePersistentCustomer(Vector3 position)
+        {
+            var customer = Instantiate(_customerPrefab, position, Quaternion.identity);
+            customer.SetPersistent(true);
+            customer.SetSelfTickPatience(true);
+
+            customer.OnServed += HandleCustomerServed;
+            customer.OnTimedOut += HandleCustomerTimedOut;
+            customer.OnWrongItemGiven += HandleCustomerWrongItem;
+
+            _activeCustomers.Add(customer);
+            return customer;
+        }
+
+        /// <summary>
+        /// Stops tracking and destroys a persistent customer (e.g. when it leaves the restaurant).
+        /// </summary>
+        public void RemovePersistentCustomer(Customer customer)
+        {
+            if (customer == null)
+                return;
+
+            customer.OnServed -= HandleCustomerServed;
+            customer.OnTimedOut -= HandleCustomerTimedOut;
+            customer.OnWrongItemGiven -= HandleCustomerWrongItem;
+
+            _activeCustomers.Remove(customer);
+
+            if (customer.Table != null)
+                customer.Table.RemoveCustomer(customer);
+
+            Destroy(customer.gameObject);
+        }
+
+        /// <summary>
+        /// Reserves a random free table for the customer and picks a seat on it.
+        /// </summary>
+        public bool TryReserveRandomFreeTable(Customer customer, out Table table, out Seat seat)
+        {
+            table = null;
+            seat = null;
+
+            if (customer == null || _freeTables.Count == 0)
+                return false;
+
+            int randomIndex = UnityEngine.Random.Range(0, _freeTables.Count);
+            Table candidate = _freeTables[randomIndex];
+
+            if (candidate == null || !candidate.TryAddCustomerAtRandomSeat(customer, out seat))
+                return false;
+
+            _freeTables.RemoveAt(randomIndex);
+            table = candidate;
+            return true;
+        }
+
+        /// <summary>
+        /// Gets the number of currently free tables.
+        /// </summary>
+        public int FreeTableCount => _freeTables.Count;
+
+        /// <summary>
+        /// Tries to roll a random order using the installed item giver.
+        /// </summary>
+        public bool TryGetRandomOrder(out ItemDefinition order)
+        {
+            order = _randomItemGiver?.GetRandomItemDefinition();
+            return order != null;
+        }
+
+        /// <summary>
+        /// Reports a customer that ran out of patience while waiting in the cashier queue.
+        /// </summary>
+        public void ReportQueueTimeout(Customer customer)
+        {
+            if (customer != null)
+                OnCustomerTimedOut.Invoke(customer);
+        }
+        #endregion
 
         /// <summary>
         /// Sets the random item source used when creating customer orders.
@@ -221,6 +337,9 @@ namespace Game.Characters
             }
 
             _activeCustomers.Clear();
+
+            if (_queue != null)
+                _queue.HandleCustomersCleared();
         }
 
         private void HandleCustomerWrongItem(Customer customer, Item item)
@@ -231,13 +350,30 @@ namespace Game.Characters
         private void HandleCustomerTimedOut(Customer customer)
         {
             OnCustomerTimedOut.Invoke(customer);
+
+            if (TryRecycleThroughQueue(customer))
+                return;
+
             DespawnCustomer(customer);
         }
 
         private void HandleCustomerServed(Customer customer)
         {
             OnCustomerServed.Invoke(customer);
+
+            if (TryRecycleThroughQueue(customer))
+                return;
+
             DespawnCustomer(customer);
+        }
+
+        private bool TryRecycleThroughQueue(Customer customer)
+        {
+            if (customer == null || !customer.IsPersistent || _queue == null)
+                return false;
+
+            _queue.HandleVisitFinished(customer);
+            return true;
         }
 
         private ItemDefinition GetRandomOrder()

@@ -22,6 +22,9 @@ namespace Game.Characters
         [SerializeField] private SpriteRenderer _bodyRenderer;
         [SerializeField] private Animator _animator;
         [SerializeField] private Customer _customer;
+        [Tooltip("Visuals shown only while the customer is seated (e.g. the chair). Hidden while walking/queuing.")]
+        [SerializeField] private GameObject[] _seatedOnlyVisuals;
+        [SerializeField] private float _resetAnimatorDelayAfterVisit = 1f;
 
         private bool _destroyed;
 
@@ -38,6 +41,21 @@ namespace Game.Characters
                 return;
 
             _animator.SetFloat(PatienceHash, _customer.GetCurrentWaitTimer());
+            RefreshSeatedVisuals();
+        }
+
+        private void RefreshSeatedVisuals()
+        {
+            if (_seatedOnlyVisuals == null)
+                return;
+
+            bool seated = _customer.IsSeated;
+            for (int i = 0; i < _seatedOnlyVisuals.Length; i++)
+            {
+                var visual = _seatedOnlyVisuals[i];
+                if (visual != null && visual.activeSelf != seated)
+                    visual.SetActive(seated);
+            }
         }
 
         private void Start()
@@ -48,7 +66,10 @@ namespace Game.Characters
             _customer.OnTimedOut += HandleTimedOut;
             _customer.OnWaiterStartedAsking += HandleWaiterStartedAsking;
             _customer.OnServed += HandleServed;
+            _customer.OnOrderStarted += HandleOrderStarted;
+            _customer.OnVisitEnded += HandleVisitEnded;
 
+            RefreshSeatedVisuals();
             AnimateSpawn(_customer.SpawnDuration);
         }
 
@@ -59,7 +80,8 @@ namespace Game.Characters
             _customer.OnTimedOut -= HandleTimedOut;
             _customer.OnWaiterStartedAsking -= HandleWaiterStartedAsking;
             _customer.OnServed -= HandleServed;
-
+            _customer.OnOrderStarted -= HandleOrderStarted;
+            _customer.OnVisitEnded -= HandleVisitEnded;
 
             SetSpriteAlpha(NoAlpha);
         }
@@ -70,12 +92,35 @@ namespace Game.Characters
             if (CanUseAnimator())
                 _animator.SetTrigger(ServedHash);
 
-            AnimateDespawn(customer.DespawnDuration);
+            if (!customer.IsPersistent)
+                AnimateDespawn(customer.DespawnDuration);
         }
 
         private void HandleTimedOut(Customer customer)
         {
-            AnimateDespawn(customer.DespawnDuration);
+            if (!customer.IsPersistent)
+                AnimateDespawn(customer.DespawnDuration);
+        }
+
+        private void HandleOrderStarted(Customer customer)
+        {
+            _bodyRenderer.flipX = customer.Seat != null && customer.Seat.FlipSprite;
+            RefreshSeatedVisuals();
+        }
+
+        private async void HandleVisitEnded(Customer customer)
+        {
+            _bodyRenderer.flipX = false;
+            RefreshSeatedVisuals();
+
+            // Let the served/angry reaction play, then return the animator to its idle state for the next visit.
+            await Awaitable.WaitForSecondsAsync(_resetAnimatorDelayAfterVisit);
+
+            if (!CanUseAnimator() || _customer.State != CustomerState.None)
+                return;
+
+            _animator.Rebind();
+            _animator.Update(0f);
         }
 
         private async void HandleWaiterStartedAsking(Customer customer, float duration)
