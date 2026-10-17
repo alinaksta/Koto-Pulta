@@ -8079,6 +8079,9 @@ MonoBehaviour:
   _autoStartShift: 1
   _shiftModeId: shift
   _audioMixer: {fileID: 24100000, guid: 4b65db46c6d36551f97512195e0898ea, type: 2}
+  _orderBoardPrefab: {fileID: 6676647561225439593, guid: 9cfd3122ce5a20440bd4ccc5673a9dd8, type: 3}
+  _orderBoardTopOffset: 0
+  _orderBoardScale: 0.9
 --- !u!1 &138500658711294028
 GameObject:
   m_ObjectHideFlags: 0

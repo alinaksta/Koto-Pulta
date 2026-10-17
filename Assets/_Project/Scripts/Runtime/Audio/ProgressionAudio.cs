@@ -13,6 +13,11 @@ public class ProgressionAudio : MonoBehaviour
     private ShiftService _shiftService;
     private int _timerValue;
 
+    /// <summary>
+    /// Enables the once-per-second clock tick while a shift is running.
+    /// </summary>
+    public bool PlayTimerTicks { get; set; } = true;
+
     [SerializeField] private SoundType _moneySound = SoundType.Money;
     [SerializeField] private SoundType _timerSound = SoundType.ClockTick;
     [SerializeField] private SoundType _alarmSound = SoundType.Alarm;
@@ -39,7 +44,7 @@ public class ProgressionAudio : MonoBehaviour
     }
     private void LateUpdate()
     {
-        if((int)_shiftService.ShiftTimer != _timerValue)
+        if(PlayTimerTicks && (int)_shiftService.ShiftTimer != _timerValue)
         {
             Play(_timerSound, (int)_shiftService.ShiftTimer % 2);
             _timerValue = (int)_shiftService.ShiftTimer;

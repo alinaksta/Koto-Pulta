@@ -56,6 +56,13 @@ namespace Game.UI
                 note.SetPatience(normalized);
         }
 
+        /// <summary>Shows a short label on the note, e.g. the table number.</summary>
+        public void SetLabel(int id, string text)
+        {
+            if (_notes.TryGetValue(id, out OrderNoteView note) && note != null)
+                note.SetLabel(text);
+        }
+
         /// <summary>Changes the recipe picture later (when recipes exist).</summary>
         public void SetRecipe(int id, Sprite recipe)
         {

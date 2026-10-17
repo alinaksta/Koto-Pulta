@@ -1,4 +1,7 @@
 using Game.Interaction;
+using Game.Items.Properties;
+using Game.Services;
+using Game.UI;
 using Itemworks.Core;
 using System;
 using System.Collections.Generic;
@@ -50,6 +53,7 @@ namespace Game.Characters
         private Table _reservedTable;
         private Seat _reservedSeat;
         private float _tableWaitTime;
+        private int _orderNoteId = -1;
 
         // Body visuals: seated customers use their own animator, standing/walking ones use the waiter animator.
         private Animator _bodyAnimator;
@@ -72,7 +76,8 @@ namespace Game.Characters
             _customer = customer;
             _queue = queue;
             _customer.SetInteractionOverride(this);
-            _bubble = CustomerOrderBubble.Create(transform, queue.BubbleHeight, queue.BubbleMaterial);
+            if (queue.ShowOrderBubbles)
+                _bubble = CustomerOrderBubble.Create(transform, queue.BubbleHeight, queue.BubbleMaterial);
 
             _bodyAnimator = customer.GetComponentInChildren<Animator>(true);
             if (_bodyAnimator != null)
@@ -85,9 +90,53 @@ namespace Game.Characters
 
         private void OnDestroy()
         {
+            RemoveOrderNote();
+
             if (_customer != null)
                 _customer.SetInteractionOverride(null);
         }
+
+        #region Order board
+        private void AddOrderNote(ItemDefinition order)
+        {
+            RemoveOrderNote();
+
+            if (!ServiceLocator.TryGet(out OrderBoardView board) || board == null)
+                return;
+
+            Sprite dish = null;
+            if (order != null && order.TryGetProperty<FoodProperty>(out var food))
+                dish = food.WorldSprite != null ? food.WorldSprite : food.DialogueSprite;
+
+            // No recipe pictures yet.
+            _orderNoteId = board.AddOrder(dish, null, 1f);
+            if (_reservedTable != null)
+                board.SetLabel(_orderNoteId, _reservedTable.TableNumber.ToString());
+        }
+
+        private void UpdateOrderNote()
+        {
+            if (_orderNoteId < 0 || !ServiceLocator.TryGet(out OrderBoardView board) || board == null)
+                return;
+
+            // Full until the customer is seated, then it follows the table timer.
+            float patience = _phase == QueuedCustomerPhase.AtTable && _customer.State != CustomerState.None
+                ? _customer.NormalizedWaitTimer
+                : 1f;
+            board.SetPatience(_orderNoteId, patience);
+        }
+
+        private void RemoveOrderNote()
+        {
+            if (_orderNoteId < 0)
+                return;
+
+            if (ServiceLocator.TryGet(out OrderBoardView board) && board != null)
+                board.RemoveOrder(_orderNoteId);
+
+            _orderNoteId = -1;
+        }
+        #endregion
 
         private void Update()
         {
@@ -96,6 +145,7 @@ namespace Game.Characters
             UpdateMovement();
             UpdatePhase();
             UpdateBubble();
+            UpdateOrderNote();
         }
 
         private void LateUpdate()
@@ -211,6 +261,7 @@ namespace Game.Characters
             StopMoving();
             _phase = QueuedCustomerPhase.Ordering;
             _phaseTimer = _queue.OrderDuration;
+            AddOrderNote(order);
             _customer.PlayOrderingAnimation(_queue.OrderDuration);
         }
 
@@ -219,6 +270,7 @@ namespace Game.Characters
             transform.SetParent(null, true);
             _customer.EndVisit();
             _pendingOrder = null;
+            RemoveOrderNote();
 
             _phase = QueuedCustomerPhase.LeavingTable;
             _phaseTimer = delay;
@@ -237,6 +289,7 @@ namespace Game.Characters
                 _customer.EndVisit();
 
             _pendingOrder = null;
+            RemoveOrderNote();
             _phase = QueuedCustomerPhase.Exiting;
             MoveTo(exitPosition, onExited);
         }
@@ -265,6 +318,7 @@ namespace Game.Characters
             if (_reservedSeat == null)
             {
                 // Reservation was released meanwhile (e.g. shift ended) - go back to the line.
+                RemoveOrderNote();
                 _queue.JoinLine(this);
                 return;
             }
@@ -277,6 +331,7 @@ namespace Game.Characters
         {
             if (_reservedSeat == null || _reservedTable == null)
             {
+                RemoveOrderNote();
                 _queue.JoinLine(this);
                 return;
             }

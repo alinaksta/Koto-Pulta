@@ -48,6 +48,8 @@ namespace Game.Characters
         [Header("Visuals")]
         [Tooltip("Animator controller used for the customer body while it is not seated (waiter sprites).")]
         [SerializeField] private RuntimeAnimatorController _standingAnimator;
+        [Tooltip("Bubble with the meal icon and patience bar above customers' heads (replaced by the order board).")]
+        [SerializeField] private bool _showOrderBubbles = false;
         [SerializeField] private float _bubbleHeight = 2.1f;
         [Tooltip("Optional material for the order bubble sprites. Leave empty to use the default sprite material.")]
         [SerializeField] private Material _bubbleMaterial;
@@ -72,6 +74,7 @@ namespace Game.Characters
         public float FrontPatience => _frontPatience;
         public float OrderDuration => _orderDuration;
         public float LeaveTableDelay => _leaveTableDelay;
+        public bool ShowOrderBubbles => _showOrderBubbles;
         public float BubbleHeight => _bubbleHeight;
         public Material BubbleMaterial => _bubbleMaterial;
 

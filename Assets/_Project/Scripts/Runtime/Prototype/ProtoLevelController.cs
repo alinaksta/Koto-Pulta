@@ -6,6 +6,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.UI;
 
 namespace Game.Prototype
 {
@@ -29,11 +30,23 @@ namespace Game.Prototype
         [SerializeField] private bool _showResultsScreen = true;
 
         [Header("HUD")]
-        [Tooltip("Hide the persistent money counter, hide the shift number and move the quota label into the money's corner.")]
+        [Tooltip("Hide the persistent money counter, shift number and timer; move or hide the quota label.")]
         [SerializeField] private bool _simplifyHud = true;
+        [Tooltip("Timer and quota are stacked in the top-right corner with the money label's font size.")]
+        [SerializeField] private Vector2 _cornerMargin = new Vector2(40f, 40f);
+        [SerializeField] private Vector2 _cornerLabelSize = new Vector2(820f, 90f);
         [SerializeField] private string _moneyLabelName = "BalanceText";
         [SerializeField] private string _quotaLabelName = "RevenueLabel";
         [SerializeField] private string _shiftNumberLabelName = "ShiftNumberLabel";
+        [SerializeField] private string _timerLabelName = "TimerLabel";
+
+        [Header("Order board")]
+        [Tooltip("Order notes strip (Prefabs/UI/Board). Spawned on the shift HUD canvas.")]
+        [SerializeField] private OrderBoardView _orderBoardPrefab;
+        [Tooltip("Vertical offset from the top of the screen.")]
+        [SerializeField] private float _orderBoardTopOffset = 0f;
+        [Tooltip("Uniform scale of the order board (notes and spacing).")]
+        [SerializeField] private float _orderBoardScale = 0.9f;
 
         [Header("Pause")]
         [SerializeField] private AudioMixer _audioMixer;
@@ -51,6 +64,8 @@ namespace Game.Prototype
                 DisableWaiters();
 
             ProtoAudioSettings.ApplyMaster();
+            DisableClockTicks();
+            SpawnOrderBoard();
 
             if (_simplifyHud)
                 SimplifyHud();
@@ -64,23 +79,15 @@ namespace Game.Prototype
             TMP_Text money = FindLabel(_moneyLabelName);
             TMP_Text quota = FindLabel(_quotaLabelName);
             TMP_Text shiftNumber = FindLabel(_shiftNumberLabelName);
+            TMP_Text timer = FindLabel(_timerLabelName);
 
             if (shiftNumber != null)
                 shiftNumber.gameObject.SetActive(false);
 
-            if (quota != null && money != null)
-            {
-                // Take over the money label's spot (top-left corner) on the shift HUD's own canvas.
-                RectTransform from = money.rectTransform;
-                RectTransform to = quota.rectTransform;
-                to.SetParent(quota.canvas.rootCanvas.transform, false);
-                to.anchorMin = from.anchorMin;
-                to.anchorMax = from.anchorMax;
-                to.pivot = from.pivot;
-                to.sizeDelta = new Vector2(Mathf.Max(from.sizeDelta.x, 420f), from.sizeDelta.y);
-                to.anchoredPosition = from.anchoredPosition;
-                quota.alignment = money.alignment;
-            }
+            // Timer on top, quota below it, both in the top-right corner (the order board owns the top-left).
+            float fontSize = money != null ? money.fontSize : 72f;
+            PlaceInTopRightCorner(timer, 0, fontSize);
+            PlaceInTopRightCorner(quota, 1, fontSize);
 
             if (money != null)
             {
@@ -91,6 +98,54 @@ namespace Game.Prototype
                 else
                     money.gameObject.SetActive(false);
             }
+        }
+
+        private void PlaceInTopRightCorner(TMP_Text label, int row, float fontSize)
+        {
+            if (label == null)
+                return;
+
+            RectTransform rect = label.rectTransform;
+            rect.SetParent(label.canvas.rootCanvas.transform, false);
+            rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(1f, 1f);
+            rect.sizeDelta = _cornerLabelSize;
+            rect.anchoredPosition = new Vector2(-_cornerMargin.x, -_cornerMargin.y - row * _cornerLabelSize.y);
+            rect.localScale = Vector3.one;
+
+            label.enableAutoSizing = false;
+            label.fontSize = fontSize;
+            label.alignment = TextAlignmentOptions.TopRight;
+            label.gameObject.SetActive(true);
+        }
+
+        private static void DisableClockTicks()
+        {
+            foreach (var audio in FindObjectsByType<ProgressionAudio>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+                audio.PlayTimerTicks = false;
+        }
+
+        private void SpawnOrderBoard()
+        {
+            if (_orderBoardPrefab == null || ServiceLocator.TryGet(out OrderBoardView _))
+                return;
+
+            var hud = FindAnyObjectByType<UIShiftHud>(FindObjectsInactive.Include);
+            Canvas canvas = hud != null ? hud.GetComponentInParent<Canvas>(true) : null;
+            if (canvas == null)
+            {
+                Debug.LogWarning($"[{nameof(ProtoLevelController)}] No HUD canvas found for the order board.", this);
+                return;
+            }
+
+            OrderBoardView board = Instantiate(_orderBoardPrefab, canvas.rootCanvas.transform, false);
+            var rect = (RectTransform)board.transform;
+
+            // Notes line up from the top-left corner; scaling also shrinks toward that corner.
+            rect.pivot = new Vector2(0f, 1f);
+            rect.anchoredPosition = new Vector2(0f, _orderBoardTopOffset);
+            rect.localScale = Vector3.one * _orderBoardScale;
+            if (board.TryGetComponent(out HorizontalLayoutGroup layout))
+                layout.childAlignment = TextAnchor.UpperLeft;
         }
 
         private static TMP_Text FindLabel(string objectName)
