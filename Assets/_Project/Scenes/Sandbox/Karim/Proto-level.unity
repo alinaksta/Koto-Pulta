@@ -8139,6 +8139,82 @@ MonoBehaviour:
   _standingAnimator: {fileID: 9100000, guid: 30ffcbc1b4883382a8fa8f3eb0d6f14f, type: 2}
   _bubbleHeight: 2.1
   _bubbleMaterial: {fileID: 0}
+--- !u!1 &185725454701580234
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 558735677692360850}
+  - component: {fileID: 769444192635870603}
+  m_Layer: 0
+  m_Name: ProtoKitchen
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &558735677692360850
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 185725454701580234}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &769444192635870603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 185725454701580234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 106a13f2d05842209c184c00628a4830, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Game.Prototype.Kitchen.ProtoKitchen
+  _dough: {fileID: 11400000, guid: 2eaf897075a1472b90814df248edc538, type: 2}
+  _apple: {fileID: 11400000, guid: 5be1b64e3efe4e26ba096f2f7a44c3d8, type: 2}
+  _preparedDough: {fileID: 11400000, guid: 2fab8f6bd91649bd8d05c8fefc78ff44, type: 2}
+  _preparedApple: {fileID: 11400000, guid: 4b58404338d9454685d3077f7932424a, type: 2}
+  _applePie: {fileID: 11400000, guid: cd7a35fa39eb401380dcb086d92de9df, type: 2}
+  _stapler: {fileID: 11400000, guid: c9da10980d9449d8a0c8b71ebf511d24, type: 2}
+  _folderModel: {fileID: 919132149155446097, guid: 378b6970db3e55448bcd1776c3f27659, type: 3}
+  _shredderModel: {fileID: 919132149155446097, guid: b602ad247f80c0744876001eaef0d726, type: 3}
+  _staplerModel: {fileID: 919132149155446097, guid: 462529d527a3c614f82c450557ab769f, type: 3}
+  _boardModel: {fileID: 919132149155446097, guid: b42f50a40288d83438ec14c67c1f0cca, type: 3}
+  _folderTexture: {fileID: 2800000, guid: ebd0418187c5c4e42a252a1714ea37d1, type: 3}
+  _shredderTexture: {fileID: 2800000, guid: fe7e5f648827b39488f50b381ff8edb4, type: 3}
+  _staplerTexture: {fileID: 2800000, guid: fe7e5f648827b39488f50b381ff8edb4, type: 3}
+  _boardTexture: {fileID: 2800000, guid: ebd0418187c5c4e42a252a1714ea37d1, type: 3}
+  _mouseIcon: {fileID: 21300000, guid: f1953862e898410b9d92670da6313311, type: 3}
+  _circleArrowIcon: {fileID: 21300000, guid: cc259b4f0f1145fb9a8740d2e4c606f2, type: 3}
+  _counterCenter: {x: 0, y: 0, z: 0}
+  _counterRadius: 2
+  _fallbackCounterHeight: 0.97
+  _folderAngle: 140
+  _shredderAngle: 185
+  _staplerAngle: 265
+  _boardAngle: 230
+  _folderSize: 1.5
+  _shredderSize: 0.8
+  _staplerSize: 0.45
+  _boardSize: 1.4
+  _folderYaw: 180
+  _shredderYaw: 90
+  _staplerYaw: 0
+  _boardYaw: 0
+  _siteTitle: Ingredients
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -8157,3 +8233,4 @@ SceneRoots:
   - {fileID: 772251276}
   - {fileID: 349952020210319997}
   - {fileID: 598375164325870829}
+  - {fileID: 558735677692360850}

@@ -163,6 +163,15 @@ namespace Game.Interaction
             DirectionLerp = 20f
         };
 
+        /// <summary>Which hand this view shows.</summary>
+        public HandType HandType => _handType;
+
+        /// <summary>The hand container shown by this view (available after Start).</summary>
+        public Hand Hand => _hand;
+
+        /// <summary>The image that shows the held item; also usable as an on-screen anchor for held visuals.</summary>
+        public Image HeldItemImage => _heldItemImage;
+
         private float HandSign => _handType == HandType.Left ? 1f : -1f;
         private float BobPhaseOffset =>
             _handType == HandType.Right ? Mathf.PI : 0f;

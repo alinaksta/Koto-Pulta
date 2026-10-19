@@ -87,11 +87,12 @@ namespace Game.Interaction
                 _cameraController.SetMouseLocked(true);
             }
 
-            bool visible = FocusStatus == FocusStatus.Unfocused;
+            bool unfocused = FocusStatus == FocusStatus.Unfocused;
+            bool visible = unfocused || (FocusedObject is IKeepHandsVisibleWhileFocused keep && keep.KeepHandsVisible);
             _rightHand.SetVisible(visible);
             _leftHand.SetVisible(visible);
 
-            if (visible)
+            if (unfocused)
                 UpdateHover(Time.deltaTime);
             else
                 ClearHover();

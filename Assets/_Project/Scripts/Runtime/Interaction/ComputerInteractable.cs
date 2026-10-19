@@ -24,6 +24,16 @@ namespace Game.Interaction
         /// </summary>
         public event Action FocusEnded = delegate { };
 
+        /// <summary>
+        /// Raised on a click while focusing is disabled (the screen is used by looking at it instead).
+        /// </summary>
+        public event Action<InteractionContext> DirectInteraction = delegate { };
+
+        /// <summary>
+        /// When false, clicking the computer doesn't zoom the camera in; <see cref="DirectInteraction"/> is raised instead.
+        /// </summary>
+        public bool FocusEnabled { get; set; } = true;
+
         /// <inheritdoc/>
         public FocusTarget Target => _focusTarget;
 
@@ -51,6 +61,9 @@ namespace Game.Interaction
         /// </remarks>
         public bool CanInteract(in InteractionContext context)
         {
+            if (!FocusEnabled)
+                return true;
+
             return Vector3.Dot(_focusTarget.Transform.forward, context.HeadForward) >= 0.4;
         }
 
@@ -89,6 +102,12 @@ namespace Game.Interaction
         /// <inheritdoc/>
         public void OnInteractionStarted(in InteractionContext context)
         {
+            if (!FocusEnabled)
+            {
+                DirectInteraction.Invoke(context);
+                return;
+            }
+
             _focusHandler = context.FocusHandler;
             CurrentInteractor = context.DualHandInteractor;
             bool success = context.FocusHandler.TryBeginFocus(this);

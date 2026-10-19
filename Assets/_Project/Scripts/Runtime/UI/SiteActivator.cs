@@ -51,6 +51,7 @@ namespace Game.UI
         private readonly Dictionary<ComputerSiteTab, RectTransform> _tabRoots = new Dictionary<ComputerSiteTab, RectTransform>();
         private readonly Dictionary<Button, ColorBlock> _tabButtonColors = new Dictionary<Button, ColorBlock>();
         private readonly HashSet<ComputerSiteTab> _disabledTabs = new HashSet<ComputerSiteTab>();
+        private readonly HashSet<ComputerSiteTab> _hiddenTabs = new HashSet<ComputerSiteTab>();
 
         private ComputerSiteTab _currentTab;
         private ShiftService _shiftService;
@@ -74,7 +75,7 @@ namespace Game.UI
         /// </summary>
         public bool IsTabEnabled(ComputerSiteTab tab)
         {
-            return !_disabledTabs.Contains(tab);
+            return !_disabledTabs.Contains(tab) && !_hiddenTabs.Contains(tab);
         }
 
         /// <summary>
@@ -82,6 +83,10 @@ namespace Game.UI
         /// </summary>
         public void SetTabEnabled(ComputerSiteTab tab, bool enabled)
         {
+            // Hidden tabs stay unavailable regardless of runtime availability rules.
+            if (enabled && _hiddenTabs.Contains(tab))
+                return;
+
             bool changed = enabled
                 ? _disabledTabs.Remove(tab)
                 : _disabledTabs.Add(tab);
@@ -115,6 +120,7 @@ namespace Game.UI
         public void HideTab(ComputerSiteTab tab)
         {
             SetTabEnabled(tab, false);
+            _hiddenTabs.Add(tab);
 
             for (int i = 0; i < _tabButtons.Count; i++)
             {
@@ -125,6 +131,12 @@ namespace Game.UI
             if (_tabRoots.TryGetValue(tab, out RectTransform root) && root != null)
                 root.gameObject.SetActive(false);
         }
+
+        /// <summary>
+        /// Gets the root of a tab's site, when bound.
+        /// </summary>
+        public bool TryGetTabRoot(ComputerSiteTab tab, out RectTransform root)
+            => _tabRoots.TryGetValue(tab, out root) && root != null;
 
         /// <summary>
         /// Enables a computer tab.

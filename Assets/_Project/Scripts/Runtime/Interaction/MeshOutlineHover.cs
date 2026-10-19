@@ -14,6 +14,16 @@ namespace Game.Interaction
 
         private bool _hovered;
 
+        /// <summary>
+        /// Sets the renderers to outline (for objects assembled at runtime).
+        /// </summary>
+        public void SetRenderers(Renderer[] renderers)
+        {
+            SetOutlined(false);
+            _renderers = renderers;
+            ApplyOutlineState();
+        }
+
         private void OnEnable() => ApplyOutlineState();
 
         private void OnDisable() => SetOutlined(false);
