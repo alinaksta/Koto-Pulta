@@ -10,6 +10,8 @@ namespace Game.Characters
         [SerializeField] private Transform _customerSpawnOrigin;
         [SerializeField] private Transform _customerAskOrigin;
         [SerializeField] private bool _flipSprite;
+        [Tooltip("The seat has a real (3D) chair, so the customer's own 2D chair is not shown.")]
+        [SerializeField] private bool _hasChairModel;
 
         /// <summary>
         /// Gets the world position where the customer starts moving from.
@@ -23,6 +25,10 @@ namespace Game.Characters
         /// Gets whether the seated customer sprite should be flipped.
         /// </summary>
         public bool FlipSprite => _flipSprite;
+        /// <summary>
+        /// Gets whether the seat has its own chair model (the customer's 2D chair is hidden).
+        /// </summary>
+        public bool HasChairModel => _hasChairModel;
 
         /// <summary>
         /// Gets the direction a customer faces while being asked.

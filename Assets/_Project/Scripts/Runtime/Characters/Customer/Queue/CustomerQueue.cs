@@ -42,6 +42,16 @@ namespace Game.Characters
         [Tooltip("Delay before a customer leaves the table and walks back to the end of the line.")]
         [SerializeField] private float _leaveTableDelay = 1.2f;
 
+        [Header("Home tables")]
+        [Tooltip("Every customer owns one table: all start seated at their own table, get up one by one " +
+                 "(random order, random interval) to order at the cashier and go back to their own table.")]
+        [SerializeField] private bool _homeTables;
+        [SerializeField, Min(0f)] private float _minDepartureInterval = 0.5f;
+        [Tooltip("Longest pause between two customers getting up, in seconds.")]
+        [SerializeField, Min(0f)] private float _maxDepartureInterval = 5f;
+        [Tooltip("How long a customer stays at its table after a visit before it may get up again.")]
+        [SerializeField, Min(0f)] private float _homeRestTime = 6f;
+
         [Header("Movement")]
         [SerializeField] private float _walkSpeed = 2.5f;
 
@@ -62,6 +72,10 @@ namespace Game.Characters
         private QueuedCustomer _frontCustomer;
         private float _frontPatience;
         private int _agentTypeId;
+        private bool _homesPopulated;
+        private bool _departuresActive;
+        private float _departureTimer;
+        private readonly List<QueuedCustomer> _departureCandidates = new();
 
         /// <summary>
         /// Debug switch: when true, no customer loses patience (queue or table).
@@ -88,6 +102,11 @@ namespace Game.Characters
         /// </summary>
         public int Population => _all.Count;
 
+        /// <summary>
+        /// Gets whether customers own a table each (see <see cref="TrySpawnCustomer"/>).
+        /// </summary>
+        public bool UsesHomeTables => _homeTables;
+
         private void Awake()
         {
             _path = new NavMeshPath();
@@ -107,9 +126,16 @@ namespace Game.Characters
                 _customerService.UnregisterQueue(this);
         }
 
+        private void Start()
+        {
+            if (_homeTables)
+                PopulateHomes();
+        }
+
         private void Update()
         {
             PurgeDestroyed();
+            UpdateDepartures();
             AssignSpots();
             UpdateFrontPatience();
         }
@@ -121,6 +147,18 @@ namespace Game.Characters
         public bool TrySpawnCustomer()
         {
             PurgeDestroyed();
+
+            if (_homeTables)
+            {
+                // Customers already sit at their tables; the shift asking for customers just lets them start ordering.
+                PopulateHomes();
+                if (!_departuresActive)
+                {
+                    _departuresActive = true;
+                    _departureTimer = Random.Range(_minDepartureInterval, _maxDepartureInterval);
+                }
+                return false;
+            }
 
             if (_customerService == null || _all.Count >= _maxCustomers)
                 return false;
@@ -143,6 +181,21 @@ namespace Game.Characters
         {
             PurgeDestroyed();
 
+            if (_homeTables)
+            {
+                // Office workers don't leave: everyone goes back to their own table and stays there.
+                _departuresActive = false;
+                foreach (QueuedCustomer queued in _all)
+                {
+                    ReleaseTable(queued);
+                    queued.ReturnHome();
+                }
+
+                _line.Clear();
+                _frontCustomer = null;
+                return;
+            }
+
             for (int i = _all.Count - 1; i >= 0; i--)
             {
                 QueuedCustomer queued = _all[i];
@@ -164,6 +217,9 @@ namespace Game.Characters
         /// </summary>
         public void HandleCustomersCleared()
         {
+            // Home-table customers are put back at their tables the next time the shift asks for customers.
+            _homesPopulated = false;
+            _departuresActive = false;
             _all.Clear();
             _line.Clear();
             _frontCustomer = null;
@@ -195,7 +251,13 @@ namespace Game.Characters
                 return false;
             }
 
-            if (!_customerService.TryReserveRandomFreeTable(queued.Customer, out Table table, out Seat seat))
+            Table table;
+            Seat seat;
+            bool reserved = _homeTables && queued.HomeTable != null
+                ? _customerService.TryReserveTable(table = queued.HomeTable, queued.Customer, out seat)
+                : _customerService.TryReserveRandomFreeTable(queued.Customer, out table, out seat);
+
+            if (!reserved)
             {
                 Debug.Log($"[{nameof(CustomerQueue)}] No free table - the customer keeps waiting.", this);
                 return false;
@@ -217,7 +279,11 @@ namespace Game.Characters
                 return;
 
             ReleaseTable(queued);
-            queued.LeaveTable(_leaveTableDelay);
+
+            if (_homeTables && queued.HomeTable != null)
+                queued.StayAtHome(_homeRestTime);
+            else
+                queued.LeaveTable(_leaveTableDelay);
         }
 
         /// <summary>
@@ -242,6 +308,78 @@ namespace Game.Characters
 
             if (table != null)
                 table.RemoveCustomer(queued.Customer);
+        }
+        #endregion
+
+        #region Home tables
+        /// <summary>
+        /// Puts one customer at every registered table, seated.
+        /// </summary>
+        private void PopulateHomes()
+        {
+            if (_customerService == null && ServiceLocator.TryGet(out _customerService))
+                _customerService.RegisterQueue(this);
+
+            if (_homesPopulated || _customerService == null)
+                return;
+
+            // Tables register themselves on Awake; make sure none were missed (e.g. the service wasn't up yet).
+            foreach (Table table in FindObjectsByType<Table>(FindObjectsSortMode.None))
+            {
+                bool registered = false;
+                foreach (Table known in _customerService.Tables)
+                    registered |= known == table;
+                if (!registered)
+                    table.Initialize(table.TableNumber, _customerService);
+            }
+
+            _homesPopulated = true;
+            foreach (Table table in _customerService.Tables)
+            {
+                if (table == null || table.SeatCount == 0)
+                    continue;
+
+                Seat seat = table.Seats[0];
+                Customer customer = _customerService.CreatePersistentCustomer(seat.CustomerSpawnOrigin);
+                var queued = customer.gameObject.AddComponent<QueuedCustomer>();
+                queued.Initialize(customer, this);
+                queued.SetHome(table, seat);
+                queued.SitAtHome(Random.Range(0f, _homeRestTime));
+                _all.Add(queued);
+            }
+
+            Debug.Log($"[{nameof(CustomerQueue)}] Seated {_all.Count} customers at their own tables.", this);
+        }
+
+        /// <summary>
+        /// Every few seconds a random resting customer gets up and joins the line.
+        /// </summary>
+        private void UpdateDepartures()
+        {
+            if (!_homeTables || !_departuresActive)
+                return;
+
+            _departureTimer -= Time.deltaTime;
+            if (_departureTimer > 0f)
+                return;
+
+            _departureCandidates.Clear();
+            foreach (QueuedCustomer queued in _all)
+            {
+                if (queued.CanLeaveHome)
+                    _departureCandidates.Add(queued);
+            }
+
+            if (_departureCandidates.Count == 0)
+            {
+                _departureTimer = 0.5f;
+                return;
+            }
+
+            QueuedCustomer leaving = _departureCandidates[Random.Range(0, _departureCandidates.Count)];
+            leaving.LeaveHome();
+            JoinLine(leaving);
+            _departureTimer = Random.Range(_minDepartureInterval, Mathf.Max(_minDepartureInterval, _maxDepartureInterval));
         }
         #endregion
 

@@ -244,6 +244,28 @@ namespace Game.Characters
         }
 
         /// <summary>
+        /// Reserves a specific free table for the customer (e.g. the customer's own table).
+        /// </summary>
+        public bool TryReserveTable(Table table, Customer customer, out Seat seat)
+        {
+            seat = null;
+
+            if (table == null || customer == null || !_freeTables.Contains(table))
+                return false;
+
+            if (!table.TryAddCustomer(customer, out seat))
+                return false;
+
+            _freeTables.Remove(table);
+            return true;
+        }
+
+        /// <summary>
+        /// Gets every registered table.
+        /// </summary>
+        public IReadOnlyList<Table> Tables => _tables;
+
+        /// <summary>
         /// Gets the number of currently free tables.
         /// </summary>
         public int FreeTableCount => _freeTables.Count;

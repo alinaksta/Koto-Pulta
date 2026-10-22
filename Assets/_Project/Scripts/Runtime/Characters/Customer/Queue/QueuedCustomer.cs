@@ -19,7 +19,11 @@ namespace Game.Characters
         WalkingToTable,
         AtTable,
         LeavingTable,
-        Exiting
+        Exiting,
+        /// <summary>Sitting at its own table without an order (home-table flow).</summary>
+        AtHome,
+        /// <summary>Walking back to its own table without an order (home-table flow).</summary>
+        ReturningHome
     }
 
     /// <summary>
@@ -54,6 +58,8 @@ namespace Game.Characters
         private Seat _reservedSeat;
         private float _tableWaitTime;
         private int _orderNoteId = -1;
+        private Table _homeTable;
+        private Seat _homeSeat;
 
         // Body visuals: seated customers use their own animator, standing/walking ones use the waiter animator.
         private Animator _bodyAnimator;
@@ -70,6 +76,12 @@ namespace Game.Characters
         public bool ArrivedAtSpot => _arrivedAtSpot;
         public Table ReservedTable => _reservedTable;
         public ItemDefinition PendingOrder => _pendingOrder;
+        public Table HomeTable => _homeTable;
+
+        /// <summary>
+        /// Gets whether the customer sits at its own table, rested, and may get up to order.
+        /// </summary>
+        public bool CanLeaveHome => _phase == QueuedCustomerPhase.AtHome && _phaseTimer <= 0f;
 
         public void Initialize(Customer customer, CustomerQueue queue)
         {
@@ -155,7 +167,8 @@ namespace Game.Characters
 
         #region Body visuals
         private bool ShouldUseStandingVisuals
-            => _phase != QueuedCustomerPhase.AtTable && _phase != QueuedCustomerPhase.LeavingTable;
+            => _phase != QueuedCustomerPhase.AtTable && _phase != QueuedCustomerPhase.LeavingTable &&
+               _phase != QueuedCustomerPhase.AtHome;
 
         private void UpdateBodyVisuals()
         {
@@ -276,6 +289,84 @@ namespace Game.Characters
             _phaseTimer = delay;
         }
 
+        #region Home table
+        /// <summary>
+        /// Gives the customer its own table (home-table flow).
+        /// </summary>
+        public void SetHome(Table table, Seat seat)
+        {
+            _homeTable = table;
+            _homeSeat = seat;
+        }
+
+        /// <summary>
+        /// Puts the customer on its own seat, without an order.
+        /// </summary>
+        public void SitAtHome(float rest)
+        {
+            if (_homeSeat == null)
+                return;
+
+            StopMoving();
+            transform.position = _homeSeat.CustomerSpawnOrigin;
+            transform.rotation = Quaternion.identity;
+            transform.SetParent(_homeSeat.transform, true);
+
+            _phase = QueuedCustomerPhase.AtHome;
+            _phaseTimer = rest;
+            if (_standingVisuals && _bodyAnimator != null)
+                SetStandingVisuals(false);
+        }
+
+        /// <summary>
+        /// Gets up from its own table to go and order.
+        /// </summary>
+        public void LeaveHome()
+        {
+            transform.SetParent(null, true);
+        }
+
+        /// <summary>
+        /// The visit at its own table is over (served or not): stays seated and rests a while.
+        /// </summary>
+        public void StayAtHome(float rest)
+        {
+            if (_customer.State != CustomerState.None || _customer.IsSeated)
+                _customer.EndVisit();
+
+            _pendingOrder = null;
+            RemoveOrderNote();
+            _phase = QueuedCustomerPhase.AtHome;
+            _phaseTimer = rest;
+        }
+
+        /// <summary>
+        /// Goes back to its own table and sits there (e.g. when the shift ends).
+        /// </summary>
+        public void ReturnHome()
+        {
+            if (_phase == QueuedCustomerPhase.AtHome)
+            {
+                _phaseTimer = float.MaxValue;
+                return;
+            }
+
+            if (_phase == QueuedCustomerPhase.AtTable)
+            {
+                StayAtHome(float.MaxValue);
+                return;
+            }
+
+            transform.SetParent(null, true);
+            _pendingOrder = null;
+            RemoveOrderNote();
+            _queueIndex = -1;
+            _phase = QueuedCustomerPhase.ReturningHome;
+            if (_homeSeat != null)
+                MoveTo(_homeSeat.CustomerAskOrigin, () => SitAtHome(float.MaxValue));
+        }
+        #endregion
+
         public void ClearReservation()
         {
             _reservedTable = null;
@@ -309,6 +400,11 @@ namespace Game.Characters
                     _phaseTimer -= Time.deltaTime;
                     if (_phaseTimer <= 0f)
                         _queue.JoinLine(this);
+                    break;
+
+                case QueuedCustomerPhase.AtHome:
+                    if (_phaseTimer > 0f)
+                        _phaseTimer -= Time.deltaTime;
                     break;
             }
         }

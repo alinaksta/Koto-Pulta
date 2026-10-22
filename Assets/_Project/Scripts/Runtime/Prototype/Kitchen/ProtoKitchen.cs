@@ -49,6 +49,9 @@ namespace Game.Prototype.Kitchen
         [Tooltip("Distance from the center to the middle of the counter top.")]
         [SerializeField] private float _counterRadius = 2.0f;
         [SerializeField] private float _fallbackCounterHeight = 0.97f;
+        [Tooltip("On: the player stands outside the counter (a table in the middle of the room) and stations face outward. " +
+                 "Off: the player stands inside a ring counter and stations face the center.")]
+        [SerializeField] private bool _stationsFaceOutward = true;
         [Tooltip("Angle around the counter in degrees (0 = +X, 90 = +Z, where the computer is).")]
         [SerializeField] private float _folderAngle = 140f;
         [SerializeField] private float _shredderAngle = 185f;
@@ -56,7 +59,7 @@ namespace Game.Prototype.Kitchen
         [SerializeField] private float _boardAngle = 230f;
         [Tooltip("Largest horizontal size of each station in meters.")]
         [SerializeField] private float _folderSize = 1.5f;
-        [SerializeField] private float _shredderSize = 0.8f;
+        [SerializeField] private float _shredderSize = 1.2f;
         [SerializeField] private float _staplerSize = 0.45f;
         [SerializeField] private float _boardSize = 1.4f;
         [Tooltip("Size of the stapler model shown in the player's hand.")]
@@ -121,7 +124,15 @@ namespace Game.Prototype.Kitchen
 
         private void Start()
         {
-            SpawnStations();
+            // Stations are placed in the scene (see "Bake stations and office niches into the scene");
+            // spawning around the counter is only a fallback for scenes without them.
+            ProtoStation[] stations = FindObjectsByType<ProtoStation>(FindObjectsSortMode.None);
+            if (stations.Length == 0)
+                SpawnStations();
+            else
+                foreach (ProtoStation station in stations)
+                    ConfigureStation(station);
+
             BuildIngredientsSite();
 
             if (_stapler != null && _staplerModel != null)
@@ -186,38 +197,130 @@ namespace Game.Prototype.Kitchen
         #region Stations
         private void SpawnStations()
         {
-            var folder = SpawnStation<FolderPressStation>("Station_FolderPress", _folderModel, _folderTexture, _folderAngle, _folderSize, _folderYaw);
-            if (folder != null)
-            {
-                folder.Input = _dough;
-                folder.Output = _preparedDough;
-            }
+            ConfigureStation(SpawnStation<FolderPressStation>("Station_FolderPress", _folderModel, _folderTexture, _folderAngle, _folderSize, _folderYaw));
+            ConfigureStation(SpawnStation<ShredderStation>("Station_Shredder", _shredderModel, _shredderTexture, _shredderAngle, _shredderSize, _shredderYaw));
+            ConfigureStation(SpawnStation<BoardStation>("Station_Board", _boardModel, _boardTexture, _boardAngle, _boardSize, _boardYaw));
+            ConfigureStation(SpawnStation<StaplerStation>("Station_Stapler", _staplerModel, _staplerTexture, _staplerAngle, _staplerSize, _staplerYaw));
+        }
 
-            var shredder = SpawnStation<ShredderStation>("Station_Shredder", _shredderModel, _shredderTexture, _shredderAngle, _shredderSize, _shredderYaw);
-            if (shredder != null)
+        /// <summary>
+        /// Gives a station its items and click mode.
+        /// </summary>
+        private void ConfigureStation(ProtoStation station)
+        {
+            switch (station)
             {
-                shredder.Input = _apple;
-                shredder.Output = _preparedApple;
-            }
+                case FolderPressStation folder:
+                    folder.Input = _dough;
+                    folder.Output = _preparedDough;
+                    break;
 
-            var board = SpawnStation<BoardStation>("Station_Board", _boardModel, _boardTexture, _boardAngle, _boardSize, _boardYaw);
-            if (board != null)
-            {
-                board.SetUseFocus(false); // plain clicks, no camera lock
-                board.Stapler = _stapler;
-                board.FirstInput = _preparedApple;
-                board.SecondInput = _preparedDough;
-                board.Output = _applePie;
-            }
+                case ShredderStation shredder:
+                    shredder.Input = _apple;
+                    shredder.Output = _preparedApple;
+                    break;
 
-            var stapler = SpawnStation<StaplerStation>("Station_Stapler", _staplerModel, _staplerTexture, _staplerAngle, _staplerSize, _staplerYaw);
-            if (stapler != null)
-            {
-                stapler.Stapler = _stapler;
-                // Grabbing the stapler is a single click, no need to zoom in.
-                stapler.SetUseFocus(false);
+                case BoardStation board:
+                    board.SetUseFocus(false); // plain clicks, no camera lock
+                    board.Stapler = _stapler;
+                    board.FirstInput = _preparedApple;
+                    board.SecondInput = _preparedDough;
+                    board.Output = _applePie;
+                    break;
+
+                case StaplerStation stapler:
+                    stapler.Stapler = _stapler;
+                    // Grabbing the stapler is a single click, no need to zoom in.
+                    stapler.SetUseFocus(false);
+                    break;
             }
         }
+
+#if UNITY_EDITOR
+        public const string BakedStationsName = "Stations";
+
+        /// <summary>
+        /// Places the stations around the work area and builds the office niches as regular scene objects.
+        /// Run once (component menu), then move things by hand and save the scene.
+        /// </summary>
+        [ContextMenu("Bake stations and office niches into the scene")]
+        public void BakeIntoScene()
+        {
+            ResolveMissingReferences();
+            Physics.SyncTransforms();
+
+            Transform old = transform.Find(BakedStationsName);
+            if (old != null)
+                UnityEditor.Undo.DestroyObjectImmediate(old.gameObject);
+
+            var root = new GameObject(BakedStationsName);
+            UnityEditor.Undo.RegisterCreatedObjectUndo(root, "Bake stations");
+            root.transform.SetParent(transform, false);
+
+            // The work area: the ring between the central table and the outer L-shaped tables.
+            // Position on a table top -> direction to where the player stands.
+            BakeStation<ShredderStation>(root.transform, "Station_Shredder", _shredderModel, new Vector3(-3.55f, 0f, 0.5f), Vector3.right, _shredderSize, _shredderYaw);
+            BakeStation<FolderPressStation>(root.transform, "Station_FolderPress", _folderModel, new Vector3(0f, 0f, -0.55f), Vector3.back, _folderSize, _folderYaw);
+            BakeStation<BoardStation>(root.transform, "Station_Board", _boardModel, new Vector3(0.55f, 0f, 0.1f), Vector3.right, _boardSize, _boardYaw);
+            BakeStation<StaplerStation>(root.transform, "Station_Stapler", _staplerModel, new Vector3(3.55f, 0f, -0.5f), Vector3.left, _staplerSize, _staplerYaw);
+
+            GameObject office = GameObject.Find("Office");
+            if (office != null)
+                ProtoOfficeLayout.Bake(transform, office);
+            else
+                Debug.LogWarning($"[{nameof(ProtoKitchen)}] No 'Office' object in the scene; niches were not built.", this);
+
+            UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(gameObject.scene);
+        }
+
+        /// <summary>
+        /// Editor: adds number signs to baked niches that don't have one yet.
+        /// </summary>
+        public int AddMissingNicheSigns()
+        {
+            int added = ProtoOfficeLayout.AddMissingSigns(transform);
+            if (added > 0)
+                UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(gameObject.scene);
+            return added;
+        }
+
+        private void BakeStation<T>(Transform parent, string stationName, GameObject model, Vector3 position, Vector3 toViewer, float size, float yaw) where T : ProtoStation
+        {
+            if (model == null)
+            {
+                Debug.LogWarning($"[{nameof(ProtoKitchen)}] No model assigned for {stationName}.", this);
+                return;
+            }
+
+            position.y = FindCounterTop(position);
+
+            var root = new GameObject(stationName) { layer = InteractableLayer };
+            root.transform.SetParent(parent, false);
+            root.transform.SetPositionAndRotation(position, Quaternion.LookRotation(toViewer, Vector3.up) * Quaternion.Euler(0f, yaw, 0f));
+
+            var visual = (GameObject)UnityEditor.PrefabUtility.InstantiatePrefab(model, root.transform);
+            FitToSize(root.transform, visual.transform, size);
+
+            var renderers = root.GetComponentsInChildren<Renderer>();
+            AddCollider(root, renderers);
+
+            var hover = root.AddComponent<MeshOutlineHover>();
+            var hoverData = new UnityEditor.SerializedObject(hover);
+            SerializedPropertyArray(hoverData.FindProperty("_renderers"), renderers);
+            hoverData.ApplyModifiedPropertiesWithoutUndo();
+
+            var station = root.AddComponent<T>();
+            station.BakePlacement(visual.transform, toViewer);
+            ConfigureStation(station);
+        }
+
+        private static void SerializedPropertyArray(UnityEditor.SerializedProperty property, Object[] values)
+        {
+            property.arraySize = values.Length;
+            for (int i = 0; i < values.Length; i++)
+                property.GetArrayElementAtIndex(i).objectReferenceValue = values[i];
+        }
+#endif
 
         private T SpawnStation<T>(string stationName, GameObject model, Texture2D texture, float angle, float size, float yaw) where T : ProtoStation
         {
@@ -237,7 +340,9 @@ namespace Game.Prototype.Kitchen
             root.transform.position = position;
             Vector3 toCenter = _counterCenter - position;
             toCenter.y = 0f;
-            root.transform.rotation = Quaternion.LookRotation(toCenter.normalized, Vector3.up) * Quaternion.Euler(0f, yaw, 0f);
+            // Direction toward where the player stands when using this station.
+            Vector3 toViewer = _stationsFaceOutward ? -toCenter : toCenter;
+            root.transform.rotation = Quaternion.LookRotation(toViewer.normalized, Vector3.up) * Quaternion.Euler(0f, yaw, 0f);
 
             GameObject visual = Instantiate(model, root.transform, false);
             visual.name = model.name;
@@ -250,7 +355,7 @@ namespace Game.Prototype.Kitchen
 
             var station = root.AddComponent<T>();
             station.Setup(visual.transform);
-            station.ConfigureFocus(toCenter);
+            station.ConfigureFocus(toViewer);
             return station;
         }
 
@@ -282,7 +387,8 @@ namespace Game.Prototype.Kitchen
 
         private float FindCounterTop(Vector3 position)
         {
-            var origin = new Vector3(position.x, 1.8f, position.z);
+            // Start a bit above the expected counter top (but below anything hanging over it).
+            var origin = new Vector3(position.x, _counterCenter.y + _fallbackCounterHeight + 0.5f, position.z);
             var hits = Physics.RaycastAll(origin, Vector3.down, 3f, ~0, QueryTriggerInteraction.Ignore);
 
             float best = float.NegativeInfinity;

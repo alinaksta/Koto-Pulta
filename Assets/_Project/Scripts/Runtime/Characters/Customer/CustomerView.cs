@@ -53,7 +53,8 @@ namespace Game.Characters
             if (_seatedOnlyVisuals == null)
                 return;
 
-            bool seated = _customer.IsSeated;
+            // Seats with a real chair don't need the 2D one.
+            bool seated = _customer.IsSeated && !_customer.Seat.HasChairModel;
             for (int i = 0; i < _seatedOnlyVisuals.Length; i++)
             {
                 var visual = _seatedOnlyVisuals[i];
@@ -153,7 +154,7 @@ namespace Game.Characters
 
         private void AnimateAlpha(float from, float to, float duration)
         {
-            LMotion.Create(from, to, duration).BindToColorA(_bodyRenderer);
+            LMotion.Create(from, to, duration).BindToColorA(_bodyRenderer).AddTo(gameObject); // stops when the customer is destroyed mid-fade
         }
 
         private void AnimateSpawn(float duration)

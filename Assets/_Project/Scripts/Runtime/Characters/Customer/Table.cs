@@ -34,6 +34,11 @@ namespace Game.Characters
         public int SeatCount => _seats.Length;
 
         /// <summary>
+        /// Gets the seat points of the table.
+        /// </summary>
+        public IReadOnlyList<Seat> Seats => _seats;
+
+        /// <summary>
         /// Gets whether the table currently has no customers.
         /// </summary>
         public bool IsFree => _customers.Count == 0;

@@ -26,6 +26,12 @@ namespace Game.Prototype.Kitchen
         [Tooltip("Tilts the focused camera up by this many degrees (keeps the model clear of the top HUD). Position stays.")]
         [SerializeField] private float _focusPitchUp = 7f;
 
+        [Header("Scene placement")]
+        [Tooltip("The station's model (child). When set, the station sets itself up on Awake (placed in the scene, not spawned).")]
+        [SerializeField] private Transform _visual;
+        [Tooltip("Direction to where the player stands, in this station's local space (used by the camera focus).")]
+        [SerializeField] private Vector3 _viewerLocalDirection = Vector3.forward;
+
         [Header("Minigame")]
         [Tooltip("Clicks needed to finish this station's minigame (when it has one).")]
         [SerializeField] private int _requiredClicks = 10;
@@ -49,6 +55,25 @@ namespace Game.Prototype.Kitchen
         public virtual void Setup(Transform visual)
         {
             Visual = visual;
+        }
+
+        private void Awake()
+        {
+            // Stations placed in the scene set themselves up; spawned ones are set up by ProtoKitchen.
+            if (_visual == null || Visual != null)
+                return;
+
+            Setup(_visual);
+            ConfigureFocus(transform.TransformDirection(_viewerLocalDirection));
+        }
+
+        /// <summary>
+        /// Editor: stores the scene placement so the station can set itself up at runtime.
+        /// </summary>
+        public void BakePlacement(Transform visual, Vector3 viewerWorldDirection)
+        {
+            _visual = visual;
+            _viewerLocalDirection = transform.InverseTransformDirection(viewerWorldDirection).normalized;
         }
 
         /// <summary>
