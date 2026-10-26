@@ -39,6 +39,10 @@ namespace Game.Prototype.Kitchen
         [SerializeField] private Texture2D _staplerTexture;
         [SerializeField] private Texture2D _boardTexture;
 
+        [Header("Player paws (3D, replace the 2D hands)")]
+        [SerializeField] private GameObject _pawLeft;
+        [SerializeField] private GameObject _pawRight;
+
         [Header("Minigame hint icons")]
         [SerializeField] private Sprite _mouseIcon;
         [SerializeField] private Sprite _circleArrowIcon;
@@ -108,6 +112,8 @@ namespace Game.Prototype.Kitchen
             Resolve(ref _staplerTexture, "fe7e5f648827b39488f50b381ff8edb4");
             Resolve(ref _boardTexture, "ebd0418187c5c4e42a252a1714ea37d1");
             Resolve(ref _mouseIcon, "f1953862e898410b9d92670da6313311");
+            Resolve(ref _pawLeft, "980dd1055be00a743a4f81a71d0e3700");
+            Resolve(ref _pawRight, "c2b2e71aeb348a24f8b3db65c71dac09");
             Resolve(ref _circleArrowIcon, "cc259b4f0f1145fb9a8740d2e4c606f2");
         }
 
@@ -124,19 +130,33 @@ namespace Game.Prototype.Kitchen
 
         private void Start()
         {
+            SplitGlassPartitions();
+
             // Stations are placed in the scene (see "Bake stations and office niches into the scene");
             // spawning around the counter is only a fallback for scenes without them.
             ProtoStation[] stations = FindObjectsByType<ProtoStation>(FindObjectsSortMode.None);
             if (stations.Length == 0)
+            {
                 SpawnStations();
+            }
             else
+            {
                 foreach (ProtoStation station in stations)
                     ConfigureStation(station);
+                PlaceStapler();
+            }
 
             BuildIngredientsSite();
 
             if (_stapler != null && _staplerModel != null)
                 ProtoHeldModelView.Create(transform, _stapler.Id, _staplerModel, _staplerTexture, _heldStaplerSize);
+
+            // Paws placed in the scene (under the player) are used as they are; otherwise they are created here.
+            ProtoPawView paws = FindAnyObjectByType<ProtoPawView>();
+            if (paws == null)
+                paws = ProtoPawView.Create(transform, _pawLeft, _pawRight);
+            if (_stapler != null)
+                paws.AddHeldModel(_stapler.Id, _staplerModel, _staplerTexture, _heldStaplerSize);
 
             ServiceLocator.TryGet(out _customers);
             if (ServiceLocator.TryGet(out _shifts))
@@ -151,6 +171,156 @@ namespace Game.Prototype.Kitchen
         {
             if (_shifts != null)
                 _shifts.OnShiftStarted -= ApplyApplePieOrders;
+        }
+
+        public const string StaplerSpawnPointName = "StaplerSpawnPoint";
+
+        /// <summary>
+        /// The glass partitions are one mesh, so transparent sorting treats them as one object and customers behind a
+        /// partition are drawn on top of it. Splitting them into one object per partition fixes the order.
+        /// </summary>
+        private void SplitGlassPartitions()
+        {
+            GameObject office = GameObject.Find("Office");
+            Transform separators = office != null ? FindDeepInScene("separators") : null;
+            if (separators == null || !separators.TryGetComponent(out MeshFilter filter) || !separators.TryGetComponent(out MeshRenderer renderer))
+                return;
+
+            Mesh mesh = filter.sharedMesh;
+            if (mesh == null || !mesh.isReadable)
+            {
+                Debug.LogWarning($"[{nameof(ProtoKitchen)}] The glass partitions mesh is not readable; it stays one object.", this);
+                return;
+            }
+
+            Vector3[] vertices = mesh.vertices;
+            Vector3[] normals = mesh.normals;
+            Vector2[] uvs = mesh.uv;
+            int[] triangles = mesh.triangles;
+
+            // Group vertices that share a position (UV seams duplicate them), then triangles into connected parts.
+            var parent = new int[vertices.Length];
+            for (int i = 0; i < parent.Length; i++)
+                parent[i] = i;
+            int Find(int a) { while (parent[a] != a) a = parent[a] = parent[parent[a]]; return a; }
+            void Union(int a, int b) { a = Find(a); b = Find(b); if (a != b) parent[a] = b; }
+
+            var byPosition = new System.Collections.Generic.Dictionary<Vector3Int, int>();
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                Vector3 v = vertices[i] * 1000f;
+                var key = new Vector3Int(Mathf.RoundToInt(v.x), Mathf.RoundToInt(v.y), Mathf.RoundToInt(v.z));
+                if (byPosition.TryGetValue(key, out int other))
+                    Union(i, other);
+                else
+                    byPosition.Add(key, i);
+            }
+
+            for (int t = 0; t < triangles.Length; t += 3)
+            {
+                Union(triangles[t], triangles[t + 1]);
+                Union(triangles[t], triangles[t + 2]);
+            }
+
+            var parts = new System.Collections.Generic.Dictionary<int, System.Collections.Generic.List<int>>();
+            for (int t = 0; t < triangles.Length; t += 3)
+            {
+                int root = Find(triangles[t]);
+                if (!parts.TryGetValue(root, out var list))
+                    parts[root] = list = new System.Collections.Generic.List<int>();
+                list.Add(triangles[t]);
+                list.Add(triangles[t + 1]);
+                list.Add(triangles[t + 2]);
+            }
+
+            if (parts.Count < 2)
+                return;
+
+            int index = 0;
+            foreach (var part in parts.Values)
+            {
+                var remap = new System.Collections.Generic.Dictionary<int, int>();
+                var partVertices = new System.Collections.Generic.List<Vector3>();
+                var partNormals = new System.Collections.Generic.List<Vector3>();
+                var partUvs = new System.Collections.Generic.List<Vector2>();
+                var partTriangles = new int[part.Count];
+
+                for (int i = 0; i < part.Count; i++)
+                {
+                    int source = part[i];
+                    if (!remap.TryGetValue(source, out int target))
+                    {
+                        target = partVertices.Count;
+                        remap.Add(source, target);
+                        partVertices.Add(vertices[source]);
+                        if (normals.Length == vertices.Length) partNormals.Add(normals[source]);
+                        if (uvs.Length == vertices.Length) partUvs.Add(uvs[source]);
+                    }
+                    partTriangles[i] = target;
+                }
+
+                var partMesh = new Mesh { name = $"separator_{index}" };
+                partMesh.SetVertices(partVertices);
+                if (partNormals.Count == partVertices.Count) partMesh.SetNormals(partNormals);
+                if (partUvs.Count == partVertices.Count) partMesh.SetUVs(0, partUvs);
+                partMesh.SetTriangles(partTriangles, 0);
+                partMesh.RecalculateBounds();
+
+                var go = new GameObject($"separator_{index++}");
+                go.transform.SetParent(separators, false);
+                go.AddComponent<MeshFilter>().sharedMesh = partMesh;
+                var partRenderer = go.AddComponent<MeshRenderer>();
+                partRenderer.sharedMaterials = renderer.sharedMaterials;
+                partRenderer.shadowCastingMode = renderer.shadowCastingMode;
+            }
+
+            renderer.enabled = false;
+        }
+
+        /// <summary>
+        /// Puts the stapler item into the world (it lies where the stapler station used to be).
+        /// </summary>
+        private void PlaceStapler()
+        {
+            Transform spot = FindDeepInScene(StaplerSpawnPointName);
+            if (spot != null)
+            {
+                SpawnStaplerItem(spot.position);
+                return;
+            }
+
+            // Scene not updated yet: a stapler station is still there; swap it for the item.
+            StaplerStation station = FindAnyObjectByType<StaplerStation>();
+            if (station != null)
+            {
+                Vector3 position = station.transform.position;
+                Destroy(station.gameObject);
+                SpawnStaplerItem(position);
+            }
+        }
+
+        private void SpawnStaplerItem(Vector3 position)
+        {
+            if (_stapler == null || !ServiceLocator.TryGet(out PhysicsItemService physics))
+                return;
+
+            Item? item = Item.FromId(_stapler.Id);
+            if (item.HasValue)
+                physics.Spawn(position + Vector3.up * 0.3f, Vector3.zero, item.Value);
+        }
+
+        private Transform FindDeepInScene(string objectName)
+        {
+            foreach (GameObject root in gameObject.scene.GetRootGameObjects())
+            {
+                foreach (Transform child in root.GetComponentsInChildren<Transform>(true))
+                {
+                    if (child.name == objectName)
+                        return child;
+                }
+            }
+
+            return null;
         }
 
         #region Items and orders
@@ -200,7 +370,11 @@ namespace Game.Prototype.Kitchen
             ConfigureStation(SpawnStation<FolderPressStation>("Station_FolderPress", _folderModel, _folderTexture, _folderAngle, _folderSize, _folderYaw));
             ConfigureStation(SpawnStation<ShredderStation>("Station_Shredder", _shredderModel, _shredderTexture, _shredderAngle, _shredderSize, _shredderYaw));
             ConfigureStation(SpawnStation<BoardStation>("Station_Board", _boardModel, _boardTexture, _boardAngle, _boardSize, _boardYaw));
-            ConfigureStation(SpawnStation<StaplerStation>("Station_Stapler", _staplerModel, _staplerTexture, _staplerAngle, _staplerSize, _staplerYaw));
+            // The stapler is no station any more: it lies on the counter as an item.
+            float radians = _staplerAngle * Mathf.Deg2Rad;
+            Vector3 spot = _counterCenter + new Vector3(Mathf.Cos(radians), 0f, Mathf.Sin(radians)) * _counterRadius;
+            spot.y = FindCounterTop(spot);
+            SpawnStaplerItem(spot);
         }
 
         /// <summary>
@@ -240,6 +414,27 @@ namespace Game.Prototype.Kitchen
         public const string BakedStationsName = "Stations";
 
         /// <summary>
+        /// Editor: replaces stapler stations in the scene with a spawn point for the stapler item. Returns how many.
+        /// </summary>
+        public static int ReplaceStaplerStations()
+        {
+            int replaced = 0;
+            foreach (StaplerStation station in FindObjectsByType<StaplerStation>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            {
+                var spot = new GameObject(StaplerSpawnPointName);
+                UnityEditor.Undo.RegisterCreatedObjectUndo(spot, "Stapler spawn point");
+                spot.transform.SetParent(station.transform.parent, false);
+                spot.transform.position = station.transform.position;
+                UnityEditor.Undo.DestroyObjectImmediate(station.gameObject);
+                replaced++;
+            }
+
+            if (replaced > 0)
+                UnityEditor.SceneManagement.EditorSceneManager.MarkAllScenesDirty();
+            return replaced;
+        }
+
+        /// <summary>
         /// Places the stations around the work area and builds the office niches as regular scene objects.
         /// Run once (component menu), then move things by hand and save the scene.
         /// </summary>
@@ -262,7 +457,11 @@ namespace Game.Prototype.Kitchen
             BakeStation<ShredderStation>(root.transform, "Station_Shredder", _shredderModel, new Vector3(-3.55f, 0f, 0.5f), Vector3.right, _shredderSize, _shredderYaw);
             BakeStation<FolderPressStation>(root.transform, "Station_FolderPress", _folderModel, new Vector3(0f, 0f, -0.55f), Vector3.back, _folderSize, _folderYaw);
             BakeStation<BoardStation>(root.transform, "Station_Board", _boardModel, new Vector3(0.55f, 0f, 0.1f), Vector3.right, _boardSize, _boardYaw);
-            BakeStation<StaplerStation>(root.transform, "Station_Stapler", _staplerModel, new Vector3(3.55f, 0f, -0.5f), Vector3.left, _staplerSize, _staplerYaw);
+            var staplerSpot = new GameObject(StaplerSpawnPointName).transform;
+            staplerSpot.SetParent(root.transform, false);
+            Vector3 staplerPosition = new Vector3(3.55f, 0f, -0.5f);
+            staplerPosition.y = FindCounterTop(staplerPosition);
+            staplerSpot.position = staplerPosition;
 
             GameObject office = GameObject.Find("Office");
             if (office != null)

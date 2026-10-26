@@ -15,6 +15,7 @@ MonoBehaviour:
   Id: proto_prepared_dough
   Properties:
   - rid: 6693164997854483904
+  - rid: 5550894626102111504
   references:
     version: 2
     RefIds:
@@ -24,3 +25,8 @@ MonoBehaviour:
         WorldSprite: {fileID: 21300000, guid: ec15df4d384eb34409e2a0ccc15dfd21, type: 3}
         DialogueSprite: {fileID: 21300000, guid: ec15df4d384eb34409e2a0ccc15dfd21, type: 3}
         UnitPrice: 0
+    - rid: 5550894626102111504
+      type: {class: ThrowableProperty, ns: Game.Items.Properties, asm: Assembly-CSharp}
+      data:
+        HoldTime: 0.5
+        ForwardForce: 10

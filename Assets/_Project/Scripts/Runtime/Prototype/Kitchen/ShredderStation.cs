@@ -40,7 +40,6 @@ namespace Game.Prototype.Kitchen
         [SerializeField] private float _focusTowardCrank = 0f;
         [Tooltip("Shifts the camera's aim from the box center toward the crank (0 = box center).")]
         [SerializeField, Range(0f, 1f)] private float _focusCrankBias = 0f;
-        [SerializeField] private float _itemHeight = 0.22f;
         [Tooltip("How far below the top of the shredder the apple sits, in apple heights.")]
         [SerializeField] private float _inputDrop = 0.5f;
 
@@ -49,6 +48,11 @@ namespace Game.Prototype.Kitchen
         [SerializeField] private float _drawerTravel = 0.25f;
         [SerializeField] private float _drawerOpenDuration = 0.25f;
         [SerializeField] private float _drawerCloseDuration = 0.3f;
+
+        [SerializeField] private float _itemHeight = 0.22f;
+        [Tooltip("Size multiplier for the item sprites on this station.")]
+        [SerializeField] private float _spriteScale = 1.5f;
+        private float ItemHeight => _itemHeight * _spriteScale;
 
         public ItemDefinitionAsset Input;
         public ItemDefinitionAsset Output;
@@ -66,7 +70,7 @@ namespace Game.Prototype.Kitchen
         private ItemSlotView _topSlot;
         private ItemSlotView _drawerSlot;
         // Just enough to get the top of the apple below the top of the shredder.
-        private float SinkDepth => _itemHeight * (1f - _inputDrop) + 0.02f;
+        private float SinkDepth => ItemHeight * (1f - _inputDrop) + 0.02f;
         private State _state;
         private float _rattleTime;
         private Vector3 _visualRest;
@@ -99,13 +103,13 @@ namespace Game.Prototype.Kitchen
             // Apple sits on top of the body; slices lie in the drawer.
             Bounds body = GetLocalBounds(_body != null ? _body : visual, transform);
             Vector3 top = transform.TransformPoint(new Vector3(body.center.x, body.max.y, body.center.z));
-            _topSlot = CreateSlot("ShredderInput", transform, top + Vector3.down * _itemHeight * _inputDrop, _itemHeight);
+            _topSlot = CreateSlot("ShredderInput", transform, top + Vector3.down * ItemHeight * _inputDrop, ItemHeight);
 
             if (_drawer != null)
             {
                 Bounds drawer = GetLocalBounds(_drawer, transform);
                 Vector3 drawerSurface = transform.TransformPoint(new Vector3(drawer.center.x, drawer.min.y + drawer.size.y * 0.3f, drawer.center.z));
-                _drawerSlot = CreateSlot("ShredderOutput", _drawer, drawerSurface, _itemHeight * 0.8f);
+                _drawerSlot = CreateSlot("ShredderOutput", _drawer, drawerSurface, ItemHeight * 0.8f);
             }
         }
 

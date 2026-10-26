@@ -15,6 +15,7 @@ MonoBehaviour:
   Id: proto_prepared_apple
   Properties:
   - rid: 6453277430083039176
+  - rid: 8745239321863571401
   references:
     version: 2
     RefIds:
@@ -24,3 +25,8 @@ MonoBehaviour:
         WorldSprite: {fileID: 21300000, guid: 1599cfa073517a145a13cfdf19019be1, type: 3}
         DialogueSprite: {fileID: 21300000, guid: 1599cfa073517a145a13cfdf19019be1, type: 3}
         UnitPrice: 0
+    - rid: 8745239321863571401
+      type: {class: ThrowableProperty, ns: Game.Items.Properties, asm: Assembly-CSharp}
+      data:
+        HoldTime: 0.5
+        ForwardForce: 10

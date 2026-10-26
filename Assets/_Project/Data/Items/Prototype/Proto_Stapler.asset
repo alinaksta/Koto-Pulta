@@ -15,6 +15,7 @@ MonoBehaviour:
   Id: proto_stapler
   Properties:
   - rid: 6379138247164025148
+  - rid: 8703584193453931103
   references:
     version: 2
     RefIds:
@@ -24,3 +25,8 @@ MonoBehaviour:
         WorldSprite: {fileID: 0}
         DialogueSprite: {fileID: 0}
         UnitPrice: 0
+    - rid: 8703584193453931103
+      type: {class: ThrowableProperty, ns: Game.Items.Properties, asm: Assembly-CSharp}
+      data:
+        HoldTime: 0.5
+        ForwardForce: 10

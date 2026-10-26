@@ -1,27 +1,23 @@
-using Game.Interaction;
 using Game.Items;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.UI;
 
 namespace Game.Prototype.Kitchen
 {
     /// <summary>
-    /// Shows a 3D model in the player's hand instead of the flat item sprite (used for the stapler).
-    /// The model is placed in front of the camera at the on-screen position of the hand's held-item image.
+    /// Gives dropped / thrown items of one kind a 3D model instead of the flat sprite (used for the stapler).
+    /// Held items are shown by <see cref="ProtoPawView"/>.
     /// </summary>
     public sealed class ProtoHeldModelView : MonoBehaviour
     {
-        [SerializeField] private float _distance = 0.45f;
-        [Tooltip("Rotation of the model relative to the camera (right hand; mirrored for the left hand).")]
-        [SerializeField] private Vector3 _euler = new Vector3(15f, -150f, -10f);
-        [Tooltip("Spin of the held model around its own vertical axis, degrees per second.")]
-        [SerializeField] private float _spinSpeed = 90f;
+        // Dropped / thrown items: the stapler model a bit bigger (as on the counter), and no sliding on the floor.
+        private const float DroppedScale = 1.5f;
+        private const float Friction = 1f;
 
+        private static PhysicsMaterial s_gripMaterial;
+        private readonly HashSet<PhysicsContainer> _gripped = new();
         private string _itemId;
-        private HandView[] _views = new HandView[0];
-        private GameObject[] _models = new GameObject[0];
         private GameObject _modelPrefab;
         private Texture2D _texture;
         private float _size;
@@ -40,14 +36,6 @@ namespace Game.Prototype.Kitchen
             return view;
         }
 
-        private void Start()
-        {
-            _views = FindObjectsByType<HandView>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-            _models = new GameObject[_views.Length];
-            for (int i = 0; i < _views.Length; i++)
-                _models[i] = BuildModel($"Held_{_views[i].HandType}");
-        }
-
         private GameObject BuildModel(string modelName)
         {
             var root = new GameObject(modelName);
@@ -55,7 +43,7 @@ namespace Game.Prototype.Kitchen
 
             GameObject visual = Instantiate(_modelPrefab, root.transform, false);
             ProtoKitchen.ApplyTexture(visual, _texture);
-            ProtoKitchen.FitToSize(root.transform, visual.transform, _size);
+            ProtoKitchen.FitToSize(root.transform, visual.transform, _size * DroppedScale);
 
             // Center the model on the root so it rotates around its middle.
             Bounds bounds = ProtoKitchen.GetLocalBounds(root.transform, visual.transform);
@@ -73,7 +61,6 @@ namespace Game.Prototype.Kitchen
 
         private void LateUpdate()
         {
-            UpdateHeldModels();
             UpdateDroppedModels();
         }
 
@@ -84,6 +71,8 @@ namespace Game.Prototype.Kitchen
         {
             foreach (var container in FindObjectsByType<PhysicsContainer>(FindObjectsInactive.Exclude, FindObjectsSortMode.None))
             {
+                ApplyGrip(container);
+
                 bool ours = !container.IsEmpty && container.Item.Value.Definition.Id == _itemId;
                 if (ours && !_droppedModels.ContainsKey(container))
                 {
@@ -115,6 +104,30 @@ namespace Game.Prototype.Kitchen
             }
         }
 
+        /// <summary>
+        /// High friction for every dropped / thrown item, so it stops where it lands instead of sliding away.
+        /// </summary>
+        private void ApplyGrip(PhysicsContainer container)
+        {
+            if (!_gripped.Add(container))
+                return;
+
+            s_gripMaterial ??= new PhysicsMaterial("ProtoItemGrip")
+            {
+                dynamicFriction = Friction,
+                staticFriction = Friction,
+                bounciness = 0f,
+                frictionCombine = PhysicsMaterialCombine.Maximum,
+                bounceCombine = PhysicsMaterialCombine.Minimum
+            };
+
+            foreach (Collider collider in container.GetComponentsInChildren<Collider>(true))
+            {
+                if (!collider.isTrigger)
+                    collider.sharedMaterial = s_gripMaterial;
+            }
+        }
+
         private void OnDestroy()
         {
             foreach (var model in _droppedModels.Values)
@@ -125,48 +138,5 @@ namespace Game.Prototype.Kitchen
             _droppedModels.Clear();
         }
 
-        private void UpdateHeldModels()
-        {
-            Camera camera = Camera.main;
-
-            for (int i = 0; i < _views.Length; i++)
-            {
-                HandView view = _views[i];
-                GameObject model = _models[i];
-                if (view == null || model == null)
-                    continue;
-
-                Hand hand = view.Hand;
-                bool show = camera != null && view.isActiveAndEnabled && hand != null && hand.Visible && !hand.IsEmpty &&
-                            hand.Item.Value.Definition.Id == _itemId;
-
-                if (model.activeSelf != show)
-                    model.SetActive(show);
-
-                if (!show)
-                    continue;
-
-                // Hide the flat icon; the 3D model takes its place.
-                Image image = view.HeldItemImage;
-                if (image != null)
-                    image.enabled = false;
-
-                Vector3 screen = GetScreenPoint(image != null ? image.rectTransform : (RectTransform)view.transform);
-                screen.z = _distance;
-                model.transform.position = camera.ScreenToWorldPoint(screen);
-
-                Vector3 euler = view.HandType == HandType.Left ? new Vector3(_euler.x, -_euler.y, -_euler.z) : _euler;
-                float spin = Time.unscaledTime * _spinSpeed * (view.HandType == HandType.Left ? -1f : 1f);
-                model.transform.rotation = camera.transform.rotation * Quaternion.Euler(euler) * Quaternion.AngleAxis(spin, Vector3.up);
-            }
-        }
-
-        private static Vector3 GetScreenPoint(RectTransform rect)
-        {
-            Canvas canvas = rect.GetComponentInParent<Canvas>();
-            Camera uiCamera = canvas != null && canvas.renderMode != RenderMode.ScreenSpaceOverlay ? canvas.rootCanvas.worldCamera : null;
-            Vector3 center = rect.TransformPoint(rect.rect.center);
-            return RectTransformUtility.WorldToScreenPoint(uiCamera, center);
-        }
     }
 }

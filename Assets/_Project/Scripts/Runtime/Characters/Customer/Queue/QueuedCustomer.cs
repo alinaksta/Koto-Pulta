@@ -1,4 +1,5 @@
 using Game.Interaction;
+using Game.Items;
 using Game.Items.Properties;
 using Game.Services;
 using Game.UI;
@@ -23,7 +24,9 @@ namespace Game.Characters
         /// <summary>Sitting at its own table without an order (home-table flow).</summary>
         AtHome,
         /// <summary>Walking back to its own table without an order (home-table flow).</summary>
-        ReturningHome
+        ReturningHome,
+        /// <summary>Got up and walks to the end of the line; takes its place there on arrival (home-table flow).</summary>
+        GoingToQueue
     }
 
     /// <summary>
@@ -34,6 +37,11 @@ namespace Game.Characters
     public sealed class QueuedCustomer : MonoBehaviour, ICustomerInteractionOverride
     {
         private const float ArrivalDistanceSqr = 0.0025f;
+        private const float JoinDistance = 1.5f;
+        // A thrown order is caught when it flies (or lands) this close to a waiting, seated customer.
+        private const float CatchRadius = 0.75f;
+        private const float CatchHeight = 0.6f;
+        private static readonly Collider[] s_catchHits = new Collider[16];
 
         private static readonly int AngleHash = Animator.StringToHash("angle");
         private static readonly int IsMovingHash = Animator.StringToHash("isMoving");
@@ -156,6 +164,7 @@ namespace Game.Characters
 
             UpdateMovement();
             UpdatePhase();
+            CatchThrownOrder();
             UpdateBubble();
             UpdateOrderNote();
         }
@@ -180,7 +189,10 @@ namespace Game.Characters
                 SetStandingVisuals(standing);
 
             if (!standing)
+            {
+                UpdateSeatedFacing();
                 return;
+            }
 
             _bodyAnimator.SetBool(IsMovingHash, _moving);
             UpdateFacing();
@@ -209,7 +221,10 @@ namespace Game.Characters
                 _cameraTransform = Camera.main.transform;
             }
 
-            Vector3 forward = _lastMoveDirection;
+            // Standing in line: look at the customer in front, or at the counter when first in line.
+            Vector3 forward = _phase == QueuedCustomerPhase.InQueue && _arrivedAtSpot && !_moving && _queueIndex >= 0
+                ? _queue.GetFacingDirection(_queueIndex)
+                : _lastMoveDirection;
             Vector3 toCamera = _cameraTransform.position - transform.position;
             forward.y = 0f;
             toCamera.y = 0f;
@@ -226,13 +241,39 @@ namespace Game.Characters
             else if (absolute < 135f)
             {
                 _bodyAnimator.SetFloat(AngleHash, 1f);
-                if (_bodyRenderer != null) _bodyRenderer.flipX = angle >= 0f;
+                // The side sprite faces left as drawn: flip it when the customer faces right on screen.
+                if (_bodyRenderer != null) _bodyRenderer.flipX = angle < 0f;
             }
             else
             {
                 _bodyAnimator.SetFloat(AngleHash, 2f);
                 if (_bodyRenderer != null) _bodyRenderer.flipX = false;
             }
+        }
+
+        /// <summary>
+        /// The seated sprite is drawn from the side with the legs to the right. Mirror it so the legs always point
+        /// toward the table in front of the seat, from wherever the camera looks.
+        /// </summary>
+        private void UpdateSeatedFacing()
+        {
+            Seat seat = _phase == QueuedCustomerPhase.AtHome ? _homeSeat : _reservedSeat ?? _homeSeat;
+            if (_bodyRenderer == null || seat == null)
+                return;
+
+            if (_cameraTransform == null)
+            {
+                if (Camera.main == null)
+                    return;
+                _cameraTransform = Camera.main.transform;
+            }
+
+            Vector3 toTable = seat.transform.forward;
+            toTable.y = 0f;
+            if (toTable.sqrMagnitude < 0.0001f)
+                return;
+
+            _bodyRenderer.flipX = Vector3.Dot(toTable, _cameraTransform.right) >= 0f;
         }
 
         private void AlignFeetToGround()
@@ -259,7 +300,26 @@ namespace Game.Characters
         {
             _queueIndex = index;
             _arrivedAtSpot = false;
-            MoveTo(position, () => _arrivedAtSpot = true);
+
+            // Moving along the line: straight to the spot. A NavMesh path would first push the customer out of the
+            // line onto the walkable area (the line itself stands on the edge of it).
+            Vector3 offset = position - transform.position;
+            offset.y = 0f;
+            if (offset.sqrMagnitude < DirectMoveDistance * DirectMoveDistance)
+                MoveDirect(position, () => _arrivedAtSpot = true);
+            else
+                MoveTo(position, () => _arrivedAtSpot = true);
+        }
+
+        private const float DirectMoveDistance = 3.5f;
+
+        private void MoveDirect(Vector3 destination, Action onArrived)
+        {
+            _waypoints.Clear();
+            _waypoints.Add(destination);
+            _waypointIndex = 0;
+            _onArrived = onArrived;
+            _moving = true;
         }
 
         public void StartOrder(ItemDefinition order, Table table, Seat seat, float tableWaitTime)
@@ -268,8 +328,7 @@ namespace Game.Characters
             _reservedTable = table;
             _reservedSeat = seat;
             _tableWaitTime = tableWaitTime;
-            _queueIndex = -1;
-            _arrivedAtSpot = false;
+            // Keeps its queue index: it still holds the cashier spot until it walks away.
 
             StopMoving();
             _phase = QueuedCustomerPhase.Ordering;
@@ -324,6 +383,27 @@ namespace Game.Characters
         public void LeaveHome()
         {
             transform.SetParent(null, true);
+        }
+
+        /// <summary>
+        /// Walks to the end of the line and joins it only on arrival, so the line order is the arrival order
+        /// (a customer from a far table that got up earlier doesn't keep a place for itself).
+        /// </summary>
+        public void GoToQueue()
+        {
+            transform.SetParent(null, true);
+            _queueIndex = -1;
+            _arrivedAtSpot = false;
+            _phase = QueuedCustomerPhase.GoingToQueue;
+            HeadForLineEnd();
+        }
+
+        private Vector3 _lineEndTarget;
+
+        private void HeadForLineEnd()
+        {
+            _lineEndTarget = _queue.GetSpotPosition(_queue.Line.Count);
+            MoveTo(_lineEndTarget, () => _queue.JoinLine(this));
         }
 
         /// <summary>
@@ -406,11 +486,58 @@ namespace Game.Characters
                     if (_phaseTimer > 0f)
                         _phaseTimer -= Time.deltaTime;
                     break;
+
+                case QueuedCustomerPhase.GoingToQueue:
+                    // Close to the current end of the line: take the place (the line may have moved meanwhile).
+                    Vector3 lineEnd = _queue.GetSpotPosition(_queue.Line.Count);
+                    Vector3 tail = lineEnd - transform.position;
+                    tail.y = 0f;
+                    if (tail.sqrMagnitude < JoinDistance * JoinDistance)
+                    {
+                        StopMoving();
+                        _queue.JoinLine(this);
+                    }
+                    else if ((lineEnd - _lineEndTarget).sqrMagnitude > 0.09f)
+                    {
+                        // The line moved up (or grew) while walking: head for its current end right away.
+                        HeadForLineEnd();
+                    }
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// A seated customer waiting for its order takes it when it is thrown to it (or lands next to it).
+        /// Other items are ignored.
+        /// </summary>
+        private void CatchThrownOrder()
+        {
+            if (_phase != QueuedCustomerPhase.AtTable || !_customer.IsWaiting || _customer.Order == null)
+                return;
+
+            int count = Physics.OverlapSphereNonAlloc(transform.position + Vector3.up * CatchHeight, CatchRadius,
+                s_catchHits, ~0, QueryTriggerInteraction.Collide);
+
+            for (int i = 0; i < count; i++)
+            {
+                PhysicsContainer container = s_catchHits[i].GetComponentInParent<PhysicsContainer>();
+                if (container == null || container.IsEmpty || container.Item.Value.Definition.Id != _customer.Order.Id)
+                    continue;
+
+                Item? item = container.Remove();
+                if (item.HasValue)
+                    _customer.TryRecieveFromWaiter(item.Value);
+                return;
             }
         }
 
         private void WalkToTable()
         {
+            // Free the cashier spot now; the next customer moves up.
+            _queue.LeaveLine(this);
+            _queueIndex = -1;
+            _arrivedAtSpot = false;
+
             if (_reservedSeat == null)
             {
                 // Reservation was released meanwhile (e.g. shift ended) - go back to the line.
@@ -475,6 +602,11 @@ namespace Game.Characters
                 _lastMoveDirection = step.normalized;
 
             Vector3 next = Vector3.MoveTowards(transform.position, target, _queue.WalkSpeed * Time.deltaTime);
+            // Near the destination the customer goes straight to it, so it always arrives.
+            // Customers moving up in the line don't dodge (they would step out of it); only the ones walking around do.
+            bool lastLeg = _waypointIndex >= _waypoints.Count - 1;
+            if (_phase != QueuedCustomerPhase.InQueue && (!lastLeg || (next - target).sqrMagnitude > 0.25f))
+                next += GetSeparation() * Time.deltaTime;
             transform.position = next;
 
             if ((next - target).sqrMagnitude > ArrivalDistanceSqr)
@@ -483,6 +615,41 @@ namespace Game.Characters
             _waypointIndex++;
             if (_waypointIndex >= _waypoints.Count)
                 CompleteMove();
+        }
+
+        private const float PersonalSpace = 1f;
+        private const float SeparationSpeed = 1.5f;
+        private static readonly List<QueuedCustomer> s_walkers = new();
+
+        private void OnEnable() => s_walkers.Add(this);
+
+        private void OnDisable() => s_walkers.Remove(this);
+
+        /// <summary>
+        /// Walking customers step around the others instead of walking through them.
+        /// </summary>
+        private Vector3 GetSeparation()
+        {
+            Vector3 push = Vector3.zero;
+            Vector3 position = transform.position;
+
+            foreach (QueuedCustomer other in s_walkers)
+            {
+                if (other == this || other == null)
+                    continue;
+
+                Vector3 away = position - other.transform.position;
+                away.y = 0f;
+                float distance = away.magnitude;
+                if (distance >= PersonalSpace)
+                    continue;
+
+                // Exactly on top of each other: step to the side of the walking direction.
+                Vector3 direction = distance > 0.001f ? away / distance : Vector3.Cross(Vector3.up, _lastMoveDirection).normalized;
+                push += direction * (PersonalSpace - distance) / PersonalSpace;
+            }
+
+            return push * SeparationSpeed;
         }
 
         private void CompleteMove()

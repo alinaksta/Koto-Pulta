@@ -32,11 +32,15 @@ namespace Game.Prototype.Kitchen
         [SerializeField] private float _pressDuration = 0.07f;
         [SerializeField] private float _holdDuration = 0.25f;
         [SerializeField] private float _openDuration = 0.35f;
-        [SerializeField] private float _itemHeight = 0.28f;
         [Tooltip("Camera distance multiplier for the minigame focus.")]
         [SerializeField] private float _focusDistanceScale = 1.3f;
         [Tooltip("Size of the squashed item: x = width, y = height.")]
         [SerializeField] private Vector2 _squashed = new Vector2(1.35f, 0.25f);
+
+        [SerializeField] private float _itemHeight = 0.28f;
+        [Tooltip("Size multiplier for the item sprites on this station.")]
+        [SerializeField] private float _spriteScale = 1.5f;
+        private float ItemHeight => _itemHeight * _spriteScale;
 
         public ItemDefinitionAsset Input;
         public ItemDefinitionAsset Output;
@@ -73,7 +77,7 @@ namespace Game.Prototype.Kitchen
                 Bounds bounds = GetLocalBounds(_base, transform);
                 surface = transform.TransformPoint(new Vector3(bounds.center.x, bounds.max.y, bounds.center.z));
             }
-            _slot = CreateSlot("FolderItem", transform, surface, _itemHeight);
+            _slot = CreateSlot("FolderItem", transform, surface, ItemHeight);
         }
 
         /// <summary>

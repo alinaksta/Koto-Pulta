@@ -2357,6 +2357,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Game.Prototype.ProtoMainMenuController
   _mainMenuObjects: []
   _logoObjectName: KotoPultaLogo
+  _menuBackground: {fileID: 21300000, guid: 6e1c42c4349532b4a8cd93a417f0933b, type: 3}
+  _title: {fileID: 21300000, guid: 2c63119568839f140ab4add61409488c, type: 3}
+  _levelSelectBackground: {fileID: 21300000, guid: 4199e014578b06f47891d162b8c3cf48, type: 3}
+  _button: {fileID: 21300000, guid: 876a0a2d7efd31d4d8980b9b489766c3, type: 3}
+  _levelTile: {fileID: 21300000, guid: 51e5e7c118e3ae14cb0db70c91f082c4, type: 3}
+  _lockedTile: {fileID: 21300000, guid: 5804e4f880f78a74bb31589e8382a912, type: 3}
+  _starFull: {fileID: 21300000, guid: e4bf7515b5c9ab94f9bb71f842ccea58, type: 3}
+  _starEmpty: {fileID: 21300000, guid: 284e66a02cd2aef47b632ee078793915, type: 3}
+  _plate: {fileID: 21300000, guid: 7c83782e226c41e42aafbe18dbd104a0, type: 3}
+  _playButton: {fileID: 21300000, guid: b82ec02b710451e4682ab29a77347939, type: 3}
+  _font: {fileID: 11400000, guid: 236fde7f73574004aa2ce1c1579e2e44, type: 2}
   _fallbackLevelCount: 5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

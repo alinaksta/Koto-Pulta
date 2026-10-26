@@ -26,6 +26,8 @@ namespace Game.Characters
         [Tooltip("Optional explicit queue spots. Index 0 is the cashier. When empty or too short, spots are generated toward the entrance.")]
         [SerializeField] private Transform[] _spots = new Transform[0];
         [SerializeField] private float _spotSpacing = 1.1f;
+        [Tooltip("What the first customer in line looks at (the counter / cashier). When empty: against this object's forward.")]
+        [SerializeField] private Transform _counter;
         [SerializeField] private float _navMeshSampleRadius = 2f;
 
         [Header("Population")]
@@ -74,6 +76,8 @@ namespace Game.Characters
         private int _agentTypeId;
         private bool _homesPopulated;
         private bool _departuresActive;
+        private bool _repopulateHomes;
+        private Game.Progression.ShiftService _shifts;
         private float _departureTimer;
         private readonly List<QueuedCustomer> _departureCandidates = new();
 
@@ -155,7 +159,7 @@ namespace Game.Characters
                 if (!_departuresActive)
                 {
                     _departuresActive = true;
-                    _departureTimer = Random.Range(_minDepartureInterval, _maxDepartureInterval);
+                    _departureTimer = 0f;
                 }
                 return false;
             }
@@ -217,9 +221,10 @@ namespace Game.Characters
         /// </summary>
         public void HandleCustomersCleared()
         {
-            // Home-table customers are put back at their tables the next time the shift asks for customers.
+            // Home-table customers are put back at their tables right away (next frame).
             _homesPopulated = false;
             _departuresActive = false;
+            _repopulateHomes = _homeTables;
             _all.Clear();
             _line.Clear();
             _frontCustomer = null;
@@ -263,7 +268,7 @@ namespace Game.Characters
                 return false;
             }
 
-            _line.Remove(queued);
+            // The customer keeps its spot while ordering; the line moves up only when it walks away (LeaveLine).
             queued.StartOrder(order, table, seat, _tableWaitTime);
             return true;
         }
@@ -284,6 +289,14 @@ namespace Game.Characters
                 queued.StayAtHome(_homeRestTime);
             else
                 queued.LeaveTable(_leaveTableDelay);
+        }
+
+        /// <summary>
+        /// Removes the customer from the line (it walks away after ordering); the others move up.
+        /// </summary>
+        public void LeaveLine(QueuedCustomer queued)
+        {
+            _line.Remove(queued);
         }
 
         /// <summary>
@@ -356,7 +369,24 @@ namespace Game.Characters
         /// </summary>
         private void UpdateDepartures()
         {
-            if (!_homeTables || !_departuresActive)
+            if (!_homeTables)
+                return;
+
+            if (_repopulateHomes)
+            {
+                _repopulateHomes = false;
+                PopulateHomes();
+            }
+
+            // Start as soon as the shift runs (the shift itself asks for the first customer only a few seconds later).
+            if (!_departuresActive && (_shifts != null || ServiceLocator.TryGet(out _shifts)) && _shifts.ShiftInProgress)
+            {
+                PopulateHomes();
+                _departuresActive = true;
+                _departureTimer = 0f; // the first customer gets up immediately
+            }
+
+            if (!_departuresActive)
                 return;
 
             _departureTimer -= Time.deltaTime;
@@ -377,8 +407,7 @@ namespace Game.Characters
             }
 
             QueuedCustomer leaving = _departureCandidates[Random.Range(0, _departureCandidates.Count)];
-            leaving.LeaveHome();
-            JoinLine(leaving);
+            leaving.GoToQueue();
             _departureTimer = Random.Range(_minDepartureInterval, Mathf.Max(_minDepartureInterval, _maxDepartureInterval));
         }
         #endregion
@@ -460,6 +489,20 @@ namespace Game.Characters
 
             int steps = index - Mathf.Max(0, lastExplicit);
             return SampleNavMesh(origin + direction * (_spotSpacing * steps));
+        }
+
+        /// <summary>
+        /// Direction a customer standing at this spot looks: at the customer in front, or at the counter for the first one.
+        /// </summary>
+        public Vector3 GetFacingDirection(int index)
+        {
+            Vector3 here = GetSpotPosition(index);
+            Vector3 direction = index > 0
+                ? GetSpotPosition(index - 1) - here
+                : (_counter != null ? _counter.position - here : -transform.forward);
+
+            direction.y = 0f;
+            return direction.sqrMagnitude > 0.0001f ? direction.normalized : -transform.forward;
         }
 
         /// <summary>

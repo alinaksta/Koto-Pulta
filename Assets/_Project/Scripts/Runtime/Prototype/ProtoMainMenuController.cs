@@ -1,6 +1,5 @@
 using Game.Progression;
 using Game.Services;
-using Game.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -9,48 +8,63 @@ using UnityEngine.UI;
 namespace Game.Prototype
 {
     /// <summary>
-    /// Sandbox main menu: "Play" opens a level-select table (level, stars, select) over the same background.
+    /// Sandbox main menu (Play / Settings / Exit) and level select, built from the art in Art/Prototype/UI.
+    /// The old menu content of the canvas is hidden.
     /// </summary>
     public sealed class ProtoMainMenuController : MonoBehaviour
     {
-        [Tooltip("Objects hidden while level select is open (main menu buttons, logo). Found automatically when empty.")]
-        [SerializeField] private GameObject[] _mainMenuObjects = new GameObject[0];
-        [SerializeField] private string _logoObjectName = "KotoPultaLogo";
-        [SerializeField] private int _fallbackLevelCount = 5;
+        private static readonly Color InkColor = new Color32(100, 113, 126, 255);
 
-        private Button _playButton;
-        private Canvas _canvas;
-        private TMP_FontAsset _font;
-        private RectTransform _levelSelectRoot;
-        private RectTransform _rowsRoot;
+        [Header("Art (Art/Prototype/UI)")]
+        [SerializeField] private Sprite _menuBackground;      // Frame 126
+        [SerializeField] private Sprite _title;               // Frame 127
+        [SerializeField] private Sprite _levelSelectBackground; // Frame 128
+        [SerializeField] private Sprite _button;              // Frame 130 (unused for now)
+        [SerializeField] private Sprite _levelTile;           // Frame 131
+        [SerializeField] private Sprite _lockedTile;          // Frame 132
+        [SerializeField] private Sprite _starFull;            // Frame 133
+        [SerializeField] private Sprite _starEmpty;           // Frame 134
+        [SerializeField] private Sprite _plate;               // Frame 135
+        [SerializeField] private Sprite _playButton;          // Frame 140
+        [SerializeField] private TMP_FontAsset _font;
+
+        [Header("Levels")]
+        [SerializeField] private int _fallbackLevelCount = 5;
+        [SerializeField] private int _columns = 5;
+        [SerializeField] private int _rows = 2;
+        [SerializeField] private Vector2 _tileSpacing = new Vector2(352f, 430f);
+        [SerializeField] private float _firstRowY = 145f;
+        [Tooltip("When on, a level opens after the previous one got at least one star.")]
+        [SerializeField] private bool _lockLevels = true;
+
+        private RectTransform _root;
+        private RectTransform _mainMenu;
+        private RectTransform _levelSelect;
+        private RectTransform _grid;
 
         private void Start()
         {
-            var playButtonBehaviour = FindAnyObjectByType<PlayButton>(FindObjectsInactive.Include);
-            if (playButtonBehaviour == null)
+#if UNITY_EDITOR
+            ResolveMissingReferences();
+#endif
+            if (_font == null)
+                _font = ProtoUi.FindSceneFont();
+
+            Canvas canvas = FindCanvas();
+            if (canvas == null)
             {
-                Debug.LogError($"[{nameof(ProtoMainMenuController)}] No PlayButton found in the scene.", this);
+                Debug.LogError($"[{nameof(ProtoMainMenuController)}] No canvas in the scene.", this);
                 return;
             }
 
-            _playButton = playButtonBehaviour.GetComponent<Button>();
-            _canvas = playButtonBehaviour.GetComponentInParent<Canvas>().rootCanvas;
-            _font = playButtonBehaviour.GetComponentInChildren<TMP_Text>(true)?.font;
+            // Hide the old menu content; the new menu is built on the same canvas.
+            foreach (Transform child in canvas.transform)
+                child.gameObject.SetActive(false);
 
-            // Redirect "Play" to level select instead of loading the gameplay scene directly.
-            for (int i = 0; i < _playButton.onClick.GetPersistentEventCount(); i++)
-                _playButton.onClick.SetPersistentListenerState(i, UnityEventCallState.Off);
-            _playButton.onClick.AddListener(ShowLevelSelect);
-            playButtonBehaviour.enabled = false;
+            _root = ProtoUi.CreateRect("ProtoMenu", canvas.transform);
+            ProtoUi.Stretch(_root);
 
-            if (_mainMenuObjects == null || _mainMenuObjects.Length == 0)
-            {
-                var logo = GameObject.Find(_logoObjectName);
-                _mainMenuObjects = logo != null
-                    ? new[] { _playButton.transform.parent.gameObject, logo }
-                    : new[] { _playButton.transform.parent.gameObject };
-            }
-
+            BuildMainMenu();
             BuildLevelSelect();
 
             if (ProtoProgress.OpenLevelSelectOnMenuLoad)
@@ -64,130 +78,230 @@ namespace Game.Prototype
             }
         }
 
+        private Canvas FindCanvas()
+        {
+            foreach (Canvas canvas in FindObjectsByType<Canvas>(FindObjectsSortMode.None))
+            {
+                // Only this scene's canvas: persistent ones (e.g. the loading curtain) must not be touched.
+                if (canvas.isRootCanvas && canvas.renderMode == RenderMode.ScreenSpaceOverlay && canvas.gameObject.scene == gameObject.scene)
+                    return canvas;
+            }
+
+            return ProtoUi.CreateOverlayCanvas("MenuCanvas", 0);
+        }
+
+        #region Screens
+        public void ShowMainMenu() => Show(_mainMenu);
+
         public void ShowLevelSelect()
         {
-            SetMainMenuVisible(false);
-            RefreshRows();
-            _levelSelectRoot.gameObject.SetActive(true);
+            RefreshLevels();
+            Show(_levelSelect);
         }
 
-        public void ShowMainMenu()
+        private void Show(RectTransform screen)
         {
-            if (_levelSelectRoot != null)
-                _levelSelectRoot.gameObject.SetActive(false);
-            SetMainMenuVisible(true);
+            _mainMenu.gameObject.SetActive(screen == _mainMenu);
+            _levelSelect.gameObject.SetActive(screen == _levelSelect);
+        }
+        #endregion
+
+        #region Main menu
+        private void BuildMainMenu()
+        {
+            _mainMenu = CreateScreen("MainMenu", _menuBackground);
+
+            // Only the title part of the full-screen title image, shown bigger.
+            RectTransform title = CreateImage("Title", _mainMenu, CropTitle(_title), new Vector2(0f, 113f), new Vector2(1552f, 130f));
+            title.GetComponent<Image>().preserveAspect = true;
+
+            CreateImageButton("PlayButton", _mainMenu, _playButton, null, new Vector2(0f, -135f), new Vector2(757f, 357f), ShowLevelSelect);
         }
 
-        private void SetMainMenuVisible(bool visible)
+        private static Sprite CropTitle(Sprite full)
         {
-            foreach (var go in _mainMenuObjects)
-            {
-                if (go != null)
-                    go.SetActive(visible);
-            }
+            if (full == null)
+                return null;
+
+            // Title lettering inside the 1600x900 overlay (pixels, bottom-left origin).
+            Rect source = full.rect;
+            float scale = source.width / 1600f;
+            var crop = new Rect(source.x + 314f * scale, source.y + (900f - 333f) * scale, 966f * scale, 81f * scale);
+            return Sprite.Create(full.texture, crop, new Vector2(0.5f, 0.5f), full.pixelsPerUnit);
+        }
+        #endregion
+
+        #region Level select
+        private void BuildLevelSelect()
+        {
+            _levelSelect = CreateScreen("LevelSelect", _levelSelectBackground);
+
+            _grid = ProtoUi.CreateRect("Levels", _levelSelect);
+            ProtoUi.Stretch(_grid);
+
+            // "<- back" on a plate hanging from the top-left corner.
+            Button back = CreateImageButton("BackButton", _levelSelect, _plate, null, Vector2.zero, new Vector2(610f, 203f), ShowMainMenu);
+            var backRect = (RectTransform)back.transform;
+            backRect.anchorMin = backRect.anchorMax = backRect.pivot = new Vector2(0f, 1f);
+            backRect.anchoredPosition = new Vector2(60f, 0f);
+            TMP_Text backLabel = CreateLabel("Label", backRect, "<- back", 96f);
+            ProtoUi.Stretch(backLabel.rectTransform);
+            backLabel.rectTransform.offsetMin = new Vector2(0f, 12f);
+            backLabel.font = TMP_Settings.defaultFontAsset != null ? TMP_Settings.defaultFontAsset : _font;
+            backLabel.color = Color.black;
         }
 
         private int LevelCount
             => ServiceLocator.TryGet(out ShiftService shifts) && shifts.ShiftAmount > 0 ? shifts.ShiftAmount : _fallbackLevelCount;
 
-        #region UI building
-        private void BuildLevelSelect()
+        private bool IsUnlocked(int levelIndex)
+            => levelIndex < LevelCount && (!_lockLevels || levelIndex == 0 || ProtoProgress.GetBestStars(levelIndex - 1) > 0);
+
+        private void RefreshLevels()
         {
-            _levelSelectRoot = ProtoUi.CreateRect("LevelSelect", _canvas.transform);
-            ProtoUi.Stretch(_levelSelectRoot);
-            _levelSelectRoot.SetAsLastSibling();
+            for (int i = _grid.childCount - 1; i >= 0; i--)
+                Destroy(_grid.GetChild(i).gameObject);
 
-            // Back to main menu, top-left corner.
-            Button back = ProtoUi.CreateButton("BackButton", _levelSelectRoot, _playButton, "Back", _font, new Vector2(260f, 90f), ShowMainMenu);
-            var backRect = (RectTransform)back.transform;
-            backRect.anchorMin = backRect.anchorMax = backRect.pivot = new Vector2(0f, 1f);
-            backRect.anchoredPosition = new Vector2(40f, -40f);
-
-            RectTransform panel = ProtoUi.CreatePanel("Table", _levelSelectRoot, new Vector2(1000f, 760f), ProtoUi.PanelColor);
-
-            TMP_Text title = ProtoUi.CreateText("Title", panel, "Select level", _font, 64f);
-            title.rectTransform.anchorMin = new Vector2(0f, 1f);
-            title.rectTransform.anchorMax = new Vector2(1f, 1f);
-            title.rectTransform.pivot = new Vector2(0.5f, 1f);
-            title.rectTransform.sizeDelta = new Vector2(0f, 110f);
-            title.rectTransform.anchoredPosition = new Vector2(0f, -20f);
-
-            _rowsRoot = ProtoUi.CreateRect("Rows", panel);
-            _rowsRoot.anchorMin = Vector2.zero;
-            _rowsRoot.anchorMax = Vector2.one;
-            _rowsRoot.offsetMin = new Vector2(40f, 40f);
-            _rowsRoot.offsetMax = new Vector2(-40f, -140f);
-
-            var layout = _rowsRoot.gameObject.AddComponent<VerticalLayoutGroup>();
-            layout.spacing = 12f;
-            layout.childAlignment = TextAnchor.UpperCenter;
-            layout.childControlWidth = true;
-            layout.childControlHeight = true;
-            layout.childForceExpandWidth = true;
-            layout.childForceExpandHeight = false;
-
-            CreateRow(_rowsRoot, "Header", "Level", "Stars", null, -1);
-
-            _levelSelectRoot.gameObject.SetActive(false);
-        }
-
-        private void RefreshRows()
-        {
-            // Rebuild level rows (keep the header at index 0) so stars are always current.
-            for (int i = _rowsRoot.childCount - 1; i >= 1; i--)
-                Destroy(_rowsRoot.GetChild(i).gameObject);
-
-            int count = LevelCount;
-            for (int i = 0; i < count; i++)
+            // Fixed board of slots; slots past the last level stay locked.
+            int slots = Mathf.Max(LevelCount, _columns * _rows);
+            for (int i = 0; i < slots; i++)
             {
-                int levelIndex = i;
-                string stars = ProtoUi.FormatStars(ProtoProgress.GetBestStars(levelIndex), 3, _font);
-                CreateRow(_rowsRoot, $"Level {levelIndex + 1}", (levelIndex + 1).ToString(), stars, () => SelectLevel(levelIndex), levelIndex);
+                int column = i % _columns;
+                int row = i / _columns;
+                var position = new Vector2((column - (_columns - 1) * 0.5f) * _tileSpacing.x, _firstRowY - row * _tileSpacing.y);
+                CreateLevelCell(i, position);
             }
         }
 
-        private void CreateRow(Transform parent, string name, string levelText, string starsText, UnityAction onSelect, int levelIndex)
+        private void CreateLevelCell(int levelIndex, Vector2 position)
         {
-            RectTransform row = ProtoUi.CreateRect(name, parent);
-            bool isHeader = onSelect == null;
-            if (!isHeader)
-                row.gameObject.AddComponent<Image>().color = ProtoUi.RowColor;
-            ProtoUi.SetLayoutSize(row, -1f, isHeader ? 60f : 90f);
+            RectTransform cell = ProtoUi.CreateRect($"Level {levelIndex + 1}", _grid);
+            cell.anchorMin = cell.anchorMax = cell.pivot = new Vector2(0.5f, 0.5f);
+            cell.anchoredPosition = position;
+            cell.sizeDelta = new Vector2(280f, 282f);
 
-            var layout = row.gameObject.AddComponent<HorizontalLayoutGroup>();
-            layout.padding = new RectOffset(20, 20, 0, 0);
-            layout.spacing = 20f;
-            layout.childAlignment = TextAnchor.MiddleCenter;
-            layout.childControlWidth = true;
-            layout.childControlHeight = true;
-            layout.childForceExpandWidth = false;
-            layout.childForceExpandHeight = false;
-
-            float fontSize = isHeader ? 34f : 42f;
-
-            TMP_Text level = ProtoUi.CreateText("Level", row, levelText, _font, fontSize);
-            ProtoUi.SetLayoutSize(level, 200f, 80f);
-
-            TMP_Text stars = ProtoUi.CreateText("Stars", row, starsText, _font, fontSize);
-            if (!isHeader)
-                stars.color = ProtoUi.StarColor;
-            ProtoUi.SetLayoutSize(stars, -1f, 80f, 1f);
-
-            if (isHeader)
+            if (!IsUnlocked(levelIndex))
             {
-                TMP_Text spacer = ProtoUi.CreateText("Action", row, "", _font, fontSize);
-                ProtoUi.SetLayoutSize(spacer, 240f, 60f);
+                CreateImage("Locked", cell, _lockedTile, Vector2.zero, new Vector2(280f, 282f));
                 return;
             }
 
-            ProtoUi.CreateButton("Select", row, _playButton, "Play", _font, new Vector2(240f, 76f), onSelect);
+            Button tile = CreateImageButton("Tile", cell, _levelTile, null, Vector2.zero, new Vector2(280f, 282f), () => SelectLevel(levelIndex));
+            TMP_Text number = CreateLabel("Number", tile.transform, (levelIndex + 1).ToString(), 110f);
+            ProtoUi.Stretch(number.rectTransform);
+            number.rectTransform.offsetMin = new Vector2(0f, 20f);
+            number.color = Color.black;
+
+            // Three stars overlapping the bottom edge of the tile.
+            int stars = ProtoProgress.GetBestStars(levelIndex);
+            for (int s = 0; s < 3; s++)
+                CreateImage($"Star {s + 1}", cell, s < stars ? _starFull : _starEmpty, new Vector2((s - 1) * 88f, -123f), new Vector2(126f, 126f));
         }
-        #endregion
 
         private void SelectLevel(int levelIndex)
         {
             ProtoProgress.SelectedLevelIndex = levelIndex;
             ProtoProgress.LoadScene(ProtoProgress.LevelSceneName);
         }
+        #endregion
+
+        #region UI helpers
+        private RectTransform CreateScreen(string name, Sprite background)
+        {
+            RectTransform screen = ProtoUi.CreateRect(name, _root);
+            ProtoUi.Stretch(screen);
+            CreateFullScreenImage("Background", screen, background);
+            return screen;
+        }
+
+        private static void CreateFullScreenImage(string name, RectTransform parent, Sprite sprite)
+        {
+            RectTransform rect = ProtoUi.CreateRect(name, parent);
+            ProtoUi.Stretch(rect);
+            var image = rect.gameObject.AddComponent<Image>();
+            image.sprite = sprite;
+            image.raycastTarget = false;
+            if (sprite == null)
+                image.color = new Color(0.7f, 0.85f, 0.9f);
+        }
+
+        private static RectTransform CreateImage(string name, Transform parent, Sprite sprite, Vector2 position, Vector2 size)
+        {
+            RectTransform rect = ProtoUi.CreateRect(name, parent);
+            rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(0.5f, 0.5f);
+            rect.anchoredPosition = position;
+            rect.sizeDelta = size;
+
+            var image = rect.gameObject.AddComponent<Image>();
+            image.sprite = sprite;
+            image.raycastTarget = false;
+            return rect;
+        }
+
+        private Button CreateImageButton(string name, Transform parent, Sprite sprite, string label, Vector2 position, Vector2 size,
+            UnityAction onClick, float fontSize = 60f)
+        {
+            RectTransform rect = CreateImage(name, parent, sprite, position, size);
+            var image = rect.GetComponent<Image>();
+            image.raycastTarget = true;
+
+            var button = rect.gameObject.AddComponent<Button>();
+            button.targetGraphic = image;
+            ColorBlock colors = button.colors;
+            colors.highlightedColor = new Color(0.92f, 0.95f, 1f);
+            colors.pressedColor = new Color(0.8f, 0.85f, 0.9f);
+            colors.selectedColor = Color.white;
+            button.colors = colors;
+            button.onClick.AddListener(onClick);
+
+            if (!string.IsNullOrEmpty(label))
+            {
+                TMP_Text text = CreateLabel("Label", rect, label, fontSize);
+                ProtoUi.Stretch(text.rectTransform);
+                text.rectTransform.offsetMin = new Vector2(0f, 6f); // the art has a shadow at the bottom
+            }
+
+            return button;
+        }
+
+        private TMP_Text CreateLabel(string name, Transform parent, string text, float size)
+        {
+            TMP_Text label = ProtoUi.CreateText(name, parent, text, _font, size);
+            label.color = InkColor;
+            label.alignment = TextAlignmentOptions.Center;
+            label.raycastTarget = false;
+            return label;
+        }
+        #endregion
+
+#if UNITY_EDITOR
+        /// <summary>
+        /// Editor safety net: fills art references from Art/Prototype/UI when the scene doesn't have them yet.
+        /// </summary>
+        private void ResolveMissingReferences()
+        {
+            Resolve(ref _menuBackground, "6e1c42c4349532b4a8cd93a417f0933b");
+            Resolve(ref _title, "2c63119568839f140ab4add61409488c");
+            Resolve(ref _levelSelectBackground, "4199e014578b06f47891d162b8c3cf48");
+            Resolve(ref _button, "876a0a2d7efd31d4d8980b9b489766c3");
+            Resolve(ref _levelTile, "51e5e7c118e3ae14cb0db70c91f082c4");
+            Resolve(ref _lockedTile, "5804e4f880f78a74bb31589e8382a912");
+            Resolve(ref _starFull, "e4bf7515b5c9ab94f9bb71f842ccea58");
+            Resolve(ref _starEmpty, "284e66a02cd2aef47b632ee078793915");
+            Resolve(ref _plate, "7c83782e226c41e42aafbe18dbd104a0");
+            Resolve(ref _playButton, "b82ec02b710451e4682ab29a77347939");
+            Resolve(ref _font, "236fde7f73574004aa2ce1c1579e2e44");
+        }
+
+        private static void Resolve<T>(ref T field, string guid) where T : Object
+        {
+            if (field != null)
+                return;
+
+            string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
+            if (!string.IsNullOrEmpty(path))
+                field = UnityEditor.AssetDatabase.LoadAssetAtPath<T>(path);
+        }
+#endif
     }
 }
