@@ -46,18 +46,15 @@ namespace Game.Prototype
         }
 
         /// <summary>
-        /// 50% of the quota = 1 star, 75% = 2 stars, 100%+ = 3 stars.
+        /// A star for every third of the quota: 1/3 = 1 star, 2/3 = 2 stars, the whole quota = 3 stars.
         /// </summary>
         public static int CalculateStars(int earned, int goal)
         {
             if (goal <= 0)
                 return 3;
 
-            float ratio = (float)earned / goal;
-            if (ratio >= 1f) return 3;
-            if (ratio >= 0.75f) return 2;
-            if (ratio >= 0.5f) return 1;
-            return 0;
+            // Integer math, so exactly 10 of 30 is a star (no rounding error).
+            return Mathf.Clamp(earned * 3 / goal, 0, 3);
         }
 
         /// <summary>

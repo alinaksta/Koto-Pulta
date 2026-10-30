@@ -34,7 +34,7 @@ namespace Game.Characters
     /// Added at runtime by <see cref="CustomerQueue"/>.
     /// </summary>
     [DisallowMultipleComponent]
-    public sealed class QueuedCustomer : MonoBehaviour, ICustomerInteractionOverride
+    public sealed class QueuedCustomer : MonoBehaviour, ICustomerInteractionOverride, IExtendedReach
     {
         private const float ArrivalDistanceSqr = 0.0025f;
         private const float JoinDistance = 1.5f;
@@ -289,6 +289,19 @@ namespace Game.Characters
         #endregion
 
         #region Loop steps (called by CustomerQueue)
+        /// <summary>
+        /// Appears standing at a spot of the line right away (no walking), e.g. at the start of a shift.
+        /// </summary>
+        public void StandAtSpot(int index, Vector3 position)
+        {
+            transform.SetParent(null, true);
+            StopMoving();
+            transform.SetPositionAndRotation(position, Quaternion.identity);
+            _phase = QueuedCustomerPhase.InQueue;
+            _queueIndex = index;
+            _arrivedAtSpot = true;
+        }
+
         public void EnterLine()
         {
             _phase = QueuedCustomerPhase.InQueue;
@@ -510,6 +523,17 @@ namespace Game.Characters
         /// A seated customer waiting for its order takes it when it is thrown to it (or lands next to it).
         /// Other items are ignored.
         /// </summary>
+        /// <summary>Whether this customer takes the item (thrown to it or handed over): it waits for exactly this order.</summary>
+        public bool WouldAccept(Item item)
+            => _phase == QueuedCustomerPhase.AtTable && _customer.IsWaiting && _customer.Order != null
+               && item.Definition != null && item.Definition.Id == _customer.Order.Id;
+
+        /// <summary>Center of the area where a thrown order is caught.</summary>
+        public Vector3 CatchCenter => transform.position + Vector3.up * CatchHeight;
+
+        /// <summary>Radius of the area where a thrown order is caught.</summary>
+        public static float CatchAreaRadius => CatchRadius;
+
         private void CatchThrownOrder()
         {
             if (_phase != QueuedCustomerPhase.AtTable || !_customer.IsWaiting || _customer.Order == null)

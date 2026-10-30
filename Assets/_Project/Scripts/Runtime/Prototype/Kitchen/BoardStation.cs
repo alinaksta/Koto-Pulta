@@ -99,6 +99,8 @@ namespace Game.Prototype.Kitchen
 
         private IEnumerator StapleRoutine(ItemDefinition result)
         {
+            ProtoSfx.PlayAt(ProtoSfx.Stapler, transform.position, 0.6f);
+
             // Quick squash-and-pop of the ingredients, then the pie appears.
             const float squashTime = 0.12f;
             for (float t = 0f; t < 1f; t += Time.deltaTime / squashTime)

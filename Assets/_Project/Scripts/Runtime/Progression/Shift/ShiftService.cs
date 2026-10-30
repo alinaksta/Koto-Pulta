@@ -31,6 +31,11 @@ namespace Game.Progression
         /// Number of recipes available during the shift.
         /// </summary>
         public int AvailableRecepies;
+
+        /// <summary>
+        /// Shift length in seconds; 0 uses the service's default duration.
+        /// </summary>
+        public float Duration;
     }
 
     /// <summary>
@@ -423,7 +428,7 @@ namespace Game.Progression
             _currentRevenue = 0;
             _lastKnownBalance = _context.Balance.Balance;
             _hasCompletedShiftResults = false;
-            _activeShiftDuration = _shiftDuration;
+            _activeShiftDuration = HasCurrentShift && CurrentShift.Duration > 0f ? CurrentShift.Duration : _shiftDuration;
             _shiftTimer = Mathf.Max(0f, _activeShiftDuration);
             _modeActive = true;
             _spawnTimer = InitialCustomerSpawnDelay;

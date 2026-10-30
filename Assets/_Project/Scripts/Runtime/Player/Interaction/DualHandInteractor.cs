@@ -64,6 +64,34 @@ namespace Game.Interaction
         /// </summary>
         public Vector3 LookPosition => _lookDirection != null ? _lookDirection.position : transform.position;
 
+        /// <summary>
+        /// How far the player can reach to interact.
+        /// </summary>
+        public float InteractionDistance => _interactionDistance;
+
+        /// <summary>
+        /// Layers the interaction ray hits.
+        /// </summary>
+        public LayerMask InteractionLayer => _interactionLayer;
+
+        /// <summary>
+        /// Longer reach for objects marked with <see cref="IExtendedReach"/> (0 = off).
+        /// </summary>
+        public float ExtendedReach { get; set; }
+
+        /// <summary>
+        /// Raycasts from the eyes: the usual reach, or the extended reach for <see cref="IExtendedReach"/> objects.
+        /// </summary>
+        public bool TryRaycastInteraction(out RaycastHit hit)
+        {
+            if (Physics.Raycast(LookPosition, LookForward, out hit, _interactionDistance, _interactionLayer))
+                return true;
+
+            return ExtendedReach > _interactionDistance
+                && Physics.Raycast(LookPosition, LookForward, out hit, ExtendedReach, _interactionLayer)
+                && hit.collider.GetComponentInParent<IExtendedReach>() != null;
+        }
+
 
         /// <inheritdoc/>
         public FocusStatus FocusStatus => _cameraController.FocusStatus;
@@ -193,7 +221,7 @@ namespace Game.Interaction
             IHoverable nextHoverable = null;
             RaycastHit? nextHit = null;
 
-            if (Physics.Raycast(LookPosition, LookForward, out var hit, _interactionDistance, _interactionLayer))
+            if (TryRaycastInteraction(out var hit))
             {
                 nextObject = hit.collider.gameObject;
                 nextObject.TryGetComponent(out nextHoverable);

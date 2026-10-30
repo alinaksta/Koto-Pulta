@@ -70,6 +70,24 @@ namespace Game.Prototype.Kitchen.EditorTools
             EditorSceneManager.MarkSceneDirty(queue.gameObject.scene);
         }
 
+        /// <summary>
+        /// The line starts in front of the wooden part of the cashier table (in front of the door, x 0),
+        /// not in front of the computer (x -2), so the first customer can be reached across the counter.
+        /// </summary>
+        private static void MoveQueueToCounter()
+        {
+            var queue = Object.FindAnyObjectByType<Game.Characters.CustomerQueue>();
+            if (queue == null || Mathf.Abs(queue.transform.position.x - (-2f)) > 0.01f)
+                return;
+
+            Undo.RecordObject(queue.transform, "Move queue to the counter");
+            Vector3 position = queue.transform.position;
+            position.x = 0f;
+            queue.transform.position = position;
+            EditorSceneManager.MarkSceneDirty(queue.gameObject.scene);
+            Debug.Log("[ProtoKitchen] The customer line now starts in front of the wooden counter. Save the scene to keep it.");
+        }
+
         [MenuItem("Tools/Koto/Rebake Proto NavMesh")]
         private static void RebakeNavMesh()
         {
@@ -358,6 +376,7 @@ namespace Game.Prototype.Kitchen.EditorTools
             if (kitchens.Length > 0)
             {
                 AddQueueBlock();
+            MoveQueueToCounter();
                 RemoveControlsNote();
 
                 foreach (NavMeshSurface surface in Object.FindObjectsByType<NavMeshSurface>(FindObjectsSortMode.None))

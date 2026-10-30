@@ -391,6 +391,14 @@ namespace Game.UI
             SetTimerColor(Color.Lerp(_timerBaseColor, _timerWarningColor, blink));
         }
 
+        /// <summary>
+        /// Overrides how many seconds before the end the timer starts blinking.
+        /// </summary>
+        public void SetTimerWarningSeconds(float seconds)
+        {
+            _timerWarningSeconds = Mathf.Max(0f, seconds);
+        }
+
         private void ResetTimerColor()
         {
             if (_timerLabel != null && _hasTimerBaseColor)

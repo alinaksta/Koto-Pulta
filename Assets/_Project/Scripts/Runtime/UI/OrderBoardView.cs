@@ -23,6 +23,20 @@ namespace Game.UI
 
         public int Count => _notes.Count;
 
+        /// <summary>
+        /// Optional: ingredient pictures for a dish picture, shown on the note (null = none).
+        /// </summary>
+        public System.Func<Sprite, Sprite[]> IngredientsForDish { get; set; }
+
+        /// <summary>
+        /// Replaces the note prefab (e.g. with a note built in code). New notes use it; existing ones stay.
+        /// </summary>
+        public void SetNoteTemplate(OrderNoteView template)
+        {
+            if (template != null)
+                _notePrefab = template;
+        }
+
         private void Awake()
         {
             ServiceLocator.Register(this);
@@ -39,7 +53,9 @@ namespace Game.UI
         public int AddOrder(Sprite dish, Sprite recipe = null, float patience = 1f)
         {
             OrderNoteView note = Instantiate(_notePrefab, transform);
+            note.gameObject.SetActive(true); // a template kept inactive in the scene
             note.SetDish(dish);
+            note.SetIngredients(IngredientsForDish?.Invoke(dish));
             note.SetRecipe(recipe);
             note.SetPatience(patience);
             note.PlayPopIn();

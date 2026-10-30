@@ -26,6 +26,11 @@ namespace Game.Movement
         [SerializeField] private float _airAcceleration = 12f;
         [SerializeField] private float _airFriction = 0f;
 
+        /// <summary>
+        /// Whether the jump input does anything.
+        /// </summary>
+        public bool JumpEnabled { get; set; } = true;
+
         [Header("Jump / Gravity")]
         [SerializeField] private float _jumpHeight = 1.2f;
         [SerializeField] private float _gravity = -30f;
@@ -92,7 +97,7 @@ namespace Game.Movement
 
             _move = Vector2.ClampMagnitude(_input.Move, 1f);
 
-            if (_input.Jump.Pressed)
+            if (_input.Jump.Pressed && JumpEnabled)
                 _jumpQueued = true;
         }
 

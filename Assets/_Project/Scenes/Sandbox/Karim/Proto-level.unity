@@ -8447,6 +8447,7 @@ MonoBehaviour:
   _spriteScale: 1.5
   Input: {fileID: 11400000, guid: 2eaf897075a1472b90814df248edc538, type: 2}
   Output: {fileID: 11400000, guid: 2fab8f6bd91649bd8d05c8fefc78ff44, type: 2}
+  _rippleSpread: 90
 --- !u!114 &942052076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10668,9 +10669,10 @@ MonoBehaviour:
   _itemY: 0
   _itemZ: 0.4
   _itemSize: 0.5
-  _heldModelEuler: {x: 15, y: -150, z: -10}
-  _heldModelScreenAngle: -45
-  _heldModelSpinAngle: -90
+  _heldYaw: 35
+  _heldPitch: -40
+  _heldRoll: 0
+  _flipHeldFront: 0
   _heldModelScale: 2
   _gripAnimationSpeed: 3
   _leftPrefab: {fileID: 919132149155446097, guid: 980dd1055be00a743a4f81a71d0e3700, type: 3}
@@ -13043,6 +13045,55 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1539958011}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2059510278
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2059510280}
+  - component: {fileID: 2059510279}
+  m_Layer: 0
+  m_Name: NavMeshBlock_BetweenQueueAndCounter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2059510279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2059510278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35e95dc5ff2b64380880dd7ac5922847, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshModifierVolume
+  m_SerializedVersion: 0
+  m_Size: {x: 10, y: 3, z: 0.5}
+  m_Center: {x: 0, y: 1, z: 0}
+  m_Area: 1
+  m_AffectedAgents: ffffffff
+--- !u!4 &2059510280
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2059510278}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.4000001, y: 0, z: 4.45}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2059604151
 GameObject:
   m_ObjectHideFlags: 0
@@ -13284,6 +13335,15 @@ MonoBehaviour:
   _orderBoardTopOffset: 0
   _orderBoardScale: 0.9
   _audioMixer: {fileID: 24100000, guid: 4b65db46c6d36551f97512195e0898ea, type: 2}
+  _timerTickVolume: 0.35
+  _timerTickSeconds: 10
+  _timerTickStartVolume: 0.05
+  _jumpOn: 0
+  _customerReach: 3
+  _starFull: {fileID: 21300000, guid: e4bf7515b5c9ab94f9bb71f842ccea58, type: 3}
+  _starEmpty: {fileID: 21300000, guid: 284e66a02cd2aef47b632ee078793915, type: 3}
+  _timerWarningSeconds: 10
+  _moneyPopupColor: {r: 0.45, g: 1, b: 0.45, a: 1}
 --- !u!4 &349952020210319997
 Transform:
   m_ObjectHideFlags: 0
@@ -13400,7 +13460,7 @@ Transform:
   m_GameObject: {fileID: 138500658711294028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2, y: 0, z: 4.85}
+  m_LocalPosition: {x: 0, y: 0, z: 4.85}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -13455,8 +13515,28 @@ MonoBehaviour:
   _shredderTexture: {fileID: 2800000, guid: fe7e5f648827b39488f50b381ff8edb4, type: 3}
   _staplerTexture: {fileID: 2800000, guid: fe7e5f648827b39488f50b381ff8edb4, type: 3}
   _boardTexture: {fileID: 2800000, guid: ebd0418187c5c4e42a252a1714ea37d1, type: 3}
-  _pawLeft: {fileID: 0}
-  _pawRight: {fileID: 0}
+  _pawLeft: {fileID: 919132149155446097, guid: 980dd1055be00a743a4f81a71d0e3700, type: 3}
+  _pawRight: {fileID: 919132149155446097, guid: c2b2e71aeb348a24f8b3db65c71dac09, type: 3}
+  _orderNoteFrame: {fileID: 21300000, guid: 3b21725f1a439b2418f561c58f7261c2, type: 3}
+  _orderNoteSize: {x: 264, y: 260}
+  _mixer: {fileID: 24100000, guid: 4b65db46c6d36551f97512195e0898ea, type: 2}
+  _folderSlams:
+  - {fileID: 8300000, guid: 73be191db817a1842923e6eb03ddc423, type: 3}
+  - {fileID: 8300000, guid: d7322323d8cd03b40a814810552538d1, type: 3}
+  - {fileID: 8300000, guid: ca856e2607a4eba458ae054a3eb85a30, type: 3}
+  - {fileID: 8300000, guid: 98e8eb69388d2864789c9d85445747b5, type: 3}
+  _shredderStart: {fileID: 8300000, guid: 952027b7df51ee146b181ed1701d4e9b, type: 3}
+  _shredderLoop: {fileID: 8300000, guid: 12c3367bec599a5468a3df808bbde485, type: 3}
+  _shredderFinish: {fileID: 8300000, guid: 3c9453356e473294ea7d1410bd157fa4, type: 3}
+  _staplerSound: {fileID: 8300000, guid: 052b6f4c675c3de42a24cae0874a44de, type: 3}
+  _takeOrderSound: {fileID: 8300000, guid: db11c59c6b4c23c4fa6341e0c16056e6, type: 3}
+  _chewingSound: {fileID: 8300000, guid: ff06bacca4a84a446ac2ea0c3571833b, type: 3}
+  _chewingFullVolumeRange: 2
+  _chewingMaxRange: 5
+  _musicOn: 1
+  _eatingTime: 6
+  _moneyPopupHeight: 1.9
+  _moneyPopupColor: {r: 0.45, g: 1, b: 0.45, a: 1}
   _mouseIcon: {fileID: 21300000, guid: f1953862e898410b9d92670da6313311, type: 3}
   _circleArrowIcon: {fileID: 21300000, guid: cc259b4f0f1145fb9a8740d2e4c606f2, type: 3}
   _counterCenter: {x: 0, y: 0, z: 0}
@@ -13510,6 +13590,7 @@ MonoBehaviour:
   _minDepartureInterval: 0.5
   _maxDepartureInterval: 5
   _homeRestTime: 6
+  _startShiftInLine: 1
   _walkSpeed: 2.5
   _standingAnimator: {fileID: 9100000, guid: 30ffcbc1b4883382a8fa8f3eb0d6f14f, type: 2}
   _showOrderBubbles: 0
@@ -14554,11 +14635,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6118335297202639111, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 768.80005
+      value: 1226.0002
       objectReference: {fileID: 0}
     - target: {fileID: 6367435225239670965, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1194.8
+      value: 1652
       objectReference: {fileID: 0}
     - target: {fileID: 7049517690870362964, guid: e06afed3f76a9b34eb190adb7706faaa, type: 3}
       propertyPath: m_AnchorMax.y
@@ -15062,3 +15143,4 @@ SceneRoots:
   - {fileID: 598375164325870829}
   - {fileID: 558735677692360850}
   - {fileID: 7341208815532640117}
+  - {fileID: 2059510280}

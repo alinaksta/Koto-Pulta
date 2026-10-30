@@ -582,7 +582,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 54ba03a89219a61b8b911b2ac26db532, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.503
+  m_Volume: 0.453
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -1161,9 +1161,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.Progression.ShiftService
   _shifts:
-  - GoalRevenue: 50
+  - GoalRevenue: 30
     CustomerAppearanceDelay: 15
     AvailableRecepies: 3
+    Duration: 90
   - GoalRevenue: 100
     CustomerAppearanceDelay: 12
     AvailableRecepies: 10

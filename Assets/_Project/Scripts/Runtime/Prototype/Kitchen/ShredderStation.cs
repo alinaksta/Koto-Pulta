@@ -218,11 +218,15 @@ namespace Game.Prototype.Kitchen
             }
 
             if (Mathf.Abs(mouseDegrees) > 0.5f)
+            {
                 _rattleTime = 0.08f;
+                _crankSoundTimer = CrankSoundHold;
+            }
         }
 
         protected override void OnMinigameCompleted()
         {
+            SilenceCrank();
             _topSlot.Hide();
             RunBusy(FinishRoutine());
         }
@@ -230,13 +234,91 @@ namespace Game.Prototype.Kitchen
         protected override void OnMinigameAborted()
         {
             // The apple pops back up, the progress is lost.
+            SilenceCrank();
             _topSlot.SetWorldOffset(Vector3.zero);
             _turnedDegrees = 0f;
         }
         #endregion
 
+        #region Sound
+        // Crank sound: start, then a loop while the crank keeps turning; it stops shortly after the crank stops.
+        private const float CrankSoundHold = 0.25f;
+        // The loop fades out instead of a separate ending sound.
+        private const float CrankFadeOut = 0.6f;
+        private bool _crankFading;
+        private AudioSource _crankSource;
+        private float _crankSoundTimer;
+        private bool _crankSounding;
+
+        private void UpdateCrankSound()
+        {
+            if (_crankSoundTimer > 0f)
+                _crankSoundTimer -= Time.deltaTime;
+
+            bool turning = _crankSoundTimer > 0f;
+            if (turning == _crankSounding)
+                return;
+
+            _crankSounding = turning;
+            if (turning)
+                StartCrankSound();
+            else
+                StopCrankSound();
+        }
+
+        private void StartCrankSound()
+        {
+            if (_crankSource == null)
+                _crankSource = ProtoSfx.CreateSource(gameObject, 0.7f);
+
+            _crankFading = false;
+            _crankSource.Stop();
+            _crankSource.loop = true;
+            _crankSource.clip = ProtoSfx.ShredderLoop;
+            _crankSource.volume = 1f;
+
+            // The start part first, the loop right after it.
+            ProtoSfx.PlayAt(ProtoSfx.ShredderStart, transform.position);
+            double start = AudioSettings.dspTime + (ProtoSfx.ShredderStart != null
+                ? ProtoSfx.ShredderStart.length - ProtoSfx.SoundStart(ProtoSfx.ShredderStart)
+                : 0f);
+            if (_crankSource.clip != null)
+                _crankSource.PlayScheduled(start);
+        }
+
+        private void SilenceCrank()
+        {
+            _crankSoundTimer = 0f;
+            _crankSounding = false;
+            StopCrankSound();
+        }
+
+        private void StopCrankSound()
+        {
+            if (_crankSource != null && _crankSource.isPlaying)
+                _crankFading = true;
+        }
+
+        private void UpdateCrankFade()
+        {
+            if (!_crankFading || _crankSource == null)
+                return;
+
+            _crankSource.volume = Mathf.MoveTowards(_crankSource.volume, 0f, Time.deltaTime / CrankFadeOut);
+            if (_crankSource.volume > 0f)
+                return;
+
+            _crankSource.Stop();
+            _crankSource.volume = 1f;
+            _crankFading = false;
+        }
+        #endregion
+
         private void Update()
         {
+            UpdateCrankSound();
+            UpdateCrankFade();
+
             if (_rattleTime <= 0f || Visual == null)
                 return;
 

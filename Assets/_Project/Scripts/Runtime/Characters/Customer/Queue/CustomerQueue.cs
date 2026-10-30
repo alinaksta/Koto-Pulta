@@ -53,6 +53,8 @@ namespace Game.Characters
         [SerializeField, Min(0f)] private float _maxDepartureInterval = 5f;
         [Tooltip("How long a customer stays at its table after a visit before it may get up again.")]
         [SerializeField, Min(0f)] private float _homeRestTime = 6f;
+        [Tooltip("At the start of a shift every customer already stands in the line at the counter (random order).")]
+        [SerializeField] private bool _startShiftInLine = true;
 
         [Header("Movement")]
         [SerializeField] private float _walkSpeed = 2.5f;
@@ -111,6 +113,11 @@ namespace Game.Characters
         /// </summary>
         public bool UsesHomeTables => _homeTables;
 
+        /// <summary>
+        /// Raised when the player has taken a customer's order at the cashier.
+        /// </summary>
+        public event System.Action<QueuedCustomer> OnOrderTaken;
+
         private void Awake()
         {
             _path = new NavMeshPath();
@@ -157,10 +164,7 @@ namespace Game.Characters
                 // Customers already sit at their tables; the shift asking for customers just lets them start ordering.
                 PopulateHomes();
                 if (!_departuresActive)
-                {
-                    _departuresActive = true;
-                    _departureTimer = 0f;
-                }
+                    StartDepartures();
                 return false;
             }
 
@@ -270,6 +274,7 @@ namespace Game.Characters
 
             // The customer keeps its spot while ordering; the line moves up only when it walks away (LeaveLine).
             queued.StartOrder(order, table, seat, _tableWaitTime);
+            OnOrderTaken?.Invoke(queued);
             return true;
         }
         #endregion
@@ -364,6 +369,33 @@ namespace Game.Characters
             Debug.Log($"[{nameof(CustomerQueue)}] Seated {_all.Count} customers at their own tables.", this);
         }
 
+        private void StartDepartures()
+        {
+            _departuresActive = true;
+            _departureTimer = 0f; // the first customer gets up immediately
+
+            if (!_startShiftInLine)
+                return;
+
+            // Everyone starts in the line at the counter, in random order; they go to their own tables after ordering.
+            _line.Clear();
+            var order = new List<QueuedCustomer>(_all);
+            for (int i = order.Count - 1; i > 0; i--)
+            {
+                int j = Random.Range(0, i + 1);
+                (order[i], order[j]) = (order[j], order[i]);
+            }
+
+            foreach (QueuedCustomer queued in order)
+            {
+                if (queued == null)
+                    continue;
+                int index = _line.Count;
+                queued.StandAtSpot(index, GetSpotPosition(index));
+                _line.Add(queued);
+            }
+        }
+
         /// <summary>
         /// Every few seconds a random resting customer gets up and joins the line.
         /// </summary>
@@ -382,8 +414,7 @@ namespace Game.Characters
             if (!_departuresActive && (_shifts != null || ServiceLocator.TryGet(out _shifts)) && _shifts.ShiftInProgress)
             {
                 PopulateHomes();
-                _departuresActive = true;
-                _departureTimer = 0f; // the first customer gets up immediately
+                StartDepartures();
             }
 
             if (!_departuresActive)

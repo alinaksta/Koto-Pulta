@@ -131,6 +131,7 @@ namespace Game.Prototype.Kitchen
         #region Minigame
         protected override void OnMinigameStarted()
         {
+            ClickRipple();
             _slot.SetSquash(Vector2.one);
             MovePose(_minigameRest, _closeDuration);
             // The dough would poke through the cover while pressing: hide it once the folder is shut.
@@ -152,8 +153,21 @@ namespace Game.Prototype.Kitchen
             _hideRoutine = null;
         }
 
+        private static readonly Color RippleColor = new Color(1f, 1f, 1f, 0.85f);
+
+        [Tooltip("Click ripples appear at a random point up to this far from the cursor (pixels at 1080p).")]
+        [SerializeField, Min(0f)] private float _rippleSpread = 90f;
+
+        private void ClickRipple()
+        {
+            // Random direction, random distance within the radius (uniform over the disc).
+            Vector2 offset = Random.insideUnitCircle * _rippleSpread * (Screen.height / 1080f);
+            ProtoUiFx.Ripple(ProtoUiFx.PointerScreenPosition() + offset, RippleColor);
+        }
+
         protected override void OnMinigameProgress(float progress)
         {
+            ClickRipple();
             // Each click slams the cover down.
             if (progress < 1f)
                 Play(PressBump());
@@ -180,12 +194,14 @@ namespace Game.Prototype.Kitchen
         private IEnumerator PressBump()
         {
             yield return PoseTo(1f, _pressDuration, accelerate: true);
+            ProtoSfx.PlayAt(ProtoSfx.RandomFolderSlam(), transform.position);
             yield return PoseTo(_minigameRest, _pressDuration * 1.5f, accelerate: false);
         }
 
         private IEnumerator FinishRoutine()
         {
             yield return PoseTo(1f, _pressDuration, accelerate: true);
+            ProtoSfx.PlayAt(ProtoSfx.RandomFolderSlam(), transform.position);
             yield return new WaitForSeconds(_holdDuration);
 
             // The prepared dough appears only as the folder opens (no clipping through the cover).

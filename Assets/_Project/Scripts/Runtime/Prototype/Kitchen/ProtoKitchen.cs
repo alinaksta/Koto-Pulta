@@ -7,6 +7,7 @@ using Game.UI;
 using Itemworks.Core;
 using Itemworks.UnityEngine;
 using UnityEngine;
+using UnityEngine.Audio;
 
 namespace Game.Prototype.Kitchen
 {
@@ -42,6 +43,33 @@ namespace Game.Prototype.Kitchen
         [Header("Player paws (3D, replace the 2D hands)")]
         [SerializeField] private GameObject _pawLeft;
         [SerializeField] private GameObject _pawRight;
+
+        [Header("Order notes")]
+        [Tooltip("Art/Prototype/UI/OrderNote.png")]
+        [SerializeField] private Sprite _orderNoteFrame;
+        [SerializeField] private Vector2 _orderNoteSize = new Vector2(264f, 260f);
+
+        [Header("Sounds (Audio/Prototype)")]
+        [SerializeField] private AudioMixer _mixer;
+        [SerializeField] private AudioClip[] _folderSlams = new AudioClip[0];
+        [SerializeField] private AudioClip _shredderStart;
+        [SerializeField] private AudioClip _shredderLoop;
+        [SerializeField] private AudioClip _shredderFinish;
+        [SerializeField] private AudioClip _staplerSound;
+        [SerializeField] private AudioClip _takeOrderSound;
+        [SerializeField] private AudioClip _chewingSound;
+        [Tooltip("Chewing is heard only near the cat: full volume up to this distance...")]
+        [SerializeField] private float _chewingFullVolumeRange = 2f;
+        [Tooltip("...and silent beyond this one.")]
+        [SerializeField] private float _chewingMaxRange = 5f;
+        [Tooltip("Background music in this level.")]
+        [SerializeField] private bool _musicOn = true;
+        [Tooltip("Longest the chewing goes on; it also stops as soon as the cat gets up.")]
+        [SerializeField, Min(0f)] private float _eatingTime = 6f;
+        [Header("Money popup")]
+        [Tooltip("\"+10$\" above a cat when it gets its order: height above the cat and color.")]
+        [SerializeField] private float _moneyPopupHeight = 1.9f;
+        [SerializeField] private Color _moneyPopupColor = new Color(0.45f, 1f, 0.45f);
 
         [Header("Minigame hint icons")]
         [SerializeField] private Sprite _mouseIcon;
@@ -88,6 +116,17 @@ namespace Game.Prototype.Kitchen
             RegisterItems();
             ProtoMinigameHud.MouseSprite = _mouseIcon;
             ProtoMinigameHud.CircleArrowSprite = _circleArrowIcon;
+
+            ProtoSfx.FolderSlams = _folderSlams;
+            ProtoSfx.ShredderStart = _shredderStart;
+            ProtoSfx.ShredderLoop = _shredderLoop;
+            ProtoSfx.ShredderFinish = _shredderFinish;
+            ProtoSfx.Stapler = _staplerSound;
+            ProtoSfx.TakeOrder = _takeOrderSound;
+            ProtoSfx.CatChewing = _chewingSound;
+            AudioMixerGroup[] sfx = _mixer != null ? _mixer.FindMatchingGroups("SFX") : null;
+            ProtoSfx.Output = sfx != null && sfx.Length > 0 ? sfx[0] : null;
+            ProtoSfx.Preload();
         }
 
 #if UNITY_EDITOR
@@ -113,6 +152,22 @@ namespace Game.Prototype.Kitchen
             Resolve(ref _boardTexture, "ebd0418187c5c4e42a252a1714ea37d1");
             Resolve(ref _mouseIcon, "f1953862e898410b9d92670da6313311");
             Resolve(ref _pawLeft, "980dd1055be00a743a4f81a71d0e3700");
+            Resolve(ref _orderNoteFrame, "3b21725f1a439b2418f561c58f7261c2");
+            Resolve(ref _mixer, "4b65db46c6d36551f97512195e0898ea");
+            Resolve(ref _shredderStart, "952027b7df51ee146b181ed1701d4e9b");
+            Resolve(ref _shredderLoop, "12c3367bec599a5468a3df808bbde485");
+            Resolve(ref _shredderFinish, "3c9453356e473294ea7d1410bd157fa4");
+            Resolve(ref _staplerSound, "052b6f4c675c3de42a24cae0874a44de");
+            Resolve(ref _takeOrderSound, "db11c59c6b4c23c4fa6341e0c16056e6");
+            Resolve(ref _chewingSound, "ff06bacca4a84a446ac2ea0c3571833b");
+            if (_folderSlams == null || _folderSlams.Length == 0)
+            {
+                var slams = new AudioClip[4];
+                string[] guids = { "73be191db817a1842923e6eb03ddc423", "d7322323d8cd03b40a814810552538d1", "ca856e2607a4eba458ae054a3eb85a30", "98e8eb69388d2864789c9d85445747b5" };
+                for (int i = 0; i < guids.Length; i++)
+                    Resolve(ref slams[i], guids[i]);
+                _folderSlams = slams;
+            }
             Resolve(ref _pawRight, "c2b2e71aeb348a24f8b3db65c71dac09");
             Resolve(ref _circleArrowIcon, "cc259b4f0f1145fb9a8740d2e4c606f2");
         }
@@ -158,7 +213,9 @@ namespace Game.Prototype.Kitchen
             if (_stapler != null)
                 paws.AddHeldModel(_stapler.Id, _staplerModel, _staplerTexture, _heldStaplerSize);
 
-            ServiceLocator.TryGet(out _customers);
+            HookCustomers();
+            if (GetComponent<ProtoThrowTargetHighlight>() == null)
+                gameObject.AddComponent<ProtoThrowTargetHighlight>();
             if (ServiceLocator.TryGet(out _shifts))
             {
                 _shifts.OnShiftStarted += ApplyApplePieOrders;
@@ -169,8 +226,140 @@ namespace Game.Prototype.Kitchen
 
         private void OnDestroy()
         {
+            // The music service outlives the level: give the music back to the menu.
+            if (_music != null)
+                _music.enabled = true;
             if (_shifts != null)
                 _shifts.OnShiftStarted -= ApplyApplePieOrders;
+            if (_customers != null)
+                _customers.OnCustomerServed -= HandleCustomerServed;
+            if (_queue != null)
+                _queue.OnOrderTaken -= HandleOrderTaken;
+        }
+
+        private CustomerQueue _queue;
+        private bool _orderNotesReady;
+
+        private void Update()
+        {
+            // The order board and the queue may appear after this Start: hook them up once they exist.
+            if (!_orderNotesReady && ServiceLocator.TryGet(out OrderBoardView board) && board != null)
+            {
+                SetUpOrderNotes(board);
+                _orderNotesReady = true;
+            }
+
+            // The customer service can register after this Start, so keep trying.
+            if (_customers == null)
+                HookCustomers();
+
+            UpdateEating();
+            MuteMusic();
+
+            if (_queue == null && _customers != null && _customers.Queue != null)
+            {
+                _queue = _customers.Queue;
+                _queue.OnOrderTaken += HandleOrderTaken;
+                Debug.Log("[ProtoKitchen] Order and serving sounds hooked up.", this);
+            }
+        }
+
+        private global::Game.Audio.MusicService _music;
+
+        /// <summary>The music service restarts its track every frame, so it is switched off rather than stopped once.</summary>
+        private void MuteMusic()
+        {
+            if (_music == null && !ServiceLocator.TryGet(out _music))
+                return;
+            if (_music == null)
+                return;
+
+            _music.enabled = _musicOn;
+            if (!_musicOn && _music.TryGetComponent(out AudioSource source) && source.isPlaying)
+                source.Stop();
+        }
+
+        private void HookCustomers()
+        {
+            if (_customers != null || !ServiceLocator.TryGet(out CustomerService customers) || customers == null)
+                return;
+            _customers = customers;
+            _customers.OnCustomerServed += HandleCustomerServed;
+        }
+
+        private void HandleOrderTaken(QueuedCustomer customer)
+        {
+            if (ProtoSfx.TakeOrder == null)
+                Debug.LogWarning("[ProtoKitchen] No take-order sound assigned.", this);
+            ProtoSfx.Play2D(ProtoSfx.TakeOrder);
+        }
+
+        private readonly System.Collections.Generic.List<(Transform cat, Vector3 seat, AudioSource source, float until)> _eating = new();
+
+        /// <summary>The cat got its order and eats: chewing loops while it stays in its seat, heard only up close.</summary>
+        private void HandleCustomerServed(Customer customer)
+        {
+            if (customer == null)
+                return;
+
+            // "+10$" floats up above the cat that got its order.
+            if (customer.Order != null && customer.Order.TryGetProperty(out Game.Items.Properties.FoodProperty food) && food.UnitPrice > 0)
+                ProtoUiFx.FloatingWorldText(customer.transform.position + Vector3.up * _moneyPopupHeight,
+                    $"+{food.UnitPrice}$", _moneyPopupColor);
+            if (ProtoSfx.CatChewing == null)
+            {
+                Debug.LogWarning("[ProtoKitchen] No chewing sound assigned.", this);
+                return;
+            }
+
+            AudioSource source = ProtoSfx.PlayLoopAttached(ProtoSfx.CatChewing, customer.transform, 1f, _chewingFullVolumeRange, _chewingMaxRange);
+            AudioListener listener = FindAnyObjectByType<AudioListener>();
+            Debug.Log($"[ProtoKitchen] Chewing started: {customer.name}, listener {(listener != null ? listener.name : "none")} " +
+                      $"at {(listener != null ? Vector3.Distance(listener.transform.position, customer.transform.position) : -1f):0.0} m " +
+                      $"(heard within {_chewingMaxRange} m), output {(source != null && source.outputAudioMixerGroup != null ? source.outputAudioMixerGroup.name : "none")}, " +
+                      $"listener volume {AudioListener.volume:0.00}", this);
+            _eating.Add((customer.transform, customer.transform.position, source, Time.time + _eatingTime));
+        }
+
+        /// <summary>Stops the chewing when the cat gets up, or after the eating time.</summary>
+        private void UpdateEating()
+        {
+            for (int i = _eating.Count - 1; i >= 0; i--)
+            {
+                var (cat, seat, source, until) = _eating[i];
+                string reason = cat == null ? "cat gone" : source == null ? "source gone"
+                    : !cat.gameObject.activeInHierarchy ? "cat hidden"
+                    : Time.time >= until ? "eating time over"
+                    : (cat.position - seat).sqrMagnitude > 1f ? "cat got up" : null;
+                if (reason == null)
+                    continue;
+                Debug.Log($"[ProtoKitchen] Chewing stopped: {reason}.", this);
+                if (source != null)
+                    Destroy(source.gameObject);
+                _eating.RemoveAt(i);
+            }
+        }
+
+        /// <summary>
+        /// Order notes from the prototype art: the dish, its patience and table number, and the ingredients of the last step.
+        /// </summary>
+        private void SetUpOrderNotes(OrderBoardView board)
+        {
+            if (_orderNoteFrame != null)
+                board.SetNoteTemplate(ProtoOrderNote.BuildTemplate(board.transform, _orderNoteFrame, _orderNoteSize));
+
+            Sprite pie = SpriteOf(_applePie);
+            Sprite[] ingredients = { SpriteOf(_preparedApple), SpriteOf(_preparedDough) };
+            board.IngredientsForDish = dish => dish != null && dish == pie ? ingredients : null;
+        }
+
+        private static Sprite SpriteOf(ItemDefinitionAsset asset)
+        {
+            if (asset == null || !ItemRegistry.Instance.TryGet(asset.Id, out ItemDefinition definition))
+                return null;
+            return definition.TryGetProperty<Game.Items.Properties.FoodProperty>(out var food)
+                ? (food.WorldSprite != null ? food.WorldSprite : food.DialogueSprite)
+                : null;
         }
 
         public const string StaplerSpawnPointName = "StaplerSpawnPoint";

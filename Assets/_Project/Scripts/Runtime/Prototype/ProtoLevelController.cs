@@ -50,10 +50,29 @@ namespace Game.Prototype
 
         [Header("Pause")]
         [SerializeField] private AudioMixer _audioMixer;
+        [Tooltip("Clock tick volume while the shift runs (0 = no ticks).")]
+        [SerializeField, Range(0f, 1f)] private float _timerTickVolume = 0.35f;
+        [Tooltip("The clock ticks only during the last seconds, starting quiet and growing to the tick volume.")]
+        [SerializeField, Min(0f)] private float _timerTickSeconds = 10f;
+        [SerializeField, Range(0f, 1f)] private float _timerTickStartVolume = 0.05f;
+        [SerializeField] private bool _jumpOn;
+        [Tooltip("Customers can be clicked from this far (across the counter); other things keep the usual reach.")]
+        [SerializeField, Min(0f)] private float _customerReach = 3f;
+        [Header("Results")]
+        [SerializeField] private Sprite _starFull;
+        [SerializeField] private Sprite _starEmpty;
+        [Tooltip("The timer blinks red during the last seconds of the shift.")]
+        [SerializeField, Min(0f)] private float _timerWarningSeconds = 10f;
 
         private ProtoPauseMenu _pauseMenu;
 
         private ShiftService _shiftService;
+        private BalanceService _balance;
+        private int _lastBalance;
+        private TMP_Text _quotaLabel;
+
+        [Tooltip("Color of the floating \"+$10\" shown next to the quota counter when money comes in.")]
+        [SerializeField] private Color _moneyPopupColor = new Color(0.45f, 1f, 0.45f);
 
         private void Awake()
         {
@@ -64,7 +83,15 @@ namespace Game.Prototype
                 DisableWaiters();
 
             ProtoAudioSettings.ApplyMaster();
-            DisableClockTicks();
+            ResolveMissingReferences();
+            SetUpClockTicks();
+            var player = FindAnyObjectByType<Game.Movement.PlayerController>();
+            if (player != null)
+                player.JumpEnabled = _jumpOn;
+            foreach (var interactor in FindObjectsByType<Game.Interaction.DualHandInteractor>(FindObjectsSortMode.None))
+                interactor.ExtendedReach = _customerReach;
+            foreach (var hud in FindObjectsByType<UIShiftHud>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+                hud.SetTimerWarningSeconds(_timerWarningSeconds);
             SpawnOrderBoard();
 
             if (_simplifyHud)
@@ -78,6 +105,7 @@ namespace Game.Prototype
         {
             TMP_Text money = FindLabel(_moneyLabelName);
             TMP_Text quota = FindLabel(_quotaLabelName);
+            _quotaLabel = quota;
             TMP_Text shiftNumber = FindLabel(_shiftNumberLabelName);
             TMP_Text timer = FindLabel(_timerLabelName);
 
@@ -118,10 +146,46 @@ namespace Game.Prototype
             label.gameObject.SetActive(true);
         }
 
-        private static void DisableClockTicks()
+        private ProgressionAudio[] _clockAudio;
+
+        private void SetUpClockTicks()
         {
-            foreach (var audio in FindObjectsByType<ProgressionAudio>(FindObjectsInactive.Include, FindObjectsSortMode.None))
-                audio.PlayTimerTicks = false;
+            _clockAudio = FindObjectsByType<ProgressionAudio>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            UpdateClockTicks();
+        }
+
+        private void Update() => UpdateClockTicks();
+
+        /// <summary>Silent until the last seconds, then the ticks fade in from quiet to the tick volume.</summary>
+        private void UpdateClockTicks()
+        {
+            if (_clockAudio == null)
+                return;
+
+            float left = _shiftService != null && _shiftService.ShiftInProgress ? _shiftService.ShiftTimer : float.MaxValue;
+            bool ticking = _timerTickVolume > 0f && left <= _timerTickSeconds;
+            float progress = _timerTickSeconds > 0f ? 1f - Mathf.Clamp01(left / _timerTickSeconds) : 1f;
+            float volume = Mathf.Lerp(_timerTickStartVolume, _timerTickVolume, progress);
+
+            foreach (ProgressionAudio audio in _clockAudio)
+            {
+                if (audio == null)
+                    continue;
+                audio.PlayTimerTicks = ticking;
+                audio.TimerTickVolume = volume;
+            }
+        }
+
+        private void ResolveMissingReferences()
+        {
+#if UNITY_EDITOR
+            if (_starFull == null)
+                _starFull = UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>(
+                    UnityEditor.AssetDatabase.GUIDToAssetPath("e4bf7515b5c9ab94f9bb71f842ccea58"));
+            if (_starEmpty == null)
+                _starEmpty = UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>(
+                    UnityEditor.AssetDatabase.GUIDToAssetPath("284e66a02cd2aef47b632ee078793915"));
+#endif
         }
 
         private void SpawnOrderBoard()
@@ -168,6 +232,12 @@ namespace Game.Prototype
             if (ServiceLocator.TryGet<GameModeService>(out var gameModes) && !gameModes.TrySetGameMode(_shiftModeId))
                 Debug.LogWarning($"[{nameof(ProtoLevelController)}] Could not switch to game mode '{_shiftModeId}'.", this);
 
+            if (ServiceLocator.TryGet(out _balance))
+            {
+                _lastBalance = _balance.Balance;
+                _balance.OnBalanceChanged += HandleBalanceChanged;
+            }
+
             if (ServiceLocator.TryGet(out _shiftService))
             {
                 _shiftService.OnShiftEnded += HandleShiftEnded;
@@ -201,8 +271,20 @@ namespace Game.Prototype
             }
         }
 
+        private void HandleBalanceChanged(int balance)
+        {
+            int delta = balance - _lastBalance;
+            _lastBalance = balance;
+            if (delta <= 0 || _shiftService == null || !_shiftService.ShiftInProgress)
+                return;
+
+            // The money popup is shown above the served cat (ProtoKitchen), not at the quota counter.
+        }
+
         private void OnDestroy()
         {
+            if (_balance != null)
+                _balance.OnBalanceChanged -= HandleBalanceChanged;
             if (_shiftService != null)
                 _shiftService.OnShiftEnded -= HandleShiftEnded;
         }
@@ -221,6 +303,7 @@ namespace Game.Prototype
                 }
 
                 var results = gameObject.AddComponent<ProtoShiftResultsScreen>();
+                results.SetStarSprites(_starFull, _starEmpty);
                 results.Show(ProtoProgress.SelectedLevelIndex, _shiftService.CurrentRevenue, _shiftService.CurrentGoalRevenue);
             }
         }

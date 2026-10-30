@@ -67,6 +67,16 @@ namespace Game.Interaction
         public bool HasThrowableItem => !IsEmpty && _throwable != null;
 
         /// <summary>
+        /// Where a thrown or dropped item starts.
+        /// </summary>
+        public Vector3 ThrowOrigin => _spawnPoint != null ? _spawnPoint.position : Vector3.zero;
+
+        /// <summary>
+        /// Launch speed of the held item when thrown (0 when it can't be thrown).
+        /// </summary>
+        public float ThrowForce => !IsEmpty && _throwable != null ? _throwable.ForwardForce : 0f;
+
+        /// <summary>
         /// Raised when the hand visibility changes.
         /// </summary>
         public event Action<bool> OnSetVisible = delegate { };

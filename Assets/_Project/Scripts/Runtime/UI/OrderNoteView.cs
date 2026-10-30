@@ -20,6 +20,30 @@ namespace Game.UI
         [SerializeField] private float _popInDuration = 0.25f;
         [Tooltip("Optional. Short label identifying the order (e.g. table number). Created at runtime when empty.")]
         [SerializeField] private TMP_Text _label;
+        [Tooltip("Optional. Pictures of the ingredients (e.g. the last step before the dish).")]
+        [SerializeField] private Image[] _ingredientImages = new Image[0];
+        [Tooltip("How the label text is shown, {0} = the text (e.g. \"#{0}\").")]
+        [SerializeField] private string _labelFormat = "{0}";
+
+        /// <summary>
+        /// Wires a note built in code (instead of a prefab).
+        /// </summary>
+        public void Setup(Image dish, Image timerFill, Gradient timerGradient, TMP_Text label, Image[] ingredients, string labelFormat)
+        {
+            _dishImage = dish;
+            _timerFill = timerFill;
+            _timerGradient = timerGradient;
+            _label = label;
+            _ingredientImages = ingredients ?? new Image[0];
+            _labelFormat = string.IsNullOrEmpty(labelFormat) ? "{0}" : labelFormat;
+        }
+
+        /// <summary>Shows the ingredient pictures (missing ones are hidden).</summary>
+        public void SetIngredients(Sprite[] sprites)
+        {
+            for (int i = 0; i < _ingredientImages.Length; i++)
+                SetImage(_ingredientImages[i], sprites != null && i < sprites.Length ? sprites[i] : null);
+        }
 
         public void SetDish(Sprite sprite) => SetImage(_dishImage, sprite);
 
@@ -34,7 +58,7 @@ namespace Game.UI
             if (_label == null)
                 return;
 
-            _label.text = text;
+            _label.text = string.IsNullOrEmpty(text) ? string.Empty : string.Format(_labelFormat, text);
             _label.enabled = !string.IsNullOrEmpty(text);
         }
 
@@ -64,7 +88,7 @@ namespace Game.UI
         /// <summary>Sets the patience bar. 1 = full, 0 = empty.</summary>
         public void SetPatience(float normalized)
         {
-            if (_timerFill == null)
+            if (_timerFill == null || _timerGradient == null)
                 return;
 
             normalized = Mathf.Clamp01(normalized);

@@ -18,6 +18,11 @@ public class ProgressionAudio : MonoBehaviour
     /// </summary>
     public bool PlayTimerTicks { get; set; } = true;
 
+    /// <summary>
+    /// Volume of the clock tick; negative uses the common volume.
+    /// </summary>
+    public float TimerTickVolume { get; set; } = -1f;
+
     [SerializeField] private SoundType _moneySound = SoundType.Money;
     [SerializeField] private SoundType _timerSound = SoundType.ClockTick;
     [SerializeField] private SoundType _alarmSound = SoundType.Alarm;
@@ -46,7 +51,7 @@ public class ProgressionAudio : MonoBehaviour
     {
         if(PlayTimerTicks && (int)_shiftService.ShiftTimer != _timerValue)
         {
-            Play(_timerSound, (int)_shiftService.ShiftTimer % 2);
+            _soundService.PlaySound(_timerSound, TimerTickVolume >= 0f ? TimerTickVolume : _volume, (int)_shiftService.ShiftTimer % 2);
             _timerValue = (int)_shiftService.ShiftTimer;
         }
     }
